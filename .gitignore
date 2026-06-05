@@ -36,8 +36,7 @@ Debug/
 Release/
 
 # デバッグ用
-DebugScene.h
-DebugScene.cpp
+
 
 # DxLib
 !DxLib*.dll
