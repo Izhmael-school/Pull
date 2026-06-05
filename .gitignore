@@ -36,5 +36,7 @@ Debug/
 Release/
 
 # DxLib
-DxLib_x64/
-DxLib_x86/
+!DxLib*.dll
+!DxLib*.lib
+!DxLib_x64/
+!DxLib_x86/
