@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{786b68e9-e088-4506-bfa0-63834f11b157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Definition">
+      <UniqueIdentifier>{1a0c7ae6-afc9-43a6-a408-03b76425bb76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Manager">
+      <UniqueIdentifier>{8ebc576a-092a-4d24-a8f2-8033c4ffb984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Component">
+      <UniqueIdentifier>{51b257d6-2d8e-461a-9468-fa0e8b0846b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Definition\Const">
+      <UniqueIdentifier>{ba1870e6-31a9-4155-90b4-32fd9debfabe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Definition\Enum">
+      <UniqueIdentifier>{e2b1c7a1-038b-4921-b2d1-c18029fa2df5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Pad">
+      <UniqueIdentifier>{28f7dee4-ddf7-4909-958a-4633aa152a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Debug">
+      <UniqueIdentifier>{a5f1d59a-df6c-4eba-94bb-939c940bfa0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Definition\CommonModule">
+      <UniqueIdentifier>{fbc197d1-e582-4885-bcf0-e9ec42afc492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object">
+      <UniqueIdentifier>{2ebb4e12-4934-43b4-b764-ac9586b6ebbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\GameObject">
+      <UniqueIdentifier>{03b5b540-a3a1-40f7-ac21-3357bb40ad0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\SceneBase.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene\DebugScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\ManagerBase.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Singleton.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\SceneManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pad\DirectInputPad.cpp">
+      <Filter>ソース ファイル\Pad</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pad\PadBase.cpp">
+      <Filter>ソース ファイル\Pad</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Pad\XInputPad.cpp">
+      <Filter>ソース ファイル\Pad</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\InputManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Transform.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object\Object.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object\GameObject\GameObject.cpp">
+      <Filter>ソース ファイル\Object\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Definition\CommonModule\MyMath.cpp">
+      <Filter>ソース ファイル\Definition\CommonModule</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\DebugCamera.cpp">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Scene\DebugScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\ManagerBase.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scene\SceneBase.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Singleton.h">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\SceneManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pad\DirectInputPad.h">
+      <Filter>ソース ファイル\Pad</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pad\PadBase.h">
+      <Filter>ソース ファイル\Pad</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Pad\XInputPad.h">
+      <Filter>ソース ファイル\Pad</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\InputManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Transform.h">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object\Object.h">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Object\GameObject\GameObject.h">
+      <Filter>ソース ファイル\Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Const\ColorConst.h">
+      <Filter>ソース ファイル\Definition\Const</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Const\InputConst.h">
+      <Filter>ソース ファイル\Definition\Const</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Const\VECTORConst.h">
+      <Filter>ソース ファイル\Definition\Const</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Enum\InputEnum.h">
+      <Filter>ソース ファイル\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Enum\SceneType.h">
+      <Filter>ソース ファイル\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Enum\TagEnum.h">
+      <Filter>ソース ファイル\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\CommonModule\MyMath.h">
+      <Filter>ソース ファイル\Definition\CommonModule</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\DebugCamera.h">
+      <Filter>ソース ファイル\Debug</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
