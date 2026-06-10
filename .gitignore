@@ -8,13 +8,11 @@
 *.pch
 *.so
 *.dylib
-*.dll
 *.mod
 *.smod
 *.lai
 *.la
 *.a
-*.lib
 *.exe
 *.out
 *.app
@@ -34,14 +32,5 @@ x64/
 x86/
 Release/
 Log*.txt
-
-# デバッグ用
-
-
-# DxLib
-!DxLib*.dll
-!DxLib*.lib
-!DxLib_x64/
-!DxLib_x86/
 
 
