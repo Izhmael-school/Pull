@@ -120,7 +120,7 @@ void Transform::AttachParent(Transform* _parent, bool isHoldWorld) {
 
 	// ワールド座標を維持
 	VECTOR worldPos = GetPosition();
-	VECTOR worldRot = GetRotation();
+	VECTOR worldRot = GetLocalRotation();
 	VECTOR worldScale = GetScale();
 
 	// すでに親がいる場合は前の親を切り離す
