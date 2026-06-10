@@ -1,7 +1,12 @@
+/*
+ * @file DebugScene.h
+ * @author Sekino
+ */
 #pragma once
 #include "SceneBase.h"
 #include "../Debug/DebugCamera.h"
 #include <memory>
+#include "../GameObject/GameObject.h"
 
 class DebugScene : public SceneBase {
 
@@ -19,5 +24,6 @@ public:
 
 private:
 	std::unique_ptr<DebugCamera> debugCamera;
+
 };
 

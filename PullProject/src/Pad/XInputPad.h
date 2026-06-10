@@ -1,3 +1,7 @@
+/*
+ * @file XInputPad.h
+ * @author Sekino
+ */
 #pragma once
 #include "PadBase.h"
 class XInputPad : public PadBase {

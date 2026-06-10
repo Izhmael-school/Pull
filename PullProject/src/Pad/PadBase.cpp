@@ -1,3 +1,7 @@
+/*
+ * @file PadBase.cpp
+ * @author Sekino
+ */
 #include "PadBase.h"
 
 PadBase::PadBase(int _connectIndex)

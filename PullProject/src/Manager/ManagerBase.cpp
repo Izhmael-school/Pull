@@ -1,3 +1,7 @@
+/*
+ * @file ManagerBase.h
+ * @author Sekino
+ */
 #include "ManagerBase.h"
 
 void ManagerBase::Start(){}

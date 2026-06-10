@@ -1,37 +1,42 @@
+/*
+ * @file GameObject.cpp
+ * @author Sekino
+ */
+
 #include "GameObject.h"
 #include <cassert>
-#include "../../Definition/CommonModule/MyMath.h"
+#include "../Definition/CommonModule/MyMath.h"
 
-GameObject::GameObject(int _mHandle ,VECTOR _pos,Tag _tag)
-	:Object(_tag)
+GameObject::GameObject(int _modelHandle ,VECTOR _pos,Tag _tag)
+	:tag(_tag)
 	,isVisible(true)
-	,modelHandle(_mHandle)
-	//,pCollider(nullptr)
+	,modelHandle(_modelHandle)
 {
-	transform.SetPosition(_pos);
+	transform = std::make_unique<Transform>();
+	transform->SetPosition(_pos);
 }
 
 GameObject::~GameObject() {
 	MV1DeleteModel(modelHandle);
 }
 
+void GameObject::Start(){
+}
+
 void GameObject::Update() {
 	if (!isVisible) return;
-
-	Object::Update();
-
+	
+	transform->Update();
 }
 
 void GameObject::Render() {
 	if (!isVisible) return;
 
-#if _DEBUG
-	assert(modelHandle != -1);
-#endif
-
+	// ƒ‚ƒfƒ‹‚ª‚È‚¢‚È‚ç•`‰æ‚µ‚È‚¢
+	if(modelHandle == -1) return;
 	// --- ’Êíƒ‚ƒfƒ‹•`‰æ ---
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	MV1SetMatrix(modelHandle, transform.GetMatrix());
+	MV1SetMatrix(modelHandle, transform->GetMatrix());
 	MV1DrawModel(modelHandle);
 }
 

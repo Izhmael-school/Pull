@@ -1,6 +1,11 @@
 #include "MyMath.h"
 #include "DxLib.h"
 
+/*
+ * @file MyMath.cpp
+ * @author Sekino
+ */
+
 float MyMath::Deg2Rad(float _radian) {
     return (_radian * (DX_PI_F / 180.0f));
 }

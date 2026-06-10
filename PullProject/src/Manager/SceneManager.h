@@ -1,3 +1,7 @@
+/*
+ * @file SceneManager.h
+ * @author Sekino
+ */
 #pragma once
 #include <memory>
 #include "ManagerBase.h"

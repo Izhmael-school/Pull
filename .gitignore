@@ -34,6 +34,7 @@ x64/
 x86/
 Debug/
 Release/
+Log*.txt
 
 # デバッグ用
 

@@ -1,3 +1,7 @@
+/*
+ * @file DirectInputPad.cpp
+ * @author Sekino
+ */
 #include "DirectInputPad.h"
 
 DirectInputPad::DirectInputPad(int _portNum)

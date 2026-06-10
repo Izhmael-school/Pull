@@ -1,7 +1,12 @@
+/*
+ * @file DebugScene.cpp
+ * @author Sekino
+ */
 #include "DebugScene.h"
 #include <DxLib.h>
 #include "../Definition/Const/ColorConst.h"
 #include "../Definition/Const/VECTORConst.h"
+#include "../Manager/InputManager.h"
 
 DebugScene::DebugScene() { Start(); }
 

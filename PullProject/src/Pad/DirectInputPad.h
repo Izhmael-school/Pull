@@ -1,3 +1,7 @@
+/*
+ * @file DirectInputPad.h
+ * @author Sekino
+ */
 #pragma once
 #include "PadBase.h"
 class DirectInputPad : public PadBase {

@@ -1,3 +1,7 @@
+/*
+ * @file SceneBase.cpp
+ * @author Sekino
+ */
 #include "SceneBase.h"
 
 SceneBase::SceneBase() { Start(); }

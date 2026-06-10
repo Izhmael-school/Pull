@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+ * @file InputConst.h
+ * @author Sekino
+ */
+
 constexpr int KEY_NUM = 256;
 constexpr int MAX_PAD_PORT = 1;
 constexpr float DEADZONE = 0.15f;

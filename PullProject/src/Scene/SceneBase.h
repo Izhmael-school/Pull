@@ -1,3 +1,7 @@
+/*
+ * @file SceneBase.h
+ * @author Sekino
+ */
 #pragma once
 
 /// <summary>

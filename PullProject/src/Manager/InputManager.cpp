@@ -1,3 +1,7 @@
+/*
+ * @file InputManager.cpp
+ * @author Sekino
+ */
 #include "InputManager.h"
 #include "../Pad/DirectInputPad.h"
 #include "../Pad/XInputPad.h"

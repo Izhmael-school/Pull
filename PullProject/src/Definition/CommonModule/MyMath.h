@@ -1,4 +1,10 @@
 #pragma once
+
+/*
+ * @file MyMath.h
+ * @author Sekino
+ */
+
 #include <cmath>
 #include "DxLib.h"
 #include <algorithm>

@@ -1,8 +1,10 @@
 #pragma once
-/// <summary>
-/// シングルトンクラス
-/// </summary>
-/// <typeparam name="T"></typeparam>
+
+/*
+ * @file Singleton.h
+ * @author Sekino
+*/
+
 template <typename T>
 class Singleton {
 public:

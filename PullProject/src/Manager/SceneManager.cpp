@@ -1,3 +1,7 @@
+/*
+ * @file SceneManager.cpp
+ * @author Sekino
+ */
 #include "SceneManager.h"
 #include "../Scene/DebugScene.h"
 

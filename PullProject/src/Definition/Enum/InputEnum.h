@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+ * @file InputEnum.h
+ * @author Sekino
+ */
+
 enum DI_Switch_BUTTON {
 	B = 0,
 	A = 1,

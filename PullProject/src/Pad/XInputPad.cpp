@@ -1,3 +1,7 @@
+/*
+ * @file XInputPad.cpp
+ * @author Sekino
+ */
 #include "XInputPad.h"
 
 XInputPad::XInputPad(int _portNum)

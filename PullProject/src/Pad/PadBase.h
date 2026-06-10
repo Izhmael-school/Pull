@@ -1,3 +1,7 @@
+/*
+ * @file PadBase.h
+ * @author Sekino
+ */
 #pragma once
 #include "DxLib.h"
 #include <cmath>

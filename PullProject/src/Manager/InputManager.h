@@ -1,3 +1,7 @@
+/*
+ * @file InputManager.h
+ * @author Sekino
+ */
 #pragma once
 #include "../Component/Singleton.h"	
 #include "ManagerBase.h"

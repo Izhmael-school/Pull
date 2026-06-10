@@ -1,3 +1,7 @@
+/*
+ * @file ManagerBase.h
+ * @author Sekino
+ */
 #pragma once
 class ManagerBase{
 

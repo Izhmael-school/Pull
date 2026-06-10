@@ -1,5 +1,10 @@
 #pragma once
 
+/*
+ * @file ColorConst.h
+ * @author Sekino
+ */
+
 constexpr int white = 0xFFFFFF;
 constexpr int gray = 0x646464;
 constexpr int black = 0x000000;
