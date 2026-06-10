@@ -142,6 +142,8 @@
     <ClCompile Include="src\Component\Transform.cpp" />
     <ClCompile Include="src\Debug\DebugCamera.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyMath.cpp" />
+    <ClCompile Include="src\GameObject\Character\Character.cpp" />
+    <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
@@ -164,6 +166,8 @@
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
+    <ClInclude Include="src\GameObject\Character\Character.h" />
+    <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />

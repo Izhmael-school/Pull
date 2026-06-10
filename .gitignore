@@ -32,7 +32,6 @@ ipch/
 # ビルドフォルダ
 x64/
 x86/
-Debug/
 Release/
 Log*.txt
 

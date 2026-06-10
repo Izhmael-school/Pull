@@ -43,6 +43,15 @@
     <Filter Include="ソース ファイル\GameObject">
       <UniqueIdentifier>{019e0b53-fb3a-41e7-94b1-45eed76ca028}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character">
+      <UniqueIdentifier>{118ccff9-128d-4dcb-bf1f-dc368e12cd1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy">
+      <UniqueIdentifier>{0ce27087-2254-4f99-9b13-1560583eff7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\WalkEnemy">
+      <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -83,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\GameObject.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Character.cpp">
+      <Filter>ソース ファイル\GameObject\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp">
+      <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +157,12 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\GameObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Character.h">
+      <Filter>ソース ファイル\GameObject\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h">
+      <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

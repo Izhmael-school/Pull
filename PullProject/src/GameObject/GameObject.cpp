@@ -12,8 +12,8 @@ GameObject::GameObject(int _modelHandle ,VECTOR _pos,Tag _tag)
 	,isVisible(true)
 	,modelHandle(_modelHandle)
 {
-	transform = std::make_unique<Transform>();
-	transform->SetPosition(_pos);
+	pTransform = std::make_unique<Transform>();
+	pTransform->SetPosition(_pos);
 }
 
 GameObject::~GameObject() {
@@ -26,7 +26,7 @@ void GameObject::Start(){
 void GameObject::Update() {
 	if (!isVisible) return;
 	
-	transform->Update();
+	pTransform->Update();
 }
 
 void GameObject::Render() {
@@ -36,8 +36,12 @@ void GameObject::Render() {
 	if(modelHandle == -1) return;
 	// --- ’Êíƒ‚ƒfƒ‹•`‰æ ---
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	MV1SetMatrix(modelHandle, transform->GetMatrix());
+	MV1SetMatrix(modelHandle, pTransform->GetMatrix());
 	MV1DrawModel(modelHandle);
+}
+
+void GameObject::Setup()
+{
 }
 
 void GameObject::ChangeMaterialColor(int _matIndex, unsigned int _color) {
