@@ -43,6 +43,9 @@
     <Filter Include="ソース ファイル\GameObject">
       <UniqueIdentifier>{019e0b53-fb3a-41e7-94b1-45eed76ca028}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Component\Collider">
+      <UniqueIdentifier>{6860dd6d-f6bc-4bfc-8505-48caeb9a6734}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\GameObject.cpp">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Collider\Collider.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\GameObject.h">
       <Filter>ソース ファイル\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Collider\Collider.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
