@@ -147,6 +147,7 @@
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Manager\CollisionManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
     <ClCompile Include="src\Manager\SceneManager.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="src\GameObject\Character\Character.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\Manager\CollisionManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\SceneManager.h" />

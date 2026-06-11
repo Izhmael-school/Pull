@@ -52,6 +52,9 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy\WalkEnemy">
       <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Component\Collider">
+      <UniqueIdentifier>{79a145b8-a61a-4973-a9a4-c7eff15e6486}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -98,6 +101,12 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp">
       <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Collider\Collider.cpp">
+      <Filter>ソース ファイル\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\CollisionManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h">
       <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Collider\Collider.h">
+      <Filter>ソース ファイル\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\CollisionManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
