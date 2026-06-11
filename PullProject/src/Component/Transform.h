@@ -63,25 +63,26 @@ public:
 	inline VECTOR GetUp() const { return VNorm(VGet(matrix.m[1][0], matrix.m[1][1], matrix.m[1][2])); }
 	inline VECTOR GetRight() const { return VNorm(VGet(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2])); }
 
+	void LookAtY(VECTOR targetPos);
+
 	// 親子関係関連
-	/// <summary>
-	/// 親を設定する
-	/// </summary>
-	/// <param name="_parent">親</param>
-	/// <param name="isHoldWorld">自身のワールド座標を保持するか</param>
+	/*
+	 * @brief 親子関係を作る
+	 * @param _parant 親になるTransform
+	 * @param isHoldWorld 現在の座標を維持するか
+	 */
 	void AttachParent(Transform* _parent, bool isHoldWorld = true);
-	/// <summary>
-	/// 親を解除する
-	/// </summary>
+	/*
+	 * @brief 親子関係を解除する
+	 */
 	void DetachParent();
 
 	Transform* GetParent() const { return parent; }
 	Transform* GetChild(int index) const { if (children.size() <= index) return nullptr; else return children[index]; }
 	int GetChildCount() const { return static_cast<int>(children.size()); }
-	/// <summary>
-	/// 親から見て何番目の子か
-	/// </summary>
-	/// <returns></returns>
+	/*
+	 * @brief 親子関係を解除する
+	 */
 	int GetChildID();
 };
 

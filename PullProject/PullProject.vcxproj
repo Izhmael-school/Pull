@@ -79,6 +79,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)/../DxLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,6 +114,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)/../DxLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,12 +141,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Component\Animator.cpp" />
     <ClCompile Include="src\Component\Transform.cpp" />
     <ClCompile Include="src\Debug\DebugCamera.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyMath.cpp" />
+    <ClCompile Include="src\Definition\CommonModule\MyString.cpp" />
     <ClCompile Include="src\GameObject\Character\Character.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
@@ -156,11 +162,16 @@
     <ClCompile Include="src\Scene\SceneBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyState.h" />
+    <ClInclude Include="src\Component\Animator.h" />
+    <ClInclude Include="src\Component\Collider\Collider.h" />
     <ClInclude Include="src\Component\Singleton.h" />
     <ClInclude Include="src\Component\Transform.h" />
     <ClInclude Include="src\Debug\DebugCamera.h" />
     <ClInclude Include="src\Definition\CommonModule\MyMath.h" />
+    <ClInclude Include="src\Definition\CommonModule\MyString.h" />
     <ClInclude Include="src\Definition\Const\ColorConst.h" />
+    <ClInclude Include="src\Definition\Const\EnemyConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
@@ -168,7 +179,9 @@
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
     <ClInclude Include="src\GameObject\Character\Character.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h" />
+    <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\Generator\EnemyGenerator.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\SceneManager.h" />

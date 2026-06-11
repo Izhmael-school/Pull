@@ -1,7 +1,17 @@
 #pragma once
 #include "../GameObject.h"
-class Character : public GameObject{
-private:
+#include "../../Component/Animator.h"
+#include <memory>
+
+class Character : public GameObject {
+protected:
+	std::unique_ptr<Animator> pAnimator;
+
+public:
+	Character(int _modelHandle, VECTOR _pos, Tag _tag = None);
+	~Character();
+
+protected:
 	virtual void Start() override;
 
 public:

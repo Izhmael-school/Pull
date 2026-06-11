@@ -1,5 +1,7 @@
 #pragma once
 #include "../Character.h"
+#include "../../../Definition/Enum/EnemyState.h"
+
 class EnemyBase : public Character{
 protected:
 
@@ -23,9 +25,6 @@ private:
 		float length;			// 長さ
 		float directionDegree;	// 方向
 	};
-
-	Fan fan;
-
 	// 視界
 	Ray_Fan vision;
 
@@ -33,13 +32,47 @@ private:
 
 private:
 	VECTOR spawnPoint;
+	VECTOR wanderingGoalPos;
 
+protected:
+	EnemyActionState currentState;
+	EnemyActionState nextState;
+	float moveSpeed = 1000;
+	float standbyTime;
+	bool isAttacking;
 
-private:
+public:
+	EnemyBase(int _modelHandle, VECTOR _pos);
+	~EnemyBase();
+
+protected:
 	virtual void Start() override;
 
 public:
 	virtual void Update() override;
+	virtual void Render() override;
+	virtual void Setup() override;
+
+protected:	// 行動
+	/// <summary>
+	/// 移動
+	/// </summary>
+	void Move(VECTOR targetPos);
+
+	/// <summary>
+	/// 徘徊
+	/// </summary>
+	void WanderingAction();
+
+	/// <summary>
+	/// 追跡
+	/// </summary>
+	void TracingAction();
+
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void AttackAction();
 
 private:
 	// 扇形の視界
