@@ -2,6 +2,11 @@
 #include "../../Definition/Const/ColorConst.h"
 #pragma region Collider
 
+/*
+ * @file Collider.cpp
+ * @author Tanaka
+ */
+
 // コンストラクタ
 Collider::Collider(GameObject* _pObj)
     : isEnable(true)
@@ -33,7 +38,6 @@ AABBCollider::AABBCollider(GameObject* obj, VECTOR min, VECTOR max)
 void AABBCollider::Update()
 {
 
-    if(!isEnable) return;
 
     VECTOR pos = VZero;
 
@@ -42,6 +46,7 @@ void AABBCollider::Update()
 
     worldMin = VAdd(localMin, pos);
     worldMax = VAdd(localMax, pos);
+
 
     /*if (!isEnable) return;
 
@@ -103,9 +108,18 @@ SphereCollider::SphereCollider(GameObject* _pObj, VECTOR _localCenter, float _ra
 // 更新
 void SphereCollider::Update()
 {
-    if (!isEnable) return;
 
-    worldCenter = VAdd(pGameObject->GetPosition(), localCenter);
+    VECTOR pos = VZero;
+
+    if (pGameObject)
+        pos = pGameObject->GetPosition();
+
+    worldCenter = VAdd(localCenter, pos);
+
+
+   /* if (!isEnable) return;
+
+    worldCenter = VAdd(pGameObject->GetPosition(), localCenter);*/
 }
 
 // 描画
@@ -134,12 +148,21 @@ CapsuleCollider::CapsuleCollider(GameObject* _pObj, VECTOR _localStart, VECTOR _
 // 更新
 void CapsuleCollider::Update()
 {
-    if (!isEnable) return;
+
+    VECTOR pos = VZero;
+
+    if (pGameObject)
+        pos = pGameObject->GetPosition();
+
+    worldStart = VAdd(localStart, pos);
+    worldEnd = VAdd(localEnd, pos);
+
+    /*if (!isEnable) return;
 
     VECTOR pos = pGameObject->GetPosition();
 
     worldStart = VAdd(localStart, pos);
-    worldEnd = VAdd(localEnd, pos);
+    worldEnd = VAdd(localEnd, pos);*/
 }
 
 // 描画
