@@ -4,6 +4,11 @@
 #include <vector>
 #include "../Component/Singleton.h"
 
+/*
+ * @file CollisionManager.h
+ * @author Tanaka
+ */
+
 // 前方宣言
 class Collider;
 class SphereCollider;

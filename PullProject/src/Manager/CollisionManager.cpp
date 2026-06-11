@@ -204,27 +204,42 @@ bool CollisionManager::CapsuleVsSphere(CapsuleCollider* _capsule, SphereCollider
 bool CollisionManager::CapsuleVsAABB(CapsuleCollider* _capsule, AABBCollider* _box)
 {
 
-    const int div = 3;
 
     VECTOR p1 = _capsule->GetWorldStart();
     VECTOR p2 = _capsule->GetWorldEnd();
-    float r = _capsule->GetRadius();
+
+    VECTOR bmin = _box->GetMin();
+    VECTOR bmax = _box->GetMax();
+    // 線分とAABBの最短距離を求める
+    // 近似ではなく「最近点」を取る
+
+    // 線分上の最近点を探すためのパラメータ
+    const int div = 10; // 精度
+
+    float minDistSq = FLT_MAX;
 
     for (int i = 0; i <= div; i++)
     {
         float t = (float)i / div;
-
         VECTOR point = VAdd(p1, VScale(VSub(p2, p1), t));
 
-        SphereCollider temp(nullptr, point, r);
+        // AABBにクランプ（最近点）
+        VECTOR closest;
+        closest.x = max(bmin.x, min(point.x, bmax.x));
+        closest.y = max(bmin.y, min(point.y, bmax.y));
+        closest.z = max(bmin.z, min(point.z, bmax.z));
 
-        if (SphereVsAABB(&temp, _box))
-        {
-            return true;
-        }
+        VECTOR diff = VSub(point, closest);
+        float distSq = VDot(diff, diff);
+
+        if (distSq < minDistSq)
+            minDistSq = distSq;
     }
 
-    return false;
+    float r = _capsule->GetRadius();
+
+    return minDistSq <= r * r;
+
 
 }
 

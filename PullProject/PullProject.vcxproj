@@ -150,6 +150,7 @@
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Manager\CollisionManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
     <ClCompile Include="src\Manager\SceneManager.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\GameObject\Stage\Stage.h" />
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
+    <ClInclude Include="src\Manager\CollisionManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\SceneManager.h" />

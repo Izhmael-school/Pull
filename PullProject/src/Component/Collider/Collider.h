@@ -1,4 +1,7 @@
-#pragma once
+#ifndef _COLLIDER_H_
+#define _COLLIDER_H_
+
+
 #include "../../GameObject/GameObject.h"
 
 /*
@@ -112,3 +115,5 @@ public:
 	inline VECTOR GetWorldStart() const { return worldStart; }
 	inline VECTOR GetWorldEnd() const { return worldEnd; }
 };
+
+#endif // !_COLLIDER_H_
