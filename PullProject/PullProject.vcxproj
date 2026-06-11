@@ -180,6 +180,7 @@
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\SceneManager.h" />
+    <ClInclude Include="src\Manager\Stage\GimmickManager.h" />
     <ClInclude Include="src\Manager\Stage\StageManager.h" />
     <ClInclude Include="src\Pad\DirectInputPad.h" />
     <ClInclude Include="src\Pad\PadBase.h" />
