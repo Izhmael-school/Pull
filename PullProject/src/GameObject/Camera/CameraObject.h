@@ -17,9 +17,9 @@ class CameraObject : public GameObject {
 private:
 	enum class CameraMode {
 		Invalid = -1,
+		Debug,
 		Player,
 		Event,
-		Debug,
 
 		Max
 	};
@@ -31,10 +31,16 @@ public:
 	~CameraObject() = default;
 
 public:
+	// 初期化処理
 	void Start() override;
+	// 更新処理
 	void Update() override;
 
 private:
+	/*
+	 *	デバッグカメラの更新処理
+	 */
+	void DebugUpdate();
 	/*
 	 *	プレイヤーカメラの更新処理
 	 */
@@ -43,10 +49,8 @@ private:
 	 *	イベントカメラの更新処理
 	 */
 	void EventUpdate();
-	/*
-	 *	デバッグカメラの更新処理
-	 */
-	void DebugUpdate();
 };
+// 別名定義
+using CameraObjectPtr = std::shared_ptr<CameraObject>;
 
 #endif // !_CAMERAOBJECT_H_

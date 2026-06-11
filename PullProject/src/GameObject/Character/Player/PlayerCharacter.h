@@ -20,7 +20,9 @@ public:
 	~PlayerCharacter() = default;
 
 public:
+	// 初期化処理
 	void Start() override;
+	// 更新処理
 	void Update() override;
 
 };
