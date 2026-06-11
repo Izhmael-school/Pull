@@ -86,7 +86,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// 乱数調節(ガチ)
 	std::random_device rd;
 	std::mt19937_64 mt(rd());
-	SRand(mt());
+	SRand(static_cast<int>(mt()));
 
 
 	while (ProcessMessage() == 0) {
