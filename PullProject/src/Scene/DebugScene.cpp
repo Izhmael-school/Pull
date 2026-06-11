@@ -7,12 +7,23 @@
 #include "../Definition/Const/ColorConst.h"
 #include "../Definition/Const/VECTORConst.h"
 #include "../Manager/InputManager.h"
+#include "../Manager/Stage/StageManager.h"
 
 DebugScene::DebugScene() { Start(); }
 
 void DebugScene::Start()
 {
 	debugCamera = std::make_unique<DebugCamera>();
+	
+	// ステージの初期化処理
+	StageManager::GetInstance().Initialize();
+	// モデルの仮ロード
+	int stageHandle = MV1LoadModel("res/Model/Stage/Stage4/Stage_4.mv1");
+	// 仮モデルのみのリストを作成
+	std::vector<int> stageHandleList{stageHandle};
+	// モデルハンドルを複製してStageの実体にハンドルを渡す
+	StageManager::GetInstance().LoadStage(stageHandleList);
+	
 }
 
 void DebugScene::Update()
@@ -71,5 +82,8 @@ void DebugScene::Render(){
 			DrawLine3D(pos1, pos2, blue);
 		}
 	}
+
 #endif
+	// 描画
+	StageManager::GetInstance().Render();
 }

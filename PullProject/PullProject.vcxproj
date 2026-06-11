@@ -148,10 +148,12 @@
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
     <ClCompile Include="src\Manager\SceneManager.cpp" />
+    <ClCompile Include="src\Manager\Stage\StageManager.cpp" />
     <ClCompile Include="src\Pad\DirectInputPad.cpp" />
     <ClCompile Include="src\Pad\PadBase.cpp" />
     <ClCompile Include="src\Pad\XInputPad.cpp" />
@@ -175,9 +177,13 @@
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\GameObject\Stage\Stage.h" />
+    <ClInclude Include="src\GameObject\Stage\StageBase.h" />
+    <ClInclude Include="src\GameObject\Stage\StageState.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\SceneManager.h" />
+    <ClInclude Include="src\Manager\Stage\StageManager.h" />
     <ClInclude Include="src\Pad\DirectInputPad.h" />
     <ClInclude Include="src\Pad\PadBase.h" />
     <ClInclude Include="src\Pad\XInputPad.h" />
