@@ -10,7 +10,7 @@
 #include <DxLib.h>
 
 CameraObject::CameraObject()
-	: mode(CameraMode::Invalid)
+	: mode(CameraMode::Debug)
 	, speed(10.0f)
 {
 }
@@ -19,16 +19,17 @@ void CameraObject::Start() {
 }
 
 void CameraObject::Update() {
+	pTransform->Update();
 	// 各モード毎の更新処理
 	switch (mode) {
+	case CameraObject::CameraMode::Debug:
+		DebugUpdate();
+		break;
 	case CameraObject::CameraMode::Player:
 		PlayerUpdate();
 		break;
 	case CameraObject::CameraMode::Event:
 		EventUpdate();
-		break;
-	case CameraObject::CameraMode::Debug:
-		DebugUpdate();
 		break;
 	}
 
@@ -40,12 +41,17 @@ void CameraObject::Update() {
 		MyMath::Deg2Rad(rot.x),
 		MyMath::Deg2Rad(rot.y),
 		MyMath::Deg2Rad(rot.z));
-}
 
-void CameraObject::PlayerUpdate() {
-}
+#if _DEBUG
+	// カメラモード変更
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_1))
+		mode = CameraMode::Debug;
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_2))
+		mode = CameraMode::Player;
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_3))
+		mode = CameraMode::Event;
+#endif
 
-void CameraObject::EventUpdate() {
 }
 
 void CameraObject::DebugUpdate() {
@@ -72,4 +78,10 @@ void CameraObject::DebugUpdate() {
 		pTransform->AddPosition(pTransform->GetUp(), -speed);
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_E))
 		pTransform->AddPosition(pTransform->GetUp(), speed);
+}
+
+void CameraObject::PlayerUpdate() {
+}
+
+void CameraObject::EventUpdate() {
 }

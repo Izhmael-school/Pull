@@ -8,12 +8,15 @@
 #include "../Definition/Const/VECTORConst.h"
 #include "../Manager/InputManager.h"
 #include "../Manager/Stage/StageManager.h"
+#include "../Manager/CameraManager.h"
+#include "../GameObject/Camera/CameraObject.h"
 
 DebugScene::DebugScene() { Start(); }
 
 void DebugScene::Start()
 {
-	debugCamera = std::make_unique<DebugCamera>();
+	// カメラ生成
+	CameraManager::GetInstance().CreateCamera();
 	
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
@@ -28,7 +31,8 @@ void DebugScene::Start()
 
 void DebugScene::Update()
 {
-	debugCamera->Update();
+	// カメラの更新
+	CameraManager::GetInstance().GetCamera()->Update();
 }
 
 void DebugScene::Render(){

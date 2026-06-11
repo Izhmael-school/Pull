@@ -4,7 +4,6 @@
  */
 #pragma once
 #include "SceneBase.h"
-#include "../Debug/DebugCamera.h"
 #include <memory>
 #include "../GameObject/GameObject.h"
 
@@ -21,9 +20,6 @@ public:
 	void Update() override;
 
 	void Render() override;
-
-private:
-	std::unique_ptr<DebugCamera> debugCamera;
 
 };
 
