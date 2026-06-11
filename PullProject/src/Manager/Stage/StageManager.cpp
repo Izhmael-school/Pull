@@ -1,3 +1,8 @@
+/*
+ *	@file	StageManager.cpp
+ *  @author oorui
+ */
+
 #include "StageManager.h"
 
 /*
