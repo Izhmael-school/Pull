@@ -25,6 +25,7 @@ void StageManager::LoadStage(const std::vector<int> modelHandleBase) {
 		int duplicatedModel = MV1DuplicateModel(model);
 		// ステージの状態管理に、複製したモデルハンドルを渡す
 		stageState.AddStageModelHandle(duplicatedModel);
+		loadedStage->SetModelHandle(duplicatedModel);
 	}
 }
 
