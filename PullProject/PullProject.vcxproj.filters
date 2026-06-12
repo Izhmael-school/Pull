@@ -52,15 +52,15 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy\WalkEnemy">
       <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Debug\Scene">
+      <UniqueIdentifier>{919da8bb-3abb-4cce-a3e5-be86ca300b66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\SceneBase.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\DebugScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Manager\ManagerBase.cpp">
@@ -123,11 +123,38 @@
     <ClCompile Include="src\Manager\CollisionManager.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="src\Definition\CommonModule\MyJson.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Definition\CommonModule\MyString.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\EnemyManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\CollisionDebugScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\DebugSceneSelectScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\DebugScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\EnemyDebugScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\PlayerDebugScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\StageDebugScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Scene\DebugScene.h">
-      <Filter>ソース ファイル\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="src\Manager\ManagerBase.h">
       <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
@@ -217,6 +244,36 @@
     </ClInclude>
     <ClInclude Include="src\Manager\CollisionManager.h">
       <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\CommonModule\MyJson.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\CommonModule\MyString.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\EnemyManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\PlayerDebugScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\StageDebugScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\EnemyDebugScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\CollisionDebugScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\DebugScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\DebugSceneSelectScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -77,7 +77,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/../DxLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)/../DxLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -111,7 +111,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)/../DxLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)/../DxLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -143,7 +143,15 @@
     <ClCompile Include="src\Component\Collider\Collider.cpp" />
     <ClCompile Include="src\Component\Transform.cpp" />
     <ClCompile Include="src\Debug\DebugCamera.cpp" />
+    <ClCompile Include="src\Debug\Scene\CollisionDebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\DebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\DebugSceneSelectScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\EnemyDebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\PlayerDebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\StageDebugScene.cpp" />
+    <ClCompile Include="src\Definition\CommonModule\MyJson.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyMath.cpp" />
+    <ClCompile Include="src\Definition\CommonModule\MyString.cpp" />
     <ClCompile Include="src\GameObject\Camera\CameraObject.cpp" />
     <ClCompile Include="src\GameObject\Character\Character.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
@@ -163,7 +171,6 @@
     <ClCompile Include="src\Pad\DirectInputPad.cpp" />
     <ClCompile Include="src\Pad\PadBase.cpp" />
     <ClCompile Include="src\Pad\XInputPad.cpp" />
-    <ClCompile Include="src\Scene\DebugScene.cpp" />
     <ClCompile Include="src\Scene\SceneBase.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +179,15 @@
     <ClInclude Include="src\Component\Singleton.h" />
     <ClInclude Include="src\Component\Transform.h" />
     <ClInclude Include="src\Debug\DebugCamera.h" />
+    <ClInclude Include="src\Debug\Scene\CollisionDebugScene.h" />
+    <ClInclude Include="src\Debug\Scene\DebugScene.h" />
+    <ClInclude Include="src\Debug\Scene\DebugSceneSelectScene.h" />
+    <ClInclude Include="src\Debug\Scene\EnemyDebugScene.h" />
+    <ClInclude Include="src\Debug\Scene\PlayerDebugScene.h" />
+    <ClInclude Include="src\Debug\Scene\StageDebugScene.h" />
+    <ClInclude Include="src\Definition\CommonModule\MyJson.h" />
     <ClInclude Include="src\Definition\CommonModule\MyMath.h" />
+    <ClInclude Include="src\Definition\CommonModule\MyString.h" />
     <ClInclude Include="src\Definition\Const\ColorConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
@@ -199,7 +214,6 @@
     <ClInclude Include="src\Pad\DirectInputPad.h" />
     <ClInclude Include="src\Pad\PadBase.h" />
     <ClInclude Include="src\Pad\XInputPad.h" />
-    <ClInclude Include="src\Scene\DebugScene.h" />
     <ClInclude Include="src\Scene\SceneBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
