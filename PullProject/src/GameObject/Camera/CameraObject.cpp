@@ -95,7 +95,7 @@ void CameraObject::PlayerUpdate() {
 		pTransform->AddRotation(VDown, 2);
 
 	// プレイヤーから離れた位置に配置
-	pTransform->SetPosition(VAdd(player->GetPosition(), VScale(pTransform->GetForward(), -100)));
+	pTransform->SetPosition(VAdd(player->GetPosition(), VScale(pTransform->GetForward(), -1000)));
 
 }
 
