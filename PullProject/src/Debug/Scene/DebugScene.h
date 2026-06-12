@@ -3,16 +3,18 @@
  * @author Sekino
  */
 #pragma once
-#include "SceneBase.h"
+#include "Scene/SceneBase.h"
 #include <memory>
-#include "../GameObject/GameObject.h"
-#include "../GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
+#include "GameObject/GameObject.h"
+#include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
 
 class DebugScene : public SceneBase {
 
 private:
 	std::unique_ptr<WalkEnemy> enemy;
 
+	class AABBCollider* AABB;
+	class CapsuleCollider* capsule;
 public:
 	DebugScene();
 	~DebugScene() = default;

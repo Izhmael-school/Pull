@@ -1,26 +1,22 @@
 /*
- * @file DebugScene.cpp
+ * @file StageDebugScene.cpp
  * @author Sekino
  */
-#include "DebugScene.h"
+#include "StageDebugScene.h"
 #include <DxLib.h>
-#include "../Definition/Const/ColorConst.h"
-#include "../Definition/Const/VECTORConst.h"
-#include "../Manager/InputManager.h"
-#include "../Manager/Stage/StageManager.h"
-#include "../Manager/CameraManager.h"
-#include "../GameObject/Camera/CameraObject.h"
-#include "../Component/Collider/Collider.h"
-#include "../Manager/CollisionManager.h"
+#include "Definition/Const/ColorConst.h"
+#include "Definition/Const/VECTORConst.h"
+#include "Manager/InputManager.h"
+#include "Manager/Stage/StageManager.h"
+#include "Manager/CameraManager.h"
+#include "GameObject/Camera/CameraObject.h"
+#include "Component/Collider/Collider.h"
+#include "Manager/CollisionManager.h"
 
 
-DebugScene::DebugScene() { Start(); }
+StageDebugScene::StageDebugScene() { Start(); }
 
-AABBCollider* AABB;
-CapsuleCollider* capsule;
-
-
-void DebugScene::Start()
+void StageDebugScene::Start()
 {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -52,7 +48,7 @@ void DebugScene::Start()
 
 }
 
-void DebugScene::Update()
+void StageDebugScene::Update()
 {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
@@ -96,7 +92,7 @@ void DebugScene::Update()
 
 }
 
-void DebugScene::Render(){
+void StageDebugScene::Render(){
 
 #if _DEBUG 線
 
