@@ -21,6 +21,14 @@ void CollisionManager::Register(Collider* col)
 // 更新
 void CollisionManager::Update()
 {
+
+
+    for (auto col : colliders)
+    {
+        col->SetPrevHit(col->IsHit());
+        col->SetHit(false);           
+    }
+
     int n = colliders.size();
 
     for (int i = 0; i < n; i++)
@@ -35,8 +43,16 @@ void CollisionManager::Update()
 
             if (CheckHit(a, b))
             {
-                //  デバック
-                printfDx("Hit!\n");
+
+                a->SetHit(true);
+                b->SetHit(true);
+
+                // 当たった瞬間だけ出す
+                if ((!a->IsPrevHit() && a->IsHit()) ||
+                    (!b->IsPrevHit() && b->IsHit()))
+                {
+                    printfDx("Hit!\n");
+                }
 
                 //  押し出し
                 if (auto s1 = dynamic_cast<SphereCollider*>(a))
@@ -50,6 +66,16 @@ void CollisionManager::Update()
                 if (auto box = dynamic_cast<AABBCollider*>(a))
                     if (auto s = dynamic_cast<SphereCollider*>(b))
                         ResolveSphereAABB(s, box);
+
+
+                if (auto cap = dynamic_cast<CapsuleCollider*>(a))
+                    if (auto box = dynamic_cast<AABBCollider*>(b))
+                        ResolveCapsuleAABB(cap, box);
+
+                if (auto box = dynamic_cast<AABBCollider*>(a))
+                    if (auto cap = dynamic_cast<CapsuleCollider*>(b))
+                        ResolveCapsuleAABB(cap, box);
+
             }
         }
     }
@@ -306,6 +332,23 @@ void CollisionManager::ResolveSphereAABB(SphereCollider* s, AABBCollider* b)
     VECTOR dir = VNorm(diff);
 
     center = VAdd(center, VScale(dir, overlap));
+}
+
+
+void CollisionManager::ResolveCapsuleAABB(CapsuleCollider* cap, AABBCollider* box)
+{
+    VECTOR p1 = cap->GetWorldStart();
+    float r = cap->GetRadius();
+
+    float bottom = p1.y - r;
+    float boxTop = box->GetMax().y;
+
+    if (bottom < boxTop)
+    {
+        float push = boxTop - bottom;
+
+        cap->Move(VGet(0, push, 0));
+    }
 }
 
 #pragma endregion
