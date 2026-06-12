@@ -42,6 +42,7 @@ private:
     // 押し出し
     void ResolveSphereSphere(SphereCollider* a, SphereCollider* b);
     void ResolveSphereAABB(SphereCollider* s, AABBCollider* box);
+	void ResolveCapsuleAABB(CapsuleCollider* cap, AABBCollider* box);
 };
 
 #endif // !_COLLISIONMANAGER_H_

@@ -11,6 +11,7 @@
 
 PlayerCharacter::PlayerCharacter()
 	: speed(10.0f)
+	, Character(-1, VZero)
 {}
 
 void PlayerCharacter::Start() {

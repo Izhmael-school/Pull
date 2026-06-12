@@ -10,8 +10,13 @@
 #include "../Manager/Stage/StageManager.h"
 #include "../Manager/CameraManager.h"
 #include "../GameObject/Camera/CameraObject.h"
+#include "../Component/Collider/Collider.h"
+#include "../Manager/CollisionManager.h"
 
 DebugScene::DebugScene() { Start(); }
+
+AABBCollider* AABB;
+CapsuleCollider* capsule;
 
 void DebugScene::Start()
 {
@@ -26,6 +31,17 @@ void DebugScene::Start()
 	std::vector<int> stageHandleList{stageHandle};
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(stageHandleList);
+
+
+
+	AABB = new AABBCollider(nullptr,
+		VGet(-1770, 0, -2450),
+		VGet(1450, 350, 1120));
+
+	capsule = new CapsuleCollider(nullptr, VGet(0, 400, 0), VGet(0, 650, 0), 50, VZero);
+
+	CollisionManager::GetInstance().Register(AABB);
+	CollisionManager::GetInstance().Register(capsule);
 	
 }
 
@@ -33,6 +49,34 @@ void DebugScene::Update()
 {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
+
+	CollisionManager::GetInstance().Update();
+
+
+	VECTOR move = VGet(0, 0, 0);
+
+	// 上（8）
+	if (CheckHitKey(KEY_INPUT_8))
+		move.y += 1.0f;
+
+	// 下（0）
+	if (CheckHitKey(KEY_INPUT_0))
+		move.y -= 1.0f;
+
+	// 右（9）
+	if (CheckHitKey(KEY_INPUT_9))
+		move.x += 1.0f;
+
+	// 左（7）
+	if (CheckHitKey(KEY_INPUT_7))
+		move.x -= 1.0f;
+
+	capsule->Move(move);
+
+
+	AABB->Update();
+
+	capsule->Update();
 }
 
 void DebugScene::Render(){
@@ -90,4 +134,6 @@ void DebugScene::Render(){
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
+
+	CollisionManager::GetInstance().Render();
 }
