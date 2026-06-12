@@ -120,6 +120,9 @@
     <ClCompile Include="src\Component\Animator.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
+    <ClCompile Include="src\Manager\CollisionManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Scene\DebugScene.h">
@@ -211,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="src\Component\Animator.h">
       <Filter>ソース ファイル\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\CollisionManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

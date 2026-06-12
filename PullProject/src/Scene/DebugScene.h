@@ -6,8 +6,12 @@
 #include "SceneBase.h"
 #include <memory>
 #include "../GameObject/GameObject.h"
+#include "../GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
 
 class DebugScene : public SceneBase {
+
+private:
+	std::unique_ptr<WalkEnemy> enemy;
 
 public:
 	DebugScene();

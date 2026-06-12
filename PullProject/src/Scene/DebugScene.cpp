@@ -10,8 +10,15 @@
 #include "../Manager/Stage/StageManager.h"
 #include "../Manager/CameraManager.h"
 #include "../GameObject/Camera/CameraObject.h"
+#include "../Component/Collider/Collider.h"
+#include "../Manager/CollisionManager.h"
+
 
 DebugScene::DebugScene() { Start(); }
+
+AABBCollider* AABB;
+CapsuleCollider* capsule;
+
 
 void DebugScene::Start()
 {
@@ -27,12 +34,66 @@ void DebugScene::Start()
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(stageHandleList);
 	
+	enemy = std::make_unique<WalkEnemy>(-1, VGet(0,400,0));
+
+
+	AABB = new AABBCollider(nullptr,
+		VGet(-1820, 0, -2450),
+		VGet(1440, 310, 1400));
+
+	CollisionManager::GetInstance().Register(AABB);
+
+	capsule = new CapsuleCollider(nullptr,
+		VGet(0, 361, 0),   // start
+		VGet(0, 500, 0),   // end
+		30.0f,
+		VGet(0, 0, 0));
+	CollisionManager::GetInstance().Register(capsule);
+
 }
 
 void DebugScene::Update()
 {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
+	// 敵の更新
+	enemy->Update();
+
+
+	VECTOR move = VGet(0, 0, 0);
+
+	// 上（8）
+	if (CheckHitKey(KEY_INPUT_8))
+		move.y += 2.0f;
+
+	// 下（0）
+	if (CheckHitKey(KEY_INPUT_0))
+		move.y -= 2.0f;
+
+	// 右（9）
+	if (CheckHitKey(KEY_INPUT_9))
+		move.x += 2.0f;
+
+	// 左（7）
+	if (CheckHitKey(KEY_INPUT_7))
+		move.x -= 2.0f;
+
+	// 前後（追加すると便利）
+	if (CheckHitKey(KEY_INPUT_6))
+		move.z += 2.0f;
+
+	if (CheckHitKey(KEY_INPUT_4))
+		move.z -= 2.0f;
+
+	capsule->Move(move);
+
+	// ===== 更新（重要）=====
+	capsule->Update();
+	AABB->Update();
+
+	// ===== 当たり判定 =====
+	CollisionManager::GetInstance().Update();
+
 }
 
 void DebugScene::Render(){
@@ -90,4 +151,8 @@ void DebugScene::Render(){
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
+
+	enemy->Render();
+
+	CollisionManager::GetInstance().Render();
 }

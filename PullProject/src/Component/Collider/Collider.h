@@ -14,6 +14,11 @@ protected:
 	bool isEnable;              //  当たり判定の有効/無効
     GameObject* pGameObject;    //  当たり判定を付けるオブジェクト
 
+
+	bool isHit = false;
+	bool prevHit = false;
+
+
 public:
     //  コンストラクタ
     Collider(GameObject* _pObj);
@@ -34,6 +39,15 @@ public:
 	//  当たり判定を付けるオブジェクト
     GameObject* GetGameObject() const { return pGameObject; }
     void SetGameObject(GameObject* _pObj) { pGameObject = _pObj; }
+
+
+
+	void SetHit(bool v) { isHit = v; }
+	bool IsHit() const { return isHit; }
+
+	void SetPrevHit(bool v) { prevHit = v; }
+	bool IsPrevHit() const { return prevHit; }
+
 };
 
 /*
@@ -58,6 +72,8 @@ public:
 
 	VECTOR GetMin() const { return worldMin; }
 	VECTOR GetMax() const { return worldMax; }
+
+	void Move(VECTOR offset);
 };
 
 /*
@@ -114,6 +130,14 @@ public:
 	inline VECTOR GetLocalEnd() const { return localEnd; }
 	inline VECTOR GetWorldStart() const { return worldStart; }
 	inline VECTOR GetWorldEnd() const { return worldEnd; }
+
+
+	void Move(VECTOR offset)
+	{
+		localStart = VAdd(localStart, offset);
+		localEnd = VAdd(localEnd, offset);
+	}
+
 };
 
 #endif // !_COLLIDER_H_
