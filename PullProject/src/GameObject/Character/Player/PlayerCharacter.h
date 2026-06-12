@@ -24,7 +24,6 @@ public:
 	void Start() override;
 	// 更新処理
 	void Update() override;
-
 };
 
 #endif // !_PLAYERCHARACTER_H_
