@@ -7,6 +7,7 @@
 #include "../../Manager/InputManager.h"
 #include "../../Definition/Const/VECTORConst.h"
 #include "../../Definition/CommonModule/MyMath.h"
+#include "../../Manager/PlayerManager.h"
 #include <DxLib.h>
 
 CameraObject::CameraObject()
@@ -55,7 +56,7 @@ void CameraObject::Update() {
 }
 
 void CameraObject::DebugUpdate() {
-	// 視点移動
+	// 回転
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP)) 
 		pTransform->AddRotation(VLeft, 2);
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN)) 
@@ -81,6 +82,21 @@ void CameraObject::DebugUpdate() {
 }
 
 void CameraObject::PlayerUpdate() {
+	auto player = PlayerManager::GetInstance().GetPlayer()->GetTransform();
+	
+	// カメラの回転
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
+		pTransform->AddRotation(VLeft, 2);
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
+		pTransform->AddRotation(VRight, 2);
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
+		pTransform->AddRotation(VUp, 2);
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
+		pTransform->AddRotation(VDown, 2);
+
+	// プレイヤーから離れた位置に配置
+	pTransform->SetPosition(VAdd(player->GetPosition(), VScale(pTransform->GetForward(), -100)));
+
 }
 
 void CameraObject::EventUpdate() {

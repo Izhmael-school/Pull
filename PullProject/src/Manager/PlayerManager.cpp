@@ -12,5 +12,5 @@ PlayerManager::PlayerManager()
 	: player(nullptr)
 {}
 void PlayerManager::CreatePlayer() {
-	player = std::make_shared<PlayerCharacter>(0, VZero);
+	player = std::make_shared<PlayerCharacter>(0, VGet(0, 10, 0));
 }

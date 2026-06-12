@@ -8,6 +8,7 @@
 #include "../../../Definition/Const/VECTORConst.h"
 #include "../../../Definition/CommonModule/MyMath.h"
 #include "../../../Manager/CameraManager.h"
+#include "../../../Definition/CommonModule/MyMath.h"
 #include <DxLib.h>
 
 PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
@@ -20,19 +21,23 @@ void PlayerCharacter::Start() {
 }
 
 void PlayerCharacter::Update() {
+	pTransform->Update();
 	auto camera = CameraManager::GetInstance().GetCamera()->GetTransform();
+
+	// カメラのヨー(ラジアン)
+	float yaw = MyMath::Deg2Rad(camera->GetLocalRotation().y);
 
 	// 移動
 	// カメラの角度のsin,cos
-	float cameraSin = sinf(camera->GetLocalRotation().y);
-	float cameraCos = cosf(camera->GetLocalRotation().y);
+	float cameraSin = sinf(yaw);
+	float cameraCos = cosf(yaw);
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_W))
-		pTransform->AddPosition(VGet(-speed * cameraSin, 0, -speed * cameraCos));
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_S))
 		pTransform->AddPosition(VGet(speed * cameraSin, 0, speed * cameraCos));
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_S))
+		pTransform->AddPosition(VGet(-speed * cameraSin, 0, -speed * cameraCos));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_D))
-		pTransform->AddPosition(VGet(-speed * cameraCos, 0, -speed * -cameraSin));
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_A))
 		pTransform->AddPosition(VGet(speed * cameraCos, 0, speed * -cameraSin));
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_A))
+		pTransform->AddPosition(VGet(-speed * cameraCos, 0, -speed * -cameraSin));
 
 }
