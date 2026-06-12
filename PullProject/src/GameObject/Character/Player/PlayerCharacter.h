@@ -7,6 +7,7 @@
 #define _PLAYERCHARACTER_H_
 
 #include "../Character.h"
+#include <memory>
 
 /*
  *	プレイヤーキャラクタークラス
@@ -25,5 +26,7 @@ public:
 	// 更新処理
 	void Update() override;
 };
+// 別名定義
+using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;
 
 #endif // !_PLAYERCHARACTER_H_

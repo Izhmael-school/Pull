@@ -154,6 +154,7 @@
     <ClCompile Include="src\Manager\CameraManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
+    <ClCompile Include="src\Manager\PlayerManager.cpp" />
     <ClCompile Include="src\Manager\SceneManager.cpp" />
     <ClCompile Include="src\Manager\Stage\StageManager.cpp" />
     <ClCompile Include="src\Pad\DirectInputPad.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="src\Manager\CameraManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
+    <ClInclude Include="src\Manager\PlayerManager.h" />
     <ClInclude Include="src\Manager\SceneManager.h" />
     <ClInclude Include="src\Manager\Stage\StageManager.h" />
     <ClInclude Include="src\Pad\DirectInputPad.h" />

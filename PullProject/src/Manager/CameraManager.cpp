@@ -8,5 +8,5 @@ CameraManager::CameraManager()
  *	カメラ生成
  */
 void CameraManager::CreateCamera() {
-	camera = std::make_unique<CameraObject>();
+	camera = std::make_shared<CameraObject>();
 }
