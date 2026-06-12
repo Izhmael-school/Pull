@@ -6,6 +6,8 @@
 #include "../Definition/Const/VECTORConst.h"
 #include "../Definition/Const/EnemyConst.h"
 #include "../Definition/CommonModule/MyString.h"
+#include "../Definition/CommonModule/MyJson.h"
+
 
 int EnemyGenerator::originWalkEnemyModel = -1;
 
@@ -19,9 +21,13 @@ void EnemyGenerator::LoadModel(){
 	originWalkEnemyModel = MV1LoadModel(MyString::MergeString(ENEMY_MODEL_FILEPATH,"WalkEnemy.mv1").c_str());
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateWalkEnemy(){
-	if (originWalkEnemyModel == -1) 
-		LoadModel();
+void EnemyGenerator::LoadJsonData(){
+	data = MyJson::LoadJsonFile("src/Data/EnemyData.json");
+}
+
+std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type){
+	
+
 
 	// モデルの複製
 	int modelHandle = MV1DuplicateModel(originWalkEnemyModel);
