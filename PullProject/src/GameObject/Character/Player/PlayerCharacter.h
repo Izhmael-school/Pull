@@ -16,7 +16,7 @@ private:
 	float speed;
 	
 public:
-	PlayerCharacter();
+	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = None);
 	~PlayerCharacter() = default;
 
 public:

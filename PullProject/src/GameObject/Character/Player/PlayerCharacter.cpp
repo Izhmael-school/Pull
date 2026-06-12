@@ -10,9 +10,11 @@
 #include "../../../Manager/CameraManager.h"
 #include <DxLib.h>
 
-PlayerCharacter::PlayerCharacter()
-	: speed(10.0f)
-{}
+
+PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
+	: Character(_modelHandle, _pos, _tag)
+	, speed(10.0f){
+}
 
 void PlayerCharacter::Start() {
 
