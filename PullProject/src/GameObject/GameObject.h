@@ -19,12 +19,13 @@ public:
 	GameObject(int _modelHandle = -1 ,VECTOR _pos = VZero,Tag _tag = None);
 	virtual ~GameObject();
 
+protected:
 	virtual void Start();
+
+public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Setup();
-
-	virtual void ChangeMaterialColor(int _matIndex, unsigned int _color);
 
 	// ƒ‚ƒfƒ‹‚Ìíœ
 	virtual void DeleteModel();

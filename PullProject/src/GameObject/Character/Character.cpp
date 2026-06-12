@@ -1,17 +1,30 @@
 #include "Character.h"
 
-void Character::Start()
+Character::Character(int _modelHandle, VECTOR _pos, Tag _tag) 
+	:GameObject(_modelHandle,_pos,_tag)
 {
+	Start();
 }
 
-void Character::Update()
-{
+Character::~Character(){}
+
+void Character::Start() {
+	GameObject::Start();
+
+	pAnimator = std::make_unique<Animator>(modelHandle);
 }
 
-void Character::Render()
-{
+void Character::Update() {
+	GameObject::Update();
+
+	if (pAnimator != nullptr)
+		pAnimator->Update();
 }
 
-void Character::Setup()
-{
+void Character::Render() {
+	GameObject::Render();
+}
+
+void Character::Setup() {
+	GameObject::Setup();
 }

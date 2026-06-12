@@ -54,7 +54,8 @@ void Transform::DetachParent() {
 
 int Transform::GetChildID() {
 	std::vector<Transform*>& siblings = parent->children;
-	for (int i = 0, max = siblings.size();i < max;i++) {
+	int size = static_cast<int>(siblings.size());
+	for (int i = 0;i < size;i++) {
 		if (siblings[i] != this) continue;
 
 		return i;
@@ -93,6 +94,19 @@ MATRIX Transform::CalcMatrix() {
 	// 親の行列を掛ける
 	matrix = MMult(matrix, parent->matrix);
 	return matrix;
+}
+
+void Transform::LookAtY(VECTOR targetPos){
+	VECTOR dir = VSub(targetPos, GetPosition());
+	// yは使わない
+	dir.y = 0.0f;
+
+	// 重なってそうなら戻る
+	if (VSize(dir) <= 0.001f) return;
+
+	dir = VNorm(dir);
+
+	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
 }
 
 void Transform::AttachParent(Transform* _parent, bool isHoldWorld) {
