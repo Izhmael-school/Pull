@@ -11,6 +11,7 @@
 #include "../Manager/CameraManager.h"
 #include "../GameObject/Camera/CameraObject.h"
 
+
 DebugScene::DebugScene() { Start(); }
 
 void DebugScene::Start()
@@ -27,12 +28,15 @@ void DebugScene::Start()
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(stageHandleList);
 	
+	enemy = std::make_unique<WalkEnemy>(-1, VGet(0,400,0));
 }
 
 void DebugScene::Update()
 {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
+	// 敵の更新
+	enemy->Update();
 }
 
 void DebugScene::Render(){
@@ -90,4 +94,6 @@ void DebugScene::Render(){
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
+
+	enemy->Render();
 }
