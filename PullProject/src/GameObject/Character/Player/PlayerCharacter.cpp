@@ -10,7 +10,8 @@
 #include <DxLib.h>
 
 PlayerCharacter::PlayerCharacter()
-	: speed(10.0f)
+	:Character(-1,VZero,None)
+	,speed(10.0f)
 {}
 
 void PlayerCharacter::Start() {

@@ -1,4 +1,6 @@
 #include "EnemyGenerator.h"
+#include "EnemyGenerator.h"
+#include "EnemyGenerator.h"
 #include "../GameObject/Character/Enemy/EnemyBase.h"
 #include "../GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
 #include "../Definition/Const/VECTORConst.h"
@@ -6,6 +8,12 @@
 #include "../Definition/CommonModule/MyString.h"
 
 int EnemyGenerator::originWalkEnemyModel = -1;
+
+EnemyGenerator::EnemyGenerator(){
+	LoadModel();
+}
+
+EnemyGenerator::~EnemyGenerator(){}
 
 void EnemyGenerator::LoadModel(){
 	originWalkEnemyModel = MV1LoadModel(MyString::MergeString(ENEMY_MODEL_FILEPATH,"WalkEnemy.mv1").c_str());

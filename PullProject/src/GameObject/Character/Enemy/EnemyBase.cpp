@@ -53,6 +53,8 @@ void EnemyBase::Move(VECTOR targetPos) {
 	// 移動倍率
 	float move = moveSpeed * d;
 	VECTOR pos = VScale(nDir, move);
+	// y軸は移動しないように
+	pos.y = 0.0f;
 	// 移動
 	GetTransform()->AddPosition(pos);
 	// ゴールを向く

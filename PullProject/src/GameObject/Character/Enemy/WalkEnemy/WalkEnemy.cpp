@@ -47,8 +47,8 @@ void WalkEnemy::Start(){
 
 	modelHandle = MV1DuplicateModel(originModelHandle);
 
-	// モデルが小さいから大きくする
-	GetTransform()->SetScale(50);
+	// モデルの正面が反対だから180度追加
+	MV1SetRotationXYZ(modelHandle, VScale(VUp, 180));
 
 	EnemyBase::Start();
 }

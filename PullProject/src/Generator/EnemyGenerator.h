@@ -11,12 +11,16 @@ class EnemyBase;
 
 class EnemyGenerator{
 private:
-	static int originWalkEnemyModel;
-
-private:
-	static void LoadModel();
+	int originWalkEnemyModel;
 
 public:
-	static std::unique_ptr<EnemyBase> CreateWalkEnemy();
+	EnemyGenerator();
+	~EnemyGenerator();
+
+private:
+	void LoadModel();
+
+public:
+	std::unique_ptr<EnemyBase> CreateWalkEnemy();
 };
 #endif // !_ENEMYGENERATOR_H_
