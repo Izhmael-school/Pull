@@ -2,17 +2,33 @@
  *	@file	GimmickManager.h
  *  @author oorui
  */
+#ifndef _GIMMICKMANAGER_H_
+#define _GIMMICKMANAGER_H_
+
+
+
+#include "../../Component/Singleton.h"
 
 #include <unordered_map>
 #include <vector>
 
 class TriggerInterface;
 
-class GimmickManager {
+class GimmickManager :public Singleton<GimmickManager> {
+	// フレンド宣言
+	friend class Singleton<GimmickManager>;
 private:
-	// レバー対応ギミックのインターフェース
-	std::unordered_map<int, std::vector<TriggerInterface*>> pTriggerInterface;
+	// レバーIDと対応ギミック
+	std::unordered_map<int, std::vector<TriggerInterface*>> triggerGimmickMaps;
 
+	/*
+	 *	コンストラクタ
+	 */
+	GimmickManager();
+	/*
+	 *	デストラクタ
+	 */
+	~GimmickManager() = default;
 public:
 
 	/*
@@ -20,25 +36,26 @@ public:
 	 *  @param[in] int	対応したレバーのID
 	 *  @param[in] TriggerInterface* インターフェース
 	 */
-	void RegisterLeverReceiver(int leverId, TriggerInterface* receiver) {
-		// レバー対応ギミックの末尾に追加
-		pTriggerInterface[leverId].push_back(receiver);
-	}
+	void RegisterLeverReceiver(int leverId, TriggerInterface* gimmick);
+
+	/*
+	 *	レバー対応ギミック破棄
+	 *  @param[in] int 対応したレバーのID
+	 *  @param[in] TriggerInterface* 削除するギミック
+	 */
+	void UnregisterLeverReceiver(int leverId, TriggerInterface* gimmick);
+
 
 	/*
 	 *	レバー起動
 	 */
-	void ActivateLever(int leverId) {
-		auto it = pTriggerInterface.find(leverId);
+	void ActivateLever(int leverId);
 
-		if (it == pTriggerInterface.end())
-		{
-			return;
-		}
 
-		//for (auto receiver : it->second)
-		//{
-		//	receiver->OnTriggered();
-		//}
-	}
+	/*
+	 * 全登録情報削除
+	 */
+	void Clear();
 };
+
+#endif // !_GIMMICKMANAGER_H_

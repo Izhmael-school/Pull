@@ -158,6 +158,8 @@
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\CameraManager.cpp" />
@@ -167,6 +169,7 @@
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
     <ClCompile Include="src\Manager\PlayerManager.cpp" />
     <ClCompile Include="src\Manager\SceneManager.cpp" />
+    <ClCompile Include="src\Manager\Stage\GimmickManager.cpp" />
     <ClCompile Include="src\Manager\Stage\StageManager.cpp" />
     <ClCompile Include="src\Pad\DirectInputPad.cpp" />
     <ClCompile Include="src\Pad\PadBase.cpp" />
@@ -200,6 +203,9 @@
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\Lever.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\TriggerInterface.h" />
     <ClInclude Include="src\GameObject\Stage\Stage.h" />
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
@@ -210,6 +216,7 @@
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\PlayerManager.h" />
     <ClInclude Include="src\Manager\SceneManager.h" />
+    <ClInclude Include="src\Manager\Stage\GimmickManager.h" />
     <ClInclude Include="src\Manager\Stage\StageManager.h" />
     <ClInclude Include="src\Pad\DirectInputPad.h" />
     <ClInclude Include="src\Pad\PadBase.h" />
