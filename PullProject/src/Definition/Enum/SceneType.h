@@ -8,5 +8,10 @@
 enum class SceneType {
 	Invalid = -1,
 	Debug,
+	DebugSceneSelect,
+	PlayerDebug,
+	EnemyDebug,
+	StageDebug,
+	CollisionDebug,
 	Max
 };
