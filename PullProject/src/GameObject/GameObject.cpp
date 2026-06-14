@@ -44,14 +44,6 @@ void GameObject::Setup()
 {
 }
 
-void GameObject::ChangeMaterialColor(int _matIndex, unsigned int _color) {
-	if (modelHandle == -1) return;
-
-	int r, g, b;
-	GetColor2(_color, &r, &g, &b);
-	MV1SetMaterialDifColor(modelHandle, _matIndex, GetColorF(r, g, b, 255));
-}
-
 void GameObject::DeleteModel() {
 	MV1DeleteModel(modelHandle);
 }

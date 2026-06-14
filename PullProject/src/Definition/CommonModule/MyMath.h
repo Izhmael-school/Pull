@@ -29,6 +29,7 @@ public:
     }
 
     inline static int Random(int min, int max) { return (min)+GetRand(max - min); }
+    inline static float RandomF(int min, int max) { return static_cast<float>((min)+GetRand(max - min)); }
     /// <summary>
     /// ³‹K‰»
     /// </summary>
