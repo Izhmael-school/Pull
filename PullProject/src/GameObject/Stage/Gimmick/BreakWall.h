@@ -33,6 +33,11 @@ public:
 	void Start() override;
 
 	/*
+	 *	•`‰æˆ—
+	 */
+	void Render() override;
+
+	/*
 	 *	ƒŒƒo[‚©‚ç’Ê’m‚ğó‚¯‚½‚Ìˆ—
 	 */
 	void OnTriggered() override;
