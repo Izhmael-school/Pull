@@ -32,7 +32,7 @@ private:
 	StageManager();
 	/*
 	 *	デストラクタ
-	 */
+	 */ 
 	~StageManager() = default;
 
 private:

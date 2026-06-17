@@ -57,6 +57,7 @@ public:
 	 */
 	void TransitionStage(int setID) {
 		// 次のステージに移動
+		// 現在のステージIDを更新
 		currentStageID = setID;
 	}
 
@@ -89,6 +90,7 @@ public:
 	 * @brief 現在のハンドルを取得
 	 */
 	int GetCurrentStageHandle() const {
+		// ステージが-1、もしくは存在しないステージにアクセスした場合に-1を返す
 		if (currentStageID >= 0 && currentStageID < (int)stageModelHandle.size())
 			return stageModelHandle[currentStageID];
 		return -1;

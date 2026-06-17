@@ -33,7 +33,7 @@ void Lever::Update() {
  */
 void Lever::Activate() {
     // 現在使用可能か
-    if (!isActivated) return;
+    if (isActivated) return;
     // 使用状態に変更
     isActivated = true;
     // 起動したレバーのIDを渡す
