@@ -42,6 +42,7 @@ void BreakWall::Update(){
  *	•`‰æˆ—
  */
 void BreakWall::Render() {
+	GameObject::Render();
 	// ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹‚È‚¯‚ê‚Îˆ—‚ğ”²‚¯‚é
 	if (modelHandle <= 0) return;
 	// ‰ó‚ê‚Ä‚¢‚½‚ç•`‰æ‚µ‚È‚¢
@@ -52,7 +53,7 @@ void BreakWall::Render() {
 	MV1SetOpacityRate(modelHandle, opacity);
 
 	// •`‰æ
-	MV1DrawModel(modelHandle);
+	//MV1DrawModel(modelHandle);
 	
 }
 

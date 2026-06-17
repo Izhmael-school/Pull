@@ -15,6 +15,7 @@ GameObject::GameObject(int _modelHandle ,VECTOR _pos,Tag _tag)
 {
 	pTransform = std::make_unique<Transform>();
 	pTransform->SetPosition(_pos);
+	Start();
 }
 
 GameObject::~GameObject() {
