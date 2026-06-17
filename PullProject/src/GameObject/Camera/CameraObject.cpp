@@ -82,8 +82,9 @@ void CameraObject::DebugUpdate() {
 }
 
 void CameraObject::PlayerUpdate() {
-	auto player = PlayerManager::GetInstance().GetPlayer()->GetTransform();
-	
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	if (!player) return;
+
 	// カメラの回転
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
 		pTransform->AddRotation(VLeft, 2);
@@ -95,7 +96,10 @@ void CameraObject::PlayerUpdate() {
 		pTransform->AddRotation(VDown, 2);
 
 	// プレイヤーから離れた位置に配置
-	pTransform->SetPosition(VAdd(player->GetPosition(), VScale(pTransform->GetForward(), -1000)));
+	pTransform->SetPosition(VAdd(
+		player->GetPosition(),
+		VScale(pTransform->GetForward(), 
+		-1000)));
 
 }
 
