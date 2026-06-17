@@ -13,6 +13,14 @@
 CameraObject::CameraObject()
 	: mode(CameraMode::Debug)
 	, speed(10.0f)
+	, shakePower(0.0f)
+	, shakeTime(0.0f)
+	, shakeElapsedTime(0.0f)
+	, isShaking(false)
+
+	, PLAYER_DISTANCE(1000)
+	, PULL_ZOOM_RATIO_MAX(0.95f)
+	, PULL_ZOOM_RATIO_MIN(0.7f)
 {
 }
 
@@ -21,6 +29,14 @@ void CameraObject::Start() {
 
 void CameraObject::Update() {
 	pTransform->Update();
+	// 引っ張りモード
+	if (PlayerManager::GetInstance().GetPlayer()->IsCatch()) {
+		mode = CameraMode::Pull;
+	}
+	else {
+		mode = CameraMode::Player;
+	}
+
 	// 各モード毎の更新処理
 	switch (mode) {
 	case CameraObject::CameraMode::Debug:
@@ -29,10 +45,17 @@ void CameraObject::Update() {
 	case CameraObject::CameraMode::Player:
 		PlayerUpdate();
 		break;
+	case CameraObject::CameraMode::Pull:
+		PullUpdate();
+		break;
 	case CameraObject::CameraMode::Event:
 		EventUpdate();
 		break;
 	}
+
+	// カメラのシェイク(ステートに限定されない)
+	if (isShaking)
+		CameraShake();
 
 	// カメラに反映
 	VECTOR pos = pTransform->GetPosition();
@@ -96,12 +119,63 @@ void CameraObject::PlayerUpdate() {
 		pTransform->AddRotation(VDown, 2);
 
 	// プレイヤーから離れた位置に配置
-	pTransform->SetPosition(VAdd(
-		player->GetPosition(),
-		VScale(pTransform->GetForward(), 
-		-1000)));
+	VECTOR distance = VScale(pTransform->GetForward(), -PLAYER_DISTANCE);
+	pTransform->SetPosition(VAdd(player->GetPosition(), distance));
+}
 
+void CameraObject::PullUpdate() {
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	if (!player) return;
+
+	// プレイヤーの引き具合によってカメラの位置調整
+	// ズーム割合の差
+	float zoomRatioDiff = PULL_ZOOM_RATIO_MAX - PULL_ZOOM_RATIO_MIN;
+	
+	float pullRatio = player->GetPullValueRatio();
+	pullRatio = 1.0f - (1.0f - pullRatio) * (1.0f - pullRatio);
+	// ズーム割合の差に引き抜き割合を適応
+	float pullRatioDiff = pullRatio * zoomRatioDiff;
+	// 実際のズーム割合
+	float zoomRatio = PULL_ZOOM_RATIO_MIN + pullRatioDiff;
+	// ズーム割合をプレイヤーとの距離に適応
+	float distanceValue = PLAYER_DISTANCE * zoomRatio;
+
+	// プレイヤーから離れた位置に配置
+	VECTOR distance = VScale(pTransform->GetForward(), -distanceValue);
+	pTransform->SetPosition(VAdd(player->GetPosition(), distance));
 }
 
 void CameraObject::EventUpdate() {
+}
+
+/*
+ *	カメラのシェイク
+ *	@param	float shakeTime		シェイク時間
+ *	@param	float shakePower	シェイクの大きさ
+ */
+void CameraObject::CameraShake() {
+	// シェイク中のみ処理
+	if (isShaking) {
+		// シェイク
+		float shakeValue = GetRand(shakePower * 2) - shakePower;
+		pTransform->AddPosition(VScale(VOne, shakeValue));
+		
+		// 時間が経過しきったら終了
+		shakeElapsedTime++;
+		if (shakeElapsedTime >= shakeTime) {
+			isShaking = false;
+		}
+	}
+}
+
+/*
+ *	カメラのシェイクを作動
+ *	@param	float setShakePowar	シェイクの大さ
+ *	@param	float setShakeTime	シェイクの時間
+ */
+void CameraObject::CameraShakeActivate(float setShakePower, float setShakeTime) {
+	isShaking = true;
+	shakeElapsedTime = 0;
+	shakePower = setShakePower;
+	shakeTime = setShakeTime;
 }
