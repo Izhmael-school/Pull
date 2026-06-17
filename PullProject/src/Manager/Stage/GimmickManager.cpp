@@ -7,13 +7,13 @@
 #include "GameObject/Stage/Gimmick/TriggerInterface.h"
 
 
-/*
- *	コンストラクタ
- */
+ /*
+  *	コンストラクタ
+  */
 GimmickManager::GimmickManager() {
 }
 
- /*
+/*
   *  レバー対応ギミックの登録
   *  @param[in] int	対応したレバーのID
   *  @param[in] TriggerInterface* インターフェース

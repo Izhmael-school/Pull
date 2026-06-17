@@ -20,19 +20,31 @@ void StageDebugScene::Start()
 {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
-	
+
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
+
 	// モデルの仮ロード
 	int stageHandle = MV1LoadModel("res/Model/Stage/Stage4/Stage_4.mv1");
+	// 壊れる壁のモデルの仮ロード
+	int wallModel = MV1LoadModel("res/Model/Gimmick/BreakWall.mv1");
+
 	// 仮モデルのみのリストを作成
-	std::vector<int> stageHandleList{stageHandle};
+	std::vector<int> stageHandleList{ stageHandle };
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(stageHandleList);
-	
-	enemy = std::make_unique<WalkEnemy>(-1, VGet(0,400,0));
 
+	enemy = std::make_unique<WalkEnemy>(-1, VGet(0, 400, 0));
 
+	// ギミックの生成
+	breakWall = std::make_unique<BreakWall>(
+		1,
+		wallModel,
+		MV1GetFramePosition(stageHandle,174));
+	// 壊れる壁のセットアップ処理を呼ぶ
+	breakWall->Setup();
+
+	// コライダー
 	AABB = new AABBCollider(nullptr,
 		VGet(-1820, 0, -2450),
 		VGet(1440, 310, 1400));
@@ -45,6 +57,8 @@ void StageDebugScene::Start()
 		30.0f,
 		VGet(0, 0, 0));
 	CollisionManager::GetInstance().Register(capsule);
+
+
 
 }
 
@@ -92,7 +106,7 @@ void StageDebugScene::Update()
 
 }
 
-void StageDebugScene::Render(){
+void StageDebugScene::Render() {
 
 #if _DEBUG 線
 
@@ -147,7 +161,7 @@ void StageDebugScene::Render(){
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
-
+	breakWall->Render();
 	enemy->Render();
 
 	CollisionManager::GetInstance().Render();

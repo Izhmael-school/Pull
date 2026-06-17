@@ -24,7 +24,7 @@ private:
 	bool isFading;	// フェード中かどうか
 	float opacity;	// アルファ値
 	float fadeSpeed;// フェード速度
-private:
+public:
 	/*
 	 *	コンストラクタ
 	 */
@@ -62,7 +62,7 @@ public:
 	/*
 	 *	IDの取得
 	 */
-	int GetTriggerID() const override { return triggerID; } ;
+	int GetTriggerID() const override { return triggerID; };
 
 };
 
