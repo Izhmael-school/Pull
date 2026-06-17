@@ -94,7 +94,10 @@ public:
 	 * @brief アニメーションの読み込み
 	 */
 	void Load(std::string _filePath, bool _canInterrupt, bool _isLoop = false);
-
+	/*
+	 * @brief アニメーションの読み込み
+	 */
+	void Load(int _animHandle, bool _canInterrupt, bool _isLoop = false);
 	/*
 	 * @brief アニメーションの再生
 	 */

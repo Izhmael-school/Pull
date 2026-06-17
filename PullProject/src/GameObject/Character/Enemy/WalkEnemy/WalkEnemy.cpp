@@ -1,9 +1,7 @@
 #include "WalkEnemy.h"
 #include "DxLib.h"
-#include "../../../../Definition/Const/EnemyConst.h"
-#include "../../../../Definition/CommonModule/MyString.h"
-
-int WalkEnemy::originModelHandle = -1;
+#include "Definition/Const/EnemyConst.h"
+#include "Definition/CommonModule/MyString.h"
 
 WalkEnemy::WalkEnemy(int _modelHandle, VECTOR _pos)
 	:EnemyBase(_modelHandle,_pos)
@@ -41,12 +39,6 @@ void WalkEnemy::Update() {
 }
 
 void WalkEnemy::Start(){
-	// 大本のモデルが無ければ読み込む
-	if (originModelHandle == -1)
-		originModelHandle = MV1LoadModel(MyString::MergeString(ENEMY_MODEL_FILEPATH, "WalkEnemy.mv1").c_str());
-
-	modelHandle = MV1DuplicateModel(originModelHandle);
-
 	// モデルの正面が反対だから180度追加
 	MV1SetRotationXYZ(modelHandle, VScale(VUp, 180));
 

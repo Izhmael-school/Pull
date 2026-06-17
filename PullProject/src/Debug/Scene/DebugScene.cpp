@@ -29,8 +29,6 @@ void DebugScene::Start()
 	std::vector<int> stageHandleList{stageHandle};
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(stageHandleList);
-	
-	enemy = std::make_unique<WalkEnemy>(-1, VGet(0,400,0));
 
 
 	AABB = new AABBCollider(nullptr,
