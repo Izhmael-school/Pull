@@ -17,8 +17,6 @@ BreakWall::BreakWall(int id, int modelHandle, VECTOR pos)
  *	初期化処理
  */
 void BreakWall::Start() {
-	
-
 	// レバー対応ギミックの末尾に追加
 	GimmickManager::GetInstance().RegisterLeverReceiver(triggerID, this);
 }
@@ -27,22 +25,23 @@ void BreakWall::Start() {
  *	描画処理
  */
 void BreakWall::Render() {
-	// モデルチェック
+	// モデルハンドルがあれば描画処理を行う
+	if (modelHandle >= 0) MV1DrawModel(modelHandle);
 
-	// モデル描画
 
-	
+
+
 }
 
 /*
  *	通知を受けた時の処理
  */
 void BreakWall::OnTriggered() {
-	// 壊れた判定にする
-	isBroken = true;
-	// エフェクト
+	// エフェクト　※なんかでっかい煙とか
 
 	// 徐々に消える
 
 
+	// 壊れた判定にする
+	isBroken = true;
 }
