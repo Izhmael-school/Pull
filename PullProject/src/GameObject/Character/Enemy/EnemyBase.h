@@ -1,6 +1,16 @@
+/*
+ * @brief 敵の基底クラス
+ * @author Sekino
+ */
 #pragma once
-#include "../Character.h"
-#include "../../../Definition/Enum/EnemyState.h"
+
+#ifndef _ENEMYBASE_H_
+#define _ENEMYBASE_H_
+
+#include "GameObject/Character/Character.h"
+#include "Definition/Enum/EnemyState.h"
+#include "Definition/Enum/EnemyType.h"
+#include <string>
 
 class EnemyBase : public Character{
 protected:
@@ -33,13 +43,15 @@ private:
 private:
 	VECTOR spawnPoint;
 	VECTOR wanderingGoalPos;
+	EnemyType type;
 
 protected:
 	EnemyActionState currentState;
 	EnemyActionState nextState;
 	float moveSpeed = 1000;
-	float standbyTime;
-	bool isAttacking;
+	float standbyTime;	// 立ち止まる時間
+	bool isAttacking;	// 攻撃中判定
+	bool wantUnuse;		// 未使用化希望判定
 
 public:
 	EnemyBase(int _modelHandle, VECTOR _pos);
@@ -52,31 +64,52 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 	virtual void Setup() override;
+	virtual void Cleanup();
 
+	/*
+	 * @brief 敵の種類取得
+	 */
+	inline EnemyType GetType() const { return type; }
+
+	/*
+	 * @brief 未使用化希望判定取得
+	 */
+	inline bool IsWantUnuse() const { return wantUnuse; }
 protected:	// 行動
-	/// <summary>
-	/// 移動
-	/// </summary>
+	/*
+	 * @brief 移動
+	 */
 	void Move(VECTOR targetPos);
 
-	/// <summary>
-	/// 徘徊
-	/// </summary>
+	/*
+	 * @brief 徘徊
+	 */
 	void WanderingAction();
 
-	/// <summary>
-	/// 追跡
-	/// </summary>
+	/*
+	 * @brief 追跡
+	 */
 	void TracingAction();
 
-	/// <summary>
-	/// 攻撃
-	/// </summary>
+	/*
+	 * @brief 攻撃
+	 */
 	void AttackAction();
 
 private:
-	// 扇形の視界
+	/*
+	 * @brief 扇状の視界
+	 */
 	bool VisionFan(VECTOR target);
-	// Vision_Fanのデバッグ表示
+	/*
+	 * @brief VisionFanのデバッグ表示
+	 */
 	void DrawVisionFanDebug();
+
+public:
+	/*
+	 * @brief アニメーションのループ化
+	 */
+	void LoopAnim(std::string _animName);
 };
+#endif // !_ENEMYBASE_H_

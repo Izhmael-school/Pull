@@ -10,9 +10,6 @@
 
 class EnemyDebugScene : public SceneBase {
 
-private:
-	std::unique_ptr<WalkEnemy> enemy;
-
 public:
 	EnemyDebugScene();
 	~EnemyDebugScene() = default;
