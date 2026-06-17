@@ -7,4 +7,6 @@
 
 enum Tag {
 	None = -1,
+	Enemy,
+	Player
 };

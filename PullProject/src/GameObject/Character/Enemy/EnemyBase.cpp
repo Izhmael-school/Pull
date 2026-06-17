@@ -63,21 +63,15 @@ void EnemyBase::Cleanup() {
 
 void EnemyBase::Move(VECTOR targetPos) {
 	VECTOR dir = VSub(targetPos, GetPosition());
+	// 上方向は使わない
+	dir.y = 0.0f;
 	VECTOR nDir = VNorm(dir);
 	// 時間 
 	float d = TimeManager::GetInstance().GetDeltaTime();
 	// 移動倍率
 	float move = moveSpeed * d;
 	VECTOR pos = VScale(nDir, move);
-	clsDx();
-	std::string a = std::to_string(pos.x) + "\n";
-	//printfDx(a.c_str());
-	//a = std::to_string(pos.z) + "\n";
-	//printfDx(a.c_str());
-	std::to_string(nDir.x) + "\n";
-	printfDx(a.c_str());
-	a = std::to_string(nDir.z) + "\n";
-	printfDx(a.c_str());
+
 	// y軸は移動しないように
 	pos.y = 0.0f;
 	// 移動
@@ -100,6 +94,8 @@ void EnemyBase::WanderingAction() {
 	moveSpeed = 200;
 	// 目的地に向かう
 	Move(wanderingGoalPos);
+
+	nextState = Wandering;
 
 	// ゴール判定
 	VECTOR pos = GetPosition();
@@ -139,10 +135,12 @@ void EnemyBase::AttackAction() {
 
 void EnemyBase::Wait() {
 	// 前の行動が待機では無ければ時間を初期化
-	if (prevState != NoneAction)
+	if (prevState != NoneAction) {
 		standbyElapsedTime = 0.0f;
+		pAnimator->Play("Idle");
+	}
 
-	if (standbyElapsedTime <= standbyTime) {
+	if (standbyElapsedTime >= standbyTime) {
 		standbyElapsedTime = 0.0f;
 		// 徘徊行動に戻る
 		nextState = Wandering;

@@ -58,7 +58,7 @@ void WalkEnemy::Start(){
 	float r = (VSize(size) * 100) / 2;
 
 	// 当たり判定
-	pCollider = std::make_unique<SphereCollider>(this,GetPosition(),r);
+	pCollider = std::make_unique<SphereCollider>(this,VZero,r);
 
 	EnemyBase::Start();
 }

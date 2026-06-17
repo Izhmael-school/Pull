@@ -10,7 +10,7 @@
 
 GameObject::GameObject(int _modelHandle ,VECTOR _pos,Tag _tag)
 	:tag(_tag)
-	,isVisible(true)
+	,isActive(true)
 	,modelHandle(_modelHandle)
 {
 	pTransform = std::make_unique<Transform>();
@@ -27,7 +27,7 @@ void GameObject::Start(){
 }
 
 void GameObject::Update() {
-	if (!isVisible) return;
+	if (!isActive) return;
 	
 	pTransform->Update();
 
@@ -36,7 +36,7 @@ void GameObject::Update() {
 }
 
 void GameObject::Render() {
-	if (!isVisible) return;
+	if (!isActive) return;
 
 	// ƒ‚ƒfƒ‹‚ª‚È‚¢‚È‚ç•`‰æ‚µ‚È‚¢
 	if(modelHandle == -1) return;
@@ -57,4 +57,16 @@ void GameObject::Setup()
 
 void GameObject::DeleteModel() {
 	MV1DeleteModel(modelHandle);
+}
+
+void GameObject::OnTriggerEnter(Collider* _pOther)
+{
+}
+
+void GameObject::OnTriggerStay(Collider* _pOther)
+{
+}
+
+void GameObject::OnTriggerExit(Collider* _pOther)
+{
 }
