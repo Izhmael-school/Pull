@@ -12,5 +12,6 @@ PlayerManager::PlayerManager()
 	: player(nullptr)
 {}
 void PlayerManager::CreatePlayer() {
-	player = std::make_shared<PlayerCharacter>(0, VGet(0, 10, 0));
+	//int modelHandle = MV1LoadModel("res/Model/Enemy/WalkEnemy.mv1");
+	player = std::make_shared<PlayerCharacter>(0, VGet(0, 500, 0));
 }
