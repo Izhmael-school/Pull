@@ -215,3 +215,9 @@ int Animator::GetAnimationIndex(std::string animName) {
 	}
 	return -1;
 }
+
+void Animator::ResetEvents(){
+	for (auto& anim : pAnimations) {
+		anim->ResetEvent();
+	}
+}

@@ -30,7 +30,7 @@ void SceneManager::Update(){
 	scene[static_cast<int>(currentSceneType)]->Update();
 
 #if _DEBUG
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_TAB))
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_BACK))
 		ChangeScene(SceneType::DebugSceneSelect);
 #endif
 }

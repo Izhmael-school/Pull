@@ -1,67 +1,89 @@
 #include "EnemyBase.h"
-#include "../../../Definition/Enum/EnemyState.h"
-#include "../../../Definition/Const/EnemyConst.h"
-#include "../../../Definition/CommonModule/MyMath.h"
-#include "../../../Definition/Const/ColorConst.h"
+#include "Definition/Enum/EnemyState.h"
+#include "Definition/Const/EnemyConst.h"
+#include "Definition/CommonModule/MyMath.h"
+#include "Definition/Const/ColorConst.h"
+#include "Manager/TimeManager.h"
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
-	:Character(_modelHandle,_pos,None)
-	,currentState(NoneAction)
-	,nextState(NoneAction)
-	,isAttacking(false)
-	,point()
-	,rayAnswer(false)
-	,spawnPoint()
-	,standbyTime(0.0f)
-	,wanderingGoalPos(VGet(static_cast<float>(INT_MAX), 0, 0))
-	,type()
-	,wantUnuse(false)
-{}
+	:Character(_modelHandle, _pos, None)
+	, currentState(NoneAction)
+	, nextState(NoneAction)
+	, isAttacking(false)
+	, point()
+	, rayAnswer(false)
+	, spawnPoint()
+	, standbyTime(1.0f)
+	, wanderingGoalPos(VGet(static_cast<float>(INT_MAX), 0, 0))
+	, tracingTargetPos(VZero)
+	, type()
+	, wantUnuse(false)
+{
+}
 
-EnemyBase::~EnemyBase(){}
+EnemyBase::~EnemyBase() {}
 
 void EnemyBase::Start() {
 	Character::Start();
 }
 
-void EnemyBase::Update(){
+void EnemyBase::Update() {
 	Character::Update();
 
-	// レイの更新
-	VisionFan(VZero);
+	// ステートの変更
+	prevState = currentState;
+	currentState = nextState;
+	nextState = NoneAction;
 }
 
 void EnemyBase::Render()
 {
 	Character::Render();
 
-	DrawCone3D(spawnPoint, VAdd(spawnPoint,VUp), WANDERING_RADIUS, 16, green, green, false);
+	DrawVisionFanDebug();
+	DrawCone3D(spawnPoint, VAdd(spawnPoint, VUp), WANDERING_RADIUS, 16, green, green, false);
 	DrawSphere3D(wanderingGoalPos, 10, 16, red, red, true);
 }
 
 void EnemyBase::Setup() {
 	spawnPoint = GetPosition();
 	wanderingGoalPos = VGet(static_cast<float>(INT_MAX), 0, 0);
+
+	if (pAnimator) {
+		auto attackAnim = pAnimator->GetAnimation("Attack");
+		// 攻撃終了時処理を持たせる
+		attackAnim->SetEvent([this]() {EndAttack();}, attackAnim->totalTime);
+	}
 }
 
-void EnemyBase::Cleanup()
-{
+void EnemyBase::Cleanup() {
+	if (pAnimator)
+		pAnimator->ResetEvents();
 }
 
 void EnemyBase::Move(VECTOR targetPos) {
 	VECTOR dir = VSub(targetPos, GetPosition());
 	VECTOR nDir = VNorm(dir);
-	// 時間 今は決め打ち
-	float d = 0.001f;
+	// 時間 
+	float d = TimeManager::GetInstance().GetDeltaTime();
 	// 移動倍率
 	float move = moveSpeed * d;
 	VECTOR pos = VScale(nDir, move);
+	clsDx();
+	std::string a = std::to_string(pos.x) + "\n";
+	//printfDx(a.c_str());
+	//a = std::to_string(pos.z) + "\n";
+	//printfDx(a.c_str());
+	std::to_string(nDir.x) + "\n";
+	printfDx(a.c_str());
+	a = std::to_string(nDir.z) + "\n";
+	printfDx(a.c_str());
 	// y軸は移動しないように
 	pos.y = 0.0f;
 	// 移動
 	GetTransform()->AddPosition(pos);
 	// ゴールを向く
-	GetTransform()->LookAtY(wanderingGoalPos);
+	GetTransform()->LookAtY(targetPos);
 	// アニメーションの再生
 	pAnimator->Play("Walk");
 }
@@ -75,6 +97,7 @@ void EnemyBase::WanderingAction() {
 		wanderingGoalPos.z = MyMath::RandomF(z - WANDERING_RADIUS, z + WANDERING_RADIUS);
 	}
 
+	moveSpeed = 200;
 	// 目的地に向かう
 	Move(wanderingGoalPos);
 
@@ -88,12 +111,47 @@ void EnemyBase::WanderingAction() {
 	nextState = EnemyActionState::NoneAction;
 }
 
-void EnemyBase::TracingAction(){
+void EnemyBase::TracingAction() {
 	if (!rayAnswer) return;
+
+	moveSpeed = 300;
+	// 追跡
+	Move(tracingTargetPos);
+
+	// ゴール判定
+	VECTOR pos = GetPosition();
+	if (tracingTargetPos.x - GOAL_JODGMENT > pos.x || tracingTargetPos.x + GOAL_JODGMENT < pos.x) return;
+	if (tracingTargetPos.z - GOAL_JODGMENT > pos.z || tracingTargetPos.z + GOAL_JODGMENT < pos.z) return;
+
+	nextState = Attack;
 }
 
-void EnemyBase::AttackAction()
-{
+void EnemyBase::AttackAction() {
+	if (!isAttacking) {
+		// 攻撃中にする
+		isAttacking = true;
+		// アニメーション再生
+		pAnimator->Play("Attack");
+	}
+
+	nextState = Attack;
+}
+
+void EnemyBase::Wait() {
+	// 前の行動が待機では無ければ時間を初期化
+	if (prevState != NoneAction)
+		standbyElapsedTime = 0.0f;
+
+	if (standbyElapsedTime <= standbyTime) {
+		standbyElapsedTime = 0.0f;
+		// 徘徊行動に戻る
+		nextState = Wandering;
+	}
+	else {
+		// 時間の加算
+		standbyElapsedTime += TimeManager::GetInstance().GetDeltaTime();
+		nextState = NoneAction;
+	}
 }
 
 bool EnemyBase::VisionFan(VECTOR target) {
@@ -114,6 +172,10 @@ bool EnemyBase::VisionFan(VECTOR target) {
 
 	// ベクトルの長さを算出
 	float vecLength = sqrtf(powf(vecFanToPoint.x, 2.0f) + powf(vecFanToPoint.z, 2.0f));
+
+	// ほぼほぼ重なっていたら当たってる判定にする
+	if (vecLength <= 0.0001f)
+		return rayAnswer = true;
 
 	// ベクトルと扇の長さの比較
 	if (fan.length < vecLength) return rayAnswer = false; // 当たってない
@@ -139,6 +201,7 @@ bool EnemyBase::VisionFan(VECTOR target) {
 	if (fanCos > dot)
 		return rayAnswer = false; // 当たってない
 
+	tracingTargetPos = target;
 	return rayAnswer = true;
 }
 
@@ -184,6 +247,11 @@ void EnemyBase::DrawVisionFanDebug() {
 	}
 }
 
-void EnemyBase::LoopAnim(std::string _animName){
+void EnemyBase::EndAttack() {
+	isAttacking = false;
+	nextState = NoneAction;
+}
+
+void EnemyBase::LoopAnim(std::string _animName) {
 	GetAnimator()->GetAnimation(_animName)->isLoop = true;
 }

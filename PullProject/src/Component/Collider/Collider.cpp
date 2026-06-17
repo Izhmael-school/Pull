@@ -93,7 +93,7 @@ void AABBCollider::Render()
 
 	int color = isHit ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
 
-	DrawCube3D(worldMin, worldMax, color, color, TRUE);
+	DrawCube3D(worldMin, worldMax, color, color, FALSE);
 
 }
 
@@ -139,7 +139,7 @@ void SphereCollider::Render()
 {
 	if (!isEnable) return;
 
-	DrawSphere3D(worldCenter, radius, 16, GetColor(0, 255, 0), GetColor(0, 0, 0), TRUE);
+	DrawSphere3D(worldCenter, radius, 16, GetColor(0, 255, 0), GetColor(0, 0, 0), FALSE);
 }
 
 #pragma endregion

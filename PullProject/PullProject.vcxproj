@@ -172,6 +172,7 @@
     <ClCompile Include="src\Manager\SceneManager.cpp" />
     <ClCompile Include="src\Manager\Stage\GimmickManager.cpp" />
     <ClCompile Include="src\Manager\Stage\StageManager.cpp" />
+    <ClCompile Include="src\Manager\TimeManager.cpp" />
     <ClCompile Include="src\Pad\DirectInputPad.cpp" />
     <ClCompile Include="src\Pad\PadBase.cpp" />
     <ClCompile Include="src\Pad\XInputPad.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="src\Manager\SceneManager.h" />
     <ClInclude Include="src\Manager\Stage\GimmickManager.h" />
     <ClInclude Include="src\Manager\Stage\StageManager.h" />
+    <ClInclude Include="src\Manager\TimeManager.h" />
     <ClInclude Include="src\Pad\DirectInputPad.h" />
     <ClInclude Include="src\Pad\PadBase.h" />
     <ClInclude Include="src\Pad\XInputPad.h" />
