@@ -30,6 +30,12 @@ public:
 	 *	カメラ生成
 	 */
 	void CreateCamera();
+	/*
+	 *	カメラのシェイク
+	 *	@param	float setShakePowar	シェイクの大さ
+	 *	@param	float setShakeTime	シェイクの時間
+	 */
+	void CameraShake(float setShakePower, float setShakeTime);
 
 public:
 	/*

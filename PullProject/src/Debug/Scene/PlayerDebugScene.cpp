@@ -12,6 +12,7 @@
 #include "GameObject/Camera/CameraObject.h"
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
+#include "Manager/Playermanager.h"
 
 
 PlayerDebugScene::PlayerDebugScene() { Start(); }
@@ -20,6 +21,8 @@ void PlayerDebugScene::Start()
 {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
+	// プレイヤー生成
+	PlayerManager::GetInstance().CreatePlayer();
 	
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
@@ -52,6 +55,8 @@ void PlayerDebugScene::Update()
 {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
+	// プレイヤーの更新
+	PlayerManager::GetInstance().GetPlayer()->Update();
 	// 敵の更新
 	enemy->Update();
 
@@ -149,6 +154,7 @@ void PlayerDebugScene::Render(){
 	StageManager::GetInstance().Render();
 
 	enemy->Render();
+	PlayerManager::GetInstance().GetPlayer()->Render();
 
 	CollisionManager::GetInstance().Render();
 }
