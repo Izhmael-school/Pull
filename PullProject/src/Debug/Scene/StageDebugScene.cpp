@@ -12,6 +12,7 @@
 #include "GameObject/Camera/CameraObject.h"
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
+#include "Manager/Stage/GimmickManager.h"
 
 
 StageDebugScene::StageDebugScene() { Start(); }
@@ -37,10 +38,17 @@ void StageDebugScene::Start()
 	enemy = std::make_unique<WalkEnemy>(-1, VGet(0, 400, 0));
 
 	// ギミックの生成
+	// 壊れる壁生成
 	breakWall = std::make_unique<BreakWall>(
 		1,
 		wallModel,
 		MV1GetFramePosition(stageHandle,174));
+	// レバー生成
+	lever = std::make_unique<Lever>(
+		1,
+		-1,
+		MV1GetFramePosition(stageHandle, 174));
+
 	// 壊れる壁のセットアップ処理を呼ぶ
 	breakWall->Setup();
 
@@ -97,6 +105,11 @@ void StageDebugScene::Update()
 
 	capsule->Move(move);
 
+	// 上（8）
+	if (CheckHitKey(KEY_INPUT_C)) {
+		lever->Activate();
+	}
+	breakWall->Update();
 	// ===== 更新（重要）=====
 	capsule->Update();
 	AABB->Update();

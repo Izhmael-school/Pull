@@ -15,7 +15,7 @@ BreakWall::BreakWall(int id, int modelHandle, VECTOR pos)
 	, isBroken(false)
 	, isFading(false)
 	, opacity(1.0f)
-	, fadeSpeed(0.5f) {
+	, fadeSpeed(0.9f) {
 }
 
 /*
@@ -34,7 +34,7 @@ void BreakWall::Update(){
 	// ギミックが起動したら
 	if (isFading) {
 		// 徐々に透明にしていく
-		opacityChange();
+		OpacityChange();
 	};
 }
 
@@ -73,7 +73,7 @@ void BreakWall::OnTriggered() {
 /*
  *	オブジェクトの不透明度を変更する
  */
-void BreakWall::opacityChange() {
+void BreakWall::OpacityChange() {
 	// α値を徐々に減らしていく
 	opacity -= fadeSpeed;
 
