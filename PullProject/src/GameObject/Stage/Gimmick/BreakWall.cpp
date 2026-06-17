@@ -24,6 +24,7 @@ BreakWall::BreakWall(int id, int modelHandle, VECTOR pos)
 void BreakWall::Setup() {
 	// レバー対応ギミックの末尾に追加
 	GimmickManager::GetInstance().RegisterLeverReceiver(triggerID, this);
+	
 }
 
 /*
@@ -52,6 +53,7 @@ void BreakWall::Render() {
 
 	// 描画
 	MV1DrawModel(modelHandle);
+	
 }
 
 /*

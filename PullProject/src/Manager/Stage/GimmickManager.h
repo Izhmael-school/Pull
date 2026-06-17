@@ -8,7 +8,7 @@
 
 
 #include "../../Component/Singleton.h"
-
+#include "../../Definition/CommonModule/MyMath.h"
 #include <unordered_map>
 #include <vector>
 
@@ -29,6 +29,8 @@ private:
 	 *	デストラクタ
 	 */
 	~GimmickManager() = default;
+
+
 public:
 
 	/*
@@ -57,5 +59,6 @@ public:
 	 */
 	void Clear();
 };
+
 
 #endif // !_GIMMICKMANAGER_H_
