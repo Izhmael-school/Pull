@@ -21,16 +21,33 @@ private:
 	int triggerID;	// 自身のID
 	bool isBroken;	// 壊れたかどうか
 
-public:
+	bool isFading;	// フェード中かどうか
+	float opacity;	// アルファ値
+	float fadeSpeed;// フェード速度
+private:
 	/*
 	 *	コンストラクタ
 	 */
 	BreakWall(int id, int modelHandle, VECTOR pos);
 
+private:
 	/*
-	 *	初期化処理
+	 *	オブジェクトの不透明度を変更する
 	 */
-	void Start() override;
+	void opacityChange();
+
+public:
+
+
+	/*
+	 *	使用前準備
+	 */
+	void Setup() override;
+
+	/*
+	 *	更新処理
+	 */
+	void Update()override;
 
 	/*
 	 *	描画処理
