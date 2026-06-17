@@ -78,6 +78,20 @@ void Animator::Load(std::string _filePath, bool _canInterrupt, bool _isLoop) {
 	}
 }
 
+void Animator::Load(int _animHandle, bool _canInterrupt, bool _isLoop){
+	// 読み込めてなかったらリターン
+	if (_animHandle == -1) return;
+	std::unique_ptr<AnimationClip<>> pAnimClip;
+	// ファイル内にあるアニメーション全てを読み込む
+	for (int i = 0, max = MV1GetAnimNum(_animHandle); i < max;i++) {
+		std::string name = DeleteUnnecessaryName(MV1GetAnimName(_animHandle, i));
+		pAnimClip = std::make_unique<AnimationClip<>>(_animHandle, name, _canInterrupt, _isLoop);
+		pAnimClip->animIndex = i;
+		// アニメーション群に追加
+		pAnimations.push_back(std::move(pAnimClip));
+	}
+}
+
 void Animator::Play(int _index, float _speed) {
 	// 現在再生中のアニメーションの場合は処理しない
 	if (_index == currentAnimation)

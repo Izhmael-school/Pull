@@ -25,6 +25,8 @@ public:
 	void Start() override;
 	// 更新処理
 	void Update() override;
+	// 描画処理
+	void Render() override;
 };
 // 別名定義
 using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;

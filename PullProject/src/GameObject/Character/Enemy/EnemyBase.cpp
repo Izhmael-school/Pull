@@ -14,15 +14,14 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	,spawnPoint()
 	,standbyTime(0.0f)
 	,wanderingGoalPos(VGet(static_cast<float>(INT_MAX), 0, 0))
+	,type()
+	,wantUnuse(false)
 {}
 
 EnemyBase::~EnemyBase(){}
 
 void EnemyBase::Start() {
 	Character::Start();
-	std::string file = "res/Model/Enemy/WalkEnemyAnim.mv1";
-	pAnimator->Load(file, false, false);
-	pAnimator->GetAnimation("Walk")->isLoop = true;
 }
 
 void EnemyBase::Update(){
@@ -43,6 +42,10 @@ void EnemyBase::Render()
 void EnemyBase::Setup() {
 	spawnPoint = GetPosition();
 	wanderingGoalPos = VGet(static_cast<float>(INT_MAX), 0, 0);
+}
+
+void EnemyBase::Cleanup()
+{
 }
 
 void EnemyBase::Move(VECTOR targetPos) {
@@ -179,4 +182,8 @@ void EnemyBase::DrawVisionFanDebug() {
 
 		DrawLine3D(p1, p2, col);
 	}
+}
+
+void EnemyBase::LoopAnim(std::string _animName){
+	GetAnimator()->GetAnimation(_animName)->isLoop = true;
 }

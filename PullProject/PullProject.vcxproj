@@ -161,6 +161,7 @@
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
+    <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\CameraManager.cpp" />
     <ClCompile Include="src\Manager\CollisionManager.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="src\Component\Collider\Collider.h" />
     <ClInclude Include="src\Component\Singleton.h" />
     <ClInclude Include="src\Component\Transform.h" />
+    <ClInclude Include="src\Data\json.hpp" />
     <ClInclude Include="src\Debug\DebugCamera.h" />
     <ClInclude Include="src\Debug\Scene\CollisionDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\DebugScene.h" />
@@ -194,6 +196,8 @@
     <ClInclude Include="src\Definition\Const\ColorConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
+    <ClInclude Include="src\Definition\Enum\EnemyState.h" />
+    <ClInclude Include="src\Definition\Enum\EnemyType.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
@@ -209,6 +213,7 @@
     <ClInclude Include="src\GameObject\Stage\Stage.h" />
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
+    <ClInclude Include="src\Generator\EnemyGenerator.h" />
     <ClInclude Include="src\Manager\CameraManager.h" />
     <ClInclude Include="src\Manager\CollisionManager.h" />
     <ClInclude Include="src\Manager\EnemyManager.h" />
@@ -222,6 +227,9 @@
     <ClInclude Include="src\Pad\PadBase.h" />
     <ClInclude Include="src\Pad\XInputPad.h" />
     <ClInclude Include="src\Scene\SceneBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Data\EnemyData.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

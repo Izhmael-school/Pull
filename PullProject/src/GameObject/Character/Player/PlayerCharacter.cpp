@@ -41,3 +41,7 @@ void PlayerCharacter::Update() {
 		pTransform->AddPosition(VGet(-speed * cameraCos, 0, -speed * -cameraSin));
 
 }
+
+void PlayerCharacter::Render() {
+	Character::Render();
+}
