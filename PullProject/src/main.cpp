@@ -3,6 +3,7 @@
 #include <random>
 #include "Manager/SceneManager.h"
 #include "Manager/InputManager.h"
+#include "Manager/TimeManager.h"
 
 constexpr double FRAME_TIME = 1.0f / 60.0f;
 
@@ -97,6 +98,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ClearDrawScreen();
 		
 		// シーンの更新
+		TimeManager::GetInstance().Update();
 		InputManager::GetInstance().Update();
 		SceneManager::GetInstance().Update();
 
@@ -120,7 +122,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	DeleteLightHandleAll();
-
+	MV1InitModel();
 	InitSoundMem();
 	InitGraph();
 	InitFontToHandle();

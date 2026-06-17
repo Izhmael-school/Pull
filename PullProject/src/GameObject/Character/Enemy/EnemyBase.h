@@ -38,19 +38,24 @@ private:
 	// 視界
 	Ray_Fan vision;
 
-	bool rayAnswer;
+protected:
+	bool rayAnswer;	// 視界内にいるか
 
 private:
 	VECTOR spawnPoint;
 	VECTOR wanderingGoalPos;
+	VECTOR tracingTargetPos;
 	EnemyType type;
 
 protected:
 	EnemyActionState currentState;
+	EnemyActionState prevState;
 	EnemyActionState nextState;
 	float moveSpeed = 1000;
 	float standbyTime;	// 立ち止まる時間
+	float standbyElapsedTime;	// 経過時間
 	bool isAttacking;	// 攻撃中判定
+	bool endAttack;		// 攻撃が終了したか
 	bool wantUnuse;		// 未使用化希望判定
 
 public:
@@ -96,15 +101,25 @@ protected:	// 行動
 	 */
 	void AttackAction();
 
-private:
+	/*
+	 * @brief 待機
+	 */
+	void Wait();
+public:
 	/*
 	 * @brief 扇状の視界
 	 */
-	bool VisionFan(VECTOR target);
+	virtual bool VisionFan(VECTOR target);
+private:
 	/*
 	 * @brief VisionFanのデバッグ表示
 	 */
 	void DrawVisionFanDebug();
+
+	/*
+	 * @brief 攻撃終了時処理
+	 */
+	void EndAttack();
 
 public:
 	/*

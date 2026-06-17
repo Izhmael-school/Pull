@@ -1,6 +1,7 @@
 #include "EnemyManager.h"
 #include "GameObject/Character/Enemy/EnemyBase.h"
 #include "Generator/EnemyGenerator.h"
+#include "Manager/PlayerManager.h"
 
 EnemyManager::EnemyManager()
 {
@@ -18,7 +19,12 @@ void EnemyManager::Start() {
 
 void EnemyManager::Update() {
 	// 更新
+
+	// プレイヤーの座標をもらう
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	VECTOR playerPos = player != nullptr ? player->GetPosition() : VGet(INT_MAX, INT_MAX, INT_MAX);
 	for (auto& enemy : useEnemyArray) {
+		enemy->VisionFan(playerPos);
 		enemy->Update();
 	}
 

@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "Definition/Const/EnemyConst.h"
 #include "Definition/CommonModule/MyString.h"
+#include "Component/Collider/Collider.h"
 
 WalkEnemy::WalkEnemy(int _modelHandle, VECTOR _pos)
 	:EnemyBase(_modelHandle,_pos)
@@ -15,12 +16,9 @@ WalkEnemy::~WalkEnemy(){
 void WalkEnemy::Update() {
 	EnemyBase::Update();
 
-	// ステートの変更
-	currentState = nextState;
-	nextState = Wandering;
-
 	switch (currentState) {
 	case NoneAction:
+		Wait();
 		break;
 	case Wandering:
 		WanderingAction();
@@ -38,9 +36,29 @@ void WalkEnemy::Update() {
 	}
 }
 
+void WalkEnemy::Setup(){
+	EnemyBase::Setup();
+}
+
+bool WalkEnemy::VisionFan(VECTOR target){
+	EnemyBase::VisionFan(target);
+	// レイに入っていて攻撃中じゃない時に追跡行動に移る
+	if (rayAnswer && !isAttacking)
+		nextState = Tracing;
+
+	return rayAnswer;
+}
+
 void WalkEnemy::Start(){
 	// モデルの正面が反対だから180度追加
 	MV1SetRotationXYZ(modelHandle, VScale(VUp, 180));
+
+	// ラディウスの計算
+	VECTOR size = VSub(MV1GetMeshMaxPosition(modelHandle,0), MV1GetMeshMinPosition(modelHandle, 0));
+	float r = (VSize(size) * 100) / 2;
+
+	// 当たり判定
+	pCollider = std::make_unique<SphereCollider>(this,GetPosition(),r);
 
 	EnemyBase::Start();
 }

@@ -3,14 +3,21 @@
  * @author Sekino
  */
 #pragma once
-#include "../Component/Transform.h"
-#include "../Definition/Enum/TagEnum.h"
-#include "../Definition/Const/VECTORConst.h"
+
+#ifndef _GAMEOBJECT_
+#define _GAMEOBJECT_
+
+#include "Component/Transform.h"
+#include "Definition/Enum/TagEnum.h"
+#include "Definition/Const/VECTORConst.h"
 #include <memory>
+
+class Collider;
 
 class GameObject {
 protected:
 	std::unique_ptr<Transform> pTransform;
+	std::unique_ptr<Collider> pCollider;
 	Tag tag;
 	bool isVisible;
 	int modelHandle;
@@ -42,4 +49,4 @@ public:
 	inline void SetModelHandle(int _mHandle) { modelHandle = _mHandle; }
 	inline int GetModelHandle() const { return modelHandle; }
 };
-
+#endif // !_GAMEOBJECT_

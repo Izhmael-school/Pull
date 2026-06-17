@@ -58,13 +58,23 @@ struct AnimationClip {
 
 	~AnimationClip() = default;
 
-	// アニメーションイベントの作成
+	/* 
+	 * @brief イベントの作成
+	 */
 	void SetEvent(std::function<T(R...)> _event, float _eventTime) {
 		AnimationEvent e;
 		e.animEvent = _event;
 		e.eventTime = _eventTime;
 		e.isAction = false;
 		events.push_back(e);
+	}
+
+	/*
+	 * @brief イベントの全削除
+	 */
+	void ResetEvent() {
+		events.clear();
+		events.shrink_to_fit();
 	}
 };
 
@@ -104,6 +114,9 @@ public:
 	void Play(int _index, float _speed = 0.3f);
 	int Play(std::string _name, float _speed = 0.3f);
 
+	/*
+	 * @brief アニメーションの削除
+	 */
 	inline void Reset() {
 		pAnimations.erase(pAnimations.begin(), pAnimations.begin() + pAnimations.size());
 	}
@@ -170,5 +183,9 @@ public:
 	 */
 	int GetAnimationIndex(std::string animName);
 
+	/*
+	 * @brief 全アニメーションのイベントの全削除
+	 */
+	void ResetEvents();
 };
 #endif // !_ANIMATOR_H_
