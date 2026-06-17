@@ -53,7 +53,6 @@ public:
 	 */
 	void ActivateLever(int leverId);
 
-
 	/*
 	 * 全登録情報削除
 	 */

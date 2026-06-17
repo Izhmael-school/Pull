@@ -13,6 +13,7 @@ class Lever : public GameObject {
 private:
 	int triggerID;		// レバーのID
 	bool isActivated;	// 使用可能状態可否
+	bool OnLever;		// ギミック起動
 
 public:
 	
@@ -38,6 +39,11 @@ public:
 	 *  @return int レバーのID
 	 */
 	int GetTriggerID() const { return triggerID; }
+
+	/*
+	 *	ギミックを起動する
+	 */
+
 };
 
 #endif // !_LEVER_H_

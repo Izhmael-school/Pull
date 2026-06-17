@@ -24,7 +24,10 @@ void Lever::Update() {
     // 後に実装
     // プレイヤー側でフラグ変更
     // フラグの変更が確認されたらActivate関数を呼ぶ
-
+    if (OnLever) {
+        // ギミック起動
+        Activate();
+    }
     
 }
 

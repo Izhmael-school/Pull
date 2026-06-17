@@ -34,7 +34,7 @@ private:
 	/*
 	 *	オブジェクトの不透明度を変更する
 	 */
-	void opacityChange();
+	void OpacityChange();
 
 public:
 
