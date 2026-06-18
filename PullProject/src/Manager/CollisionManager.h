@@ -3,27 +3,33 @@
 
 #include <vector>
 #include "../Component/Singleton.h"
+#include "../Component/Collider/Collider.h"
 
 /*
  * @file CollisionManager.h
  * @author Tanaka
  */
 
-// 前方宣言
-class Collider;
-class SphereCollider;
-class AABBCollider;
-class CapsuleCollider;
-
 class CollisionManager : public Singleton<CollisionManager>
 {
 private:
-    std::vector<Collider*> colliders;
+    std::vector<class Collider*> pColliderArray;
 
+    std::vector<std::vector<bool>> prevs;
+    std::vector<std::vector<bool>> currents;
+
+    int index = 0;
 public:
+    ~CollisionManager();
+
     void Register(Collider* col);
     void Update();
     void Render();
+    void Clear();
+
+	void CheckRegister(Collider* _pCol);
+	void UnRegister(Collider* _pCol);
+	void UnRegisterAll();
 
 private:
     bool CheckHit(Collider* a, Collider* b);
@@ -43,6 +49,7 @@ private:
     void ResolveSphereSphere(SphereCollider* a, SphereCollider* b);
     void ResolveSphereAABB(SphereCollider* s, AABBCollider* box);
 	void ResolveCapsuleAABB(CapsuleCollider* cap, AABBCollider* box);
+
 };
 
 #endif // !_COLLISIONMANAGER_H_

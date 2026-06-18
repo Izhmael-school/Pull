@@ -19,13 +19,24 @@ private:
 		Invalid = -1,
 		Debug,
 		Player,
+		Pull,
 		Event,
 
 		Max
 	};
-	CameraMode mode;	// カメラのモード
-	float speed;		// 移動速度
+	CameraMode mode;		// カメラのモード
+	float speed;			// 移動速度
+	float shakePower;		// シェイクの大さ
+	float shakeTime;		// シェイクの時間
+	float shakeElapsedTime;	// シェイクの経過時間
+	bool isShaking;			// シェイク中か否か
 
+	// プレイヤーから離れる距離
+	const float PLAYER_DISTANCE;
+	// 引っ張り時のズーム割合の最大
+	const float PULL_ZOOM_RATIO_MAX;
+	// 引っ張り時のズーム割合の最小
+	const float PULL_ZOOM_RATIO_MIN;
 public:
 	CameraObject();
 	~CameraObject() = default;
@@ -46,9 +57,26 @@ private:
 	 */
 	void PlayerUpdate();
 	/*
+	 *	引っこ抜きカメラの更新処理
+	 */
+	void PullUpdate();
+	/*
 	 *	イベントカメラの更新処理
 	 */
 	void EventUpdate();
+	/*
+	 *	カメラのシェイク
+	 */
+	void CameraShake();
+
+public:
+	/*
+	 *	カメラのシェイクを作動
+	 *	@param	float setShakePowar	シェイクの大さ
+	 *	@param	float setShakeTime	シェイクの時間
+	 */
+	void CameraShakeActivate(float setShakePower, float setShakeTime);
+
 };
 // 別名定義
 using CameraObjectPtr = std::shared_ptr<CameraObject>;

@@ -61,6 +61,9 @@
     <Filter Include="ソース ファイル\Data">
       <UniqueIdentifier>{38b37b5c-9bdf-4412-aa89-988ef086aff2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Collider">
+      <UniqueIdentifier>{66015201-eedd-4d89-89f5-7a31c29028ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -177,14 +180,8 @@
     <ClCompile Include="src\Manager\TimeManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\Stage\GimmickObjectManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\ModelManager.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp">
+      <Filter>ソース ファイル\GameObject\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,14 +335,8 @@
     <ClInclude Include="src\Manager\TimeManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\Stage\GimmickObjectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\ModelManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="src\GameObject\Collider\ColliderObject.h">
+      <Filter>ソース ファイル\GameObject\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

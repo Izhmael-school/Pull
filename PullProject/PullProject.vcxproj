@@ -157,12 +157,14 @@
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
+    <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
+    <ClCompile Include="src\Generator\StageCollisionGenerator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\CameraManager.cpp" />
     <ClCompile Include="src\Manager\CollisionManager.cpp" />
@@ -210,6 +212,7 @@
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
+    <ClInclude Include="src\GameObject\Collider\ColliderObject.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h" />
@@ -219,6 +222,7 @@
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
     <ClInclude Include="src\Generator\EnemyGenerator.h" />
+    <ClInclude Include="src\Generator\StageCollisionGenerator.h" />
     <ClInclude Include="src\Manager\CameraManager.h" />
     <ClInclude Include="src\Manager\CollisionManager.h" />
     <ClInclude Include="src\Manager\EnemyManager.h" />
@@ -238,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json" />
+    <None Include="src\Data\Stage_4.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
