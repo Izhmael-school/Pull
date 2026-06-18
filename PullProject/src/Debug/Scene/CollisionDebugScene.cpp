@@ -31,18 +31,10 @@ void CollisionDebugScene::Start()
 
 	enemy = std::make_unique<WalkEnemy>(-1, VGet(0, 400, 0));
 
-	capsule = new CapsuleCollider(nullptr,
-		VGet(0, 361, 0),
-		VGet(0, 500, 0),
-		30.0f,
-		VGet(0, 0, 0));
-
 	CollisionManager::GetInstance().Clear();
 
-	CollisionManager::GetInstance().Register(capsule);
-
 	StageCollisionGenerator generator;
-	generator.Generate("src/Data/Stage_4.json", CollisionManager::GetInstance());
+	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
 void CollisionDebugScene::Update()
@@ -58,8 +50,6 @@ void CollisionDebugScene::Update()
 	if (CheckHitKey(KEY_INPUT_7)) move.x -= 2.0f;
 	if (CheckHitKey(KEY_INPUT_6)) move.z += 2.0f;
 	if (CheckHitKey(KEY_INPUT_4)) move.z -= 2.0f;
-
-	capsule->Move(move);
 
 	CollisionManager::GetInstance().Update();
 }

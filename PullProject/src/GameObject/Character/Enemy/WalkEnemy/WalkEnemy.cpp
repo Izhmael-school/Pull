@@ -3,6 +3,7 @@
 #include "Definition/Const/EnemyConst.h"
 #include "Definition/CommonModule/MyString.h"
 #include "Component/Collider/Collider.h"
+#include "Manager/ColliderObjectManager.h"
 
 WalkEnemy::WalkEnemy(int _modelHandle, VECTOR _pos)
 	:EnemyBase(_modelHandle,_pos)
@@ -47,6 +48,14 @@ bool WalkEnemy::VisionFan(VECTOR target){
 		nextState = Tracing;
 
 	return rayAnswer;
+}
+
+void WalkEnemy::AttackAction(){
+	if (!isAttacking) {
+		ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 200, Enemy);
+	}
+
+	EnemyBase::AttackAction();
 }
 
 void WalkEnemy::Start(){

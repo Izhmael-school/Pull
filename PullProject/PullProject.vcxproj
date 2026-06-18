@@ -169,6 +169,7 @@
     <ClCompile Include="src\Generator\StageCollisionGenerator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\CameraManager.cpp" />
+    <ClCompile Include="src\Manager\ColliderObjectManager.cpp" />
     <ClCompile Include="src\Manager\CollisionManager.cpp" />
     <ClCompile Include="src\Manager\EnemyManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="src\Generator\EnemyGenerator.h" />
     <ClInclude Include="src\Generator\StageCollisionGenerator.h" />
     <ClInclude Include="src\Manager\CameraManager.h" />
+    <ClInclude Include="src\Manager\ColliderObjectManager.h" />
     <ClInclude Include="src\Manager\CollisionManager.h" />
     <ClInclude Include="src\Manager\EnemyManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />

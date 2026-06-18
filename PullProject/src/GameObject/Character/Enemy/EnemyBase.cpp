@@ -4,6 +4,7 @@
 #include "Definition/CommonModule/MyMath.h"
 #include "Definition/Const/ColorConst.h"
 #include "Manager/TimeManager.h"
+#include "Component/Collider/Collider.h"
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	:Character(_modelHandle, _pos, None)
@@ -252,4 +253,10 @@ void EnemyBase::EndAttack() {
 
 void EnemyBase::LoopAnim(std::string _animName) {
 	GetAnimator()->GetAnimation(_animName)->isLoop = true;
+}
+
+void EnemyBase::OnTriggerStay(Collider* _pOther){
+	Tag tag = _pOther->GetGameObject()->GetTag();
+	if (tag == Player)
+		nextState = Attack;
 }

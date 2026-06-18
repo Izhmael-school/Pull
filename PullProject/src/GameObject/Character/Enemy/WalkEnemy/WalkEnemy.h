@@ -14,5 +14,8 @@ public:
 	void Setup() override;
 
 	bool VisionFan(VECTOR target) override;
+
+private:
+	void AttackAction() override;
 };
 

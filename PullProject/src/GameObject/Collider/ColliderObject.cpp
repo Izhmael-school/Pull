@@ -2,14 +2,15 @@
 #include "Component/Collider/Collider.h"
 #include "Manager/TimeManager.h"
 
-ColliderObject::ColliderObject(VECTOR _pos, int _radius, Tag _tag, float _lifeTime, std::function<void(Collider* _pOther)> _enterEvent, std::function<void(Collider* _pOther)> _stayEvent, std::function<void(Collider* _pOther)> _exitEvent)
+ColliderObject::ColliderObject(VECTOR _pos, float _radius, Tag _tag, float _lifeTime, std::function<void(Collider* _pOther)> _enterEvent, std::function<void(Collider* _pOther)> _stayEvent, std::function<void(Collider* _pOther)> _exitEvent)
 	:GameObject(-1, _pos, _tag)
 	, lifeTime(_lifeTime)
 	, enterEvent(_enterEvent)
 	, stayEvent(_stayEvent)
 	, exitEvent(_exitEvent)
 	, lifeElapsedTime(0.0f)
-	,isDisable(false)
+	, isDisable(false)
+	, wantDelete(false)
 {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, _radius);
 	Start();
@@ -23,12 +24,13 @@ ColliderObject::ColliderObject(VECTOR _pos, VECTOR _min, VECTOR _max, Tag _tag, 
 	, exitEvent(_exitEvent)
 	, lifeElapsedTime(0.0f)
 	,isDisable(false)
+	,wantDelete(false)
 {
 	pCollider = std::make_unique<AABBCollider>(this, _min, _max);
 	Start();
 }
 
-ColliderObject::ColliderObject(VECTOR _pos, VECTOR _min, VECTOR _max, int _radius, Tag _tag, float _lifeTime, std::function<void(Collider* _pOther)> _enterEvent, std::function<void(Collider* _pOther)> _stayEvent, std::function<void(Collider* _pOther)> _exitEvent)
+ColliderObject::ColliderObject(VECTOR _pos, VECTOR _min, VECTOR _max, float _radius, Tag _tag, float _lifeTime, std::function<void(Collider* _pOther)> _enterEvent, std::function<void(Collider* _pOther)> _stayEvent, std::function<void(Collider* _pOther)> _exitEvent)
 	:GameObject(-1, _pos, _tag)
 	, lifeTime(_lifeTime)
 	, enterEvent(_enterEvent)
@@ -36,6 +38,7 @@ ColliderObject::ColliderObject(VECTOR _pos, VECTOR _min, VECTOR _max, int _radiu
 	, exitEvent(_exitEvent)
 	, lifeElapsedTime(0.0f)
 	,isDisable(false)
+	,wantDelete(false)
 {
 	pCollider = std::make_unique<CapsuleCollider>(this, _min, _max, _radius, VZero);
 	Start();
@@ -55,7 +58,7 @@ void ColliderObject::Update(){
 
 	// 生きる時間を過ぎたら消す
 	if (lifeElapsedTime >= lifeTime) {
-		delete this;
+		wantDelete = true;
 	}
 	else {
 		lifeElapsedTime += TimeManager::GetInstance().GetDeltaTime();
@@ -72,8 +75,8 @@ void ColliderObject::OnTriggerEnter(Collider* _pOther) {
 }
 
 void ColliderObject::OnTriggerStay(Collider* _pOther) {
-	if (stayEvent);
-	stayEvent(_pOther);
+	if (stayEvent)
+		stayEvent(_pOther);
 }
 
 void ColliderObject::OnTriggerExit(Collider* _pOther) {
