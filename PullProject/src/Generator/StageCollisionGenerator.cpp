@@ -1,201 +1,158 @@
+#define NOMINMAX
+#include <Windows.h>
+
 #include "StageCollisionGenerator.h"
-#include <vector>
 #include <string>
-#include <iostream>
-#include <unordered_set>
-#include <unordered_map>
-#include <algorithm>
+#include <vector>
+#include <cmath>
 
 #include "../Definition/CommonModule/MyJson.h"
 #include "../Component/Collider/Collider.h"
+#include "../GameObject/GameObject.h"
 
-//  Block構造体
-struct Block
+struct AABB
 {
-    int x = 0;
-    int y = 0;
-    int z = 0;
-    std::string type = "";
+    VECTOR min;
+    VECTOR max;
 };
 
-//  座標をキーにするための構造体
-struct Key
+bool IsNear(float a, float b, float eps = 0.01f)
 {
-    int x, y, z;
+    return fabsf(a - b) < eps;
+}
 
-    Key(int _x, int _y, int _z) : x(_x), y(_y), z(_z) {}
-
-    bool operator==(const Key& other) const
-    {
-        return x == other.x && y == other.y && z == other.z;
-    }
-};
-
-// ハッシュ関数
-struct KeyHash
+bool CanMerge(const AABB& a, const AABB& b)
 {
-    std::size_t operator()(const Key& k) const
+    // X方向接続
+    if (IsNear(a.max.x, b.min.x) || IsNear(b.max.x, a.min.x))
     {
-        return ((k.x * 73856093) ^
-            (k.y * 19349663) ^
-            (k.z * 83492791));
+        if (IsNear(a.min.y, b.min.y) && IsNear(a.max.y, b.max.y) &&
+            IsNear(a.min.z, b.min.z) && IsNear(a.max.z, b.max.z))
+            return true;
     }
-};
+
+    // Y方向接続（上下）
+    if (IsNear(a.max.y, b.min.y) || IsNear(b.max.y, a.min.y))
+    {
+        if (IsNear(a.min.x, b.min.x) && IsNear(a.max.x, b.max.x) &&
+            IsNear(a.min.z, b.min.z) && IsNear(a.max.z, b.max.z))
+            return true;
+    }
+
+    // Z方向接続
+    if (IsNear(a.max.z, b.min.z) || IsNear(b.max.z, a.min.z))
+    {
+        if (IsNear(a.min.x, b.min.x) && IsNear(a.max.x, b.max.x) &&
+            IsNear(a.min.y, b.min.y) && IsNear(a.max.y, b.max.y))
+            return true;
+    }
+
+    return false;
+}
+
+    AABB MergeTwo(const AABB & a, const AABB & b)
+    {
+        AABB r;
+
+        r.min.x = (std::min)(a.min.x, b.min.x);
+        r.min.y = (std::min)(a.min.y, b.min.y);
+        r.min.z = (std::min)(a.min.z, b.min.z);
+
+        r.max.x = (std::max)(a.max.x, b.max.x);
+        r.max.y = (std::max)(a.max.y, b.max.y);
+        r.max.z = (std::max)(a.max.z, b.max.z);
+
+        return r;
+    }
 
 
-// AABB生成のためのグリッドベースのグリーディアルゴリズム
-void StageCollisionGenerator::Generate(const std::string& path, CollisionManager& manager)
+void MergeAABB3D(std::vector<AABB>& boxes)
 {
-    auto json = MyJson::LoadJsonFile(path);
-    if (json.is_null())
+    bool merged = true;
+
+    while (merged)
     {
-        printfDx("JSON load failed");
-        return;
-    }
+        merged = false;
 
-    std::vector<Block> blocks;
-
-    for (auto& b : json["blocks"])
-    {
-        Block block;
-        block.x = b["x"];
-        block.y = b["y"];
-        block.z = b["z"];
-        block.type = b["type"];
-        blocks.push_back(block);
-    }
-
-    int ground = 0, tree = 0, bridge = 0;
-
-    for (auto& b : blocks)
-    {
-        if (b.type == "ground") ground++;
-        if (b.type == "tree") tree++;
-        if (b.type == "bridge") bridge++;
-    }
-
-    std::unordered_set<Key, KeyHash> grid;
-
-    for (auto& b : blocks)
-    {
-        //if (b.type != "ground") continue;
-        grid.insert(Key(b.x, b.y, b.z));
-    }
-
-	//  スケール
-    float scale = 100.0f;
-    
-	//  座標をソートするためのベクターにコピー
-    std::vector<Key> cells(grid.begin(), grid.end());
-
-    std::sort(cells.begin(), cells.end(),
-        [](const Key& a, const Key& b)
+        for (size_t i = 0; i < boxes.size(); i++)
         {
-            if (a.y != b.y) return a.y < b.y;
-            if (a.z != b.z) return a.z < b.z;
-            return a.x < b.x;
-        });
-
-	//  使用済みの座標を記録するためのセット
-    std::unordered_set<Key, KeyHash> used;
-
-    int colCount = 0;
-
-    for (auto& cell : cells)
-    {
-        if (used.count(cell)) continue;
-
-        int x = cell.x;
-        int y = cell.y;
-        int z = cell.z;
-
-		
-        int w = 1;
-        while (grid.count(Key(x + w, y, z)) &&
-            !used.count(Key(x + w, y, z)))
-        {
-            w++;
-        }
-
-        int d = 1;
-        bool expandZ = true;
-
-        while (expandZ)
-        {
-            for (int dx = 0; dx < w; dx++)
+            for (size_t j = i + 1; j < boxes.size(); j++)
             {
-                if (!grid.count(Key(x + dx, y, z + d)) ||
-                    used.count(Key(x + dx, y, z + d)))
+                if (CanMerge(boxes[i], boxes[j]))
                 {
-                    expandZ = false;
+                    boxes[i] = MergeTwo(boxes[i], boxes[j]);
+                    boxes.erase(boxes.begin() + j);
+                    merged = true;
                     break;
                 }
             }
-            if (expandZ) d++;
+
+            if (merged) break;
         }
+    }
+}
 
-        int h = 1;
-        bool expandY = true;
 
-        while (expandY)
-        {
-            for (int dz = 0; dz < d; dz++)
-            {
-                for (int dx = 0; dx < w; dx++)
-                {
-                    if (!grid.count(Key(x + dx, y + h, z + dz)) ||
-                        used.count(Key(x + dx, y + h, z + dz)))
-                    {
-                        expandY = false;
-                        break;
-                    }
-                }
-                if (!expandY) break;
-            }
-            if (expandY) h++;
-        }
+void StageCollisionGenerator::GenerateFromUnity(
+    const std::string& path,
+    CollisionManager& manager)
+{
+    auto json = MyJson::LoadJsonFile(path);
 
-		// 使用済みの座標を記録
-        for (int dy = 0; dy < h; dy++)
-            for (int dz = 0; dz < d; dz++)
-                for (int dx = 0; dx < w; dx++)
-                    used.insert(Key(x + dx, y + dy, z + dz));
+    if (json.is_null())
+    {
+        printfDx("JSON load failed\n");
+        return;
+    }
 
-		// AABBの座標を計算
-        // 通常座標
-        float minX = (x * scale);
-        float maxX = ((x + w) * scale);
+    std::vector<AABB> boxes;
 
-        float minZ = (z * scale);
-        float maxZ = ((z + d) * scale);
-        float minY = y * scale;
-        float maxY = (y + h) * scale;
+    float scale = 100.0f;
 
-		// 反転座標
-        minX = -minX;
-        maxX = -maxX;
-        minZ = -minZ;
-        maxZ = -maxZ;
+    for (auto& b : json["blocks"])
+    {
+        if (!b.contains("minX") || !b.contains("maxX"))
+            continue;
 
-		//  反転座標のminとmaxを入れ替え
-        if (minX > maxX) std::swap(minX, maxX);
-        if (minZ > maxZ) std::swap(minZ, maxZ);
+        float minX = b["minX"];
+        float minY = b["minY"];
+        float minZ = b["minZ"];
 
-		//  AABBコライダーを生成して登録
-        AABBCollider* col = new AABBCollider();
+        float maxX = b["maxX"];
+        float maxY = b["maxY"];
+        float maxZ = b["maxZ"];
 
-        col->SetMin(VGet(minX, minY, minZ));
-        col->SetMax(VGet(maxX, maxY, maxZ));
+        VECTOR min = VGet(-minX, minY, -minZ);
+        VECTOR max = VGet(-maxX, maxY, -maxZ);
+
+        min = VScale(min, scale);
+        max = VScale(max, scale);
+
+        if (min.x > max.x) std::swap(min.x, max.x);
+        if (min.z > max.z) std::swap(min.z, max.z);
+
+        boxes.push_back({ min, max });
+    }
+
+   
+    MergeAABB3D(boxes);
+
+
+    int colCount = 0;
+
+    for (auto& b : boxes)
+    {
+        GameObject* obj = new GameObject(-1, VZero, Tag::None);
+
+        AABBCollider* col = new AABBCollider(obj, VZero, VZero);
+        col->SetMin(b.min);
+        col->SetMax(b.max);
 
         manager.Register(col);
         colCount++;
     }
 
-	//  デバッグ情報を出力
-    printfDx("=== Collision Debug ===");
-    printfDx("ground : %d", ground);
-    printfDx("tree   : %d", tree);
-    printfDx("bridge : %d", bridge);
-    printfDx("collider: %d", colCount);
-    printfDx("scale : %.2f", scale);
+  
+    printfDx("=== Collision Debug (3D Greedy) ===\n");
+    printfDx("collider: %d\n", colCount);
 }

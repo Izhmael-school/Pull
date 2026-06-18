@@ -14,7 +14,6 @@ private:
 	std::unique_ptr<WalkEnemy> enemy;
 
 	class AABBCollider* AABB;
-	class CapsuleCollider* capsule;
 
 public:
 	CollisionDebugScene();
