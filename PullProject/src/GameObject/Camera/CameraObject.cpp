@@ -156,8 +156,7 @@ void CameraObject::PlayerUpdate() {
 		dir.y = 0;
 		dir = VNorm(dir);
 		dist = sqrtf(dist);
-		VECTOR targetPos = VAdd(GetPosition(), VScale(dir, dist));
-		pTransform->SetPosition(MyMath::Lerp(GetPosition(), targetPos, 0.2f));
+		pTransform->AddPosition(dir, speed);
 	}
 }
 
