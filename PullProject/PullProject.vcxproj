@@ -160,6 +160,7 @@
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
+    <ClCompile Include="src\Generator\StageCollisionGenerator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\CameraManager.cpp" />
     <ClCompile Include="src\Manager\CollisionManager.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
     <ClInclude Include="src\Generator\EnemyGenerator.h" />
+    <ClInclude Include="src\Generator\StageCollisionGenerator.h" />
     <ClInclude Include="src\Manager\CameraManager.h" />
     <ClInclude Include="src\Manager\CollisionManager.h" />
     <ClInclude Include="src\Manager\EnemyManager.h" />
@@ -223,6 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json" />
+    <None Include="src\Data\Stage_4.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

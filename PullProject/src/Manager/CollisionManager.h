@@ -24,6 +24,7 @@ public:
     void Register(Collider* col);
     void Update();
     void Render();
+    void Clear();
 
 private:
     bool CheckHit(Collider* a, Collider* b);
@@ -43,6 +44,7 @@ private:
     void ResolveSphereSphere(SphereCollider* a, SphereCollider* b);
     void ResolveSphereAABB(SphereCollider* s, AABBCollider* box);
 	void ResolveCapsuleAABB(CapsuleCollider* cap, AABBCollider* box);
+
 };
 
 #endif // !_COLLISIONMANAGER_H_

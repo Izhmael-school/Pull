@@ -24,77 +24,57 @@ Collider::~Collider()
 
 #pragma region AABBCollider
 
-// コンストラクタ
+
+AABBCollider::AABBCollider()
+	: Collider(nullptr)
+{
+	localMin = VGet(0, 0, 0);
+	localMax = VGet(0, 0, 0);
+	worldMin = localMin;
+	worldMax = localMax;
+}
+
 AABBCollider::AABBCollider(GameObject* obj, VECTOR min, VECTOR max)
 	: Collider(obj)
-	, localMin(min)
-	, localMax(max)
-	, worldMin(VZero)
-	, worldMax(VZero)
 {
+	localMin = min;
+	localMax = max;
+	worldMin = min;
+	worldMax = max;
 }
 
-// 更新
 void AABBCollider::Update()
 {
-
-
-	VECTOR pos = VZero;
-
-	if (pGameObject)
-		pos = pGameObject->GetPosition();
-
-	worldMin = VAdd(localMin, pos);
-	worldMax = VAdd(localMax, pos);
-
-
-	/*if (!isEnable) return;
-
-	VECTOR pos = pGameObject->GetPosition();
-
-	worldMin = VAdd(localMin, pos);
-	worldMax = VAdd(localMax, pos);*/
-
+	// シンプル同期
+	worldMin = localMin;
+	worldMax = localMax;
 }
 
-// 描画（デバッグ用）
 void AABBCollider::Render()
 {
-	if (!isEnable) return;
+	DrawCube3D(worldMin, worldMax, red, red, FALSE);
+}
 
-	// 8頂点をその場で生成
-	VECTOR v[8];
+VECTOR AABBCollider::GetMin() const
+{
+	return worldMin;
+}
 
-	v[0] = worldMin;
-	v[1] = VGet(worldMax.x, worldMin.y, worldMin.z);
-	v[2] = VGet(worldMin.x, worldMax.y, worldMin.z);
-	v[3] = VGet(worldMin.x, worldMin.y, worldMax.z);
-	v[4] = VGet(worldMin.x, worldMax.y, worldMax.z);
-	v[5] = VGet(worldMax.x, worldMin.y, worldMax.z);
-	v[6] = VGet(worldMax.x, worldMax.y, worldMin.z);
-	v[7] = worldMax;
+VECTOR AABBCollider::GetMax() const
+{
+	return worldMax;
+}
 
-	// 線で描画
-	DrawLine3D(v[0], v[1], red);
-	DrawLine3D(v[1], v[6], red);
-	DrawLine3D(v[6], v[2], red);
-	DrawLine3D(v[2], v[0], red);
+void AABBCollider::SetMin(VECTOR min)
+{
+	localMin = min;
+	worldMin = min;
+}
 
-	DrawLine3D(v[3], v[5], red);
-	DrawLine3D(v[5], v[7], red);
-	DrawLine3D(v[7], v[4], red);
-	DrawLine3D(v[4], v[3], red);
-
-	DrawLine3D(v[0], v[3], red);
-	DrawLine3D(v[1], v[5], red);
-	DrawLine3D(v[2], v[4], red);
-	DrawLine3D(v[6], v[7], red);
-
-
-	int color = isHit ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
-
-	DrawCube3D(worldMin, worldMax, color, color, TRUE);
-
+void AABBCollider::SetMax(VECTOR max)
+{
+	localMax = max;
+	worldMax = max;
 }
 
 void AABBCollider::Move(VECTOR offset)
@@ -184,5 +164,13 @@ void CapsuleCollider::Render()
 
 	DrawCapsule3D(worldStart, worldEnd, radius, 16, GetColor(0, 255, 0), GetColor(0, 255, 0), FALSE);
 }
+
+
+void CapsuleCollider::Move(VECTOR offset)
+{
+	localStart = VAdd(localStart, offset);
+	localEnd = VAdd(localEnd, offset);
+}
+
 
 #pragma endregion
