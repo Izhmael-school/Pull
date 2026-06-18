@@ -9,6 +9,9 @@
 #include "../../Component/Singleton.h"
 #include "../../GameObject/Stage/Stage.h"
 #include "../../GameObject/Stage/StageState.h"
+#include "../../Manager/ModelManager.h"
+#include "../../Data/Gimmick/StageLoader.h"
+
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -60,7 +63,7 @@ public:
 	 *	ステージの読み込み
 	 *  @param[in]	const std::vector<int> モデルハンドルの配列
 	 */
-	void LoadStage(const std::vector<int> modelHandleBase);
+	void LoadStage(int stageID);
 
 	/*
 	 *	ステージの切り替え

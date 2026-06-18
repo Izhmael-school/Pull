@@ -142,6 +142,7 @@
     <ClCompile Include="src\Component\Animator.cpp" />
     <ClCompile Include="src\Component\Collider\Collider.cpp" />
     <ClCompile Include="src\Component\Transform.cpp" />
+    <ClCompile Include="src\Data\Gimmick\StageLoader.cpp" />
     <ClCompile Include="src\Debug\DebugCamera.cpp" />
     <ClCompile Include="src\Debug\Scene\CollisionDebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\DebugScene.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
@@ -188,6 +190,7 @@
     <ClInclude Include="src\Component\Collider\Collider.h" />
     <ClInclude Include="src\Component\Singleton.h" />
     <ClInclude Include="src\Component\Transform.h" />
+    <ClInclude Include="src\Data\Gimmick\StageLoader.h" />
     <ClInclude Include="src\Data\json.hpp" />
     <ClInclude Include="src\Debug\DebugCamera.h" />
     <ClInclude Include="src\Debug\Scene\CollisionDebugScene.h" />
@@ -215,6 +218,7 @@
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\Lever.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\TriggerInterface.h" />

@@ -5,9 +5,9 @@
 
 #include "StageManager.h"
 
-/*
- *	コンストラクタ
- */
+ /*
+  *	コンストラクタ
+  */
 StageManager::StageManager() {
 }
 
@@ -23,16 +23,24 @@ void StageManager::Initialize() {
 /*
  *	ステージの読み込み
  */
-void StageManager::LoadStage(const std::vector<int> modelHandleBase) {
-	// モデルハンドルの複製、追加
-	for (auto model : modelHandleBase) {
-		// モデルハンドルの複製
-		int duplicatedModel = MV1DuplicateModel(model);
-		// ステージの状態管理に、複製したモデルハンドルを渡す
-		stageState.AddStageModelHandle(duplicatedModel);
-		// デバッグ用
-		loadedStage->SetModelHandle(duplicatedModel);
-	}
+void StageManager::LoadStage(int stageID) {
+	//ステージ設定JSONのパス生成
+	// ※後で絶対に直す
+	std::string stageFile = "src/Data/Gimmick/Stage" + std::to_string(stageID) + "Gimmick.json";
+
+	// ステージモデルロード
+	int stageModel =ModelManager::GetInstance().Load("res/Model/Stage/Stage4/Stage_4.mv1");
+
+	// モデルの複製
+	int duplicate = MV1DuplicateModel(stageModel);
+	// ステージ管理用リストに登録
+	stageState.AddStageModelHandle(duplicate);
+	// 現在のステージの実体にモデルを登録
+	loadedStage->SetModelHandle(duplicate);
+
+	// ギミックロード
+	StageLoader::Load(stageFile,duplicate );
+
 }
 
 /*
