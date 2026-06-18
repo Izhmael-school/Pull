@@ -63,8 +63,8 @@ void CameraObject::Update() {
 		CameraShake();
 
 	// カメラに反映
-	VECTOR pos = pTransform->GetPosition();
-	VECTOR rot = pTransform->GetLocalRotation();
+	VECTOR pos = GetPosition();
+	VECTOR rot = GetRotation();
 	SetCameraPositionAndAngle(
 		pos,
 		MyMath::Deg2Rad(rot.x),
@@ -114,18 +114,51 @@ void CameraObject::PlayerUpdate() {
 	if (!player) return;
 
 	// カメラの回転
+	//if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
+	//	pTransform->AddRotation(VLeft, 2);
+	//if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
+	//	pTransform->AddRotation(VRight, 2);
+	//if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
+	//	pTransform->AddRotation(VUp, 2);
+	//if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
+	//	pTransform->AddRotation(VDown, 2);
+	//
+	//// プレイヤーから離れた位置に配置
+	//VECTOR distance = VScale(pTransform->GetForward(), -PLAYER_DISTANCE);
+	//pTransform->SetPosition(VAdd(player->GetPosition(), distance));
+	
+	// 入力方向を保持
+	VECTOR moveVec = VZero;
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
-		pTransform->AddRotation(VLeft, 2);
+		moveVec = VAdd(moveVec, VScale(pTransform->GetUp(), -1));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
-		pTransform->AddRotation(VRight, 2);
+		moveVec = VAdd(moveVec, pTransform->GetUp());
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
-		pTransform->AddRotation(VUp, 2);
+		moveVec = VAdd(moveVec, VScale(pTransform->GetRight(), -1));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
-		pTransform->AddRotation(VDown, 2);
+		moveVec = VAdd(moveVec, pTransform->GetRight());
 
-	// プレイヤーから離れた位置に配置
-	VECTOR distance = VScale(pTransform->GetForward(), -PLAYER_DISTANCE);
-	pTransform->SetPosition(VAdd(player->GetPosition(), distance));
+	// 入力があれば回転
+	if (moveVec.x != 0 ||
+		moveVec.y != 0 ||
+		moveVec.z != 0) {
+		// カメラの移動
+		pTransform->AddPosition(moveVec, speed);
+	}
+
+	// プレイヤーの方を向く
+	pTransform->LookAt(player->GetPosition());
+
+	// プレイヤーとカメラの距離が規定距離を超えていたら近づける
+	VECTOR dir = VSub(player->GetPosition(), GetPosition());
+	float dist = VDot(dir, dir) - PLAYER_DISTANCE * PLAYER_DISTANCE;
+	if (dist > 0) {
+		dir.y = 0;
+		dir = VNorm(dir);
+		dist = sqrtf(dist);
+		VECTOR targetPos = VAdd(GetPosition(), VScale(dir, dist));
+		pTransform->SetPosition(MyMath::Lerp(GetPosition(), targetPos, 0.2f));
+	}
 }
 
 void CameraObject::PullUpdate() {
@@ -148,7 +181,8 @@ void CameraObject::PullUpdate() {
 
 	// プレイヤーから離れた位置に配置
 	VECTOR distance = VScale(pTransform->GetForward(), -distanceValue);
-	pTransform->SetPosition(VAdd(player->GetPosition(), distance));
+	VECTOR targetPos = VAdd(player->GetPosition(), distance);
+	pTransform->SetPosition(MyMath::Lerp(GetPosition(), targetPos, 0.2f));
 }
 
 void CameraObject::EventUpdate() {
