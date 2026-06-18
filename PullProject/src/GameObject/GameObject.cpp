@@ -7,6 +7,7 @@
 #include <cassert>
 #include "../Definition/CommonModule/MyMath.h"
 #include "Component/Collider/Collider.h"
+#include "../Manager/CollisionManager.h"
 
 GameObject::GameObject(int _modelHandle ,VECTOR _pos,Tag _tag)
 	:tag(_tag)
@@ -20,6 +21,14 @@ GameObject::GameObject(int _modelHandle ,VECTOR _pos,Tag _tag)
 
 GameObject::~GameObject() {
 	MV1DeleteModel(modelHandle);
+
+
+	if (pCollider)
+	{
+		CollisionManager::GetInstance().UnRegister(pCollider.get());
+	}
+
+
 }
 
 void GameObject::Start(){
