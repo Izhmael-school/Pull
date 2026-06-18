@@ -80,6 +80,11 @@ public:
 	inline int GetModelHandle() const { return modelHandle; }
 
 	/*
+	 * @brief タグの取得
+	 */
+	inline Tag GetTag() const { return tag; }
+
+	/*
 	 * @brief 当たった時
 	 */
 	virtual void OnTriggerEnter(Collider* _pOther);

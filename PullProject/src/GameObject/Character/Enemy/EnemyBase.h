@@ -84,22 +84,22 @@ protected:	// 行動
 	/*
 	 * @brief 移動
 	 */
-	void Move(VECTOR targetPos);
+	virtual void Move(VECTOR targetPos);
 
 	/*
 	 * @brief 徘徊
 	 */
-	void WanderingAction();
+	virtual void WanderingAction();
 
 	/*
 	 * @brief 追跡
 	 */
-	void TracingAction();
+	virtual void TracingAction();
 
 	/*
 	 * @brief 攻撃
 	 */
-	void AttackAction();
+	virtual void AttackAction();
 
 	/*
 	 * @brief 待機
@@ -126,5 +126,7 @@ public:
 	 * @brief アニメーションのループ化
 	 */
 	void LoopAnim(std::string _animName);
+
+	void OnTriggerStay(Collider* _pOther) override;
 };
 #endif // !_ENEMYBASE_H_

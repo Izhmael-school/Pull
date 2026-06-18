@@ -21,6 +21,7 @@ private:
 	float lifeTime;	// 生きる時間
 	float lifeElapsedTime; // 生きている時間
 	bool isDisable;	// 時間経過で消えるか
+	bool wantDelete;	// 消してほしいか
 
 public:
 	/*
@@ -30,7 +31,7 @@ public:
 	 * @param _stayEvent 当たってる時のイベント
 	 * @param _exitEvent 出た時のイベント
 	 */
-	ColliderObject(VECTOR _pos, int _radius, Tag _tag = None,float _lifeTime = 1.0f, std::function<void(Collider* _pOther)> _enterEvent = nullptr,
+	ColliderObject(VECTOR _pos, float _radius, Tag _tag = None,float _lifeTime = 1.0f, std::function<void(Collider* _pOther)> _enterEvent = nullptr,
 																std::function<void(Collider* _pOther)> _stayEvent = nullptr,
 																std::function<void(Collider* _pOther)> _exitEvent = nullptr);
 	/*
@@ -50,7 +51,7 @@ public:
 	 * @param _stayEvent 当たってる時のイベント
 	 * @param _exitEvent 出た時のイベント
 	 */
-	ColliderObject(VECTOR _pos, VECTOR _min, VECTOR _max, int _radius, Tag _tag = None, float _lifeTime = 1.0f, std::function<void(Collider* _pOther)> _enterEvent = nullptr,
+	ColliderObject(VECTOR _pos, VECTOR _min, VECTOR _max, float _radius, Tag _tag = None, float _lifeTime = 1.0f, std::function<void(Collider* _pOther)> _enterEvent = nullptr,
 																												std::function<void(Collider* _pOther)> _stayEvent = nullptr,
 																												std::function<void(Collider* _pOther)> _exitEvent = nullptr);
 
@@ -67,6 +68,8 @@ public:
 	void OnTriggerEnter(Collider* _pOther) override;
 	void OnTriggerStay(Collider* _pOther) override;
 	void OnTriggerExit(Collider* _pOther) override;
+
+	inline bool WantDelete() const { return wantDelete; }
 };
 
 #endif // !_COLLIDEROBJECT_H_
