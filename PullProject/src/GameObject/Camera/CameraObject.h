@@ -26,7 +26,7 @@ private:
 	};
 	CameraMode mode;		// カメラのモード
 	float speed;			// 移動速度
-	float shakePower;		// シェイクの大さ
+	float shakePower;		// シェイクの大きさ
 	float shakeTime;		// シェイクの時間
 	float shakeElapsedTime;	// シェイクの経過時間
 	bool isShaking;			// シェイク中か否か

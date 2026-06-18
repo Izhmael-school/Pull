@@ -52,16 +52,16 @@ void PlayerCharacter::Render() {
  *	移動
  */
 void PlayerCharacter::Move() {
-	auto camera = CameraManager::GetInstance().GetCamera()->GetTransform();
+	auto camera = CameraManager::GetInstance().GetCamera();
 	if (!camera) return;
 	playerState = PlayerState::Normal;
 
 	// カメラのヨー(ラジアン)
-	float yaw = MyMath::Deg2Rad(camera->GetLocalRotation().y);
+	float cameraYaw = MyMath::Deg2Rad(camera->GetRotation().y);
 
 	// カメラの角度のsin,cos
-	float cameraSin = sinf(yaw);
-	float cameraCos = cosf(yaw);
+	float cameraSin = sinf(cameraYaw);
+	float cameraCos = cosf(cameraYaw);
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_W))
 		pTransform->AddPosition(VGet(speed * cameraSin, 0, speed * cameraCos));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_S))
