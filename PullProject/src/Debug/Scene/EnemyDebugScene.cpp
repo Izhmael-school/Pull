@@ -13,6 +13,7 @@
 #include "GameObject/Camera/CameraObject.h"
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
+#include "Manager/ColliderObjectManager.h"
 #include "Manager/PlayerManager.h"
 
 
@@ -21,8 +22,8 @@ EnemyDebugScene::EnemyDebugScene() { Start(); }
 void EnemyDebugScene::Start()
 {
 	PlayerManager::GetInstance().CreatePlayer();
-	PlayerManager::GetInstance().GetPlayer()->GetTransform()->AddPosition(VScale(VUp,400));
-	
+	PlayerManager::GetInstance().GetPlayer()->GetTransform()->AddPosition(VScale(VUp,200));
+
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
 	
@@ -42,6 +43,8 @@ void EnemyDebugScene::Start()
 
 void EnemyDebugScene::Update()
 {
+	ColliderObjectManager::GetInstance().Update();
+	CollisionManager::GetInstance().Update();
 	PlayerManager::GetInstance().GetPlayer()->Update();
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
@@ -101,7 +104,7 @@ void EnemyDebugScene::Render(){
 			DrawLine3D(pos1, pos2, blue);
 		}
 	}
-
+	ColliderObjectManager::GetInstance().Render();;
 #endif
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
