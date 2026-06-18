@@ -24,7 +24,7 @@
     {
       "type": "BreakWall",
       "Model": "res/Model/Gimmick/BreakWall.mv1",
-      "LeverID1": 2,
+      "LeverID": 2,
       "position": "BreakWall_SP1"
     }
   ]

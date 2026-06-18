@@ -34,7 +34,7 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		VECTOR pos = MV1GetFramePosition(stageHandle, frame);
 		
 		// モデルを設定
-		int model = ModelManager::GetInstance().Load(gimmick["model"]);
+		int model = ModelManager::GetInstance().Load(gimmick["Model"]);
 		
 		// 生成
 		GimmickObject* object =
@@ -62,7 +62,7 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		VECTOR pos = MV1GetFramePosition(stageHandle, frame);
 
 		// モデルを設定
-		int model = ModelManager::GetInstance().Load(lever["model"]);
+		int model = ModelManager::GetInstance().Load(lever["Model"]);
 
 		// レバーオブジェクトを生成
 		Lever* obj = new Lever(id, model, pos);
