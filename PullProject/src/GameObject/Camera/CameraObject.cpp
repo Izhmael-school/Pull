@@ -29,13 +29,18 @@ void CameraObject::Start() {
 
 void CameraObject::Update() {
 	pTransform->Update();
+
+#if _DEBUG
 	// 引っ張りモード
-	if (PlayerManager::GetInstance().GetPlayer()->IsCatch()) {
-		mode = CameraMode::Pull;
+	if (mode == CameraMode::Player || mode == CameraMode::Pull) {
+		if (PlayerManager::GetInstance().GetPlayer()->IsCatch()) {
+			mode = CameraMode::Pull;
+		}
+		else {
+			mode = CameraMode::Player;
+		}
 	}
-	else {
-		mode = CameraMode::Player;
-	}
+#endif
 
 	// 各モード毎の更新処理
 	switch (mode) {
@@ -80,13 +85,13 @@ void CameraObject::Update() {
 
 void CameraObject::DebugUpdate() {
 	// 回転
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP)) 
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
 		pTransform->AddRotation(VLeft, 2);
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN)) 
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
 		pTransform->AddRotation(VRight, 2);
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT)) 
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
 		pTransform->AddRotation(VUp, 2);
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT)) 
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
 		pTransform->AddRotation(VDown, 2);
 
 	// 移動
@@ -130,9 +135,10 @@ void CameraObject::PullUpdate() {
 	// プレイヤーの引き具合によってカメラの位置調整
 	// ズーム割合の差
 	float zoomRatioDiff = PULL_ZOOM_RATIO_MAX - PULL_ZOOM_RATIO_MIN;
-	
+	// イーズアウト補間
+	// 最初は速く、最後は遅く引くように演出
 	float pullRatio = player->GetPullValueRatio();
-	pullRatio = 1.0f - (1.0f - pullRatio) * (1.0f - pullRatio);
+	pullRatio = 1.0f - powf(1.0f - pullRatio, 2.0f);
 	// ズーム割合の差に引き抜き割合を適応
 	float pullRatioDiff = pullRatio * zoomRatioDiff;
 	// 実際のズーム割合
@@ -159,7 +165,7 @@ void CameraObject::CameraShake() {
 		// シェイク
 		float shakeValue = GetRand(shakePower * 2) - shakePower;
 		pTransform->AddPosition(VScale(VOne, shakeValue));
-		
+
 		// 時間が経過しきったら終了
 		shakeElapsedTime++;
 		if (shakeElapsedTime >= shakeTime) {
