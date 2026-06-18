@@ -12,6 +12,8 @@
 #include "GameObject/Stage/Gimmick/GimmickObject.h"
 #include "GameObject/Stage/Gimmick/TriggerInterface.h"
 
+#include "../../../Definition/CommonModule/MyMath.h"
+
  /*
   *	壊れる壁
   *  @param GameObject
@@ -25,6 +27,7 @@ private:
 	bool isFading;	// フェード中かどうか
 	float opacity;	// アルファ値
 	float fadeSpeed;// フェード速度
+
 public:
 	/*
 	 *	コンストラクタ
@@ -64,6 +67,11 @@ public:
 	 *	IDの取得
 	 */
 	int GetTriggerID() const override { return triggerID; };
+
+	/*
+	 * レバー配置位置取得
+	 */
+	VECTOR GetLeverSpawnPosition() const override;
 
 };
 

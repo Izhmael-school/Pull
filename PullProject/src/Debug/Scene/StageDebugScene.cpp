@@ -85,7 +85,7 @@ void StageDebugScene::Update()
 
 	// 上（8）
 	if (CheckHitKey(KEY_INPUT_C)) {
-		lever->Activate();
+		GimmickManager::GetInstance().ActivateLever(2);
 	}
 	
 	// ===== ギミックの更新 ====

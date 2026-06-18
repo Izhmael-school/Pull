@@ -6,6 +6,7 @@
 #ifndef _TRIGGERINTERFACE_H_
 #define _TRIGGERINTERFACE_H_
 
+#include <DxLib.h>
 /*
  *	レバーに対応したギミックのインターフェース
  */
@@ -25,6 +26,11 @@ public:
 	 *	自身のIDの取得
 	 */
 	virtual int GetTriggerID() const = 0;
+
+	/*
+	 * レバー配置位置取得
+	 */
+	virtual VECTOR GetLeverSpawnPosition() const = 0;
 };
 
 

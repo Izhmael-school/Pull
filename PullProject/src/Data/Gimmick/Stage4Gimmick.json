@@ -3,29 +3,29 @@
     {
       "Model": "res/Model/Gimmick/Lever.mv1",
       "LeverID": 1,
-      "position": "LeverPoint"
+      "Position": "LeverPoint"
     },
     {
       "Model": "res/Model/Gimmick/Lever.mv1",
       "LeverID": 2,
-      "position": "LeverPoint"
+      "Position": "LeverPoint"
 
     }
   ],
 
-  "gimmicks": [
+  "Gimmicks": [
     {
-      "type": "BreakWall",
+      "Type": "BreakWall",
       "Model": "res/Model/Gimmick/BreakWall.mv1",
       "LeverID": 1,
-      "position": "BreakWall_SP0"
+      "Position": "BreakWall_SP0"
     },
 
     {
-      "type": "BreakWall",
+      "Type": "BreakWall",
       "Model": "res/Model/Gimmick/BreakWall.mv1",
       "LeverID": 2,
-      "position": "BreakWall_SP1"
+      "Position": "BreakWall_SP1"
     }
   ]
 }

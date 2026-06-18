@@ -5,10 +5,14 @@
 #include "BreakWall.h"
 #include "Manager/Stage/GimmickManager.h"
 
+namespace {
+	// レバーの生成位置
+	constexpr const char* _LEVER_SPAWNPOS_NAME = "LeverPoint";
+}
 
- /*
-  *	コンストラクタ
-  */
+/*
+ *	コンストラクタ
+ */
 BreakWall::BreakWall(int id, int modelHandle, VECTOR pos)
 	:GimmickObject(modelHandle, pos)
 	, triggerID(id)
@@ -25,13 +29,13 @@ void BreakWall::Setup() {
 	GimmickObject::Setup();
 	// レバー対応ギミックの末尾に追加
 	GimmickManager::GetInstance().RegisterLeverReceiver(triggerID, this);
-	
+
 }
 
 /*
  *	更新処理
  */
-void BreakWall::Update(){
+void BreakWall::Update() {
 	GimmickObject::Update();
 	// ギミックが起動したら
 	if (isFading) {
@@ -55,7 +59,7 @@ void BreakWall::Render() {
 
 	// 描画
 	GimmickObject::Render();
-	
+
 }
 
 /*
@@ -69,6 +73,22 @@ void BreakWall::OnTriggered() {
 
 	// フェード処理を開始判定にする
 	isFading = true;
+}
+
+/*
+ *	レバーの生成位置を取得
+ */
+VECTOR BreakWall::GetLeverSpawnPosition() const
+{
+	// モデル内のLeverPointフレーム検索
+	int frame = MV1SearchFrame(modelHandle, _LEVER_SPAWNPOS_NAME);
+	// ローカル座標
+	VECTOR localPos = MV1GetFramePosition(modelHandle, frame);
+	// ワールド座標
+	VECTOR worldPos = VAdd(GetPosition(), localPos);
+
+	// 生成位置を返す
+	return worldPos;
 }
 
 /*
