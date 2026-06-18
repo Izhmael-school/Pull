@@ -16,7 +16,7 @@ class TriggerInterface;
 
 class GimmickManager :public Singleton<GimmickManager> {
 	// フレンド宣言
-	friend class Singleton<GimmickManager>;
+	friend class Singleton<GimmickManager>;	
 private:
 	// レバーIDと対応ギミック
 	std::unordered_map<int, std::vector<TriggerInterface*>> triggerGimmickMaps;

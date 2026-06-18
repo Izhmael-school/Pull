@@ -7,13 +7,15 @@
 #include "Manager/Stage/GimmickManager.h"
 
 
-/*
- *  コンストラクタ
- */
+ /*
+  *  コンストラクタ
+  */
 Lever::Lever(int id, int modelHandle, VECTOR pos)
-	:GameObject(modelHandle, pos)
-	,triggerID(id)
-	,isActivated(false) {
+	:GimmickObject(modelHandle, pos)
+	, triggerID(id)
+	, isActivated(false)
+	, OnLever(false)
+	, opacity(1.0f){
 }
 
 
@@ -21,24 +23,43 @@ Lever::Lever(int id, int modelHandle, VECTOR pos)
  *  更新
  */
 void Lever::Update() {
-    // 後に実装
-    // プレイヤー側でフラグ変更
-    // フラグの変更が確認されたらActivate関数を呼ぶ
-    if (OnLever) {
-        // ギミック起動
-        Activate();
-    }
-    
+	// 後に実装
+	// プレイヤー側でフラグ変更
+	// フラグの変更が確認されたらActivate関数を呼ぶ
+	if (OnLever) {
+		// ギミック起動
+		Activate();
+	}
+
+}
+
+/*
+ *  描画処理
+ */
+void Lever::Render() {
+	// モデルハンドルなければ処理を抜ける
+	if (modelHandle <= 0) return;
+	// 壊れていたら描画しない
+	if (isActivated) return;
+
+	// モデルの透明度を設定
+	MV1SetOpacityRate(modelHandle, opacity);
+
+	// 描画
+	GimmickObject::Render();
 }
 
 /*
  *  ギミック起動
  */
 void Lever::Activate() {
-    // 現在使用可能か
-    if (isActivated) return;
-    // 使用状態に変更
-    isActivated = true;
-    // 起動したレバーのIDを渡す
-    GimmickManager::GetInstance().ActivateLever(triggerID);
+	// 現在使用可能か
+	if (isActivated) return;
+	// 使用状態に変更
+	isActivated = true;
+	// レバーを透明にする
+	opacity = 0.0f;
+	// 起動したレバーのIDを渡す
+	GimmickManager::GetInstance().ActivateLever(triggerID);
+
 }

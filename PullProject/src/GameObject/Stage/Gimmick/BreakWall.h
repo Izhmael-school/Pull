@@ -9,6 +9,7 @@
 
 
 #include "GameObject/GameObject.h"
+#include "GameObject/Stage/Gimmick/GimmickObject.h"
 #include "GameObject/Stage/Gimmick/TriggerInterface.h"
 
  /*
@@ -16,7 +17,7 @@
   *  @param GameObject
   *  @param TriggerInterface		レバー対応ギミックのためインターフェース継承
   */
-class BreakWall : public GameObject, public TriggerInterface {
+class BreakWall : public GimmickObject, public TriggerInterface {
 private:
 	int triggerID;	// 自身のID
 	bool isBroken;	// 壊れたかどうか

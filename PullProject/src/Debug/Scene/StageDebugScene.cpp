@@ -13,6 +13,8 @@
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/Stage/GimmickManager.h"
+#include "../../GameObject/GameObject.h"
+#include "../../Manager/Stage/GimmickObjectManager.h"
 
 
 StageDebugScene::StageDebugScene() { Start(); }
@@ -21,7 +23,6 @@ void StageDebugScene::Start()
 {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
-
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
 
@@ -29,6 +30,8 @@ void StageDebugScene::Start()
 	int stageHandle = MV1LoadModel("res/Model/Stage/Stage4/Stage_4.mv1");
 	// 壊れる壁のモデルの仮ロード
 	int wallModel = MV1LoadModel("res/Model/Gimmick/BreakWall.mv1");
+	// レバーモデルの仮ロード
+	int leverModel = MV1LoadModel("res/Model/Gimmick/Lever.mv1");
 
 	// 仮モデルのみのリストを作成
 	std::vector<int> stageHandleList{ stageHandle };
@@ -44,13 +47,21 @@ void StageDebugScene::Start()
 		wallModel,
 		MV1GetFramePosition(stageHandle,174));
 	// レバー生成
+	VECTOR wallPos = MV1GetFramePosition(stageHandle, 174);
+
+	VECTOR localLeverPos = MV1GetFramePosition(wallModel, 2);
+
+	VECTOR leverPos = VAdd(wallPos, localLeverPos);
 	lever = std::make_unique<Lever>(
 		1,
-		-1,
-		MV1GetFramePosition(stageHandle, 174));
+		leverModel,
+		leverPos);
 
 	// 壊れる壁のセットアップ処理を呼ぶ
-	breakWall->Setup();
+	GimmickObjectManager::GetInstance().Register(
+		breakWall.get());
+
+	
 
 	// コライダー
 	AABB = new AABBCollider(nullptr,
@@ -113,7 +124,8 @@ void StageDebugScene::Update()
 	// ===== 更新（重要）=====
 	capsule->Update();
 	AABB->Update();
-
+	
+	
 	// ===== 当たり判定 =====
 	CollisionManager::GetInstance().Update();
 
@@ -175,6 +187,7 @@ void StageDebugScene::Render() {
 	// 描画
 	StageManager::GetInstance().Render();
 	breakWall->Render();
+	lever->Render();
 	enemy->Render();
 
 	CollisionManager::GetInstance().Render();

@@ -1,0 +1,31 @@
+{
+  "Lever": [
+    {
+      "Model": "res/Model/Gimmick/Lever.mv1",
+      "LeverID": 1,
+      "position": "LeverPoint"
+    },
+    {
+      "Model": "res/Model/Gimmick/Lever.mv1",
+      "LeverID": 2,
+      "position": "LeverPoint"
+
+    }
+  ],
+
+  "gimmicks": [
+    {
+      "type": "BreakWall",
+      "Model": "res/Model/Gimmick/BreakWall.mv1",
+      "LeverID": 1,
+      "position": "BreakWall_SP0"
+    },
+
+    {
+      "type": "BreakWall",
+      "Model": "res/Model/Gimmick/BreakWall.mv1",
+      "LeverID1": 2,
+      "position": "BreakWall_SP1"
+    }
+  ]
+}

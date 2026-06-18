@@ -8,12 +8,15 @@
 
 
 #include "../../GameObject.h"
+#include "../Gimmick/GimmickObject.h"
 
-class Lever : public GameObject {
+class Lever : public GimmickObject {
 private:
 	int triggerID;		// レバーのID
 	bool isActivated;	// 使用可能状態可否
 	bool OnLever;		// ギミック起動
+
+	float opacity;		// α値
 
 public:
 	
@@ -26,6 +29,13 @@ public:
 	 *	更新処理
 	 */
 	void Update()override;
+
+	
+	/*
+	 *	描画処理
+	 */
+	void Render()override;
+
 
 	/*
 	 *	使用状態

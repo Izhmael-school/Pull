@@ -10,18 +10,19 @@
   *	コンストラクタ
   */
 BreakWall::BreakWall(int id, int modelHandle, VECTOR pos)
-	:GameObject(modelHandle, pos)
+	:GimmickObject(modelHandle, pos)
 	, triggerID(id)
 	, isBroken(false)
 	, isFading(false)
 	, opacity(1.0f)
-	, fadeSpeed(0.9f) {
+	, fadeSpeed(0.01f) {
 }
 
 /*
  *	使用前準備
  */
 void BreakWall::Setup() {
+	GimmickObject::Setup();
 	// レバー対応ギミックの末尾に追加
 	GimmickManager::GetInstance().RegisterLeverReceiver(triggerID, this);
 	
@@ -31,6 +32,7 @@ void BreakWall::Setup() {
  *	更新処理
  */
 void BreakWall::Update(){
+	GimmickObject::Update();
 	// ギミックが起動したら
 	if (isFading) {
 		// 徐々に透明にしていく
@@ -42,7 +44,6 @@ void BreakWall::Update(){
  *	描画処理
  */
 void BreakWall::Render() {
-	GameObject::Render();
 	// モデルハンドルなければ処理を抜ける
 	if (modelHandle <= 0) return;
 	// 壊れていたら描画しない
@@ -53,7 +54,7 @@ void BreakWall::Render() {
 	MV1SetOpacityRate(modelHandle, opacity);
 
 	// 描画
-	//MV1DrawModel(modelHandle);
+	GimmickObject::Render();
 	
 }
 
