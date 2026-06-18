@@ -75,8 +75,8 @@ void ColliderObject::OnTriggerEnter(Collider* _pOther) {
 }
 
 void ColliderObject::OnTriggerStay(Collider* _pOther) {
-	if (stayEvent);
-	stayEvent(_pOther);
+	if (stayEvent)
+		stayEvent(_pOther);
 }
 
 void ColliderObject::OnTriggerExit(Collider* _pOther) {

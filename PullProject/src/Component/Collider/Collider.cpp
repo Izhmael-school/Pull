@@ -1,5 +1,6 @@
 #include "Collider.h"
 #include "../../Definition/Const/ColorConst.h"
+#include "Manager/CollisionManager.h"
 #pragma region Collider
 
 /*
@@ -12,6 +13,7 @@ Collider::Collider(GameObject* _pObj)
 	: isEnable(true)
 	, pGameObject(_pObj)
 {
+	CollisionManager::GetInstance().Register(this);
 }
 
 // デストラクタ
