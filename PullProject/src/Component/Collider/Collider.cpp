@@ -64,35 +64,34 @@ VECTOR AABBCollider::GetMax() const
 {
 	return worldMax;
 }
-
-<<<<<<< HEAD
-	// 線で描画
-	DrawLine3D(v[0], v[1], red);
-	DrawLine3D(v[1], v[6], red);
-	DrawLine3D(v[6], v[2], red);
-	DrawLine3D(v[2], v[0], red);
-
-	DrawLine3D(v[3], v[5], red);
-	DrawLine3D(v[5], v[7], red);
-	DrawLine3D(v[7], v[4], red);
-	DrawLine3D(v[4], v[3], red);
-
-	DrawLine3D(v[0], v[3], red);
-	DrawLine3D(v[1], v[5], red);
-	DrawLine3D(v[2], v[4], red);
-	DrawLine3D(v[6], v[7], red);
-
-
-	int color = isHit ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
-
-	DrawCube3D(worldMin, worldMax, color, color, FALSE);
-=======
+//
+//<<<<<<< HEAD
+//	// 線で描画
+//	DrawLine3D(v[0], v[1], red);
+//	DrawLine3D(v[1], v[6], red);
+//	DrawLine3D(v[6], v[2], red);
+//	DrawLine3D(v[2], v[0], red);
+//
+//	DrawLine3D(v[3], v[5], red);
+//	DrawLine3D(v[5], v[7], red);
+//	DrawLine3D(v[7], v[4], red);
+//	DrawLine3D(v[4], v[3], red);
+//
+//	DrawLine3D(v[0], v[3], red);
+//	DrawLine3D(v[1], v[5], red);
+//	DrawLine3D(v[2], v[4], red);
+//	DrawLine3D(v[6], v[7], red);
+//
+//
+//	int color = isHit ? GetColor(255, 0, 0) : GetColor(0, 255, 0);
+//
+//	DrawCube3D(worldMin, worldMax, color, color, FALSE);
+//=======
 void AABBCollider::SetMin(VECTOR min)
 {
 	localMin = min;
 	worldMin = min;
 }
->>>>>>> TT
 
 void AABBCollider::SetMax(VECTOR max)
 {

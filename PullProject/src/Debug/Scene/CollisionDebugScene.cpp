@@ -41,8 +41,6 @@ void CollisionDebugScene::Start()
 
 	CollisionManager::GetInstance().Register(capsule);
 
-
-	// ✅ ✅ ✅ ここ追加
 	StageCollisionGenerator generator;
 	generator.Generate("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
@@ -63,7 +61,6 @@ void CollisionDebugScene::Update()
 
 	capsule->Move(move);
 
-	// ✅ これだけでOK
 	CollisionManager::GetInstance().Update();
 }
 void CollisionDebugScene::Render(){
