@@ -26,31 +26,21 @@ void CollisionManager::CheckRegister(Collider* _pCol) {
 #pragma endregion
 
 #pragma region 削除
-void CollisionManager::UnRegister(Collider* _pCol) {
-
+void CollisionManager::UnRegister(Collider* _pCol)
+{
 	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
 	if (itr == pColliderArray.end()) return;
 
-	int index = std::distance(pColliderArray.begin(), itr);
-
 	pColliderArray.erase(itr);
-
-	prevs.erase(prevs.begin() + index);
-	currents.erase(currents.begin() + index);
-
-	for (auto& row : prevs) {
-		row.erase(row.begin() + index);
-	}
-	for (auto& row : currents) {
-		row.erase(row.begin() + index);
-	}
 }
 
 void CollisionManager::UnRegisterAll() {
-	while (!pColliderArray.empty()) {
-		UnRegister(pColliderArray.back());
-	}
+	pColliderArray.clear();
+
+	prevs.clear();
+	currents.clear();
 }
+
 #pragma endregion
 
 #pragma region 更新
@@ -232,4 +222,6 @@ void CollisionManager::Render()
 void CollisionManager::Clear()
 {
 	pColliderArray.clear();
+	prevs.clear();
+	currents.clear();
 }
