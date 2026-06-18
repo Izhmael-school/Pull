@@ -47,9 +47,9 @@ void GameObject::Update() {
 void GameObject::Render() {
 	if (!isActive) return;
 
-	// ƒ‚ƒfƒ‹‚ª‚È‚¢‚È‚ç•`‰æ‚µ‚È‚¢
+	// ãƒ¢ãƒ‡ãƒ«ãŒç„¡ã„ãªã‚‰æç”»ã—ãªã„
 	if(modelHandle == -1) return;
-	// --- ’Êíƒ‚ƒfƒ‹•`‰æ ---
+	
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	MV1SetMatrix(modelHandle, pTransform->GetMatrix());
 	MV1DrawModel(modelHandle);
