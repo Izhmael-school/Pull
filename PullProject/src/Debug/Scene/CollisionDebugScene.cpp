@@ -23,11 +23,7 @@ void CollisionDebugScene::Start()
 	CameraManager::GetInstance().CreateCamera();
 
 	StageManager::GetInstance().Initialize();
-
-	int stageHandle = MV1LoadModel("res/Model/Stage/Stage4/Stage_4.mv1");
-	std::vector<int> stageHandleList{ stageHandle };
-
-	StageManager::GetInstance().LoadStage(stageHandleList);
+	StageManager::GetInstance().LoadStage(4);
 
 	enemy = std::make_unique<WalkEnemy>(-1, VGet(0, 400, 0));
 

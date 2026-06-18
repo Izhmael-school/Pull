@@ -23,12 +23,8 @@ void DebugScene::Start()
 	
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
-	// モデルの仮ロード
-	int stageHandle = MV1LoadModel("res/Model/Stage/Stage4/Stage_4.mv1");
-	// 仮モデルのみのリストを作成
-	std::vector<int> stageHandleList{stageHandle};
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
-	StageManager::GetInstance().LoadStage(stageHandleList);
+	StageManager::GetInstance().LoadStage(4);
 
 
 	AABB = new AABBCollider(nullptr,
