@@ -35,62 +35,62 @@ public:
 	virtual void Setup();
 
 	/*
-	 * @brief ƒ‚ƒfƒ‹‚Ìíœ
+	 * @brief ãƒ¢ãƒ‡ãƒ«ã®å‰Šé™¤
 	 */
 	virtual void DeleteModel();
 
 	/*
-	 * @brief ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚Ìæ“¾ 
+	 * @brief ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®å–å¾—
 	 */
 	inline Transform* GetTransform() const { return pTransform.get(); }
 
 	/*
-	 * @brief À•W‚Ìæ“¾
+	 * @brief åº§æ¨™ã®å–å¾—
 	 */
 	inline VECTOR GetPosition() const { return pTransform->GetPosition(); }
 
 	/*
-	 * @brief ‰ñ“]‚Ìæ“¾
+	 * @brief å›è»¢ã®å–å¾—
 	 */
 	inline VECTOR GetRotation() const { return pTransform->GetLocalRotation(); }
 
 	/*
-	 * @brief Šgk‚Ìæ“¾
+	 * @brief æ‹¡ç¸®ã®å–å¾—
 	 */
 	inline VECTOR GetScale() const { return pTransform->GetScale(); }
 
 	/*
-	 * @brief XV‰Â”Ûæ“¾
+	 * @brief æœ‰åŠ¹ã‹
 	 */
 	inline bool IsActive() const { return isActive; }
 
 	/*
-	 * @brief XV‰Â”Û
+	 * @brief æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	 */
 	inline void SetActive(bool _isActive) { isActive = _isActive; }
 
 	/*
-	 * @brief ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹‚Ì‘ã“ü
+	 * @brief ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã®ã‚»ãƒƒãƒˆ
 	 */
 	inline void SetModelHandle(int _mHandle) { modelHandle = _mHandle; }
 
 	/*
-	 * @brief ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹‚Ìæ“¾
+	 * @brief ãƒ¢ãƒ‡ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã®å–å¾—
 	 */
 	inline int GetModelHandle() const { return modelHandle; }
 
 	/*
-	 * @brief “–‚½‚Á‚½
+	 * @brief å½“ãŸã£ãŸæ™‚
 	 */
 	virtual void OnTriggerEnter(Collider* _pOther);
 
 	/*
-	 * @brief “–‚½‚Á‚Ä‚é
+	 * @brief å½“ãŸã£ã¦ã‚‹ã¨ã
 	 */
 	virtual void OnTriggerStay(Collider* _pOther);
 
 	/*
-	 * @brief —£‚ê‚½
+	 * @brief é›¢ã‚ŒãŸæ™‚
 	 */
 	virtual void OnTriggerExit(Collider* _pOther);
 };
