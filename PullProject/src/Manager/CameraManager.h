@@ -42,6 +42,8 @@ public:
 	 *	カメラ取得
 	 */
 	inline CameraObjectPtr GetCamera() { return camera; }
+
 };
+
 
 #endif // !_CAMERAMANAGER_H_

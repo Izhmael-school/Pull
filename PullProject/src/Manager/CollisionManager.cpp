@@ -22,9 +22,10 @@ void CollisionManager::Register(Collider* col)
 void CollisionManager::Update()
 {
 
-
     for (auto col : colliders)
     {
+        if (!col) continue;
+        col->Update();
         col->SetPrevHit(col->IsHit());
         col->SetHit(false);           
     }
@@ -47,12 +48,12 @@ void CollisionManager::Update()
                 a->SetHit(true);
                 b->SetHit(true);
 
-                // 当たった瞬間だけ出す
-                if ((!a->IsPrevHit() && a->IsHit()) ||
-                    (!b->IsPrevHit() && b->IsHit()))
-                {
-                    printfDx("Hit!\n");
-                }
+                //// 当たった瞬間だけ出す
+                //if ((!a->IsPrevHit() && a->IsHit()) ||
+                //    (!b->IsPrevHit() && b->IsHit()))
+                //{
+                //    printfDx("Hit!\n");
+                //}
 
                 //  押し出し
                 if (auto s1 = dynamic_cast<SphereCollider*>(a))
@@ -366,3 +367,13 @@ void CollisionManager::Render()
 }
 
 #pragma endregion
+
+
+void CollisionManager::Clear()
+{
+    for (auto col : colliders)
+    {
+        delete col;
+    }
+    colliders.clear();
+}
