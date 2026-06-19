@@ -8,7 +8,7 @@
 #include "../../../Definition/Const/VECTORConst.h"
 #include "../../../Definition/CommonModule/MyMath.h"
 #include "../../../Manager/CameraManager.h"
-#include "../../../Definition/CommonModule/MyMath.h"
+#include "../../../Component/Collider/Collider.h"
 #include <DxLib.h>
 
 PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
@@ -23,11 +23,13 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 }
 
 void PlayerCharacter::Start() {
-	
+	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
 }
 
 void PlayerCharacter::Update() {
 	pTransform->Update();
+	if (!pCollider) return;
+	pCollider->Update();
 
 	// 移動
 	if (playerState == PlayerState::Normal)
@@ -46,6 +48,8 @@ void PlayerCharacter::Update() {
 
 void PlayerCharacter::Render() {
 	Character::Render();
+	if (!pCollider) return;
+	pCollider->Render();
 }
 
 /*
@@ -62,14 +66,27 @@ void PlayerCharacter::Move() {
 	// カメラの角度のsin,cos
 	float cameraSin = sinf(cameraYaw);
 	float cameraCos = cosf(cameraYaw);
+
+	// 入力
+	VECTOR moveDir = VZero;
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_W))
-		pTransform->AddPosition(VGet(speed * cameraSin, 0, speed * cameraCos));
+		moveDir = VAdd(moveDir, VGet(cameraSin, 0, cameraCos));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_S))
-		pTransform->AddPosition(VGet(-speed * cameraSin, 0, -speed * cameraCos));
+		moveDir = VAdd(moveDir, VGet(-cameraSin, 0, -cameraCos));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_D))
-		pTransform->AddPosition(VGet(speed * cameraCos, 0, speed * -cameraSin));
+		moveDir = VAdd(moveDir, VGet(cameraCos, 0, -cameraSin));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_A))
-		pTransform->AddPosition(VGet(-speed * cameraCos, 0, -speed * -cameraSin));
+		moveDir = VAdd(moveDir, VGet(-cameraCos, 0, cameraSin));
+
+	// 入力があれば移動
+	if (moveDir.x != 0 ||
+		moveDir.y != 0 ||
+		moveDir.z != 0) {
+		// 移動
+		pTransform->AddPosition(moveDir, speed);
+		// 角度を移動方向へ(現在モデルが逆向きなので反対向きにするようにしている)
+		pTransform->SetRotation(VGet(0, MyMath::Rad2Deg(atan2f(-moveDir.x, -moveDir.z)), 0));
+	}
 
 }
 /*
