@@ -47,6 +47,11 @@ void CollisionManager::UnRegisterAll() {
 
 void CollisionManager::Update()
 {
+	for (auto col : CollisionManager::GetInstance().GetColliders())
+	{
+		col->Update();
+	}
+
 	int n = pColliderArray.size();
 
 	static int prevSize = -1;

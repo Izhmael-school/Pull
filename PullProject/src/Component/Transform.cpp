@@ -1,6 +1,7 @@
 #include "Transform.h"
 #include "../Definition/Const/VECTORConst.h"
 #include "../Definition/CommonModule/MyMath.h"
+#include "Manager/TimeManager.h"
 #include <cmath>
 #include <cassert>
 
@@ -107,6 +108,21 @@ void Transform::LookAtY(VECTOR targetPos){
 	dir = VNorm(dir);
 
 	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
+}
+
+void Transform::LookAt(VECTOR targetPos) {
+	// ターゲットへの方向ベクトル
+	VECTOR dir = VSub(targetPos, GetPosition());
+	// 重なってそうなら戻る
+	if (VSize(dir) <= 0.001f) return;
+	// 単位ベクトルへ変換
+	dir = VNorm(dir);
+	// XZ平面上の方向からヨーを算出
+	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
+	// XZ平面に投影した長さ(水平距離)
+	float horizontal = sqrtf(dir.x * dir.x + dir.z * dir.z);
+	// 高さと水平距離からピッチを算出
+	rotation.x = MyMath::Rad2Deg(-atan2f(dir.y, horizontal));
 }
 
 void Transform::AttachParent(Transform* _parent, bool isHoldWorld) {

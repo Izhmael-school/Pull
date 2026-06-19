@@ -64,6 +64,13 @@ public:
 	inline VECTOR GetRight() const { return VNorm(VGet(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2])); }
 
 	void LookAtY(VECTOR targetPos);
+	/*
+	 *	ターゲットの方を向く
+	 *	@author	Riku
+	 */
+	void LookAt(VECTOR targetPos);
+
+	void GraduallyLookAtY(VECTOR targetPos);
 
 	// 親子関係関連
 	/*
