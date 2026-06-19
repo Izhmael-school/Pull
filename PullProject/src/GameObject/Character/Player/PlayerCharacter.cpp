@@ -9,6 +9,8 @@
 #include "../../../Definition/CommonModule/MyMath.h"
 #include "../../../Manager/CameraManager.h"
 #include "../../../Component/Collider/Collider.h"
+#include "../../Stage/Gimmick/Lever.h"
+#include <memory>
 #include <DxLib.h>
 
 PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
@@ -34,22 +36,33 @@ void PlayerCharacter::Update() {
 	// 移動
 	if (playerState == PlayerState::Normal)
 		Move();
-
-	// 引っこ抜き
-	if (playerState == PlayerState::Catch)
-		Pull();
-
-	// 掴み用ステートチェンジ
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F))
-		playerState = PlayerState::Catch;
-	if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_F))
-		playerState = PlayerState::Normal;
 }
 
 void PlayerCharacter::Render() {
 	Character::Render();
 	if (!pCollider) return;
 	pCollider->Render();
+}
+
+void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
+	auto other = _pOther->GetGameObject();
+	auto lever = dynamic_cast<Lever*>(other);
+	if (lever) {
+		// 掴み用ステートチェンジ
+		if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F))
+			playerState = PlayerState::Catch;
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_F))
+			playerState = PlayerState::Normal;
+
+		// 引っこ抜き
+		if (playerState == PlayerState::Catch)
+			// ギミック作動
+			lever->SetLeverTrigger(Pull());
+	}
+}
+
+void PlayerCharacter::OnTriggerExit(Collider* _pOther) {
+	playerState = PlayerState::Normal;
 }
 
 /*
@@ -92,7 +105,7 @@ void PlayerCharacter::Move() {
 /*
  *	引っこ抜き
  */
-void PlayerCharacter::Pull() {
+bool PlayerCharacter::Pull() {
 	// 後ろに引き続けないと引っこ抜けない
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_S)) {
 		pullValue++;
@@ -110,7 +123,10 @@ void PlayerCharacter::Pull() {
 		pullValue = 0;
 		// カメラシェイク
 		CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
+
+		return true;
 	}
+	return false;
 }
 
 /*

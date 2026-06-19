@@ -44,6 +44,10 @@ public:
 	void Update() override;
 	// 描画処理
 	void Render() override;
+	// 当たっているとき
+	void OnTriggerStay(Collider* _pOther) override;
+	// 離れた時
+	void OnTriggerExit(Collider* _pOther) override;
 
 private:
 	/*
@@ -52,8 +56,9 @@ private:
 	void Move();
 	/*
 	 *	引っこ抜き
+	 *	@return bool	引き抜いたか否か
 	 */
-	void Pull();
+	bool Pull();
 
 public:
 	/*

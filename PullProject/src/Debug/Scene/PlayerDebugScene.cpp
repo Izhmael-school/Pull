@@ -13,6 +13,7 @@
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/Playermanager.h"
+#include "../../Manager/Stage/GimmickObjectManager.h"
 
 
 PlayerDebugScene::PlayerDebugScene() { Start(); }
@@ -29,6 +30,9 @@ void PlayerDebugScene::Start()
 	StageManager::GetInstance().LoadStage(4);
 	
 	enemy = std::make_unique<WalkEnemy>(-1, VGet(0,400,0));
+
+	// ===== ギミックの更新 ====
+	GimmickObjectManager::GetInstance().Update();
 
 
 	//AABB = new AABBCollider(nullptr,
@@ -150,6 +154,9 @@ void PlayerDebugScene::Render(){
 
 	enemy->Render();
 	PlayerManager::GetInstance().GetPlayer()->Render();
+
+	// ==== ギミックの描画 ====
+	GimmickObjectManager::GetInstance().Render();
 
 	CollisionManager::GetInstance().Render();
 }
