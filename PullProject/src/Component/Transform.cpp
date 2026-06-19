@@ -1,6 +1,7 @@
 #include "Transform.h"
 #include "../Definition/Const/VECTORConst.h"
 #include "../Definition/CommonModule/MyMath.h"
+#include "Manager/TimeManager.h"
 #include <cmath>
 #include <cassert>
 
