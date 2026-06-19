@@ -25,7 +25,8 @@ public:
 		const std::string& type,
 		int modelHandle,
 		int triggerId,
-		VECTOR pos
+		VECTOR pos,
+		VECTOR rota
 	);
 
 

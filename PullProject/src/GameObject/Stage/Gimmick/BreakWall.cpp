@@ -13,8 +13,8 @@ namespace {
 /*
  *	コンストラクタ
  */
-BreakWall::BreakWall(int id, int modelHandle, VECTOR pos)
-	:GimmickObject(modelHandle, pos)
+BreakWall::BreakWall(int id, int modelHandle, VECTOR pos, VECTOR rota)
+	:GimmickObject(modelHandle, pos, rota)
 	, triggerID(id)
 	, isBroken(false)
 	, isFading(false)

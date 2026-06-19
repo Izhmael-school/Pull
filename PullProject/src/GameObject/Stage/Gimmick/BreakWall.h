@@ -32,7 +32,7 @@ public:
 	/*
 	 *	コンストラクタ
 	 */
-	BreakWall(int id, int modelHandle, VECTOR pos);
+	BreakWall(int id, int modelHandle, VECTOR pos, VECTOR rota);
 
 private:
 	/*

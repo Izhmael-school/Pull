@@ -14,7 +14,7 @@ class Lever : public GimmickObject {
 private:
 	int triggerID;		// レバーのID
 	bool isActivated;	// 使用可能状態可否
-	bool OnLever;		// ギミック起動
+	bool onLever;		// ギミック起動
 
 	float opacity;		// α値
 
@@ -51,8 +51,10 @@ public:
 	int GetTriggerID() const { return triggerID; }
 
 	/*
-	 *	ギミックを起動する
+	 *	レバーギミック起動
 	 */
+	void SetLeverTrigger(bool flag) { onLever = flag; }
+	
 
 };
 

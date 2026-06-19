@@ -6,15 +6,16 @@
 #include "GimmickFactory.h"
 #include "BreakWall.h"
 #include "Lever.h"
-GimmickObject* GimmickFactory::Create(const std::string& type, int modelHandle, int triggerId, VECTOR pos)
+GimmickObject* GimmickFactory::Create(const std::string& type, int modelHandle, int triggerId, VECTOR pos, VECTOR rota)
 {
 	// 壊れる壁生成
-	if (type == "BreakWall"){
+	if (type == "BreakWall") {
 
 		return new BreakWall(
 			triggerId,
 			modelHandle,
-			pos
+			pos,
+			rota
 		);
 	}
 
