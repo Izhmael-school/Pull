@@ -9,11 +9,12 @@
 #include "Component/Transform.h"
 #include "Definition/Enum/TagEnum.h"
 #include "Definition/Const/VECTORConst.h"
+#include "../../GameObject.h"
 #include <memory>
 
 class Collider;
 
-class GimmickObject {
+class GimmickObject : public GameObject{
 protected:
 	std::unique_ptr<Transform> pTransform;
 	std::unique_ptr<Collider> pCollider;

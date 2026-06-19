@@ -5,7 +5,7 @@
 
 #include "Lever.h"
 #include "Manager/Stage/GimmickManager.h"
-
+#include "../../../Component\Collider/Collider.h"
 
  /*
   *  コンストラクタ
@@ -15,7 +15,11 @@ Lever::Lever(int id, int modelHandle, VECTOR pos)
 	, triggerID(id)
 	, isActivated(false)
 	, onLever(false)
-	, opacity(1.0f){
+	, opacity(1.0f) {
+}
+
+void Lever::Start() {
+	pCollider = std::make_unique<AABBCollider>(this, VGet(-50,-50,-50), VGet(50,50,50));
 }
 
 

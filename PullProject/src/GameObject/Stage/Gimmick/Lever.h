@@ -26,6 +26,11 @@ public:
 	Lever(int id, int modelHandle, VECTOR pos);
 
 	/*
+	 *	開始処理
+	 */
+	void Start()override;
+
+	/*
 	 *	更新処理
 	 */
 	void Update()override;
