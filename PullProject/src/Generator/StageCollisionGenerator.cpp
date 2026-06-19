@@ -111,6 +111,13 @@ void StageCollisionGenerator::GenerateFromUnity(
 
     for (auto& b : json["blocks"])
     {
+
+        if (b.contains("type") && b["type"] == "tree" || b.contains("type") && b["type"] == "bridge ")
+        {
+            continue;
+        }
+
+
         if (!b.contains("minX") || !b.contains("maxX"))
             continue;
 

@@ -47,9 +47,13 @@ void CollisionManager::UnRegisterAll() {
 
 void CollisionManager::Update()
 {
-	for (auto col : CollisionManager::GetInstance().GetColliders())
+
+	for (auto col : pColliderArray)
 	{
-		col->Update();
+		if (col && col->IsEnable())
+		{
+			col->Update();
+		}
 	}
 
 	int n = pColliderArray.size();
@@ -135,6 +139,15 @@ bool CollisionManager::CheckHit(Collider* a, Collider* b)
 		if (auto c = dynamic_cast<CapsuleCollider*>(b))
 			return CapsuleVsSphere(c, s);
 
+
+	if (auto c = dynamic_cast<CapsuleCollider*>(a))
+		if (auto box = dynamic_cast<AABBCollider*>(b))
+			return CapsuleVsAABB(c, box);
+
+	if (auto box = dynamic_cast<AABBCollider*>(a))
+		if (auto c = dynamic_cast<CapsuleCollider*>(b))
+			return CapsuleVsAABB(c, box);
+
 	return false;
 }
 #pragma endregion
@@ -199,6 +212,43 @@ bool CollisionManager::CapsuleVsSphere(CapsuleCollider* cap, SphereCollider* sph
 
 	float r = cap->GetRadius() + sph->GetRadius();
 	return distSq <= r * r;
+}
+
+bool CollisionManager::CapsuleVsAABB(CapsuleCollider* cap, AABBCollider* box)
+{
+
+	VECTOR p1 = cap->GetWorldStart();
+	VECTOR p2 = cap->GetWorldEnd();
+
+	VECTOR min = box->GetMin();
+	VECTOR max = box->GetMax();
+
+	// カプセルの線分を何分割かしてチェック（簡易だけど強い）
+	const int steps = 5;
+
+	for (int i = 0; i <= steps; i++)
+	{
+		float t = (float)i / steps;
+
+		VECTOR point = VAdd(p1, VScale(VSub(p2, p1), t));
+
+		// point vs AABB（最近接点）
+		VECTOR closest;
+		closest.x = max(min.x, min(point.x, max.x));
+		closest.y = max(min.y, min(point.y, max.y));
+		closest.z = max(min.z, min(point.z, max.z));
+
+		VECTOR diff = VSub(point, closest);
+		float distSq = VDot(diff, diff);
+
+		if (distSq <= cap->GetRadius() * cap->GetRadius())
+		{
+			return true;
+		}
+	}
+
+	return false;
+
 }
 
 bool CollisionManager::CapsuleVsCapsule(CapsuleCollider* a, CapsuleCollider* b)

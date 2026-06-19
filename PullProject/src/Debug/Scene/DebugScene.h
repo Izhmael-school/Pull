@@ -7,6 +7,7 @@
 #include <memory>
 #include "GameObject/GameObject.h"
 #include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
+#include "Generator/StageCollisionGenerator.h"
 
 class DebugScene : public SceneBase {
 
@@ -15,6 +16,8 @@ private:
 
 	class AABBCollider* AABB;
 	class CapsuleCollider* capsule;
+
+	StageCollisionGenerator generator;
 public:
 	DebugScene();
 	~DebugScene() = default;
