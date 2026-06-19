@@ -70,6 +70,8 @@ public:
 	 */
 	void LookAt(VECTOR targetPos);
 
+	void GraduallyLookAtY(VECTOR targetPos);
+
 	// 親子関係関連
 	/*
 	 * @brief 親子関係を作る

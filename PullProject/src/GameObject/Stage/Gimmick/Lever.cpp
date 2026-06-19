@@ -5,7 +5,7 @@
 
 #include "Lever.h"
 #include "Manager/Stage/GimmickManager.h"
-
+#include "../../../Component\Collider/Collider.h"
 
  /*
   *  コンストラクタ
@@ -14,8 +14,12 @@ Lever::Lever(int id, int modelHandle, VECTOR pos)
 	:GimmickObject(modelHandle, pos)
 	, triggerID(id)
 	, isActivated(false)
-	, OnLever(false)
-	, opacity(1.0f){
+	, onLever(false)
+	, opacity(1.0f) {
+}
+
+void Lever::Start() {
+	pCollider = std::make_unique<AABBCollider>(this, VGet(-50,-50,-50), VGet(50,50,50));
 }
 
 
@@ -26,7 +30,7 @@ void Lever::Update() {
 	// 後に実装
 	// プレイヤー側でフラグ変更
 	// フラグの変更が確認されたらActivate関数を呼ぶ
-	if (OnLever) {
+	if (onLever) {
 		// ギミック起動
 		Activate();
 	}

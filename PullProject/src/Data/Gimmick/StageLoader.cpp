@@ -18,12 +18,13 @@
 using json = nlohmann::json;
 
 namespace {
-	constexpr const char* _DATENAME_GIMMICK  = "Gimmicks";	// ギミック項目
-	constexpr const char* _DATENAME_LeverID  = "LeverID";	// レバー対応ID
+	constexpr const char* _DATENAME_GIMMICK = "Gimmicks";	// ギミック項目
+	constexpr const char* _DATENAME_LeverID = "LeverID";	// レバー対応ID
 	constexpr const char* _DATENAME_POSITION = "Position";	// 座標
-	constexpr const char* _DATENAME_MODEL	 = "Model";		// モデル
-	constexpr const char* _DATENAME_TYPE	 = "Type";		// ギミックの種類
-	constexpr const char* _DATENAME_LEVER	 = "Levers";	// レバー
+	constexpr const char* _DATENAME_MODEL = "Model";		// モデル
+	constexpr const char* _DATENAME_TYPE = "Type";		// ギミックの種類
+	constexpr const char* _DATENAME_LEVER = "Levers";	// レバー
+	constexpr const char* _DATENAME_ROTATION = "Rotation";	// 回転
 
 }
 
@@ -53,12 +54,19 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		// 実体モデル生成
 		int model = MV1DuplicateModel(baseModel);
 
+		// 回転数を取得
+		float baseRota = gimmick[_DATENAME_ROTATION];
+		float radian = baseRota * DX_PI_F / 180.0f;
+		// radianに変換
+		VECTOR vRota = { 0.0f,radian,0.0f };
+
 		// 生成
 		GimmickObject* object = GimmickFactory::Create(
 			type,
 			model,
 			leverID,
-			pos
+			pos,
+			vRota
 		);
 
 		// TriggerInterface取得
@@ -85,6 +93,8 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		// 座標を仮設定
 		VECTOR pos = VGet(0, 0, 0);
 
+
+
 		// 同じIDのギミック検索
 		auto it = triggerMap.find(id);
 
@@ -95,7 +105,7 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		}
 
 		// レバーオブジェクト生成
-		Lever* obj =new Lever(id,model,pos);
+		Lever* obj = new Lever(id, model, pos);
 		// オブジェクトを登録
 		GimmickObjectManager::GetInstance().Register(obj);
 

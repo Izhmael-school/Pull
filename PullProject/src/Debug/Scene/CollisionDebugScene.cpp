@@ -27,7 +27,7 @@ void CollisionDebugScene::Start()
 
 	enemy = std::make_unique<WalkEnemy>(-1, VGet(0, 400, 0));
 
-	CollisionManager::GetInstance().Clear();
+	//CollisionManager::GetInstance().Clear();
 
 	StageCollisionGenerator generator;
 	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());

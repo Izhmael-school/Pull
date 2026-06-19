@@ -52,7 +52,8 @@ bool WalkEnemy::VisionFan(VECTOR target){
 
 void WalkEnemy::AttackAction(){
 	if (!isAttacking) {
-		ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 200, Enemy);
+		VECTOR pos = VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 200));
+		ColliderObjectManager::GetInstance().CreateSphere(pos, 200, Enemy);
 	}
 
 	EnemyBase::AttackAction();

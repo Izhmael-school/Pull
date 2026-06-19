@@ -9,20 +9,22 @@
 #include "Component/Transform.h"
 #include "Definition/Enum/TagEnum.h"
 #include "Definition/Const/VECTORConst.h"
+#include "../../GameObject.h"
 #include <memory>
 
 class Collider;
 
-class GimmickObject {
+class GimmickObject : public GameObject{
 protected:
 	std::unique_ptr<Transform> pTransform;
 	std::unique_ptr<Collider> pCollider;
+	std::unique_ptr<Transform> pRotation;
 	Tag tag;
 	bool isActive;
 	int modelHandle;
 
 public:
-	GimmickObject(int _modelHandle = -1, VECTOR _pos = VZero, Tag _tag = None);
+	GimmickObject(int _modelHandle = -1, VECTOR _pos = VZero, VECTOR _rota = VZero, Tag _tag = None);
 	virtual ~GimmickObject();
 
 protected:
