@@ -9,10 +9,10 @@
 #include "Component/Collider/Collider.h"
 #include "../Manager/CollisionManager.h"
 
-GameObject::GameObject(int _modelHandle ,VECTOR _pos,Tag _tag)
+GameObject::GameObject(int _modelHandle, VECTOR _pos, Tag _tag)
 	:tag(_tag)
-	,isActive(true)
-	,modelHandle(_modelHandle)
+	, isActive(true)
+	, modelHandle(_modelHandle)
 {
 	pTransform = std::make_unique<Transform>();
 	pTransform->SetPosition(_pos);
@@ -31,13 +31,13 @@ GameObject::~GameObject() {
 
 }
 
-void GameObject::Start(){
+void GameObject::Start() {
 	pTransform->Update();
 }
 
 void GameObject::Update() {
 	if (!isActive) return;
-	
+
 	pTransform->Update();
 
 	if (pCollider != nullptr)
@@ -48,11 +48,11 @@ void GameObject::Render() {
 	if (!isActive) return;
 
 	// モデルが無いなら描画しない
-	if(modelHandle == -1) return;
-	
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	MV1SetMatrix(modelHandle, pTransform->GetMatrix());
-	MV1DrawModel(modelHandle);
+	if (modelHandle != -1) {
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		MV1SetMatrix(modelHandle, pTransform->GetMatrix());
+		MV1DrawModel(modelHandle);
+	}
 
 #if _DEBUG
 	if (pCollider != nullptr)

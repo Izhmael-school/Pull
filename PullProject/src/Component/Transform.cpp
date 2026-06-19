@@ -1,6 +1,7 @@
 #include "Transform.h"
 #include "../Definition/Const/VECTORConst.h"
 #include "../Definition/CommonModule/MyMath.h"
+#include "Manager/TimeManager.h"
 #include <cmath>
 #include <cassert>
 
@@ -105,6 +106,22 @@ void Transform::LookAtY(VECTOR targetPos){
 	if (VSize(dir) <= 0.001f) return;
 
 	dir = VNorm(dir);
+
+	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
+}
+
+void Transform::GraduallyLookAtY(VECTOR targetPos){
+	VECTOR dir = VSub(targetPos, GetPosition());
+	// y‚ÍŽg‚í‚È‚¢
+	dir.y = 0.0f;
+
+	dir = VScale(dir, TimeManager::GetInstance().GetDeltaTime() * 10);
+
+	// d‚È‚Á‚Ä‚»‚¤‚È‚ç–ß‚é
+	if (VSize(dir) <= 0.001f) return;
+
+	dir = VNorm(dir);
+
 
 	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
 }
