@@ -148,7 +148,7 @@ void StageCollisionGenerator::GenerateFromUnity(
         col->SetMin(b.min);
         col->SetMax(b.max);
 
-        manager.Register(col);
+        //manager.Register(col);
         colCount++;
     }
 
