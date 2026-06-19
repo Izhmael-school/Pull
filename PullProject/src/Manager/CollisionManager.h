@@ -31,6 +31,8 @@ public:
 	void UnRegister(Collider* _pCol);
 	void UnRegisterAll();
 
+    const std::vector<Collider*>& GetColliders() const { return pColliderArray; }
+
 private:
     bool CheckHit(Collider* a, Collider* b);
 
