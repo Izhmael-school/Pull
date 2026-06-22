@@ -10,6 +10,7 @@
 #include "../../../Manager/CameraManager.h"
 #include "../../../Component/Collider/Collider.h"
 #include "../../Stage/Gimmick/Lever.h"
+#include "../Enemy/EnemyBase.h"
 #include <memory>
 #include <DxLib.h>
 
@@ -34,31 +35,61 @@ void PlayerCharacter::Update() {
 	pCollider->Update();
 
 	// 移動
-	if (playerState == PlayerState::Normal)
+	if (playerState == PlayerState::Normal || playerState == PlayerState::EnemyCatch)
 		Move();
+
+	// ウデ伸ばし
+	if (playerState != PlayerState::EnemyCatch)
+		ArmsExtended();
+	//if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
+		
 }
 
 void PlayerCharacter::Render() {
 	Character::Render();
-	if (!pCollider) return;
-	pCollider->Render();
+	if (pCollider)
+		pCollider->Render();
+	if (pArmsCollider)
+		pArmsCollider->Render();
+}
+
+void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {
+	auto other = _pOther->GetGameObject();
+
+	// 当たったのが敵の場合
+	auto enemy = dynamic_cast<EnemyBase*>(other);
+	if (enemy) {
+		// 敵を掴む
+		EnemyCatch();
+	}
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
+
+	// 当たったのがレバーの場合
 	auto lever = dynamic_cast<Lever*>(other);
 	if (lever) {
 		// 掴み用ステートチェンジ
 		if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F))
-			playerState = PlayerState::Catch;
+			playerState = PlayerState::GimmickCatch;
 		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_F))
 			playerState = PlayerState::Normal;
 
 		// 引っこ抜き
-		if (playerState == PlayerState::Catch)
+		if (playerState == PlayerState::GimmickCatch)
 			// ギミック作動
 			lever->SetLeverTrigger(Pull());
 	}
+
+	// 当たったのが敵の場合
+	auto enemy = dynamic_cast<EnemyBase*>(other);
+	if (enemy) {
+		// 敵を離す
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
+			EnemyRelease();
+	}
+
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pOther) {
@@ -130,9 +161,43 @@ bool PlayerCharacter::Pull() {
 }
 
 /*
+ *	ウデ伸ばし
+ */
+void PlayerCharacter::ArmsExtended() {
+	if (!InputManager::GetInstance().IsKey(KEY_INPUT_E))
+		return;
+	if (!pArmsCollider)
+		pArmsCollider = std::make_unique<CapsuleCollider>(this, VZero, VZero, 100, VZero);
+
+	// まっすぐ伸ばしていく
+	VECTOR moveVec = VScale(pTransform->GetForward(), -20);
+	pArmsCollider->Move(moveVec);
+}
+
+/*
  *	引き抜きラインに対する引っ張り値の割合取得
  *	@return	float
  */
 float PlayerCharacter::GetPullValueRatio() {
 	return pullValue / PULL_VALUE_MAX;
+}
+
+/*
+ *	敵を掴む
+ */
+void PlayerCharacter::EnemyCatch() {
+	playerState = PlayerState::EnemyCatch;
+	// デバッグ用
+	CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
+
+}
+
+/*
+ *	敵を離す
+ */
+void PlayerCharacter::EnemyRelease() {
+	playerState = PlayerState::Normal;
+	// デバッグ用
+	CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
+
 }
