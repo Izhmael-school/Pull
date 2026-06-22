@@ -67,6 +67,9 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy\Bomber">
       <UniqueIdentifier>{690d5275-e592-463a-8347-4f36ccbe1234}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Missile">
+      <UniqueIdentifier>{63c73e2c-05af-4828-bdd9-42012cfd4700}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -207,11 +210,14 @@
     <ClCompile Include="src\Manager\Stage\GimmickObjectManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameObject\Missile\Missile.cpp">
+      <Filter>ソース ファイル\GameObject\Missile</Filter>
+    </ClCompile>
     <ClCompile Include="src\Component\CaughtObject.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\Bomber</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -389,14 +395,17 @@
     <ClInclude Include="src\Manager\Stage\GimmickObjectManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\Component\CaughtObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="src\Definition\Enum\CaughtState.h">
       <Filter>ソース ファイル\Definition\Enum</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameObject\Missile\Missile.h">
+      <Filter>ソース ファイル\GameObject\Missile</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\CaughtObject.h">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\Bomber</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

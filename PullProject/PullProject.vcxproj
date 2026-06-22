@@ -162,6 +162,7 @@
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\GameObject\Missile\Missile.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\GameObject\Missile\Missile.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h" />

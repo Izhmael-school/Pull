@@ -31,6 +31,8 @@ void EnemyDebugScene::Start()
 	StageManager::GetInstance().Initialize();
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(4);
+	int model = MV1LoadModel("res/Model/Object/Missile.mv1");
+	pMissile = std::make_unique<Missile>(model);
 }
 
 void EnemyDebugScene::Update()
@@ -42,7 +44,7 @@ void EnemyDebugScene::Update()
 	CameraManager::GetInstance().GetCamera()->Update();
 	// 敵の更新
 	EnemyManager::GetInstance().Update();
-
+	pMissile->Update();
 }
 
 void EnemyDebugScene::Render(){
@@ -106,6 +108,8 @@ void EnemyDebugScene::Render(){
 	StageManager::GetInstance().Render();
 
 	EnemyManager::GetInstance().Render();
+
+	pMissile->Render();
 }
 
 void EnemyDebugScene::Setup(){

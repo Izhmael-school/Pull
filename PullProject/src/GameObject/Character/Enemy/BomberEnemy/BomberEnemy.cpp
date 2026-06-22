@@ -10,13 +10,7 @@ BomberEnemy::BomberEnemy(int _modelHandle, VECTOR _pos)
 BomberEnemy::~BomberEnemy(){}
 
 void BomberEnemy::Start(){
-	// ラディウスの計算
-	VECTOR size = VSub(MV1GetMeshMaxPosition(modelHandle, 0), MV1GetMeshMinPosition(modelHandle, 0));
-	float r = (VSize(size) * 100) / 2;
-
-	pCollider = std::make_unique<SphereCollider>(this, VZero, r);
-
-	type = Walker;
+	type = Bomber;
 }
 
 void BomberEnemy::Setup(){
