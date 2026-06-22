@@ -4,10 +4,13 @@
 #include "Definition/CommonModule/MyMath.h"
 #include "Definition/Const/ColorConst.h"
 #include "Manager/TimeManager.h"
+#include "Manager/InputManager.h"
+#include "Manager/CollisionManager.h"
 #include "Component/Collider/Collider.h"
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	:Character(_modelHandle, _pos, None)
+	, prevState(NoneAction)
 	, currentState(NoneAction)
 	, nextState(NoneAction)
 	, isAttacking(false)
@@ -19,6 +22,9 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, tracingTargetPos(VZero)
 	, type()
 	, wantUnuse(false)
+	, endAttack(true)
+	, canAttack(true)
+	, standbyElapsedTime(0.0f)
 {
 }
 
@@ -26,6 +32,13 @@ EnemyBase::~EnemyBase() {}
 
 void EnemyBase::Start() {
 	Character::Start();
+
+	// ラディウスの計算
+	// モデルの最小点と最大点から半径を作る
+	VECTOR size = VSub(MV1GetMeshMaxPosition(modelHandle, 0), MV1GetMeshMinPosition(modelHandle, 0));
+	float r = (VSize(size) * 100) / 2;
+	// 当たり判定
+	pCollider = std::make_unique<SphereCollider>(this, VZero, r);
 }
 
 void EnemyBase::Update() {
@@ -34,16 +47,55 @@ void EnemyBase::Update() {
 	// ステートの変更
 	prevState = currentState;
 	currentState = nextState;
-	nextState = NoneAction;
+	ChangeNextState(Wandering);
+
+	switch (currentState) {
+	case NoneAction:
+		Wait();
+		break;
+	case Wandering:
+		WanderingAction();
+		break;
+	case Tracing:
+		TracingAction();
+		break;
+	case Attack:
+		AttackAction();
+		break;
+	case OutofControl:
+		CaughtUpdate();
+		break;
+	case Die:
+		Dead();
+		break;
+	default:
+		break;
+	}
+
+	// 見失ったら何もしない
+	if (prevState == Tracing && currentState == Wandering)
+		ChangeNextState(NoneAction);
+
+	// Debug
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_P))
+		CaughtAction();
+
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_O))
+		ThrownAction();
+
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_I))
+		HitObject();
 }
 
 void EnemyBase::Render()
 {
 	Character::Render();
 
+#if _DEBUG
 	DrawVisionFanDebug();
 	DrawCone3D(spawnPoint, VAdd(spawnPoint, VUp), WANDERING_RADIUS, 16, green, green, false);
 	DrawSphere3D(wanderingGoalPos, 10, 16, red, red, true);
+#endif
 }
 
 void EnemyBase::Setup() {
@@ -53,13 +105,25 @@ void EnemyBase::Setup() {
 	if (pAnimator) {
 		auto attackAnim = pAnimator->GetAnimation("Attack");
 		// 攻撃終了時処理を持たせる
-		attackAnim->SetEvent([this]() {EndAttack();}, attackAnim->totalTime);
+		attackAnim->SetEvent([this]() {EndAttack();}, pAnimator->GetTotalTime("Attack"));
+		auto dieAnim = pAnimator->GetAnimation("Die");
+		dieAnim->SetEvent([this]() {wantUnuse = true;}, pAnimator->GetTotalTime("Die"));
 	}
+
+	// 再度更新できるように
+	if (pCollider)
+		pCollider->SetEnable(true);
+
+	wantUnuse = false;
 }
 
 void EnemyBase::Cleanup() {
+	// イベントを全部消す
 	if (pAnimator)
 		pAnimator->ResetEvents();
+	// 当たり判定の更新をしないように
+	if (pCollider)
+		pCollider->SetEnable(false);
 }
 
 void EnemyBase::Move(VECTOR targetPos) {
@@ -96,7 +160,7 @@ void EnemyBase::WanderingAction() {
 	// 目的地に向かう
 	Move(wanderingGoalPos);
 
-	nextState = Wandering;
+	ChangeNextState(Wandering);
 
 	// ゴール判定
 	VECTOR pos = GetPosition();
@@ -105,7 +169,7 @@ void EnemyBase::WanderingAction() {
 
 	// 待機にする
 	wanderingGoalPos.x = static_cast<float>(INT_MAX);
-	nextState = EnemyActionState::NoneAction;
+	ChangeNextState(NoneAction);
 }
 
 void EnemyBase::TracingAction() {
@@ -114,24 +178,20 @@ void EnemyBase::TracingAction() {
 	moveSpeed = 300;
 	// 追跡
 	Move(tracingTargetPos);
-
-	// ゴール判定
-	VECTOR pos = GetPosition();
-	if (tracingTargetPos.x - GOAL_JODGMENT > pos.x || tracingTargetPos.x + GOAL_JODGMENT < pos.x) return;
-	if (tracingTargetPos.z - GOAL_JODGMENT > pos.z || tracingTargetPos.z + GOAL_JODGMENT < pos.z) return;
-
-	nextState = Attack;
 }
 
 void EnemyBase::AttackAction() {
 	if (!isAttacking) {
 		// 攻撃中にする
 		isAttacking = true;
+		canAttack = false;
 		// アニメーション再生
 		pAnimator->Play("Attack");
+
 	}
 
-	nextState = Attack;
+	if (isAttacking)
+		ChangeNextState(Attack);
 }
 
 void EnemyBase::Wait() {
@@ -143,14 +203,20 @@ void EnemyBase::Wait() {
 
 	if (standbyElapsedTime >= standbyTime) {
 		standbyElapsedTime = 0.0f;
-		// 徘徊行動に戻る
-		nextState = Wandering;
+		
+		canAttack = true;
 	}
 	else {
 		// 時間の加算
 		standbyElapsedTime += TimeManager::GetInstance().GetDeltaTime();
-		nextState = NoneAction;
+		ChangeNextState(NoneAction);
 	}
+}
+
+void EnemyBase::Dead(){
+	pAnimator->Play("Die");
+
+	ChangeNextState(Die);
 }
 
 bool EnemyBase::VisionFan(VECTOR target) {
@@ -201,6 +267,10 @@ bool EnemyBase::VisionFan(VECTOR target) {
 		return rayAnswer = false; // 当たってない
 
 	tracingTargetPos = target;
+	// レイに入っていて攻撃中じゃない時に追跡行動に移る
+	if (rayAnswer && nextState != Attack)
+		ChangeNextState(Tracing);
+
 	return rayAnswer = true;
 }
 
@@ -248,15 +318,75 @@ void EnemyBase::DrawVisionFanDebug() {
 
 void EnemyBase::EndAttack() {
 	isAttacking = false;
-	nextState = NoneAction;
+	ChangeNextState(NoneAction);
+}
+
+void EnemyBase::ChangeNextState(EnemyActionState _state){
+	// 死亡ならそのまま変える
+	if (_state == Die) {
+		nextState = _state;
+		return;
+	}
+	// 今か次の行動がDieなら変えない
+	if (nextState == Die || currentState == Die) return;
+
+	// 次の行動が行動不能なら変えない
+	if (nextState == OutofControl) return;
+	nextState = _state;
 }
 
 void EnemyBase::LoopAnim(std::string _animName) {
 	GetAnimator()->GetAnimation(_animName)->isLoop = true;
 }
 
-void EnemyBase::OnTriggerStay(Collider* _pOther){
+void EnemyBase::OnTriggerEnter(Collider* _pOther){
+	if (GetCurrentCaughtState() != CaughtState::Throwing) return;
+	// 何かしらに当たったら
+	HitObject();
+}
+
+void EnemyBase::OnTriggerStay(Collider* _pOther) {
 	Tag tag = _pOther->GetGameObject()->GetTag();
-	if (tag == Player)
-		nextState = Attack;
+	if (tag == Player) {
+		ChangeNextState(Attack);
+	}
+}
+
+void EnemyBase::CaughtAction(){
+	// 行動不能状態にする
+	ChangeNextState(OutofControl);
+	// 捕まった状態にする
+	ChangeCaughtState(Catch);
+}
+
+void EnemyBase::ThrownAction(){
+	// 投げられた状態にする
+	ChangeCaughtState(Throw);
+}
+
+void EnemyBase::CatchStart(){
+	CaughtObject::CatchStart();
+
+	pAnimator->Play("Walk",2.0f);
+	GetTransform()->SetRotation(VScale(VForward, 180.0f));
+	ChangeNextState(OutofControl);
+}
+
+void EnemyBase::Catching(){
+	ChangeNextState(OutofControl);
+}
+
+void EnemyBase::ThrowStart(){
+	CaughtObject::ThrowStart();
+	GetTransform()->SetRotation(VScale(VForward, 0.0f));
+	ChangeNextState(OutofControl);
+}
+
+void EnemyBase::Throwing(){
+	GetTransform()->AddRotation(VScale(VUp,10));
+	ChangeNextState(OutofControl);
+}
+
+void EnemyBase::HitObject(){
+	ChangeNextState(Die);
 }

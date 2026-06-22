@@ -31,10 +31,6 @@ void EnemyDebugScene::Start()
 	StageManager::GetInstance().Initialize();
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(4);
-
-	// 敵生成
-	EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
-	// EnemyManager::GetInstance().UseEnemy(Walker, VGet(1000, 400, 0));
 }
 
 void EnemyDebugScene::Update()
@@ -110,4 +106,12 @@ void EnemyDebugScene::Render(){
 	StageManager::GetInstance().Render();
 
 	EnemyManager::GetInstance().Render();
+}
+
+void EnemyDebugScene::Setup(){
+	EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
+}
+
+void EnemyDebugScene::Cleanup(){
+	EnemyManager::GetInstance().UnuseAllEnemy();
 }

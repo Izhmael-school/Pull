@@ -25,5 +25,8 @@ public:
 
 	void Render() override;
 
+	void Setup() override;
+
+	void Cleanup() override;
 };
 

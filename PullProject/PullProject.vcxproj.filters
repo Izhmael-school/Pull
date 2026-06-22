@@ -64,6 +64,9 @@
     <Filter Include="ソース ファイル\GameObject\Collider">
       <UniqueIdentifier>{66015201-eedd-4d89-89f5-7a31c29028ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\Bomber">
+      <UniqueIdentifier>{690d5275-e592-463a-8347-4f36ccbe1234}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -182,6 +185,33 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp">
       <Filter>ソース ファイル\GameObject\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Data\Gimmick\StageLoader.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generator\StageCollisionGenerator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\ColliderObjectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\ModelManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\Stage\GimmickObjectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\CaughtObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,10 +368,41 @@
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h">
       <Filter>ソース ファイル\GameObject\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="src\Data\Gimmick\StageLoader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generator\StageCollisionGenerator.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\ColliderObjectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\ModelManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\Stage\GimmickObjectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\CaughtObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Enum\CaughtState.h">
+      <Filter>ソース ファイル\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
+    <None Include="src\Data\Stage_4.json" />
   </ItemGroup>
 </Project>

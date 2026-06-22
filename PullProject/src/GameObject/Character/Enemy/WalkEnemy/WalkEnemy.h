@@ -9,13 +9,7 @@ public:
 	~WalkEnemy();
 
 public:
-	void Update() override;
-
 	void Setup() override;
 
-	bool VisionFan(VECTOR target) override;
-
-private:
-	void AttackAction() override;
 };
 

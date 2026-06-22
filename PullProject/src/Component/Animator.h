@@ -18,8 +18,8 @@ template <class T = void, class... R>
  */
 struct AnimationEvent {
 	std::function<T(R...)> animEvent;	// 指定の時間になった時に発生するイベント
-	float eventTime;			// イベントが発生する時間
-	bool isAction;				// イベントが発生したかどうか
+	float eventTime = -1.0f;			// イベントが発生する時間
+	bool isAction = false;				// イベントが発生したかどうか
 };
 
 template <class T = void, class... R>
