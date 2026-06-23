@@ -10,6 +10,7 @@
 #include "../../../Manager/CameraManager.h"
 #include "../../../Definition/CommonModule/MyMath.h"
 #include <DxLib.h>
+#include "Component/Collider/Collider.h"
 
 PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	: Character(_modelHandle, _pos, _tag)
@@ -19,11 +20,12 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 
 	, PULL_VALUE_MAX(100.0f) 
 	, PULL_CAMERA_SHAKE_POWER(20.0f)
-	, PULL_CAMERA_SHAKE_TIME(5.0f){
+	, PULL_CAMERA_SHAKE_TIME(5.0f) {
+	Start();
 }
 
 void PlayerCharacter::Start() {
-	
+	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
 }
 
 void PlayerCharacter::Update() {
@@ -42,10 +44,15 @@ void PlayerCharacter::Update() {
 		playerState = PlayerState::Catch;
 	if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_F))
 		playerState = PlayerState::Normal;
+
+	if (pCollider)
+		pCollider->Update();
 }
 
 void PlayerCharacter::Render() {
 	Character::Render();
+	if (pCollider)
+		pCollider->Render();
 }
 
 /*

@@ -1,6 +1,8 @@
 #include "EnemyGenerator.h"
 #include "GameObject/Character/Enemy/EnemyBase.h"
 #include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
+#include "GameObject/Character/Enemy/BomberEnemy/BomberEnemy.h"
+#include "GameObject/Character/Enemy/ShooterEnemy/ShooterEnemy.h"
 #include "Definition/Const/VECTORConst.h"
 #include "Definition/Const/EnemyConst.h"
 #include "Definition/CommonModule/MyString.h"
@@ -50,6 +52,8 @@ void EnemyGenerator::SetCreateEvent(){
 	CreateEnemyEvent.resize(MaxEnemyType);
 	//　ラムダで包む
 	CreateEnemyEvent[Walker] = [this](int _modelHandle, VECTOR _pos) {return CreateWalker(_modelHandle, _pos);};
+	CreateEnemyEvent[Shooter] = [this](int _modelHandle, VECTOR _pos) {return CreateShooter(_modelHandle, _pos);};
+	CreateEnemyEvent[Bomber] = [this](int _modelHandle, VECTOR _pos) {return CreateBomber(_modelHandle, _pos);};
 }
 
 std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type, VECTOR _pos){
@@ -80,4 +84,12 @@ std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type, VECTOR _
 
 std::unique_ptr<EnemyBase> EnemyGenerator::CreateWalker(int _modelHandle,VECTOR _pos){
 	return std::make_unique<WalkEnemy>(_modelHandle, _pos);
+}
+
+std::unique_ptr<EnemyBase> EnemyGenerator::CreateShooter(int _modelHandle, VECTOR _pos) {
+	return std::make_unique<ShooterEnemy>(_modelHandle, _pos);
+}
+
+std::unique_ptr<EnemyBase> EnemyGenerator::CreateBomber(int _modelHandle, VECTOR _pos){
+	return std::make_unique<BomberEnemy>(_modelHandle, _pos);
 }

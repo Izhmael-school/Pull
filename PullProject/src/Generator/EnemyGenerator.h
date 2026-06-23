@@ -38,6 +38,16 @@ private:
 	 * @brief 歩く敵の生成
 	 */
 	std::unique_ptr<EnemyBase> CreateWalker(int _modelHandle,VECTOR _pos);
+
+	/*
+	 * @brief 弾を吐く敵の生成
+	 */
+	std::unique_ptr<EnemyBase> CreateShooter(int _modelHandle, VECTOR _pos);
+
+	/*
+	 * @brief 自爆する敵の生成
+	 */
+	std::unique_ptr<EnemyBase> CreateBomber(int _modelHandle, VECTOR _pos);
 public:
 	/*
 	 * @brief 敵の生成

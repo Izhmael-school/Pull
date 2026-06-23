@@ -8,11 +8,12 @@
 #define _ENEMYBASE_H_
 
 #include "GameObject/Character/Character.h"
+#include "Component/CaughtObject.h"
 #include "Definition/Enum/EnemyState.h"
 #include "Definition/Enum/EnemyType.h"
 #include <string>
 
-class EnemyBase : public Character{
+class EnemyBase : public Character, public CaughtObject {
 protected:
 
 	struct Ray_Fan {
@@ -45,6 +46,7 @@ private:
 	VECTOR spawnPoint;
 	VECTOR wanderingGoalPos;
 	VECTOR tracingTargetPos;
+protected:
 	EnemyType type;
 
 protected:
@@ -55,6 +57,7 @@ protected:
 	float standbyTime;	// 立ち止まる時間
 	float standbyElapsedTime;	// 経過時間
 	bool isAttacking;	// 攻撃中判定
+	bool canAttack;		// 攻撃できるか
 	bool endAttack;		// 攻撃が終了したか
 	bool wantUnuse;		// 未使用化希望判定
 
@@ -105,6 +108,11 @@ protected:	// 行動
 	 * @brief 待機
 	 */
 	void Wait();
+
+	/*
+	 * @brief 死亡
+	 */
+	void Dead();
 public:
 	/*
 	 * @brief 扇状の視界
@@ -121,12 +129,55 @@ private:
 	 */
 	void EndAttack();
 
+protected:
+	/*
+	 * @brief 行動変更
+	 */
+	void ChangeNextState(EnemyActionState _state);
 public:
 	/*
 	 * @brief アニメーションのループ化
 	 */
 	void LoopAnim(std::string _animName);
 
+	void OnTriggerEnter(Collider* _pOther) override;
 	void OnTriggerStay(Collider* _pOther) override;
+
+public:
+	/*
+	 * @brief 捕まった
+	 */
+	void CaughtAction();
+
+	/*
+	 * @brief 投げられた
+	 */
+	void ThrownAction();
+
+protected:
+	/*
+	 * @brief 捕まった時
+	 */
+	virtual void CatchStart();
+
+	/*
+	 * @brief 捕まってる時
+	 */
+	virtual void Catching();
+
+	/*
+	 * @brief 投げられた時
+	 */
+	virtual void ThrowStart();
+
+	/*
+	 * @brief 投げられてる時
+	 */
+	virtual void Throwing();
+
+	/*
+	 * @brief 何かに当たった時
+	 */
+	virtual void HitObject();
 };
 #endif // !_ENEMYBASE_H_

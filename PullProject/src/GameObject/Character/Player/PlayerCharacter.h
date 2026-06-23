@@ -34,7 +34,7 @@ private:
 	const float PULL_CAMERA_SHAKE_TIME;
 	
 public:
-	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = None);
+	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
 	~PlayerCharacter() = default;
 
 public:
