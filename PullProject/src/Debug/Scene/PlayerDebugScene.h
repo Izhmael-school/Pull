@@ -11,10 +11,7 @@
 class PlayerDebugScene : public SceneBase {
 
 private:
-	std::unique_ptr<WalkEnemy> enemy;
 
-	class AABBCollider* AABB;
-	class CapsuleCollider* capsule;
 public:
 	PlayerDebugScene();
 	~PlayerDebugScene() = default;

@@ -7,6 +7,7 @@
 #define _PLAYERCHARACTER_H_
 
 #include "../Character.h"
+#include "../../../Component/Collider/Collider.h"
 #include <memory>
 
 /*
@@ -18,13 +19,15 @@ private:
 		Invalid = -1,
 		Normal,
 		ArmsExtended,
-		Catch,
+		GimmickCatch,
+		EnemyCatch,
 
 		Max
 	};
 	PlayerState playerState;	// プレイヤーの状態
 	float speed;				// 移動速度
 	float pullValue;			// 引っ張り値
+	std::unique_ptr<CapsuleCollider> pArmsCollider;	// 腕用のコライダー
 
 	// 引っこ抜きライン
 	const float PULL_VALUE_MAX;
@@ -44,6 +47,12 @@ public:
 	void Update() override;
 	// 描画処理
 	void Render() override;
+	// 当たった時
+	void OnTriggerEnter(Collider* _pOther) override;
+	// 当たっているとき
+	void OnTriggerStay(Collider* _pOther) override;
+	// 離れた時
+	void OnTriggerExit(Collider* _pOther) override;
 
 private:
 	/*
@@ -52,8 +61,13 @@ private:
 	void Move();
 	/*
 	 *	引っこ抜き
+	 *	@return bool	引き抜いたか否か
 	 */
-	void Pull();
+	bool Pull();
+	/*
+	 *	ウデ伸ばし
+	 */
+	void ArmsExtended();
 
 public:
 	/*
@@ -61,13 +75,23 @@ public:
 	 *	@return	float
 	 */
 	float GetPullValueRatio();
+
+	/*
+	 *	敵を掴む
+	 */
+	void EnemyCatch();
+
+	/*
+	 *	敵を離す
+	 */
+	void EnemyRelease();
 	
 public:
 	/*
 	 *　掴み状態か否か
 	 *	@return bool
 	 */
-	inline bool IsCatch() { return playerState == PlayerState::Catch; }
+	inline bool IsGimmickCatch() { return playerState == PlayerState::GimmickCatch; }
 };
 // 別名定義
 using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;
