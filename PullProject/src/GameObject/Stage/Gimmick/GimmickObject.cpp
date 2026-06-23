@@ -13,13 +13,7 @@
   *	コンストラクタ
   */
 GimmickObject::GimmickObject(int _modelHandle, VECTOR _pos, VECTOR _rota, Tag _tag)
-	:tag(_tag)
-	, isActive(true)
-	, modelHandle(_modelHandle) {
-	pTransform = std::make_unique<Transform>();
-	pRotation = std::make_unique <Transform >();
-	pTransform->SetPosition(_pos);
-	pRotation->SetRotation(_rota);
+	: GameObject(_modelHandle, _pos, _tag) {
 	Start();
 }
 
@@ -43,7 +37,6 @@ void GimmickObject::Update() {
 	if (!isActive) return;
 
 	pTransform->Update();
-	pRotation->Update();
 	if (pCollider != nullptr)
 		pCollider->Update();
 }
@@ -59,7 +52,6 @@ void GimmickObject::Render() {
 	// --- 通常モデル描画 ---
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	MV1SetMatrix(modelHandle, pTransform->GetMatrix());
-	MV1SetRotationMatrix(modelHandle, pRotation->GetMatrix());
 	MV1DrawModel(modelHandle);
 
 #if _DEBUG
@@ -79,14 +71,11 @@ void GimmickObject::DeleteModel() {
 	MV1DeleteModel(modelHandle);
 }
 
-void GimmickObject::OnTriggerEnter(Collider* _pOther)
-{
+void GimmickObject::OnTriggerEnter(Collider* _pOther) {
 }
 
-void GimmickObject::OnTriggerStay(Collider* _pOther)
-{
+void GimmickObject::OnTriggerStay(Collider* _pOther) {
 }
 
-void GimmickObject::OnTriggerExit(Collider* _pOther)
-{
+void GimmickObject::OnTriggerExit(Collider* _pOther) {
 }

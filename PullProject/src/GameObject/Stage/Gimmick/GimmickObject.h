@@ -15,13 +15,6 @@
 class Collider;
 
 class GimmickObject : public GameObject {
-protected:
-	std::unique_ptr<Transform> pTransform;
-	std::unique_ptr<Collider> pCollider;
-	std::unique_ptr<Transform> pRotation;
-	Tag tag;
-	bool isActive;
-	int modelHandle;
 
 public:
 	GimmickObject(int _modelHandle = -1, VECTOR _pos = VZero, VECTOR _rota = VZero, Tag _tag = None);
