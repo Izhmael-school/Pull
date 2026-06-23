@@ -94,6 +94,7 @@ public:
 	 * @brief 離れた時
 	 */
 	virtual void OnTriggerExit(Collider* _pOther);
+
 };
 
 #endif // !_GAMEOBJECT_H_

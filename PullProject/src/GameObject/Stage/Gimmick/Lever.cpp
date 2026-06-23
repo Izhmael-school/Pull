@@ -19,7 +19,12 @@ Lever::Lever(int id, int modelHandle, VECTOR pos)
 }
 
 void Lever::Start() {
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-50,-50,-50), VGet(50,50,50));
+
+}
+
+void Lever::Setup() {
+	GimmickObject::Setup();
+	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -50, -50), VGet(50, 50, 50));
 }
 
 
@@ -34,6 +39,7 @@ void Lever::Update() {
 		// ƒMƒ~ƒbƒN‹N“®
 		Activate();
 	}
+	pCollider->Update();
 
 }
 
@@ -51,6 +57,7 @@ void Lever::Render() {
 
 	// •`‰æ
 	GimmickObject::Render();
+	pCollider->Render();
 }
 
 /*

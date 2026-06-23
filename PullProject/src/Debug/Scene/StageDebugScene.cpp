@@ -45,7 +45,7 @@ void StageDebugScene::Start()
 	CollisionManager::GetInstance().Register(capsule);
 
 
-
+	GimmickObjectManager::GetInstance().Setup();
 }
 
 void StageDebugScene::Update()

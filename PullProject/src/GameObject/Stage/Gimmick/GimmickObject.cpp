@@ -34,7 +34,6 @@ GimmickObject::~GimmickObject() {
  *	開始処理
  */
 void GimmickObject::Start() {
-	pTransform->Update();
 }
 
 /*
@@ -72,8 +71,8 @@ void GimmickObject::Render() {
 /*
  *	準備処理
  */
-void GimmickObject::Setup()
-{
+void GimmickObject::Setup() {
+	pTransform->Update();
 }
 
 void GimmickObject::DeleteModel() {

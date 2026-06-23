@@ -46,6 +46,20 @@ void GimmickObjectManager::Unregister(GimmickObject* object) {
 		objects.end());
 }
 
+void GimmickObjectManager::Setup(){
+	for (auto object : objects) {
+		if (object == nullptr) {
+			continue;
+		}
+
+		if (!object->IsActive()) {
+			continue;
+		}
+
+		object->Setup();
+}
+}
+
 /*
  * 全更新
  */

@@ -30,6 +30,8 @@ public:
 	 */
 	void Start()override;
 
+	void Setup()override;
+
 	/*
 	 *	XVˆ—
 	 */
