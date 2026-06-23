@@ -46,6 +46,11 @@ public:
 	 */
 	void UseEnemy(EnemyType _type,VECTOR _pos);
 
+	/*
+	 * @brief 使用中の敵全てを未使用化
+	 */
+	void UnuseAllEnemy();
+
 private:
 	/*
 	 * @brief　敵の未使用化

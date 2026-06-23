@@ -11,5 +11,6 @@ enum EnemyActionState {
 	Wandering,	// 徘徊中
 	Tracing,	// 追跡中
 	Attack,		// 攻撃中
-	OutofControl// 行動不能
+	OutofControl,// 行動不能
+	Die			// 死亡
 };

@@ -110,6 +110,15 @@ void Transform::LookAtY(VECTOR targetPos){
 	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
 }
 
+void Transform::LookAtDir(VECTOR dir){
+	// 重なってそうなら戻る
+	if (VSize(dir) <= 0.001f) return;
+
+	dir = VNorm(dir);
+
+	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
+}
+
 void Transform::LookAt(VECTOR targetPos) {
 	// ターゲットへの方向ベクトル
 	VECTOR dir = VSub(targetPos, GetPosition());

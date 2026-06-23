@@ -14,61 +14,19 @@ WalkEnemy::WalkEnemy(int _modelHandle, VECTOR _pos)
 WalkEnemy::~WalkEnemy(){
 }
 
-void WalkEnemy::Update() {
-	EnemyBase::Update();
-
-	switch (currentState) {
-	case NoneAction:
-		Wait();
-		break;
-	case Wandering:
-		WanderingAction();
-		break;
-	case Tracing:
-		TracingAction();
-		break;
-	case Attack:
-		AttackAction();
-		break;
-	case OutofControl:
-		break;
-	default:
-		break;
-	}
-}
-
 void WalkEnemy::Setup(){
 	EnemyBase::Setup();
-}
 
-bool WalkEnemy::VisionFan(VECTOR target){
-	EnemyBase::VisionFan(target);
-	// レイに入っていて攻撃中じゃない時に追跡行動に移る
-	if (rayAnswer && !isAttacking)
-		nextState = Tracing;
-
-	return rayAnswer;
-}
-
-void WalkEnemy::AttackAction(){
-	if (!isAttacking) {
-		VECTOR pos = VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 200));
-		ColliderObjectManager::GetInstance().CreateSphere(pos, 200, Enemy);
-	}
-
-	EnemyBase::AttackAction();
+	// アニメーションに合わせて攻撃する
+	auto anim = pAnimator->GetAnimation("Attack");
+	anim->SetEvent([this]() {ColliderObjectManager::GetInstance().CreateSphere(VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 100)),200);}, 22);
 }
 
 void WalkEnemy::Start(){
 	// モデルの正面が反対だから180度追加
 	MV1SetRotationXYZ(modelHandle, VScale(VUp, 180));
 
-	// ラディウスの計算
-	VECTOR size = VSub(MV1GetMeshMaxPosition(modelHandle,0), MV1GetMeshMinPosition(modelHandle, 0));
-	float r = (VSize(size) * 100) / 2;
-
-	// 当たり判定
-	pCollider = std::make_unique<SphereCollider>(this,VZero,r);
+	type = Walker;
 
 	EnemyBase::Start();
 }

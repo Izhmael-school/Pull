@@ -59,6 +59,17 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
 	useEnemyArray.push_back(std::move(enemy));
 }
 
+void EnemyManager::UnuseAllEnemy(){
+	for (auto& enemy : useEnemyArray) {
+		enemy->Cleanup();
+		// 未使用配列に入れる
+		EnemyType type = enemy->GetType();
+		unuseEnemyArray[type].push_back(std::move(enemy));
+	}
+
+	useEnemyArray.clear();
+}
+
 void EnemyManager::UnuseEnemy(std::unique_ptr<EnemyBase> _unuseEnemy) {
 	auto itr = std::ranges::find(useEnemyArray, _unuseEnemy);
 	// 使用中配列になければ帰る

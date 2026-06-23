@@ -8,10 +8,10 @@
 #include "GameObject/GameObject.h"
 #include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
 
+
 class PlayerCharacrerPtr;
 
 class EnemyDebugScene : public SceneBase {
-
 
 public:
 	EnemyDebugScene();
@@ -25,5 +25,8 @@ public:
 
 	void Render() override;
 
+	void Setup() override;
+
+	void Cleanup() override;
 };
 

@@ -64,6 +64,7 @@ public:
 	inline VECTOR GetRight() const { return VNorm(VGet(matrix.m[0][0], matrix.m[0][1], matrix.m[0][2])); }
 
 	void LookAtY(VECTOR targetPos);
+	void LookAtDir(VECTOR dir);
 	/*
 	 *	ターゲットの方を向く
 	 *	@author	Riku
