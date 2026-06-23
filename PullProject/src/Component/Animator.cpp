@@ -192,19 +192,21 @@ float Animator::GetAnimSpeed(std::string animName) {
 }
 
 float Animator::GetTotalTime(std::string animName) {
-	int handle = GetAnimation(animName)->animationHandle;
+	auto anim = GetAnimation(animName);
+	int handle = anim->animationHandle;
 
 	if (handle == -1) return -1;
 
-	return  MV1GetAnimTotalTime(handle, 0);
+	return  MV1GetAnimTotalTime(handle, anim->animIndex);
 }
 
 float Animator::GetTotalTime(int index){
-	int handle = GetAnimation(index)->animationHandle;
+	auto anim = GetAnimation(index);
+	int handle =anim->animationHandle;
 
 	if (handle == -1) return -1;
 
-	return  MV1GetAnimTotalTime(handle, 0);
+	return  MV1GetAnimTotalTime(handle, anim->animIndex);
 }
 
 int Animator::GetAnimationIndex(std::string animName) {

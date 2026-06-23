@@ -3,5 +3,17 @@
     "enemyTypeID": 0,
     "modelFileName": "WalkerModel",
     "animationFileName": "WalkerAnim"
+  },
+
+  {
+    "enemyTypeID": 1,
+    "modelFileName": "ShooterModel",
+    "animationFileName": "ShooterAnim"
+  },
+
+  {
+    "enemyTypeID": 2,
+    "modelFileName": "BomberModel",
+    "animationFileName": "BomberAnim"
   }
 ]

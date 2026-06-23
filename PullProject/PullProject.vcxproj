@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Component\Animator.cpp" />
+    <ClCompile Include="src\Component\CaughtObject.cpp" />
     <ClCompile Include="src\Component\Collider\Collider.cpp" />
     <ClCompile Include="src\Component\Transform.cpp" />
     <ClCompile Include="src\Data\Gimmick\StageLoader.cpp" />
@@ -155,23 +156,28 @@
     <ClCompile Include="src\Definition\CommonModule\MyString.cpp" />
     <ClCompile Include="src\GameObject\Camera\CameraObject.cpp" />
     <ClCompile Include="src\GameObject\Character\Character.cpp" />
+    <ClCompile Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
+    <ClCompile Include="src\GameObject\Missile\Missile.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
+    <ClCompile Include="src\Generator\GameObjectGenerator.cpp" />
     <ClCompile Include="src\Generator\StageCollisionGenerator.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\CameraManager.cpp" />
     <ClCompile Include="src\Manager\ColliderObjectManager.cpp" />
     <ClCompile Include="src\Manager\CollisionManager.cpp" />
     <ClCompile Include="src\Manager\EnemyManager.cpp" />
+    <ClCompile Include="src\Manager\GameObjectManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
     <ClCompile Include="src\Manager\ModelManager.cpp" />
@@ -188,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Component\Animator.h" />
+    <ClInclude Include="src\Component\CaughtObject.h" />
     <ClInclude Include="src\Component\Collider\Collider.h" />
     <ClInclude Include="src\Component\Singleton.h" />
     <ClInclude Include="src\Component\Transform.h" />
@@ -206,6 +213,7 @@
     <ClInclude Include="src\Definition\Const\ColorConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
+    <ClInclude Include="src\Definition\Enum\CaughtState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyType.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
@@ -213,11 +221,14 @@
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
     <ClInclude Include="src\GameObject\Character\Character.h" />
+    <ClInclude Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h" />
+    <ClInclude Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
+    <ClInclude Include="src\GameObject\Missile\Missile.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h" />
@@ -227,11 +238,13 @@
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
     <ClInclude Include="src\Generator\EnemyGenerator.h" />
+    <ClInclude Include="src\Generator\GameObjectGenerator.h" />
     <ClInclude Include="src\Generator\StageCollisionGenerator.h" />
     <ClInclude Include="src\Manager\CameraManager.h" />
     <ClInclude Include="src\Manager\ColliderObjectManager.h" />
     <ClInclude Include="src\Manager\CollisionManager.h" />
     <ClInclude Include="src\Manager\EnemyManager.h" />
+    <ClInclude Include="src\Manager\GameObjectManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\ModelManager.h" />
@@ -248,6 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json" />
+    <None Include="src\Data\GameObjectModelData.json" />
     <None Include="src\Data\Stage_4.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
