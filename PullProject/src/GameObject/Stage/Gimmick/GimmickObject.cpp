@@ -14,6 +14,7 @@
   */
 GimmickObject::GimmickObject(int _modelHandle, VECTOR _pos, VECTOR _rota, Tag _tag)
 	: GameObject(_modelHandle, _pos, _tag) {
+	pTransform->SetRotation(_rota);
 	Start();
 }
 

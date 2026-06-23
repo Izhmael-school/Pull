@@ -10,8 +10,8 @@
  /*
   *  コンストラクタ
   */
-Lever::Lever(int id, int modelHandle, VECTOR pos)
-	:GimmickObject(modelHandle, pos)
+Lever::Lever(int id, int modelHandle, VECTOR pos,VECTOR rota)
+	:GimmickObject(modelHandle, pos,rota)
 	, triggerID(id)
 	, isActivated(false)
 	, onLever(false)
@@ -24,6 +24,7 @@ void Lever::Start() {
 
 void Lever::Setup() {
 	GimmickObject::Setup();
+	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -50, -50), VGet(50, 50, 50));
 }
 
@@ -53,8 +54,6 @@ void Lever::Render() {
 	// 壊れていたら描画しない
 	if (isActivated) return;
 
-	// モデルの透明度を設定
-	MV1SetOpacityRate(modelHandle, opacity);
 	// 描画
 	GimmickObject::Render();
 	pCollider->Render();
@@ -75,10 +74,10 @@ void Lever::Activate() {
 	if (isActivated) return;
 	// 使用状態に変更
 	isActivated = true;
-
-	// レバーを透明にする
-	opacity = 0.0f;
+	
+	// レバーを使用不可にする
 	SetActive(false);
+	// コライダーを消す
 	if (pCollider) {
 		pCollider->SetEnable(false);
 	}

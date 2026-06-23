@@ -23,7 +23,7 @@ public:
 	/*
 	 *	コンストラクタ
 	 */
-	Lever(int id, int modelHandle, VECTOR pos);
+	Lever(int id, int modelHandle, VECTOR pos,VECTOR rota);
 
 	/*
 	 *	開始処理

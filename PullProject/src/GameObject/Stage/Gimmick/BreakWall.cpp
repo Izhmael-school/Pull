@@ -4,6 +4,7 @@
  */
 #include "BreakWall.h"
 #include "Manager/Stage/GimmickManager.h"
+#include "../../../Component\Collider/Collider.h"
 
 namespace {
 	// レバーの生成位置
@@ -29,6 +30,8 @@ void BreakWall::Setup() {
 	GimmickObject::Setup();
 	// レバー対応ギミックの末尾に追加
 	GimmickManager::GetInstance().RegisterLeverReceiver(triggerID, this);
+	// コライダーを付与
+	pCollider = std::make_unique<AABBCollider>(this, VGet(-300, -300, -30), VGet(300, 300, 30));
 
 }
 
@@ -42,6 +45,7 @@ void BreakWall::Update() {
 		// 徐々に透明にしていく
 		OpacityChange();
 	};
+	pCollider->Update();
 }
 
 /*
@@ -59,7 +63,7 @@ void BreakWall::Render() {
 
 	// 描画
 	GimmickObject::Render();
-
+	pCollider->Render();
 }
 
 /*
