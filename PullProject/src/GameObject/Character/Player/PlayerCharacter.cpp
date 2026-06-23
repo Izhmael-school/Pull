@@ -60,7 +60,8 @@ void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {
 	auto enemy = dynamic_cast<EnemyBase*>(other);
 	if (enemy) {
 		// 敵を掴む
-		EnemyCatch();
+		playerState = PlayerState::EnemyCatch;
+		enemy->CaughtAction();
 	}
 }
 
@@ -86,8 +87,12 @@ void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
 	auto enemy = dynamic_cast<EnemyBase*>(other);
 	if (enemy) {
 		// 敵を離す
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
-			EnemyRelease();
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
+			playerState = PlayerState::Normal;
+			enemy->ThrownAction();
+			// デバッグ用
+			CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
+		}
 	}
 
 }
@@ -180,24 +185,4 @@ void PlayerCharacter::ArmsExtended() {
  */
 float PlayerCharacter::GetPullValueRatio() {
 	return pullValue / PULL_VALUE_MAX;
-}
-
-/*
- *	敵を掴む
- */
-void PlayerCharacter::EnemyCatch() {
-	playerState = PlayerState::EnemyCatch;
-	// デバッグ用
-	CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
-
-}
-
-/*
- *	敵を離す
- */
-void PlayerCharacter::EnemyRelease() {
-	playerState = PlayerState::Normal;
-	// デバッグ用
-	CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
-
 }

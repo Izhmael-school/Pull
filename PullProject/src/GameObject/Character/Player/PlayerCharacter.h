@@ -76,16 +76,6 @@ public:
 	 */
 	float GetPullValueRatio();
 
-	/*
-	 *	敵を掴む
-	 */
-	void EnemyCatch();
-
-	/*
-	 *	敵を離す
-	 */
-	void EnemyRelease();
-	
 public:
 	/*
 	 *　掴み状態か否か
