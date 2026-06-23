@@ -65,7 +65,6 @@ bool CanMerge(const AABB& a, const AABB& b)
         return r;
     }
 
-
 void MergeAABB3D(std::vector<AABB>& boxes)
 {
     bool merged = true;
@@ -91,7 +90,6 @@ void MergeAABB3D(std::vector<AABB>& boxes)
         }
     }
 }
-
 
 void StageCollisionGenerator::GenerateFromUnity(
     const std::string& path,
@@ -140,10 +138,8 @@ void StageCollisionGenerator::GenerateFromUnity(
 
         boxes.push_back({ min, max });
     }
-
    
     MergeAABB3D(boxes);
-
 
     int colCount = 0;
 
@@ -158,8 +154,5 @@ void StageCollisionGenerator::GenerateFromUnity(
         //manager.Register(col);
         colCount++;
     }
-
-  
-    printfDx("=== Collision Debug (3D Greedy) ===\n");
     printfDx("collider: %d\n", colCount);
 }

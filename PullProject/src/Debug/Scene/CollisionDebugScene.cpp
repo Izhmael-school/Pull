@@ -36,15 +36,6 @@ void CollisionDebugScene::Update()
 	CameraManager::GetInstance().GetCamera()->Update();
 	enemy->Update();
 
-	VECTOR move = VGet(0, 0, 0);
-
-	if (CheckHitKey(KEY_INPUT_8)) move.y += 2.0f;
-	if (CheckHitKey(KEY_INPUT_0)) move.y -= 2.0f;
-	if (CheckHitKey(KEY_INPUT_9)) move.x += 2.0f;
-	if (CheckHitKey(KEY_INPUT_7)) move.x -= 2.0f;
-	if (CheckHitKey(KEY_INPUT_6)) move.z += 2.0f;
-	if (CheckHitKey(KEY_INPUT_4)) move.z -= 2.0f;
-
 	CollisionManager::GetInstance().Update();
 }
 void CollisionDebugScene::Render(){
