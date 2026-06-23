@@ -46,7 +46,8 @@ void PlayerDebugScene::Update()
 	PlayerManager::GetInstance().GetPlayer()->Update();
 	// 敵の更新
 	EnemyManager::GetInstance().Update();
-
+	// ギミックの更新
+	GimmickObjectManager::GetInstance().Update();
 	// ===== 当たり判定 =====
 	CollisionManager::GetInstance().Update();
 
@@ -107,7 +108,6 @@ void PlayerDebugScene::Render(){
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
-
 	EnemyManager::GetInstance().Render();
 	PlayerManager::GetInstance().GetPlayer()->Render();
 
