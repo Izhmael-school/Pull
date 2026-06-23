@@ -67,7 +67,19 @@ void GimmickObject::Setup() {
 	pTransform->Update();
 }
 
+/*
+ *	終了処理
+ */
+void GimmickObject::Execute() {
+	DeleteModel();
+}
+
+/*
+ *	モデルを削除
+ */
 void GimmickObject::DeleteModel() {
+	// モデルがないなら行わない
+	if (modelHandle == -1) return;
 	MV1DeleteModel(modelHandle);
 }
 

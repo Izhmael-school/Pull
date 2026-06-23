@@ -43,6 +43,10 @@ public:
 	 */
 	void Render()override;
 
+	/*
+	 *	I—¹ˆ—
+	 */
+	void Execute()override;
 
 	/*
 	 *	g—pó‘Ô

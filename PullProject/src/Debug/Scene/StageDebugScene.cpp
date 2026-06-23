@@ -35,7 +35,7 @@ void StageDebugScene::Start() {
 		VGet(1440, 310, 1400));
 
 	CollisionManager::GetInstance().Register(AABB);
-
+	
 	capsule = new CapsuleCollider(nullptr,
 		VGet(0, 361, 0),   // start
 		VGet(0, 500, 0),   // end

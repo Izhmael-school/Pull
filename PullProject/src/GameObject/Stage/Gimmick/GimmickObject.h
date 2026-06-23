@@ -27,7 +27,7 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Setup();
-
+	virtual void Execute();
 	/*
 	 * @brief モデルの削除
 	 */

@@ -32,6 +32,7 @@ void Lever::Setup() {
  *  更新
  */
 void Lever::Update() {
+	GimmickObject::Update();
 	// 後に実装
 	// プレイヤー側でフラグ変更
 	// フラグの変更が確認されたらActivate関数を呼ぶ
@@ -54,10 +55,16 @@ void Lever::Render() {
 
 	// モデルの透明度を設定
 	MV1SetOpacityRate(modelHandle, opacity);
-
 	// 描画
 	GimmickObject::Render();
 	pCollider->Render();
+}
+
+/*
+ *	終了処理
+ */
+void Lever::Execute() {
+	GimmickObject::Execute();
 }
 
 /*
@@ -68,8 +75,14 @@ void Lever::Activate() {
 	if (isActivated) return;
 	// 使用状態に変更
 	isActivated = true;
+
 	// レバーを透明にする
 	opacity = 0.0f;
+	SetActive(false);
+	if (pCollider) {
+		pCollider->SetEnable(false);
+	}
+
 	// 起動したレバーのIDを渡す
 	GimmickManager::GetInstance().ActivateLever(triggerID);
 
