@@ -46,7 +46,7 @@ void GimmickObjectManager::Unregister(GimmickObject* object) {
 		objects.end());
 }
 
-void GimmickObjectManager::Setup(){
+void GimmickObjectManager::Setup() {
 	for (auto object : objects) {
 		if (object == nullptr) {
 			continue;
@@ -57,7 +57,7 @@ void GimmickObjectManager::Setup(){
 		}
 
 		object->Setup();
-}
+	}
 }
 
 /*

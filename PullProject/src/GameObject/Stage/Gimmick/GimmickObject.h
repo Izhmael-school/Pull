@@ -14,7 +14,7 @@
 
 class Collider;
 
-class GimmickObject : public GameObject{
+class GimmickObject : public GameObject {
 protected:
 	std::unique_ptr<Transform> pTransform;
 	std::unique_ptr<Collider> pCollider;

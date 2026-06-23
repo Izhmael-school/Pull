@@ -44,7 +44,7 @@ void StageDebugScene::Start()
 		VGet(0, 0, 0));
 	CollisionManager::GetInstance().Register(capsule);
 
-
+	// ギミックすべてのSetup処理を呼ぶ
 	GimmickObjectManager::GetInstance().Setup();
 }
 
