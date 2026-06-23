@@ -5,6 +5,7 @@
 
 /*
  * @file Collider.h
+ * @author Tanaka
  */
 
 class Collider {
@@ -38,9 +39,7 @@ public:
 };
 
 
-//
-// ✅ AABB Collider
-//
+// AABB Collider
 class AABBCollider : public Collider {
 private:
     VECTOR localMin;
@@ -51,7 +50,6 @@ private:
 
 public:
     // コンストラクタ
-    AABBCollider();
     AABBCollider(GameObject* obj, VECTOR min, VECTOR max);
 
     // 必須
@@ -68,9 +66,8 @@ public:
 };
 
 
-//
-// ✅ Sphere
-//
+
+//  SphereCollider
 class SphereCollider : public Collider {
 private:
     VECTOR localCenter;
@@ -91,9 +88,7 @@ public:
 };
 
 
-//
-// ✅ Capsule
-//
+//  CapsuleCollider
 class CapsuleCollider : public Collider {
 private:
     VECTOR localStart;
