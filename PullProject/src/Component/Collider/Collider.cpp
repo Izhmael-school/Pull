@@ -32,6 +32,7 @@ AABBCollider::AABBCollider(GameObject* obj, VECTOR min, VECTOR max)
 }
 
 void AABBCollider::Update() {
+	if (!pGameObject) return;
 	VECTOR pos = pGameObject->GetPosition();
 	worldMin = VAdd(localMin, pos);
 	worldMax = VAdd(localMax, pos);

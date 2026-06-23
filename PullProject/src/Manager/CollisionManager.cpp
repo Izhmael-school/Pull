@@ -6,8 +6,7 @@ CollisionManager::~CollisionManager() {
 
 #pragma region 登録
 
-void CollisionManager::Register(Collider* _pCol)
-{
+void CollisionManager::Register(Collider* _pCol) {
 	if (!_pCol) return;
 
 	pColliderArray.push_back(_pCol);
@@ -26,8 +25,7 @@ void CollisionManager::CheckRegister(Collider* _pCol) {
 #pragma endregion
 
 #pragma region 削除
-void CollisionManager::UnRegister(Collider* _pCol)
-{
+void CollisionManager::UnRegister(Collider* _pCol) {
 	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
 	if (itr == pColliderArray.end()) return;
 
@@ -45,13 +43,10 @@ void CollisionManager::UnRegisterAll() {
 
 #pragma region 更新
 
-void CollisionManager::Update()
-{
+void CollisionManager::Update() {
 
-	for (auto col : pColliderArray)
-	{
-		if (col && col->IsEnable())
-		{
+	for (auto col : pColliderArray) {
+		if (col && col->IsEnable()) {
 			col->Update();
 		}
 	}
@@ -60,18 +55,15 @@ void CollisionManager::Update()
 
 	static int prevSize = -1;
 
-	if (prevSize != n)
-	{
+	if (prevSize != n) {
 		prevs.assign(n, std::vector<bool>(n, false));
 		currents.assign(n, std::vector<bool>(n, false));
 
 		prevSize = n;
 	}
 
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = i + 1; j < n; j++)
-		{
+	for (int i = 0; i < n; i++) {
+		for (int j = i + 1; j < n; j++) {
 			Collider* a = pColliderArray[i];
 			Collider* b = pColliderArray[j];
 
@@ -85,18 +77,15 @@ void CollisionManager::Update()
 
 			currents[i][j] = CheckHit(a, b);
 
-			if (!prevs[i][j] && currents[i][j])
-			{
+			if (!prevs[i][j] && currents[i][j]) {
 				goA->OnTriggerEnter(b);
 				goB->OnTriggerEnter(a);
 			}
-			else if (currents[i][j])
-			{
+			else if (currents[i][j]) {
 				goA->OnTriggerStay(b);
 				goB->OnTriggerStay(a);
 			}
-			else if (prevs[i][j] && !currents[i][j])
-			{
+			else if (prevs[i][j] && !currents[i][j]) {
 				goA->OnTriggerExit(b);
 				goB->OnTriggerExit(a);
 			}
@@ -109,8 +98,7 @@ void CollisionManager::Update()
 #pragma endregion
 
 #pragma region 判定
-bool CollisionManager::CheckHit(Collider* a, Collider* b)
-{
+bool CollisionManager::CheckHit(Collider* a, Collider* b) {
 	if (auto s1 = dynamic_cast<SphereCollider*>(a))
 		if (auto s2 = dynamic_cast<SphereCollider*>(b))
 			return SphereVsSphere(s1, s2);
@@ -154,16 +142,14 @@ bool CollisionManager::CheckHit(Collider* a, Collider* b)
 
 #pragma region 判定処理
 
-bool CollisionManager::SphereVsSphere(SphereCollider* a, SphereCollider* b)
-{
+bool CollisionManager::SphereVsSphere(SphereCollider* a, SphereCollider* b) {
 	VECTOR diff = VSub(a->GetWorldCenter(), b->GetWorldCenter());
 	float distSq = VDot(diff, diff);
 	float r = a->GetRadius() + b->GetRadius();
 	return distSq <= r * r;
 }
 
-bool CollisionManager::SphereVsAABB(SphereCollider* s, AABBCollider* b)
-{
+bool CollisionManager::SphereVsAABB(SphereCollider* s, AABBCollider* b) {
 	VECTOR center = s->GetWorldCenter();
 	VECTOR min = b->GetMin();
 	VECTOR max = b->GetMax();
@@ -179,8 +165,7 @@ bool CollisionManager::SphereVsAABB(SphereCollider* s, AABBCollider* b)
 	return distSq <= (s->GetRadius() * s->GetRadius());
 }
 
-bool CollisionManager::AABBvsAABB(AABBCollider* a, AABBCollider* b)
-{
+bool CollisionManager::AABBvsAABB(AABBCollider* a, AABBCollider* b) {
 	VECTOR amin = a->GetMin();
 	VECTOR amax = a->GetMax();
 	VECTOR bmin = b->GetMin();
@@ -193,8 +178,7 @@ bool CollisionManager::AABBvsAABB(AABBCollider* a, AABBCollider* b)
 		);
 }
 
-bool CollisionManager::CapsuleVsSphere(CapsuleCollider* cap, SphereCollider* sph)
-{
+bool CollisionManager::CapsuleVsSphere(CapsuleCollider* cap, SphereCollider* sph) {
 	VECTOR p1 = cap->GetWorldStart();
 	VECTOR p2 = cap->GetWorldEnd();
 	VECTOR center = sph->GetWorldCenter();
@@ -214,8 +198,7 @@ bool CollisionManager::CapsuleVsSphere(CapsuleCollider* cap, SphereCollider* sph
 	return distSq <= r * r;
 }
 
-bool CollisionManager::CapsuleVsAABB(CapsuleCollider* cap, AABBCollider* box)
-{
+bool CollisionManager::CapsuleVsAABB(CapsuleCollider* cap, AABBCollider* box) {
 
 	VECTOR p1 = cap->GetWorldStart();
 	VECTOR p2 = cap->GetWorldEnd();
@@ -226,8 +209,7 @@ bool CollisionManager::CapsuleVsAABB(CapsuleCollider* cap, AABBCollider* box)
 	// カプセルの線分を何分割かしてチェック（簡易だけど強い）
 	const int steps = 5;
 
-	for (int i = 0; i <= steps; i++)
-	{
+	for (int i = 0; i <= steps; i++) {
 		float t = (float)i / steps;
 
 		VECTOR point = VAdd(p1, VScale(VSub(p2, p1), t));
@@ -241,8 +223,7 @@ bool CollisionManager::CapsuleVsAABB(CapsuleCollider* cap, AABBCollider* box)
 		VECTOR diff = VSub(point, closest);
 		float distSq = VDot(diff, diff);
 
-		if (distSq <= cap->GetRadius() * cap->GetRadius())
-		{
+		if (distSq <= cap->GetRadius() * cap->GetRadius()) {
 			return true;
 		}
 	}
@@ -251,8 +232,7 @@ bool CollisionManager::CapsuleVsAABB(CapsuleCollider* cap, AABBCollider* box)
 
 }
 
-bool CollisionManager::CapsuleVsCapsule(CapsuleCollider* a, CapsuleCollider* b)
-{
+bool CollisionManager::CapsuleVsCapsule(CapsuleCollider* a, CapsuleCollider* b) {
 	float dist = Segment_Segment_MinLength(
 		a->GetWorldStart(), a->GetWorldEnd(),
 		b->GetWorldStart(), b->GetWorldEnd()
@@ -264,18 +244,15 @@ bool CollisionManager::CapsuleVsCapsule(CapsuleCollider* a, CapsuleCollider* b)
 #pragma endregion
 
 #pragma region 描画
-void CollisionManager::Render()
-{
-	for (auto col : pColliderArray)
-	{
+void CollisionManager::Render() {
+	for (auto col : pColliderArray) {
 		if (!col) continue;
 		col->Render();
 	}
 }
 #pragma endregion
 
-void CollisionManager::Clear()
-{
+void CollisionManager::Clear() {
 	pColliderArray.clear();
 	prevs.clear();
 	currents.clear();
