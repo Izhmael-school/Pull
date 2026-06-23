@@ -19,8 +19,7 @@
 
 StageDebugScene::StageDebugScene() { Start(); }
 
-void StageDebugScene::Start()
-{
+void StageDebugScene::Start() {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
 	// ステージの初期化処理
@@ -43,13 +42,9 @@ void StageDebugScene::Start()
 		30.0f,
 		VGet(0, 0, 0));
 	CollisionManager::GetInstance().Register(capsule);
-
-	// ギミックすべてのSetup処理を呼ぶ
-	GimmickObjectManager::GetInstance().Setup();
 }
 
-void StageDebugScene::Update()
-{
+void StageDebugScene::Update() {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// 敵の更新
@@ -87,15 +82,15 @@ void StageDebugScene::Update()
 	if (CheckHitKey(KEY_INPUT_C)) {
 		GimmickManager::GetInstance().ActivateLever(2);
 	}
-	
+
 	// ===== ギミックの更新 ====
 	GimmickObjectManager::GetInstance().Update();
 
 	// ===== 更新（重要）=====
 	capsule->Update();
 	AABB->Update();
-	
-	
+
+
 	// ===== 当たり判定 =====
 	CollisionManager::GetInstance().Update();
 
@@ -156,7 +151,7 @@ void StageDebugScene::Render() {
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
-	
+
 	// ==== ギミックの描画 ====
 	GimmickObjectManager::GetInstance().Render();
 
