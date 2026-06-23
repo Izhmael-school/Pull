@@ -10,12 +10,13 @@
 #include "Manager/Stage/StageManager.h"
 #include "Manager/EnemyManager.h"
 #include "Manager/CameraManager.h"
+#include "Manager/GameObjectManager.h"
 #include "GameObject/Camera/CameraObject.h"
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/ColliderObjectManager.h"
 #include "Manager/PlayerManager.h"
-
+#include "GameObject/Missile/Missile.h"
 
 EnemyDebugScene::EnemyDebugScene() { Start(); }
 
@@ -31,12 +32,11 @@ void EnemyDebugScene::Start()
 	StageManager::GetInstance().Initialize();
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(4);
-	int model = MV1LoadModel("res/Model/Object/Missile.mv1");
-	pMissile = std::make_unique<Missile>(model);
+		
 }
 
-void EnemyDebugScene::Update()
-{
+void EnemyDebugScene::Update(){
+	GameObjectManager::GetInstance().Update();
 	ColliderObjectManager::GetInstance().Update();
 	CollisionManager::GetInstance().Update();
 	PlayerManager::GetInstance().GetPlayer()->Update();
@@ -44,7 +44,6 @@ void EnemyDebugScene::Update()
 	CameraManager::GetInstance().GetCamera()->Update();
 	// 敵の更新
 	EnemyManager::GetInstance().Update();
-	pMissile->Update();
 }
 
 void EnemyDebugScene::Render(){
@@ -98,7 +97,8 @@ void EnemyDebugScene::Render(){
 			DrawLine3D(pos1, pos2, blue);
 		}
 	}
-	ColliderObjectManager::GetInstance().Render();;
+	ColliderObjectManager::GetInstance().Render();
+	GameObjectManager::GetInstance().Render();
 #endif
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
@@ -108,12 +108,10 @@ void EnemyDebugScene::Render(){
 	StageManager::GetInstance().Render();
 
 	EnemyManager::GetInstance().Render();
-
-	pMissile->Render();
 }
 
 void EnemyDebugScene::Setup(){
-	EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
+	EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, 0));
 }
 
 void EnemyDebugScene::Cleanup(){

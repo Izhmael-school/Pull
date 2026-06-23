@@ -7,12 +7,11 @@
 #include <memory>
 #include "GameObject/GameObject.h"
 #include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
-#include "GameObject/Missile/Missile.h"
+
 
 class PlayerCharacrerPtr;
 
 class EnemyDebugScene : public SceneBase {
-	std::unique_ptr<Missile> pMissile;
 
 public:
 	EnemyDebugScene();

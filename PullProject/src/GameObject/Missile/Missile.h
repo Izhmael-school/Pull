@@ -16,7 +16,7 @@ public:
 	float lifeElapsedTime;
 
 public:
-	Missile(int _modelHandle = -1, VECTOR _pos = VZero);
+	Missile(int _modelHandle = -1,VECTOR _dir = VForward, VECTOR _pos = VZero);
 	~Missile() noexcept override;
 
 private:

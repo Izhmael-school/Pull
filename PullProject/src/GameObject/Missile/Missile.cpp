@@ -2,24 +2,24 @@
 #include "Manager/TimeManager.h"
 #include "Manager/ColliderObjectManager.h"
 
-Missile::Missile(int _modelHandle, VECTOR _pos)
-	:GameObject(_modelHandle,_pos)
-	,moveSpeed(1000)
-	,lifeLimitTime(5.0f)
-	,lifeElapsedTime(0.0f)
-{
-	Start();
+Missile::Missile(int _modelHandle, VECTOR _dir, VECTOR _pos)
+	:GameObject(_modelHandle, _pos)
+	, moveSpeed(1000)
+	, lifeLimitTime(5.0f)
+	, lifeElapsedTime(0.0f) {
+	GetTransform()->LookAtDir(_dir);
 }
 
-Missile::~Missile()
-{
+Missile::~Missile() {
 }
 
-void Missile::Start(){
+void Missile::Start() {
 }
 
-void Missile::Update(){
+void Missile::Update() {
 	GameObject::Update();
+	if (!isActive) return;
+
 	// 掴まれたら更新しない
 	if (GetCurrentCaughtState() != NoneCaughtState) return;
 
@@ -42,25 +42,25 @@ void Missile::Update(){
 	}
 }
 
-void Missile::Exprosion(){
+void Missile::Exprosion() {
 	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300);
+	isActive = false;
 }
 
-void Missile::CatchStart(){
+void Missile::CatchStart() {
 	// 掴まれたら時間をリセット
 	lifeElapsedTime = 0.0f;
 }
 
-void Missile::Catching(){
+void Missile::Catching() {
 }
 
-void Missile::ThrowStart(){
+void Missile::ThrowStart() {
 	ChangeCaughtState(NoneCaughtState);
 }
 
-void Missile::Throwing(){
+void Missile::Throwing() {
 }
 
-void Missile::HitObject()
-{
+void Missile::HitObject() {
 }

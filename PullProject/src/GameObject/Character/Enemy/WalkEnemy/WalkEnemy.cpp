@@ -19,8 +19,7 @@ void WalkEnemy::Setup(){
 
 	// アニメーションに合わせて攻撃する
 	auto anim = pAnimator->GetAnimation("Attack");
-	VECTOR pos = VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 100));
-	anim->SetEvent([pos]() {ColliderObjectManager::GetInstance().CreateSphere(pos,200);}, 22);
+	anim->SetEvent([this]() {ColliderObjectManager::GetInstance().CreateSphere(VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 100)),200);}, 22);
 }
 
 void WalkEnemy::Start(){

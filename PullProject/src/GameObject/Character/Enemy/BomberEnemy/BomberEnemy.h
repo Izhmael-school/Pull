@@ -15,7 +15,7 @@ private:
 	void Start() override;
 
 public: 
-	void Setup();
+	void Setup() override;
 
 	void HitObject() override;
 private:

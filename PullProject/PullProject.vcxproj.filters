@@ -49,9 +49,6 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy">
       <UniqueIdentifier>{0ce27087-2254-4f99-9b13-1560583eff7f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\GameObject\Character\Enemy\WalkEnemy">
-      <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Debug\Scene">
       <UniqueIdentifier>{919da8bb-3abb-4cce-a3e5-be86ca300b66}</UniqueIdentifier>
     </Filter>
@@ -69,6 +66,12 @@
     </Filter>
     <Filter Include="ソース ファイル\GameObject\Missile">
       <UniqueIdentifier>{63c73e2c-05af-4828-bdd9-42012cfd4700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\Shooter">
+      <UniqueIdentifier>{65ade2ba-8622-468e-bd5f-6e44b2aaf21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\Walker">
+      <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +175,7 @@
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\WalkEnemy</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\Walker</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp">
       <Filter>ソース ファイル</Filter>
@@ -218,6 +221,15 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.cpp">
       <Filter>ソース ファイル\GameObject\Character\Enemy\Bomber</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\GameObjectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generator\GameObjectGenerator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.cpp">
+      <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -354,7 +366,7 @@
       <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\WalkEnemy</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\Walker</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -407,11 +419,23 @@
     <ClInclude Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.h">
       <Filter>ソース ファイル\GameObject\Character\Enemy\Bomber</Filter>
     </ClInclude>
+    <ClInclude Include="src\Manager\GameObjectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generator\GameObjectGenerator.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.h">
+      <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
     <None Include="src\Data\Stage_4.json" />
+    <None Include="src\Data\GameObjectModelData.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
   </ItemGroup>
 </Project>
