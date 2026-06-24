@@ -1,0 +1,65 @@
+/*
+ *	@file	PullOutFloor.h
+ *  @author oorui
+ */
+
+#ifndef _PULLOUTFLOOR_H_
+#define _PULLOUTFLOOR_H_
+
+#include "GimmickObject.h"
+#include "../../GameObject.h"
+#include "GameObject/Stage/Gimmick/TriggerInterface.h"
+#include "../../../Definition/CommonModule/MyMath.h"
+
+/*
+ *	レバーで引き出される床
+ *  @param	GameObject
+ *  @param	TriggerInterface	レバー対応ギミックの為インターフェース継承
+ */
+class PullOutFloor :public GimmickObject, public TriggerInterface {
+private:
+	int triggerID;	// 自身のID
+
+	bool isMoving;	// 動いているかどうか
+
+public:
+	/*
+	 *	コンストラクタ
+	 */
+	PullOutFloor(int id, int modelHandle, VECTOR pos, VECTOR rota);
+
+public:
+	/*
+	 *	床を動かす
+	 */
+	void Moving();
+
+public:
+	/*
+	 *	使用前準備
+	 */
+	void Setup()override;
+
+	/*
+	 *	更新処理
+	 */
+	void Update()override;
+
+	/*
+	 *	描画処理
+	 */
+	void Render()override;
+
+public:
+	/*
+	 *	IDの取得
+	 */
+	int GetTriggerID() const override { return triggerID; }
+
+	/*
+	 *	レバー配置位置取得
+	 */
+	VECTOR GetLeverSpawnPosition() const override;
+};
+
+#endif // !_PULLOUTFLOOR_H_

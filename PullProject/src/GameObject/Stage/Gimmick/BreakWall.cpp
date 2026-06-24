@@ -82,8 +82,7 @@ void BreakWall::OnTriggered() {
 /*
  *	レバーの生成位置を取得
  */
-VECTOR BreakWall::GetLeverSpawnPosition() const
-{
+VECTOR BreakWall::GetLeverSpawnPosition() const {
 	// モデル内のLeverPointフレーム検索
 	int frame = MV1SearchFrame(modelHandle, _LEVER_SPAWNPOS_NAME);
 	// ローカル座標

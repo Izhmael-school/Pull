@@ -168,7 +168,9 @@
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Gimmick\HookShot.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
     <ClCompile Include="src\Generator\GameObjectGenerator.cpp" />
@@ -234,7 +236,9 @@
     <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\HookShot.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\Lever.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\TriggerInterface.h" />
     <ClInclude Include="src\GameObject\Stage\Stage.h" />
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
