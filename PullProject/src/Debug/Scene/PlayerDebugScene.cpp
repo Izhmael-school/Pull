@@ -110,6 +110,7 @@ void PlayerDebugScene::Render(){
 	StageManager::GetInstance().Render();
 	EnemyManager::GetInstance().Render();
 	PlayerManager::GetInstance().GetPlayer()->Render();
+	PlayerManager::GetInstance().GetPlayerHands()->Render();
 
 	// ==== ギミックの描画 ====
 	GimmickObjectManager::GetInstance().Render();

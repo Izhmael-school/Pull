@@ -8,7 +8,6 @@
 #include "../../../Definition/Const/VECTORConst.h"
 #include "../../../Definition/CommonModule/MyMath.h"
 #include "../../../Manager/CameraManager.h"
-#include "../../../Component/Collider/Collider.h"
 #include "../../Stage/Gimmick/Lever.h"
 #include "../Enemy/EnemyBase.h"
 #include <memory>
@@ -38,10 +37,6 @@ void PlayerCharacter::Update() {
 	if (playerState == PlayerState::Normal || playerState == PlayerState::EnemyCatch)
 		Move();
 
-	// ウデ伸ばし
-	if (playerState != PlayerState::EnemyCatch)
-		ArmsExtended();
-	//if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
 
 }
 
@@ -49,20 +44,10 @@ void PlayerCharacter::Render() {
 	Character::Render();
 	if (pCollider)
 		pCollider->Render();
-	if (pArmsCollider)
-		pArmsCollider->Render();
 }
 
 void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {
-	auto other = _pOther->GetGameObject();
-
-	// 当たったのが敵の場合
-	auto enemy = dynamic_cast<EnemyBase*>(other);
-	if (enemy) {
-		// 敵を掴む
-		playerState = PlayerState::EnemyCatch;
-		enemy->CaughtAction();
-	}
+	
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
@@ -82,19 +67,6 @@ void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
 			// ギミック作動
 			lever->SetLeverTrigger(Pull());
 	}
-
-	// 当たったのが敵の場合
-	auto enemy = dynamic_cast<EnemyBase*>(other);
-	if (enemy) {
-		// 敵を離す
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
-			playerState = PlayerState::Normal;
-			enemy->ThrownAction();
-			// デバッグ用
-			CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
-		}
-	}
-
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pOther) {
@@ -163,20 +135,6 @@ bool PlayerCharacter::Pull() {
 		return true;
 	}
 	return false;
-}
-
-/*
- *	ウデ伸ばし
- */
-void PlayerCharacter::ArmsExtended() {
-	if (!InputManager::GetInstance().IsKey(KEY_INPUT_E))
-		return;
-	if (!pArmsCollider)
-		pArmsCollider = std::make_unique<CapsuleCollider>(this, VZero, VZero, 100, VZero);
-
-	// まっすぐ伸ばしていく
-	VECTOR moveVec = VScale(pTransform->GetForward(), -20);
-	pArmsCollider->Move(moveVec);
 }
 
 /*

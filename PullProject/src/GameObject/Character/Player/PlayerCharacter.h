@@ -27,7 +27,6 @@ private:
 	PlayerState playerState;	// プレイヤーの状態
 	float speed;				// 移動速度
 	float pullValue;			// 引っ張り値
-	std::unique_ptr<CapsuleCollider> pArmsCollider;	// 腕用のコライダー
 
 	// 引っこ抜きライン
 	const float PULL_VALUE_MAX;
@@ -64,10 +63,6 @@ private:
 	 *	@return bool	引き抜いたか否か
 	 */
 	bool Pull();
-	/*
-	 *	ウデ伸ばし
-	 */
-	void ArmsExtended();
 
 public:
 	/*
