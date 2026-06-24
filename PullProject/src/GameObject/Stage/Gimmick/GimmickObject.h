@@ -14,14 +14,7 @@
 
 class Collider;
 
-class GimmickObject : public GameObject{
-protected:
-	std::unique_ptr<Transform> pTransform;
-	std::unique_ptr<Collider> pCollider;
-	std::unique_ptr<Transform> pRotation;
-	Tag tag;
-	bool isActive;
-	int modelHandle;
+class GimmickObject : public GameObject {
 
 public:
 	GimmickObject(int _modelHandle = -1, VECTOR _pos = VZero, VECTOR _rota = VZero, Tag _tag = None);
@@ -34,7 +27,7 @@ public:
 	virtual void Update();
 	virtual void Render();
 	virtual void Setup();
-
+	virtual void Execute();
 	/*
 	 * @brief モデルの削除
 	 */
@@ -94,6 +87,7 @@ public:
 	 * @brief 離れた時
 	 */
 	virtual void OnTriggerExit(Collider* _pOther);
+
 };
 
 #endif // !_GAMEOBJECT_H_

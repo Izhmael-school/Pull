@@ -10,8 +10,8 @@
  /*
   *  コンストラクタ
   */
-Lever::Lever(int id, int modelHandle, VECTOR pos)
-	:GimmickObject(modelHandle, pos)
+Lever::Lever(int id, int modelHandle, VECTOR pos,VECTOR rota)
+	:GimmickObject(modelHandle, pos,rota)
 	, triggerID(id)
 	, isActivated(false)
 	, onLever(false)
@@ -19,7 +19,13 @@ Lever::Lever(int id, int modelHandle, VECTOR pos)
 }
 
 void Lever::Start() {
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-50,-50,-50), VGet(50,50,50));
+
+}
+
+void Lever::Setup() {
+	GimmickObject::Setup();
+	// コライダーを付与
+	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -50, -50), VGet(50, 50, 50));
 }
 
 
@@ -27,6 +33,7 @@ void Lever::Start() {
  *  更新
  */
 void Lever::Update() {
+	GimmickObject::Update();
 	// 後に実装
 	// プレイヤー側でフラグ変更
 	// フラグの変更が確認されたらActivate関数を呼ぶ
@@ -34,6 +41,7 @@ void Lever::Update() {
 		// ギミック起動
 		Activate();
 	}
+	pCollider->Update();
 
 }
 
@@ -46,11 +54,16 @@ void Lever::Render() {
 	// 壊れていたら描画しない
 	if (isActivated) return;
 
-	// モデルの透明度を設定
-	MV1SetOpacityRate(modelHandle, opacity);
-
 	// 描画
 	GimmickObject::Render();
+	pCollider->Render();
+}
+
+/*
+ *	終了処理
+ */
+void Lever::Execute() {
+	GimmickObject::Execute();
 }
 
 /*
@@ -61,8 +74,14 @@ void Lever::Activate() {
 	if (isActivated) return;
 	// 使用状態に変更
 	isActivated = true;
-	// レバーを透明にする
-	opacity = 0.0f;
+	
+	// レバーを使用不可にする
+	SetActive(false);
+	// コライダーを消す
+	if (pCollider) {
+		pCollider->SetEnable(false);
+	}
+
 	// 起動したレバーのIDを渡す
 	GimmickManager::GetInstance().ActivateLever(triggerID);
 

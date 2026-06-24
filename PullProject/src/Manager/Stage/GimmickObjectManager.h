@@ -21,6 +21,7 @@ private:
 	 * @brief 管理中のギミックオブジェクト
 	 */
 	std::vector<GimmickObject*> objects;
+	
 private:
 	GimmickObjectManager() = default;
 	~GimmickObjectManager() = default;
@@ -36,6 +37,11 @@ public:
 	 * @brief オブジェクト解除
 	 */
 	void Unregister(GimmickObject* object);
+
+	/*
+	 *	@brief	全開始処理
+	 */
+	void Setup();
 
 	/*
 	 * @brief 全更新

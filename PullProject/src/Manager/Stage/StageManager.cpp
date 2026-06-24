@@ -4,7 +4,7 @@
  */
 
 #include "StageManager.h"
-
+#include "GimmickObjectManager.h"
  /*
   *	コンストラクタ
   */
@@ -24,6 +24,7 @@ void StageManager::Initialize() {
  *	ステージの読み込み
  */
 void StageManager::LoadStage(int stageID) {
+	GimmickObjectManager::GetInstance().Clear();
 	//ステージ設定JSONのパス生成
 	// ※後で絶対に直す
 	std::string stageFile = "src/Data/Gimmick/Stage" + std::to_string(stageID) + "Gimmick.json";

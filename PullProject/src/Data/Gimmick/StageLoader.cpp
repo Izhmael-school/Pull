@@ -56,9 +56,7 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 
 		// 回転数を取得
 		float baseRota = gimmick[_DATENAME_ROTATION];
-		float radian = baseRota * DX_PI_F / 180.0f;
-		// radianに変換
-		VECTOR vRota = { 0.0f,radian,0.0f };
+		VECTOR vRota = { 0.0f,baseRota,0.0f };
 
 		// 生成
 		GimmickObject* object = GimmickFactory::Create(
@@ -93,7 +91,9 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		// 座標を仮設定
 		VECTOR pos = VGet(0, 0, 0);
 
-
+		// 回転数を取得
+		float baseRota = lever[_DATENAME_ROTATION];
+		VECTOR vRota = { 0.0f,baseRota,0.0f };
 
 		// 同じIDのギミック検索
 		auto it = triggerMap.find(id);
@@ -105,7 +105,7 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		}
 
 		// レバーオブジェクト生成
-		Lever* obj = new Lever(id, model, pos);
+		Lever* obj = new Lever(id, model, pos,vRota);
 		// オブジェクトを登録
 		GimmickObjectManager::GetInstance().Register(obj);
 

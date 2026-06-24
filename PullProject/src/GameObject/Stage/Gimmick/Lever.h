@@ -23,12 +23,14 @@ public:
 	/*
 	 *	コンストラクタ
 	 */
-	Lever(int id, int modelHandle, VECTOR pos);
+	Lever(int id, int modelHandle, VECTOR pos,VECTOR rota);
 
 	/*
 	 *	開始処理
 	 */
 	void Start()override;
+
+	void Setup()override;
 
 	/*
 	 *	更新処理
@@ -41,6 +43,10 @@ public:
 	 */
 	void Render()override;
 
+	/*
+	 *	終了処理
+	 */
+	void Execute()override;
 
 	/*
 	 *	使用状態

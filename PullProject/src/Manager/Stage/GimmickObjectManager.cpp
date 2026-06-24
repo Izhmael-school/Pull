@@ -13,7 +13,6 @@ void GimmickObjectManager::Register(GimmickObject* object) {
 	if (object == nullptr) {
 		return;
 	}
-
 	// 二重登録防止
 	auto it = std::find(
 		objects.begin(),
@@ -44,6 +43,20 @@ void GimmickObjectManager::Unregister(GimmickObject* object) {
 			objects.end(),
 			object),
 		objects.end());
+}
+
+void GimmickObjectManager::Setup() {
+	for (auto object : objects) {
+		if (object == nullptr) {
+			continue;
+		}
+
+		if (!object->IsActive()) {
+			continue;
+		}
+
+		object->Setup();
+	}
 }
 
 /*
