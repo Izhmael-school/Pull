@@ -8,6 +8,9 @@
 #include "Lever.h"
 #include "BomBreakWall.h"
 
+/*
+ *	レバー以外のギミック生成
+ */
 GimmickObject* GimmickFactory::Create(const std::string& type, int modelHandle, int triggerId, VECTOR pos, VECTOR rota) {
 	// 壊れる壁生成
 	if (type == "BreakWall") {

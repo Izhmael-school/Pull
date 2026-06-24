@@ -5,6 +5,7 @@
 
 #include "StageManager.h"
 #include "GimmickObjectManager.h"
+#include <format>
  /*
   *	コンストラクタ
   */
@@ -26,8 +27,7 @@ void StageManager::Initialize() {
 void StageManager::LoadStage(int stageID) {
 	GimmickObjectManager::GetInstance().Clear();
 	//ステージ設定JSONのパス生成
-	// ※後で絶対に直す
-	std::string stageFile = "src/Data/Gimmick/Stage" + std::to_string(stageID) + "Gimmick.json";
+	std::string stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
 
 	// ステージモデルロード
 	int stageModel =ModelManager::GetInstance().Load("res/Model/Stage/Stage4/Stage_4.mv1");
@@ -39,7 +39,7 @@ void StageManager::LoadStage(int stageID) {
 	// 現在のステージの実体にモデルを登録
 	loadedStage->SetModelHandle(duplicate);
 
-	// ギミックロード
+	// ギミック生成
 	StageLoader::Load(stageFile,duplicate );
 
 }

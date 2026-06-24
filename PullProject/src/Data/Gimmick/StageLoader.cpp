@@ -39,8 +39,8 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 	for (auto& gimmick : data[_DATENAME_GIMMICK]) {
 		// ギミックの種類を取得
 		std::string type = gimmick[_DATENAME_TYPE];
-		// レバーオブジェクトなら、IDを設定
-		int leverID = gimmick[_DATENAME_LeverID];
+		// レバーオブジェクトなら、IDを設定 ,なければ-1に指定
+		int leverID = gimmick.value(_DATENAME_LeverID, -1);
 		// ギミックの生成位置の名前を取得
 		std::string point = gimmick[_DATENAME_POSITION];
 		// ステージフレームから位置を取得
