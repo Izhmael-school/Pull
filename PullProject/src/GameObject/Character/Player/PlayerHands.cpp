@@ -10,10 +10,18 @@
 #include "../../../Definition/CommonModule/MyMath.h"
 #include "../../../Manager/CameraManager.h"
 #include "../../Stage/Gimmick/Lever.h"
+#include "../../../Component/Collider/Collider.h"
+#include "PlayerCharacter.h"
 
-PlayerHands::PlayerHands(int _modelHandle, VECTOR _pos, Tag _tag)
+PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag)
 	: Character(_modelHandle, _pos, _tag)
-	, speed(10.0f)
+	, handsState(HandsState::Idle)
+	, catchState(CatchState::None)
+	, owner(_owner)
+	, extendSpeed(20.0f)
+	, returnSpeedRatio(0.7f)
+
+	, RETURN_THRESHOLD(1.0f)
 {
 }
 
@@ -27,11 +35,27 @@ void PlayerHands::Update() {
 	if (!pCollider) return;
 	pCollider->Update();
 
-	// 入力
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_E))
-		pTransform->AddPosition(VForward, -speed);
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_Q))
-		pTransform->AddPosition(VForward, speed);
+	// 掴み状態
+	if (handsState == HandsState::Catch) {
+		// 掴み解除
+		if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F)) {
+			handsState = HandsState::ArmsReturning;
+			catchState = CatchState::None;
+		}
+	}
+	// 何も掴んでいなければ
+	else {
+		// ウデ伸ばし
+		if (InputManager::GetInstance().IsKey(KEY_INPUT_E))
+			handsState = HandsState::ArmsExtending;
+		// ウデ戻し
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
+			handsState = HandsState::ArmsReturning;
+	}
+
+	// 手の移動
+	HandsMove();
+
 }
 
 void PlayerHands::Render() {
@@ -42,17 +66,27 @@ void PlayerHands::Render() {
 
 void PlayerHands::OnTriggerEnter(Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
+	// ウデを伸ばしていない状態なら無視
+	if (handsState != HandsState::ArmsExtending)
+		return;
 
 	// 当たったのが敵の場合
 	auto enemy = dynamic_cast<EnemyBase*>(other);
 	if (enemy) {
-		// 敵を掴む
+		// ステート変更
+		catchState = CatchState::EnemyCatch;
+		handsState = HandsState::Catch;
+		// 敵の掴まった時処理
 		enemy->CaughtAction();
 	}
 }
 
 void PlayerHands::OnTriggerStay(Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
+	// ウデを伸ばしていない状態なら無視(キャッチなら無視しない)
+	if (handsState != HandsState::ArmsExtending &&
+		handsState != HandsState::Catch)
+		return;
 
 	// 当たったのが敵の場合
 	auto enemy = dynamic_cast<EnemyBase*>(other);
@@ -60,12 +94,53 @@ void PlayerHands::OnTriggerStay(Collider* _pOther) {
 		// 敵を離す
 		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
 			enemy->ThrownAction();
+			catchState = CatchState::None;
+			handsState = HandsState::ArmsReturning;
+		}
+	}
+
+	// 当たったのがレバーの場合
+	auto lever = dynamic_cast<Lever*>(other);
+	if (lever) {
+		// ステート変更
+		catchState = CatchState::GimmickCatch;
+		handsState = HandsState::Catch;
+		// 引っこ抜き
+		bool pull = owner->Pull();
+		// ギミック発動
+		if (pull) {
+			lever->SetLeverTrigger(pull);
+			catchState = CatchState::None;
+			handsState = HandsState::ArmsReturning;
 		}
 	}
 }
 
-void PlayerHands::OnTriggerExit(Collider* _pOther)
-{
+void PlayerHands::OnTriggerExit(Collider* _pOther) {
+}
+
+/*
+ *	手の移動処理
+ */
+void PlayerHands::HandsMove() {
+	// ウデ伸ばし中なら前に進む
+	if (handsState == HandsState::ArmsExtending) {
+		pTransform->AddPosition(VForward, -extendSpeed);
+	}
+	// ウデ戻し中なら戻ってくる
+	else if (handsState == HandsState::ArmsReturning){
+		float posZ = pTransform->GetLocalPosition().z;
+		// 戻ってきたとみなす
+		if (posZ > -RETURN_THRESHOLD) {
+			pTransform->SetPosition(VZero);
+			handsState = HandsState::Idle;
+		}
+		// 戻ってくる
+		else {
+			pTransform->SetPosition(VGet(0, 0, posZ * returnSpeedRatio));
+		}
+
+	}
 }
 
 

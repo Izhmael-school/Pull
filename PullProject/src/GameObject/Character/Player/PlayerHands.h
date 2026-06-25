@@ -7,18 +7,43 @@
 #define _PLAYERHANDS_H_
 
 #include "../Character.h"
-#include "../../../Component/Collider/Collider.h"
 #include <memory>
+
+class Collider;
+class PlayerCharacter;
 
 /*
  *	プレイヤーの手クラス
  */
 class PlayerHands : public Character {
 private:
-	float speed;
+	enum class HandsState {
+		Invalid = -1,
+		Idle,
+		ArmsExtending,
+		ArmsReturning,
+		Catch,
 
+		Max,
+	};
+	enum class CatchState {
+		Invalid = -1,
+		None,
+		GimmickCatch,
+		EnemyCatch,
+
+		Max,
+	};
+	HandsState handsState;					// 手の状態
+	CatchState catchState;					// 所持状態
+	std::shared_ptr<PlayerCharacter> owner;	// 所有者(プレイヤー)
+	float extendSpeed;						// 伸ばすスピード
+	float returnSpeedRatio;					// 戻ってくる速度割合
+
+	float RETURN_THRESHOLD;					// 戻ってきたとみなす閾値
+	
 public:
-	PlayerHands(int _modelHandle, VECTOR _pos, Tag _tag = Player);
+	PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag = Player);
 	~PlayerHands() = default;
 
 public:
@@ -34,6 +59,29 @@ public:
 	void OnTriggerStay(Collider* _pOther) override;
 	// 離れた時
 	void OnTriggerExit(Collider* _pOther) override;
+
+private:
+	/*
+	 *	手の移動処理
+	 */
+	void HandsMove();
+
+public:
+	/*
+	 *	何かを掴んでいるか否か
+	 *  @return bool
+	 */
+	inline bool IsCatch() { return handsState == HandsState::Catch; }
+	/*
+	 *　ギミックを掴んでいるか否か
+	 *	@return bool
+	 */
+	inline bool IsGimmickCatch() { return catchState == CatchState::GimmickCatch; }
+	/*
+	 *	ウデ伸ばし中か否か
+	 *	@return bool
+	 */
+	inline bool IsArmExtended() { return handsState == HandsState::ArmsExtending; }
 
 };
 // 別名定義

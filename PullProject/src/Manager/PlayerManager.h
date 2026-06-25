@@ -7,9 +7,8 @@
 #define _PLAYERMANAGER_H_
 
 #include "../Component/Singleton.h"
-#include "ManagerBase.h"
 #include "../GameObject/Character/Player/PlayerCharacter.h"
-#include "../GameObject/Character/Player/PlayerHands.h"
+#include "ManagerBase.h"
 #include <memory>
 
 /*
@@ -17,8 +16,7 @@
  */
 class PlayerManager : public ManagerBase, public Singleton<PlayerManager> {
 private:
-	PlayerCharacterPtr player;
-	PlayerHandsPtr hands;
+	PlayerCharacterPtr pPlayer;
 
 public:
 	PlayerManager();
@@ -37,11 +35,7 @@ public:
 	/*
 	 *	プレイヤー取得
 	 */
-	inline PlayerCharacterPtr GetPlayer() { return player; }
-	/*
-	 *	プレイヤーの手取得
-	 */
-	inline PlayerHandsPtr GetPlayerHands() { return hands; }
+	inline PlayerCharacterPtr GetPlayer() { return pPlayer; }
 
 };
 
