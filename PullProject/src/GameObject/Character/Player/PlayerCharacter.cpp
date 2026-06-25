@@ -10,12 +10,12 @@
 #include "../../../Manager/CameraManager.h"
 #include "../../Stage/Gimmick/Lever.h"
 #include "../Enemy/EnemyBase.h"
-#include <memory>
+#include "../../../Component/Collider/Collider.h"
 #include <DxLib.h>
 
 PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	: Character(_modelHandle, _pos, _tag)
-	, playerState(PlayerState::Normal)
+	, playerState(PlayerState::Idle)
 	, speed(10.0f)
 	, pullValue(0.0f)
 
@@ -34,9 +34,8 @@ void PlayerCharacter::Update() {
 	pCollider->Update();
 
 	// 移動
-	if (playerState == PlayerState::Normal || playerState == PlayerState::EnemyCatch)
+	if (!pHands->IsCatch())
 		Move();
-
 
 }
 
@@ -46,31 +45,13 @@ void PlayerCharacter::Render() {
 		pCollider->Render();
 }
 
-void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {
-	
+void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {	
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
-	auto other = _pOther->GetGameObject();
-
-	// 当たったのがレバーの場合
-	auto lever = dynamic_cast<Lever*>(other);
-	if (lever) {
-		// 掴み用ステートチェンジ
-		if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F))
-			playerState = PlayerState::GimmickCatch;
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_F))
-			playerState = PlayerState::Normal;
-
-		// 引っこ抜き
-		if (playerState == PlayerState::GimmickCatch)
-			// ギミック作動
-			lever->SetLeverTrigger(Pull());
-	}
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pOther) {
-	playerState = PlayerState::Normal;
 }
 
 /*
@@ -79,7 +60,7 @@ void PlayerCharacter::OnTriggerExit(Collider* _pOther) {
 void PlayerCharacter::Move() {
 	auto camera = CameraManager::GetInstance().GetCamera();
 	if (!camera) return;
-	playerState = PlayerState::Normal;
+	playerState = PlayerState::Move;
 
 	// カメラのヨー(ラジアン)
 	float cameraYaw = MyMath::Deg2Rad(camera->GetRotation().y);
@@ -127,7 +108,6 @@ bool PlayerCharacter::Pull() {
 
 	// ある程度引くと引っこ抜き
 	if (pullValue >= PULL_VALUE_MAX) {
-		playerState = PlayerState::Normal;
 		pullValue = 0;
 		// カメラシェイク
 		CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
@@ -138,9 +118,12 @@ bool PlayerCharacter::Pull() {
 }
 
 /*
- *	引き抜きラインに対する引っ張り値の割合取得
- *	@return	float
+ *	手生成
+ *	@param	int モデルハンドル
+ *	@param	std::shared_ptr<PlayerCharacter> 所有者(プレイヤー)
  */
-float PlayerCharacter::GetPullValueRatio() {
-	return pullValue / PULL_VALUE_MAX;
+void PlayerCharacter::CreateHands(std::shared_ptr<PlayerCharacter> owner, int modelHandle) {
+	pHands = std::make_shared<PlayerHands>(owner, modelHandle, VZero);
+	pHands->GetTransform()->AttachParent(GetTransform());
+	pHands->Start();
 }
