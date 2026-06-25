@@ -14,6 +14,8 @@
  *	プレイヤーの手クラス
  */
 class PlayerHands : public Character {
+private:
+	float speed;
 
 public:
 	PlayerHands(int _modelHandle, VECTOR _pos, Tag _tag = Player);

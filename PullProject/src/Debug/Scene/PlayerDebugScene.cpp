@@ -44,6 +44,7 @@ void PlayerDebugScene::Update()
 	CameraManager::GetInstance().GetCamera()->Update();
 	// プレイヤーの更新
 	PlayerManager::GetInstance().GetPlayer()->Update();
+	PlayerManager::GetInstance().GetPlayerHands()->Update();
 	// 敵の更新
 	EnemyManager::GetInstance().Update();
 	// ギミックの更新

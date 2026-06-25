@@ -18,4 +18,5 @@ void PlayerManager::CreatePlayer() {
 	int handsModelHandle = MV1LoadModel("res/Model/Player/PlayerHands.mv1");
 	hands = std::make_shared<PlayerHands>(handsModelHandle, VZero);
 	hands->GetTransform()->AttachParent(player->GetTransform());
+	hands->Start();
 }
