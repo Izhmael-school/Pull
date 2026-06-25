@@ -9,10 +9,17 @@
  *	プレイヤー生成
  */
 PlayerManager::PlayerManager()
-	: player(nullptr)
+	: pPlayer(nullptr)
 {}
 void PlayerManager::CreatePlayer() {
-	int modelHandle = MV1LoadModel("res/Model/Player/Simple Player.mv1");
-	player = std::make_shared<PlayerCharacter>(modelHandle, VGet(0, 200, 0));
-	player->Start();
+	// プレイヤーの生成
+	int playerModelHandle = MV1LoadModel("res/Model/Player/HandlessPlayer.mv1");
+	//pPlayer = std::make_shared<PlayerCharacter>(playerModelHandle, VGet(0, 200, 0));
+	pPlayer = std::make_shared<PlayerCharacter>(playerModelHandle, VGet(0, 600, 0));
+	pPlayer->Start();
+
+	// プレイヤーの手生成
+	int handsModelHandle = MV1LoadModel("res/Model/Player/PlayerHands.mv1");
+	pPlayer->CreateHands(pPlayer, handsModelHandle);
+
 }

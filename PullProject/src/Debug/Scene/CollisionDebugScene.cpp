@@ -17,29 +17,36 @@
 
 CollisionDebugScene::CollisionDebugScene() { Start(); }
 
-void CollisionDebugScene::Start()
-{
+void CollisionDebugScene::Start() {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
 
 	StageManager::GetInstance().Initialize();
 	StageManager::GetInstance().LoadStage(4);
 
-	enemy = std::make_unique<WalkEnemy>(-1, VGet(0, 400, 0));
-
 	StageCollisionGenerator generator;
 	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+
+	auto obj = new GameObject();
+	auto ray = new RayCollider(obj, VZero, VGet(1, 0, 0), 500.0f, 900.0f, 90.0f, 0.0f);
+	CollisionManager::GetInstance().Register(ray);
+
+	auto debugObj = new GameObject();
+	debugObj->GetTransform()->SetPosition(VGet(0, 400, 0));
+	auto capsule = new CapsuleCollider(debugObj,
+		VGet(0, 361, 0),   // start
+		VGet(0, 500, 0),   // end
+		30.0f,
+		VGet(0, 0, 100));
+	CollisionManager::GetInstance().Register(capsule);
 }
 
-void CollisionDebugScene::Update()
-{
+void CollisionDebugScene::Update() {
 	CameraManager::GetInstance().GetCamera()->Update();
-	enemy->Update();
 
 	CollisionManager::GetInstance().Update();
 }
-void CollisionDebugScene::Render(){
-
+void CollisionDebugScene::Render() {
 #if _DEBUG 線
 
 	// オブジェクトの位置関係がわかるように地面にラインを描画する
@@ -92,9 +99,7 @@ void CollisionDebugScene::Render(){
 
 #endif
 	// 描画
-	StageManager::GetInstance().Render();
-
-	enemy->Render();
+	//StageManager::GetInstance().Render();
 
 	CollisionManager::GetInstance().Render();
 }

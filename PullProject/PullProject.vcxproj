@@ -161,6 +161,7 @@
     <ClCompile Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
+    <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp" />
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Missile\Missile.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
+    <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h" />
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\GameObject\Missile\Missile.h" />
@@ -266,6 +268,7 @@
     <ClInclude Include="src\Scene\SceneBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Data\collision_rules.json" />
     <None Include="src\Data\EnemyData.json" />
     <None Include="src\Data\GameObjectModelData.json" />
     <None Include="src\Data\Stage_4.json" />

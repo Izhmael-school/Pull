@@ -16,11 +16,10 @@
 
 DebugScene::DebugScene() { Start(); }
 
-void DebugScene::Start()
-{
+void DebugScene::Start() {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
-	
+
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
@@ -29,19 +28,18 @@ void DebugScene::Start()
 	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
-void DebugScene::Update()
-{
+void DebugScene::Update() {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// 敵の更新
 	//enemy->Update();
 
-	// ===== 当たり判定 =====
+	// 当たり判定
 	CollisionManager::GetInstance().Update();
 
 }
 
-void DebugScene::Render(){
+void DebugScene::Render() {
 
 #if _DEBUG 線
 

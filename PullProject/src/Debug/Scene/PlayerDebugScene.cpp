@@ -43,7 +43,9 @@ void PlayerDebugScene::Update()
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// プレイヤーの更新
-	PlayerManager::GetInstance().GetPlayer()->Update();
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Update();
+	player->GetHands()->Update();
 	// 敵の更新
 	EnemyManager::GetInstance().Update();
 	// ギミックの更新
@@ -109,7 +111,9 @@ void PlayerDebugScene::Render(){
 	// 描画
 	StageManager::GetInstance().Render();
 	EnemyManager::GetInstance().Render();
-	PlayerManager::GetInstance().GetPlayer()->Render();
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Render();
+	player->GetHands()->Render();
 
 	// ==== ギミックの描画 ====
 	GimmickObjectManager::GetInstance().Render();
