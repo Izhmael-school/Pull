@@ -3,15 +3,14 @@
 
 #pragma once
 #include <string>
-#include "../Manager/CollisionManager.h"
+#include "Manager/CollisionManager.h"
 
 /*
  * @file StageCollisionGenerator.h
  * @author Tanaka
  */
 
-class StageCollisionGenerator
-{
+class StageCollisionGenerator {
 public:
 	void GenerateFromUnity(const std::string& path, CollisionManager& manager);
 };

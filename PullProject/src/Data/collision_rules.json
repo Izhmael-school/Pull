@@ -1,0 +1,59 @@
+{
+  "collision_rules": [
+    {
+      "a": "Sphere",
+      "b": "Sphere",
+      "hit": "SphereVsSphere",
+      "resolve": "SphereVsSphere"
+    },
+    {
+      "a": "Sphere",
+      "b": "AABB",
+      "hit": "SphereVsAABB",
+      "resolve": "SphereVsAABB"
+    },
+    {
+      "a": "AABB",
+      "b": "AABB",
+      "hit": "AABBvsAABB",
+      "resolve": "None"
+    },
+    {
+      "a": "Capsule",
+      "b": "Sphere",
+      "hit": "CapsuleVsSphere",
+      "resolve": "None"
+    },
+    {
+      "a": "Capsule",
+      "b": "AABB",
+      "hit": "CapsuleVsAABB",
+      "resolve": "CapsuleVsAABB"
+    },
+    {
+      "a": "Capsule",
+      "b": "Capsule",
+      "hit": "CapsuleVsCapsule",
+      "resolve": "None"
+    },
+
+    {
+      "a": "Ray",
+      "b": "Sphere",
+      "hit": "RayVsSphere",
+      "resolve": "None"
+    },
+    {
+      "a": "Ray",
+      "b": "AABB",
+      "hit": "RayVsAABB",
+      "resolve": "None"
+    },
+    {
+      "a": "Ray",
+      "b": "Capsule",
+      "hit": "RayVsCapsule",
+      "resolve": "None"
+    }
+  ]
+}

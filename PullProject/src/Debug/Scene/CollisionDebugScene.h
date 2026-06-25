@@ -11,7 +11,6 @@
 class CollisionDebugScene : public SceneBase {
 
 private:
-	std::unique_ptr<WalkEnemy> enemy;
 
 	class AABBCollider* AABB;
 

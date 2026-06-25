@@ -21,31 +21,32 @@ bool IsNear(float a, float b, float eps = 0.01f)
     return fabsf(a - b) < eps;
 }
 
-bool CanMerge(const AABB& a, const AABB& b)
-{
-    // X方向接続
-    if (IsNear(a.max.x, b.min.x) || IsNear(b.max.x, a.min.x))
-    {
-        if (IsNear(a.min.y, b.min.y) && IsNear(a.max.y, b.max.y) &&
-            IsNear(a.min.z, b.min.z) && IsNear(a.max.z, b.max.z))
-            return true;
-    }
+bool CanMerge(const AABB& a, const AABB& b) {
+    // X方向に隣接
+    bool xAdjacent =
+        IsNear(a.max.x, b.min.x) || IsNear(b.max.x, a.min.x);
 
-    // Y方向接続（上下）
-    if (IsNear(a.max.y, b.min.y) || IsNear(b.max.y, a.min.y))
-    {
-        if (IsNear(a.min.x, b.min.x) && IsNear(a.max.x, b.max.x) &&
-            IsNear(a.min.z, b.min.z) && IsNear(a.max.z, b.max.z))
-            return true;
-    }
+    // Z方向に隣接
+    bool zAdjacent =
+        IsNear(a.max.z, b.min.z) || IsNear(b.max.z, a.min.z);
 
-    // Z方向接続
-    if (IsNear(a.max.z, b.min.z) || IsNear(b.max.z, a.min.z))
-    {
-        if (IsNear(a.min.x, b.min.x) && IsNear(a.max.x, b.max.x) &&
-            IsNear(a.min.y, b.min.y) && IsNear(a.max.y, b.max.y))
-            return true;
-    }
+    // Y方向に隣接（段差の結合）
+    bool yAdjacent =
+        IsNear(a.max.y, b.min.y) || IsNear(b.max.y, a.min.y);
+
+    // 同じ高さ・奥行き（許容誤差あり）
+    bool sameY = IsNear(a.min.y, b.min.y, 0.1f) && IsNear(a.max.y, b.max.y, 0.1f);
+    bool sameZ = IsNear(a.min.z, b.min.z, 0.1f) && IsNear(a.max.z, b.max.z, 0.1f);
+    bool sameX = IsNear(a.min.x, b.min.x, 0.1f) && IsNear(a.max.x, b.max.x, 0.1f);
+
+    // X方向の結合
+    if (xAdjacent && sameY && sameZ) return true;
+
+    // Z方向の結合
+    if (zAdjacent && sameY && sameX) return true;
+
+    // Y方向の結合（段差をまとめる）
+    if (yAdjacent && sameX && sameZ) return true;
 
     return false;
 }
@@ -147,11 +148,11 @@ void StageCollisionGenerator::GenerateFromUnity(
     {
         GameObject* obj = new GameObject(-1, VZero, Tag::None);
 
-        AABBCollider* col = new AABBCollider(obj, VZero, VZero);
+        AABBCollider* col = std::make_unique<AABBCollider>(obj, VZero, VZero).release();
         col->SetMin(b.min);
         col->SetMax(b.max);
 
-        //manager.Register(col);
+        col->SetLayer(ColliderLayer::Stage);
         colCount++;
     }
     printfDx("collider: %d\n", colCount);

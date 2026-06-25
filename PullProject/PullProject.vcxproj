@@ -247,6 +247,7 @@
     <ClInclude Include="src\Scene\SceneBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Data\collision_rules.json" />
     <None Include="src\Data\EnemyData.json" />
     <None Include="src\Data\Stage_4.json" />
   </ItemGroup>

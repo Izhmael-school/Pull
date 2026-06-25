@@ -183,6 +183,27 @@
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp">
       <Filter>ソース ファイル\GameObject\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="src\Data\Gimmick\StageLoader.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generator\StageCollisionGenerator.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\ColliderObjectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\ModelManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\Stage\GimmickObjectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Manager\ManagerBase.h">
@@ -338,9 +359,34 @@
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h">
       <Filter>ソース ファイル\GameObject\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="src\Data\Gimmick\StageLoader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generator\StageCollisionGenerator.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\ColliderObjectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\ModelManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\Stage\GimmickObjectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\Stage_4.json" />
+    <None Include="src\Data\collision_rules.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
   </ItemGroup>
