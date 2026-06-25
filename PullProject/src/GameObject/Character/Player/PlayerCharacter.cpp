@@ -26,9 +26,11 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 
 void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
+	isGravity = true;
 }
 
 void PlayerCharacter::Update() {
+	Character::Update();
 	pTransform->Update();
 	if (!pCollider) return;
 	pCollider->Update();
@@ -37,6 +39,8 @@ void PlayerCharacter::Update() {
 	if (!pHands->IsCatch())
 		Move();
 
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_SPACE))
+		AddFallSpeed(100);
 }
 
 void PlayerCharacter::Render() {

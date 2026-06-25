@@ -14,7 +14,8 @@ PlayerManager::PlayerManager()
 void PlayerManager::CreatePlayer() {
 	// プレイヤーの生成
 	int playerModelHandle = MV1LoadModel("res/Model/Player/HandlessPlayer.mv1");
-	pPlayer = std::make_shared<PlayerCharacter>(playerModelHandle, VGet(0, 200, 0));
+	//pPlayer = std::make_shared<PlayerCharacter>(playerModelHandle, VGet(0, 200, 0));
+	pPlayer = std::make_shared<PlayerCharacter>(playerModelHandle, VGet(0, 600, 0));
 	pPlayer->Start();
 
 	// プレイヤーの手生成
