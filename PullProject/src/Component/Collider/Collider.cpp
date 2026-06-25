@@ -119,10 +119,13 @@ void CapsuleCollider::Update() {
 	if (pGameObject)
 		pos = pGameObject->GetPosition();
 
-	if (localStart.x == localEnd.x &&
-		localStart.y == localEnd.y &&
-		localStart.z == localEnd.z) {
-		printfDx("CapsuleColliderのlocalStart と localEnd が同じ位置です\n");
+	if (!hasErrorShown &&
+	localStart.x == localEnd.x &&
+	localStart.y == localEnd.y &&
+	localStart.z == localEnd.z) {
+		printfDx("CapsuleCollider Error: localStart and localEnd are the same on %s\n");
+
+		hasErrorShown = true; // 次回以降は表示しない
 	}
 
 	worldStart = VAdd(localStart, pos);

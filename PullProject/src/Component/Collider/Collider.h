@@ -117,6 +117,8 @@ private:
 	VECTOR worldStart;
 	VECTOR worldEnd;
 
+	bool hasErrorShown = false;
+	
 	float radius;
 
 public:
