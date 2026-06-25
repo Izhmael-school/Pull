@@ -231,7 +231,7 @@
     <ClCompile Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.cpp">
       <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp">
+    <ClCompile Include="src\GameObject\Stage\Gimmick\BomBreakWall.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -431,7 +431,7 @@
     <ClInclude Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.h">
       <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h">
+    <ClInclude Include="src\GameObject\Stage\Gimmick\BomBreakWall.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
