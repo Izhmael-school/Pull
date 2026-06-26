@@ -1,6 +1,10 @@
 [
   {
     "modelName": "Missile",
-    "filePath" : "res/Model/Object/Missile.mv1"
+    "filePath": "res/Model/Object/Missile.mv1"
+  },
+  {
+    "modelName": "BossMissile",
+    "filePath": "res/Model/Object/Missile_Boss.mv1"
   }
 ]
