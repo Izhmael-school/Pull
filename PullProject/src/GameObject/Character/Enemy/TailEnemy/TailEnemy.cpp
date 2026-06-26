@@ -57,11 +57,11 @@ void TailEnemy::Setup() {
 		shotAnim->SetEvent([this]() {EndAttack();}, pAnimator->GetTotalTime(bigShot));
 
 	// アニメーションに合わせてミサイルを出す
-	shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 20);
-	shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 30);
-	shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 40);
+	//shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 20);
+	//shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 30);
+	//shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 40);
 
-	tauntAnim->SetEvent([this]() {ColliderObjectManager::GetInstance().CreateAABB(GetPosition(), VAdd(GetPosition(), VScale(VOne, 100)), VSub(GetPosition(), VScale(VOne, 100)),None,3.0f);}, 40);
+	tauntAnim->SetEvent([this]() {ColliderObjectManager::GetInstance().CreateAABB(GetPosition(), VAdd(GetPosition(), VScale(VMinus, 1000)), VAdd(GetPosition(), VScale(VOne, 1000)),None,3.0f);}, 40);
 }
 
 void TailEnemy::AttackAction() {
