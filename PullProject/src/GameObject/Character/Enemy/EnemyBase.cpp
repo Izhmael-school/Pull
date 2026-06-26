@@ -41,6 +41,7 @@ void EnemyBase::Start() {
 
 	// 当たり判定
 	pCollider = std::make_unique<AABBCollider>(this,min,max);
+	pCollider->SetResolve(false);
 }
 
 void EnemyBase::Update() {

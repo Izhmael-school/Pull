@@ -24,7 +24,7 @@ EnemyDebugScene::EnemyDebugScene() { Start(); }
 void EnemyDebugScene::Start()
 {
 	PlayerManager::GetInstance().CreatePlayer();
-	PlayerManager::GetInstance().GetPlayer()->GetTransform()->AddPosition(VScale(VUp,200));
+	PlayerManager::GetInstance().GetPlayer()->GetTransform()->AddPosition(VScale(VUp,600));
 
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
