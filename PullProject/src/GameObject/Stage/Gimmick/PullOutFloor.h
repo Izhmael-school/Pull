@@ -22,6 +22,8 @@ private:
 
 	bool isMoving;	// 動いているかどうか
 
+	float moveTime;	// 移動時間
+
 public:
 	/*
 	 *	コンストラクタ

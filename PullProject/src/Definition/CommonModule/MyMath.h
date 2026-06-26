@@ -103,9 +103,9 @@ public:
      *  float版イージング
      *  @author oorui
      */
-    inline static float EaseQuadIn(const float start, const float end, const float time);
+    static float EaseQuadIn(const float start, const float end, const float time);
 
-    inline static VECTOR EaseQuadInVEC(const VECTOR start, const VECTOR end, const float time);
+    static VECTOR EaseQuadInVEC(const VECTOR start, const VECTOR end, const float time);
 
     template<typename ...Args>
     inline static float MaxF(const Args& ...args) {
