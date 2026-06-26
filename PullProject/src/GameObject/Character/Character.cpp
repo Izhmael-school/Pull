@@ -1,11 +1,12 @@
 #include "Character.h"
+#include "../../Component/Collider/Collider.h"
 
 Character::Character(int _modelHandle, VECTOR _pos, Tag _tag)
 	:GameObject(_modelHandle, _pos, _tag)
 	,isGravity(false)
 	, fallSpeed(0.0f)
-	, FALL_SPEED_MAX(100.0f)
-	, GRAVITY_ACCELERATION(100.0f)
+	, FALL_SPEED_MAX(20.0f)
+	, GRAVITY_ACCELERATION(20.0f)
 {
 	Start();
 }
@@ -24,12 +25,18 @@ void Character::Update() {
 	// 重力落下
 	GravityFall();
 
+	if (pGroundingCollider)
+		pGroundingCollider->Update();
+
 	if (pAnimator != nullptr)
 		pAnimator->Update();
 }
 
 void Character::Render() {
 	GameObject::Render();
+
+	if (pGroundingCollider)
+		pGroundingCollider->Render();
 }
 
 void Character::Setup() {
@@ -60,6 +67,5 @@ void Character::GravityFall() {
 	if (fallSpeed >= FALL_SPEED_MAX)
 		fallSpeed = FALL_SPEED_MAX;
 
-	pTransform->AddPosition(VScale(VUp, -fallSpeed));
-	//isFirstFrame = false;
+ 	pTransform->AddPosition(VScale(VUp, -fallSpeed));
 }

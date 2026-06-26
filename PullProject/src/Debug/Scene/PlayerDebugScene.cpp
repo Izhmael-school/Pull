@@ -15,12 +15,14 @@
 #include "Manager/CollisionManager.h"
 #include "Manager/Playermanager.h"
 #include "../../Manager/Stage/GimmickObjectManager.h"
+#include "Manager/ColliderObjectManager.h"
 
 
 PlayerDebugScene::PlayerDebugScene() { Start(); }
 
 void PlayerDebugScene::Start()
 {
+	CollisionManager::GetInstance().Clear();
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
 	// プレイヤー生成
@@ -52,6 +54,7 @@ void PlayerDebugScene::Update()
 	GimmickObjectManager::GetInstance().Update();
 	// ===== 当たり判定 =====
 	CollisionManager::GetInstance().Update();
+	ColliderObjectManager::GetInstance().Update();
 
 }
 
@@ -119,4 +122,5 @@ void PlayerDebugScene::Render(){
 	GimmickObjectManager::GetInstance().Render();
 
 	CollisionManager::GetInstance().Render();
+	ColliderObjectManager::GetInstance().Render();
 }

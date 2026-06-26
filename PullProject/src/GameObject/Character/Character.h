@@ -12,15 +12,18 @@
 #include "../../Component/Animator.h"
 #include <memory>
 
+class Collider;
+
 class Character : public GameObject {
 protected:
 	std::unique_ptr<Animator> pAnimator;
 	/* @author Riku */
-	bool isGravity;						// 重力を掛けるかどうか
-	float fallSpeed;					// 落下速度
-
-	const float FALL_SPEED_MAX;			// 最大落下速度
-	const float GRAVITY_ACCELERATION;	// 重力加速度
+	bool isGravity;									// 重力を掛けるかどうか
+	float fallSpeed;								// 落下速度
+	std::unique_ptr<Collider> pGroundingCollider;	// 接地判定用コライダー
+										 
+	const float FALL_SPEED_MAX;						// 最大落下速度
+	const float GRAVITY_ACCELERATION;				// 重力加速度
 
 public:
 	Character(int _modelHandle, VECTOR _pos, Tag _tag = None);

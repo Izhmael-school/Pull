@@ -83,6 +83,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pOther) {
 
 void PlayerHands::OnTriggerStay(Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
+	if (other->GetTag() == Player)
+		return;
 	// ウデを伸ばしていない状態なら無視(キャッチなら無視しない)
 	if (handsState != HandsState::ArmsExtending &&
 		handsState != HandsState::Catch)
@@ -142,7 +144,3 @@ void PlayerHands::HandsMove() {
 
 	}
 }
-
-
-
-
