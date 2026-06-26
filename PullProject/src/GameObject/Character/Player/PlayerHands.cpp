@@ -27,7 +27,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 
 void PlayerHands::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
-
+	pCollider->SetResolve(false);
 }
 
 void PlayerHands::Update() {
