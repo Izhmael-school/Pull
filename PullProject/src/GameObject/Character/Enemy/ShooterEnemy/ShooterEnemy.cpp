@@ -3,8 +3,9 @@
 #include "Manager/GameObjectManager.h"
 
 ShooterEnemy::ShooterEnemy(int _modelHandle, VECTOR _pos) 
-	:EnemyBase(_modelHandle,_pos)
+	:EnemyBase(_modelHandle, _pos)
 {
+	Start();
 }
 
 ShooterEnemy::~ShooterEnemy() {

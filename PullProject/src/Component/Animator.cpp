@@ -193,6 +193,7 @@ float Animator::GetAnimSpeed(std::string animName) {
 
 float Animator::GetTotalTime(std::string animName) {
 	auto anim = GetAnimation(animName);
+	if (anim == nullptr) return -1;
 	int handle = anim->animationHandle;
 
 	if (handle == -1) return -1;

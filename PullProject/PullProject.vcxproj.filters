@@ -73,6 +73,12 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy\Walker">
       <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Camera">
+      <UniqueIdentifier>{8844db15-0d13-47b3-bba3-1382011e7676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\Tail">
+      <UniqueIdentifier>{fa2e8a6b-efe6-4c0b-96b1-8aa8fb9523c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -121,9 +127,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Stage\Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Camera\CameraObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp">
@@ -231,6 +234,15 @@
     <ClCompile Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.cpp">
       <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameObject\Camera\CameraObject.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Camera\EventCameraMovement.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Manager\ManagerBase.h">
@@ -297,9 +309,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Stage\StageState.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Camera\CameraObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h">
@@ -428,6 +437,15 @@
     <ClInclude Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.h">
       <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameObject\Camera\CameraObject.h">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">
@@ -435,6 +453,9 @@
     </None>
     <None Include="src\Data\Stage_4.json" />
     <None Include="src\Data\GameObjectModelData.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\EventCamera.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
   </ItemGroup>

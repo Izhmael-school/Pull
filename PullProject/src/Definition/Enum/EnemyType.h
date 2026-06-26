@@ -11,6 +11,7 @@ enum EnemyType {
 	Walker,
 	Shooter,
 	Bomber,
+	Tail,
 	MaxEnemyType
 };
 
