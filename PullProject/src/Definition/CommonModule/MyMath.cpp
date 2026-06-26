@@ -25,3 +25,39 @@ VECTOR MyMath::VRad2Deg(VECTOR _degree) {
 float MyMath::Distance(float _f1, float _f2, float _f3) {
     return std::powf(_f1, 2) + std::powf(_f2, 2) + std::powf(_f3, 2);
 }
+
+/*
+ *  イージング (float)
+ *  @param[in]  float   開始位置
+ *  @param[in]  float   終了位置
+ *  @param[in]  float   時間
+ */
+inline float MyMath::EaseQuadIn(const float start, const float end, const float time) {
+    if (time >= 1.0f)return end;
+    // 距離を計算
+    float dis = end - start;
+    // 二次関数を計算
+    float quadIn = powf(time, 2.0f);
+
+    // 現在位置を計算
+    float ref = start + dis * quadIn;
+
+    return ref;
+}
+
+/*
+ *  イージング（VECTOR）
+ *  @param[in]  VECTOR  開始位置
+ *  @param[in]  VECTOR  終了位置
+ *  @param[in]  float   時間
+ */
+inline VECTOR MyMath::EaseQuadInVEC(const VECTOR start, const VECTOR end, const float time) {
+    VECTOR result;
+
+    result.x = EaseQuadIn(start.x, end.x, time);
+    result.y = EaseQuadIn(start.y, end.y, time);
+    result.z = EaseQuadIn(start.z, end.z, time);
+
+    return result;
+}
+

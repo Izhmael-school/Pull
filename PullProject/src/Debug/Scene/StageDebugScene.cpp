@@ -15,6 +15,8 @@
 #include "Manager/Stage/GimmickManager.h"
 #include "../../GameObject/GameObject.h"
 #include "../../Manager/Stage/GimmickObjectManager.h"
+#include "../../Manager/PlayerManager.h"
+#include "../../Manager/EnemyManager.h"
 
 
 StageDebugScene::StageDebugScene() { Start(); }
@@ -22,12 +24,15 @@ StageDebugScene::StageDebugScene() { Start(); }
 void StageDebugScene::Start() {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
+
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
-	// ステージを読み込む
 	StageManager::GetInstance().LoadStage(4);
 
-	enemy = std::make_unique<WalkEnemy>(-1, VGet(0, 400, 0));
+	// プレイヤー生成
+	PlayerManager::GetInstance().CreatePlayer();
+	// 敵生成
+	EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
 
 	// コライダー
 	AABB = new AABBCollider(nullptr,
@@ -42,13 +47,22 @@ void StageDebugScene::Start() {
 		30.0f,
 		VGet(0, 0, 0));
 	CollisionManager::GetInstance().Register(capsule);
+
+	// ====ギミックの更新====
+	GimmickObjectManager::GetInstance().Update();
 }
 
 void StageDebugScene::Update() {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
+	// プレイヤーの更新
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Update();
+	player->GetHands()->Update();
 	// 敵の更新
-	enemy->Update();
+	EnemyManager::GetInstance().Update();
+	// ギミックの更新
+	GimmickObjectManager::GetInstance().Update();
 
 
 	VECTOR move = VGet(0, 0, 0);
@@ -82,9 +96,6 @@ void StageDebugScene::Update() {
 	if (CheckHitKey(KEY_INPUT_C)) {
 		GimmickManager::GetInstance().ActivateLever(2);
 	}
-
-	// ===== ギミックの更新 ====
-	GimmickObjectManager::GetInstance().Update();
 
 	// ===== 更新（重要）=====
 	capsule->Update();
@@ -151,11 +162,14 @@ void StageDebugScene::Render() {
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
+	EnemyManager::GetInstance().Render();
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Render();
+	player->GetHands()->Render();
 
 	// ==== ギミックの描画 ====
 	GimmickObjectManager::GetInstance().Render();
 
-	enemy->Render();
 
 	CollisionManager::GetInstance().Render();
 }

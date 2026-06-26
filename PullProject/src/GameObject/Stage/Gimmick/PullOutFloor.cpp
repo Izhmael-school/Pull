@@ -6,10 +6,12 @@
 #include "PullOutFloor.h"
 #include "Manager/Stage/GimmickManager.h"
 #include "../../../Component\Collider/Collider.h"
+#include "Manager/TimeManager.h";
 
 namespace {
 	// レバーの生成位置
-	constexpr const char* _LEVER_SPAWNPOS_NAME = "LeverPoint";
+	constexpr const char* _LEVER_SPAWNPOS_NAME = "LeverPoint";	// レバー生成位置の名前
+	constexpr const float _MAX_MOVEFLOOR = 50.0f;					// 床の移動距離
 }
 
 
@@ -27,8 +29,7 @@ PullOutFloor::PullOutFloor(int id, int modelHandle, VECTOR pos, VECTOR rota)
  */
 void PullOutFloor::Setup() {
 	GimmickObject::Setup();
-	// コライダーを付与
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -50, -50), VGet(50, 50, 50));
+	
 }
 
 /*
@@ -74,8 +75,27 @@ VECTOR PullOutFloor::GetLeverSpawnPosition() const {
 
 /*
  *	移動処理
+ *  @tips	移動方向はレバーが置かれている位置で決める
  */
 void PullOutFloor::Moving() {
-
+	//// 現在の自身の座標を取得
+	//VECTOR startPosition = GetPosition();
+	//// 移動方向を設定
+	//VECTOR leverPos = GetLeverSpawnPosition();
+	//// 正規化付き向きを求める
+	//VECTOR moveDir = MyMath::NormDir(startPosition, leverPos);
+	//moveDir.y = 0.0f;
+	//// 移動先を設定
+	//VECTOR endPosition = VAdd(startPosition, VScale(moveDir, _MAX_MOVEFLOOR));
+	//float moveTime = 0.0f;
+	//moveTime = moveTime += TimeManager::GetInstance().GetDeltaTime() / 2.0f;
+	//// 1.0で止める
+	//moveTime = std::min(moveTime, 1.0f);
+	//
+	//// 移動開始
+	//MyMath::EaseQuadInVEC(startPosition, endPosition, moveTime);
+	//
+	//// 移動終了後、当たり判定を付与
+	//pCollider = std::make_unique<AABBCollider>(this, VGet(-70, -30, -40), VGet(70, 30, 40));
 
 }

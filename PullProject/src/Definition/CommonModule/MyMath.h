@@ -98,6 +98,14 @@ public:
         float z = dir1.x * dir2.y - dir1.y * dir2.x;
         return VGet(x, y, z);
     }
+    
+    /*
+     *  float版イージング
+     *  @author oorui
+     */
+    inline static float EaseQuadIn(const float start, const float end, const float time);
+
+    inline static VECTOR EaseQuadInVEC(const VECTOR start, const VECTOR end, const float time);
 
     template<typename ...Args>
     inline static float MaxF(const Args& ...args) {
