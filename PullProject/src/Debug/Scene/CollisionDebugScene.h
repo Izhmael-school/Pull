@@ -7,12 +7,14 @@
 #include <memory>
 #include "GameObject/GameObject.h"
 #include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
+#include "Generator/StageCollisionGenerator.h"
 
 class CollisionDebugScene : public SceneBase {
 
 private:
 
 	class AABBCollider* AABB;
+	StageCollisionGenerator generator;
 
 public:
 	CollisionDebugScene();
@@ -23,6 +25,8 @@ private:
 
 public:
 	void Update() override;
+
+	void Setup() override;
 
 	void Render() override;
 
