@@ -24,20 +24,7 @@ EnemyDebugScene::EnemyDebugScene() { Start(); }
 void EnemyDebugScene::Start()
 {
 	PlayerManager::GetInstance().CreatePlayer();
-	PlayerManager::GetInstance().GetPlayer()->GetTransform()->AddPosition(VScale(VUp,600));
-
-	// カメラ生成
-	CameraManager::GetInstance().CreateCamera();
-	
-	// ステージの初期化処理
-	StageManager::GetInstance().Initialize();
-	// モデルハンドルを複製してStageの実体にハンドルを渡す
-	StageManager::GetInstance().LoadStage(4);
-	StageManager::GetInstance().TransitionStage(4);
-
-	StageCollisionGenerator generator;
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
-
+	PlayerManager::GetInstance().GetPlayer()->GetTransform()->AddPosition(VScale(VUp, 600));
 }
 
 void EnemyDebugScene::Update(){

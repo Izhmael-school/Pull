@@ -9,7 +9,7 @@
 #include "Component/Collider/Collider.h"
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
-	:Character(_modelHandle, _pos, None)
+	:Character(_modelHandle, _pos, Enemy)
 	, prevState(NoneAction)
 	, currentState(NoneAction)
 	, nextState(NoneAction)
