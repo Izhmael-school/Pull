@@ -26,27 +26,24 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 
 void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
-	isGravity = true;
+	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -100), 10);
+	isGravity = false;
 }
 
 void PlayerCharacter::Update() {
 	Character::Update();
 	pTransform->Update();
-	if (!pCollider) return;
-	pCollider->Update();
 
 	// 移動
 	if (!pHands->IsCatch())
 		Move();
 
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_SPACE))
-		AddFallSpeed(100);
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE))
+		AddFallSpeed(-200);
 }
 
 void PlayerCharacter::Render() {
 	Character::Render();
-	if (pCollider)
-		pCollider->Render();
 }
 
 void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {	
