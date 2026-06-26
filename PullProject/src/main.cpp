@@ -17,6 +17,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetUseXInputFlag(true);
 	// ウィンドウのサイズを変更する
 	SetGraphMode(1920, 1080, 32, 60);
+	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_NATIVE);
+	SetFullSceneAntiAliasingMode(4, 2);
 	// ゲームアイコン
 	SetWindowIconID(001);
 
@@ -61,7 +63,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		SetWriteZBuffer3D(TRUE); // default : FALSE
 	}
 	int light = CreateDirLightHandle(VGet(-1.0f, -1.0f, 0.0f));
-	int light2 = CreateDirLightHandle(VGet(1.0f, -1.0f, 0.0f));
+	//int light2 = CreateDirLightHandle(VGet(1.0f, -1.0f, 0.0f));
 	// ライティング
 	{
 		// ライトの計算をどうするか
@@ -71,9 +73,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		SetLightDifColorHandle(light, GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
 		SetLightSpcColorHandle(light, GetColorF(0.0f, 0.0f, 0.0f, 1.0f)); // スペキュラなし
 		SetLightEnableHandle(light, TRUE);
-		SetLightDifColorHandle(light2, GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
-		SetLightSpcColorHandle(light2, GetColorF(0.0f, 0.0f, 0.0f, 1.0f)); // スペキュラなし
-		SetLightEnableHandle(light2, TRUE);
+		//SetLightDifColorHandle(light2, GetColorF(0.8f, 0.8f, 0.8f, 1.0f));
+		//SetLightSpcColorHandle(light2, GetColorF(0.0f, 0.0f, 0.0f, 1.0f)); // スペキュラなし
+		//SetLightEnableHandle(light2, TRUE);
 		// グローバル環境光の設定
 		SetGlobalAmbientLight(GetColorF(0.5f, 0.5f, 0.5f, 0.5f));
 		//// 反射光の設定  Diffuse

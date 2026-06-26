@@ -1,0 +1,23 @@
+{
+  "events": {
+    "startStage": {
+      "eventID": 0,
+      "lookAtStageFrameName": "PlayerBP",
+      "startPosFrameName": "PlayerBP",
+      "goalPosFrameName": "PlayerSP",
+      "action": [
+        {
+          "actionTypeID": 0,
+          "actionStartTime": 0.0,
+          "actionEndTime": 0.5
+        },
+        {
+          "actionTypeID": 0,
+          "actionStartTime": 2.0,
+          "actionEndTime": 0.5
+        }
+      ]
+      
+    }
+  }
+}

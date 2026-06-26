@@ -155,10 +155,12 @@
     <ClCompile Include="src\Definition\CommonModule\MyMath.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyString.cpp" />
     <ClCompile Include="src\GameObject\Camera\CameraObject.cpp" />
+    <ClCompile Include="src\GameObject\Camera\EventCameraMovement.cpp" />
     <ClCompile Include="src\GameObject\Character\Character.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.cpp" />
+    <ClCompile Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp" />
@@ -222,10 +224,12 @@
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
+    <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h" />
     <ClInclude Include="src\GameObject\Character\Character.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.h" />
+    <ClInclude Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h" />
@@ -266,6 +270,7 @@
   <ItemGroup>
     <None Include="src\Data\collision_rules.json" />
     <None Include="src\Data\EnemyData.json" />
+    <None Include="src\Data\EventCamera.json" />
     <None Include="src\Data\GameObjectModelData.json" />
     <None Include="src\Data\Stage_4.json" />
   </ItemGroup>

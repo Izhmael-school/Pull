@@ -31,6 +31,8 @@ private:
 	float shakeElapsedTime;	// シェイクの経過時間
 	bool isShaking;			// シェイク中か否か
 
+	bool isEvent;
+
 	// プレイヤーから離れる距離
 	const float PLAYER_DISTANCE;
 	// 引っ張り時のズーム割合の最大
@@ -77,6 +79,11 @@ public:
 	 */
 	void CameraShakeActivate(float setShakePower, float setShakeTime);
 
+	/*
+	 * @brief カメラモードの変更
+	 * @author Sekino
+	 */
+	inline void ChangeCameraMode(int _mode) { mode = static_cast<CameraMode>(_mode); }
 };
 // 別名定義
 using CameraObjectPtr = std::shared_ptr<CameraObject>;

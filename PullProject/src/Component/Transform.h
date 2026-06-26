@@ -35,23 +35,23 @@ public:
 	// 座標関連
 	inline VECTOR GetPosition() const { return VGet(matrix.m[3][0], matrix.m[3][1], matrix.m[3][2]); }
 	inline VECTOR GetLocalPosition() const { return position; }
-	inline void SetPosition(VECTOR _pos) { position = _pos; }
-	inline void AddPosition(VECTOR _add) { position = VAdd(position, _add); }
-	inline void AddPosition(VECTOR _dir, float _add) { position = VAdd(position, VScale(_dir, _add)); }
+	inline void SetPosition(VECTOR _pos) { position = _pos; CalcMatrix(); }
+	inline void AddPosition(VECTOR _add) { position = VAdd(position, _add); CalcMatrix();}
+	inline void AddPosition(VECTOR _dir, float _add) { position = VAdd(position, VScale(_dir, _add)); CalcMatrix();}
 
 	// 回転関連
 	inline VECTOR GetLocalRotation() const { return rotation; }
-	inline void SetRotation(VECTOR _rot) { rotation = _rot; }
-	inline void AddRotation(VECTOR _add) { rotation = VAdd(rotation, _add); }
-	inline void AddRotation(VECTOR _dir, float _add) { rotation = VAdd(rotation, VScale(_dir, _add)); }
+	inline void SetRotation(VECTOR _rot) { rotation = _rot;CalcMatrix();}
+	inline void AddRotation(VECTOR _add) { rotation = VAdd(rotation, _add); CalcMatrix();}
+	inline void AddRotation(VECTOR _dir, float _add) { rotation = VAdd(rotation, VScale(_dir, _add));CalcMatrix();}
 
 	// 拡縮関連
 	VECTOR GetScale();
 	inline VECTOR GetLocalScale() const { return scale; }
-	inline void SetScale(VECTOR _sca) { scale = _sca; }
-	inline void SetScale(float _sca) { scale = VGet(_sca, _sca, _sca); }
-	inline void AddScale(VECTOR _add) { scale = VAdd(scale, _add); }
-	inline void AddScale(VECTOR _dir, float _add) { scale = VAdd(scale, VScale(_dir, _add)); }
+	inline void SetScale(VECTOR _sca) { scale = _sca; CalcMatrix(); }
+	inline void SetScale(float _sca) { scale = VGet(_sca, _sca, _sca); CalcMatrix(); }
+	inline void AddScale(VECTOR _add) { scale = VAdd(scale, _add); CalcMatrix(); }
+	inline void AddScale(VECTOR _dir, float _add) { scale = VAdd(scale, VScale(_dir, _add)); CalcMatrix(); }
 
 	// 行列関連
 	inline MATRIX GetMatrix() const { return matrix; }

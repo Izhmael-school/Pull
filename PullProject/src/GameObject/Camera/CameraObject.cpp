@@ -10,6 +10,8 @@
 #include "../../Manager/PlayerManager.h"
 #include <DxLib.h>
 
+#include "EventCameraMovement.h"
+
 CameraObject::CameraObject()
 	: mode(CameraMode::Debug)
 	, speed(10.0f)
@@ -18,10 +20,11 @@ CameraObject::CameraObject()
 	, shakeElapsedTime(0.0f)
 	, isShaking(false)
 
+	, isEvent(false)
+
 	, PLAYER_DISTANCE(1000)
 	, PULL_ZOOM_RATIO_MAX(0.95f)
-	, PULL_ZOOM_RATIO_MIN(0.7f)
-{
+	, PULL_ZOOM_RATIO_MIN(0.7f) {
 }
 
 void CameraObject::Start() {
@@ -127,7 +130,7 @@ void CameraObject::PlayerUpdate() {
 	//// プレイヤーから離れた位置に配置
 	//VECTOR distance = VScale(pTransform->GetForward(), -PLAYER_DISTANCE);
 	//pTransform->SetPosition(VAdd(player->GetPosition(), distance));
-	
+
 	// 入力方向を保持
 	VECTOR moveVec = VZero;
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
@@ -186,6 +189,15 @@ void CameraObject::PullUpdate() {
 }
 
 void CameraObject::EventUpdate() {
+	if (!isEvent) {
+		isEvent = true;
+		EventCameraMovement::StartEventCamera(this,"startStage");
+	}
+
+	EventCameraMovement::Update(this);
+
+	if (EventCameraMovement::IsEventEnd())
+		isEvent = false;
 }
 
 /*

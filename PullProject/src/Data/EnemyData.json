@@ -15,5 +15,11 @@
     "enemyTypeID": 2,
     "modelFileName": "BomberModel",
     "animationFileName": "BomberAnim"
+  },
+
+  {
+    "enemyTypeID": 3,
+    "modelFileName": "TailModel",
+    "animationFileName": "TailAnim"
   }
 ]
