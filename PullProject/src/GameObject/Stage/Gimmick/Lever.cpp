@@ -77,10 +77,10 @@ void Lever::Activate() {
 	
 	// レバーを使用不可にする
 	SetActive(false);
-	// コライダーを消す
-	if (pCollider) {
-		pCollider->SetEnable(false);
-	}
+	//// コライダーを消す
+	//if (pCollider) {
+	//	pCollider->SetEnable(false);
+	//}
 
 	// 起動したレバーのIDを渡す
 	GimmickManager::GetInstance().ActivateLever(triggerID);
