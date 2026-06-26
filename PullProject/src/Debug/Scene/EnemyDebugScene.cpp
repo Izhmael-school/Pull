@@ -17,6 +17,7 @@
 #include "Manager/ColliderObjectManager.h"
 #include "Manager/PlayerManager.h"
 #include "GameObject/Missile/Missile.h"
+#include "Generator/StageCollisionGenerator.h"
 
 EnemyDebugScene::EnemyDebugScene() { Start(); }
 
@@ -33,6 +34,10 @@ void EnemyDebugScene::Start()
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(4);
 	StageManager::GetInstance().TransitionStage(4);
+
+	StageCollisionGenerator generator;
+	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+
 }
 
 void EnemyDebugScene::Update(){
@@ -111,7 +116,10 @@ void EnemyDebugScene::Render(){
 }
 
 void EnemyDebugScene::Setup(){
-	EnemyManager::GetInstance().UseEnemy(Tail,VGet(0, 400, 0));
+	EnemyManager::GetInstance().UseEnemy(Walker,VGet(0, 400, 0));
+	EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
+	EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
+	EnemyManager::GetInstance().UseEnemy(Tail,VGet(1000, 400, -1000));
 }
 
 void EnemyDebugScene::Cleanup(){
