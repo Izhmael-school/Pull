@@ -17,7 +17,7 @@
 #include "../../Manager/Stage/GimmickObjectManager.h"
 #include "../../Manager/PlayerManager.h"
 #include "../../Manager/EnemyManager.h"
-
+#include "Manager/ColliderObjectManager.h"
 
 StageDebugScene::StageDebugScene() { Start(); }
 
@@ -63,48 +63,9 @@ void StageDebugScene::Update() {
 	EnemyManager::GetInstance().Update();
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
-
-
-	VECTOR move = VGet(0, 0, 0);
-
-	// 上（8）
-	if (CheckHitKey(KEY_INPUT_8))
-		move.y += 2.0f;
-
-	// 下（0）
-	if (CheckHitKey(KEY_INPUT_0))
-		move.y -= 2.0f;
-
-	// 右（9）
-	if (CheckHitKey(KEY_INPUT_9))
-		move.x += 2.0f;
-
-	// 左（7）
-	if (CheckHitKey(KEY_INPUT_7))
-		move.x -= 2.0f;
-
-	// 前後（追加すると便利）
-	if (CheckHitKey(KEY_INPUT_6))
-		move.z += 2.0f;
-
-	if (CheckHitKey(KEY_INPUT_4))
-		move.z -= 2.0f;
-
-	capsule->Move(move);
-
-	// 上（8）
-	if (CheckHitKey(KEY_INPUT_C)) {
-		GimmickManager::GetInstance().ActivateLever(2);
-	}
-
-	// ===== 更新（重要）=====
-	capsule->Update();
-	AABB->Update();
-
-
 	// ===== 当たり判定 =====
 	CollisionManager::GetInstance().Update();
-
+	ColliderObjectManager::GetInstance().Update();
 }
 
 void StageDebugScene::Render() {
