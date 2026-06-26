@@ -103,9 +103,9 @@ void EnemyDebugScene::Render(){
 }
 
 void EnemyDebugScene::Setup(){
-	EnemyManager::GetInstance().UseEnemy(Walker,VGet(0, 400, 0));
-	EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
-	EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
+	//EnemyManager::GetInstance().UseEnemy(Walker,VGet(0, 400, 0));
+	//EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
+	//EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
 	EnemyManager::GetInstance().UseEnemy(Tail,VGet(1000, 400, -1000));
 }
 

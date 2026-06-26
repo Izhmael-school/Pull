@@ -40,7 +40,8 @@ void EnemyBase::Start() {
 	VECTOR min = VScale(MV1GetMeshMinPosition(modelHandle, 0),100);
 
 	// 当たり判定
-	pCollider = std::make_unique<AABBCollider>(this,min,max);
+	//pCollider = std::make_unique<AABBCollider>(this,min,max);
+	pCollider = std::make_unique<SphereCollider>(this,GetPosition(), 100);
 	pCollider->SetResolve(false);
 }
 
