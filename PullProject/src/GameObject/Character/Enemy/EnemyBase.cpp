@@ -32,12 +32,15 @@ EnemyBase::~EnemyBase() {}
 void EnemyBase::Start() {
 	Character::Start();
 
-	// ラディウスの計算
-	// モデルの最小点と最大点から半径を作る
-	VECTOR size = VSub(MV1GetMeshMaxPosition(modelHandle, 0), MV1GetMeshMinPosition(modelHandle, 0));
-	float r = (VSize(size) * 100) / 2;
+	isGravity = false;
+
+
+	// モデルの最小点と最大点を取得
+	VECTOR max = VScale(MV1GetMeshMaxPosition(modelHandle, 0),100);
+	VECTOR min = VScale(MV1GetMeshMinPosition(modelHandle, 0),100);
+
 	// 当たり判定
-	pCollider = std::make_unique<SphereCollider>(this, VZero, r);
+	pCollider = std::make_unique<AABBCollider>(this,min,max);
 }
 
 void EnemyBase::Update() {

@@ -18,7 +18,7 @@
 CollisionDebugScene::CollisionDebugScene() { Start(); }
 
 void CollisionDebugScene::Start() {
-	CollisionManager::GetInstance().Clear();
+	//CollisionManager::GetInstance().Clear();
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
 
