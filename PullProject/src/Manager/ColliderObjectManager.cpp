@@ -20,7 +20,7 @@ void ColliderObjectManager::Update(){
 
 	// 削除
 	std::erase_if(aliveColliderObject, [this](std::unique_ptr<ColliderObject>& col) {
-		// Nullなら消す
+		// 消すフラグが立ったら消す
 		if (!col->WantDelete()) return false;
 		col.reset();
 		return true;
