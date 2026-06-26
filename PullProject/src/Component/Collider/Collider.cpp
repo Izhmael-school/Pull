@@ -18,6 +18,7 @@ Collider::Collider(GameObject* _pObj)
 
 // デストラクタ
 Collider::~Collider() {
+	CollisionManager::GetInstance().UnRegister(this);
 }
 
 #pragma endregion

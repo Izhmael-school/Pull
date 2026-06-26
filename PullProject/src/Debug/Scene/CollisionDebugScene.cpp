@@ -18,6 +18,7 @@
 CollisionDebugScene::CollisionDebugScene() { Start(); }
 
 void CollisionDebugScene::Start() {
+	CollisionManager::GetInstance().Clear();
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
 
@@ -26,19 +27,6 @@ void CollisionDebugScene::Start() {
 
 	StageCollisionGenerator generator;
 	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
-
-	auto obj = new GameObject();
-	auto ray = new RayCollider(obj, VZero, VGet(1, 0, 0), 500.0f, 900.0f, 90.0f, 0.0f);
-	CollisionManager::GetInstance().Register(ray);
-
-	auto debugObj = new GameObject();
-	debugObj->GetTransform()->SetPosition(VGet(0, 400, 0));
-	auto capsule = new CapsuleCollider(debugObj,
-		VGet(0, 361, 0),   // start
-		VGet(0, 500, 0),   // end
-		30.0f,
-		VGet(0, 0, 100));
-	CollisionManager::GetInstance().Register(capsule);
 }
 
 void CollisionDebugScene::Update() {
@@ -99,7 +87,7 @@ void CollisionDebugScene::Render() {
 
 #endif
 	// 描画
-	//StageManager::GetInstance().Render();
+	StageManager::GetInstance().Render();
 
 	CollisionManager::GetInstance().Render();
 }
