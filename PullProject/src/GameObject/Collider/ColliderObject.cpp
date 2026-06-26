@@ -47,6 +47,9 @@ ColliderObject::ColliderObject(VECTOR _pos, VECTOR _min, VECTOR _max, float _rad
 void ColliderObject::Start(){
 	GameObject::Start();
 
+	// 押出しない
+	pCollider->SetResolve(false);
+
 	// 0秒以下なら消えない
 	isDisable = lifeTime <= 0.0f ? false : true;
 }
