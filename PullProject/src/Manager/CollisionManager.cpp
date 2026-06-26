@@ -146,18 +146,26 @@ void CollisionManager::Update() {
 
 #pragma region 判定
 bool CollisionManager::CheckHit(Collider* a, Collider* b) {
-	if (a->GetLayer() == ColliderLayer::Stage &&
-	b->GetLayer() == ColliderLayer::Stage)
-		return false;
-
 	std::string key =
 		std::string(a->GetTypeName()) + "_" + b->GetTypeName();
 
 	auto it = hitFuncTable.find(key);
-	if (it == hitFuncTable.end()) return false;
+	if (it != hitFuncTable.end()) {
+		return it->second(a, b);
+	}
 
-	return it->second(a, b);
+	// ★ 逆を試す
+	std::string revKey =
+		std::string(b->GetTypeName()) + "_" + a->GetTypeName();
+
+	auto it2 = hitFuncTable.find(revKey);
+	if (it2 != hitFuncTable.end()) {
+		return it2->second(b, a); // ← 引数も逆にする
+	}
+
+	return false;
 }
+
 #pragma endregion
 
 void CollisionManager::Resolve(Collider* a, Collider* b) {
