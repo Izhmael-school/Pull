@@ -48,6 +48,11 @@ private:
 	 * @brief 自爆する敵の生成
 	 */
 	std::unique_ptr<EnemyBase> CreateBomber(int _modelHandle, VECTOR _pos);
+
+	/*
+	 * @brief 尻尾を掴める敵の生成
+	 */
+	std::unique_ptr<EnemyBase> CreateTail(int _modelHandle, VECTOR _pos);
 public:
 	/*
 	 * @brief 敵の生成

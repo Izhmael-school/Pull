@@ -24,7 +24,7 @@ CollisionManager::CollisionManager() {
 	LoadCollisionRules("src/Data/collision_rules.json");
 }
 CollisionManager::~CollisionManager() {
-	pColliderArray.clear();
+	UnRegisterAll();
 }
 
 #pragma region 登録
@@ -373,7 +373,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	VECTOR max = box->GetMax();
 	float r = cap->GetRadius();
 
-	const int steps = 8;
+	const int steps = 32;
 	float bestPush = 0.0f;
 	VECTOR bestMove = VGet(0, 0, 0);
 

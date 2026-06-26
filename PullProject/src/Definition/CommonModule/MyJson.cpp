@@ -52,7 +52,7 @@ std::string MyJson::BufferToUtf8String(const std::vector<unsigned char>& buf) {
 }
 
 /// <summary>
-/// jsonファイルの読み込み（エンコーディングを自動判定して UTF-8 に変換します）
+/// jsonファイルの読み込み（エンコーディングを自動判定して UTF-8 に変換）
 /// </summary>
  nlohmann::json_abi_v3_12_0::json MyJson::LoadJsonFile(const std::string& path) {
      std::ifstream file(path, std::ios::binary);

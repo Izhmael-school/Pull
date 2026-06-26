@@ -113,6 +113,10 @@ protected:	// 行動
 	 * @brief 死亡
 	 */
 	void Dead();
+	/*
+	 * @brief 攻撃終了時処理
+	 */
+	void EndAttack();
 public:
 	/*
 	 * @brief 扇状の視界
@@ -124,10 +128,6 @@ private:
 	 */
 	void DrawVisionFanDebug();
 
-	/*
-	 * @brief 攻撃終了時処理
-	 */
-	void EndAttack();
 
 protected:
 	/*

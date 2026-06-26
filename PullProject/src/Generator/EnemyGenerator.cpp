@@ -3,6 +3,7 @@
 #include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
 #include "GameObject/Character/Enemy/BomberEnemy/BomberEnemy.h"
 #include "GameObject/Character/Enemy/ShooterEnemy/ShooterEnemy.h"
+#include "GameObject/Character/Enemy/TailEnemy/TailEnemy.h"
 #include "Definition/Const/VECTORConst.h"
 #include "Definition/Const/EnemyConst.h"
 #include "Definition/CommonModule/MyString.h"
@@ -12,8 +13,7 @@
 
 EnemyGenerator::EnemyGenerator()
 	:originEnemyModelHandle()
-	,originEnemyAnimHandle()
-{
+	, originEnemyAnimHandle() {
 	LoadModel();
 	SetCreateEvent();
 }
@@ -48,15 +48,16 @@ void EnemyGenerator::LoadModel() {
 	}
 }
 
-void EnemyGenerator::SetCreateEvent(){
+void EnemyGenerator::SetCreateEvent() {
 	CreateEnemyEvent.resize(MaxEnemyType);
 	//　ラムダで包む
 	CreateEnemyEvent[Walker] = [this](int _modelHandle, VECTOR _pos) {return CreateWalker(_modelHandle, _pos);};
 	CreateEnemyEvent[Shooter] = [this](int _modelHandle, VECTOR _pos) {return CreateShooter(_modelHandle, _pos);};
 	CreateEnemyEvent[Bomber] = [this](int _modelHandle, VECTOR _pos) {return CreateBomber(_modelHandle, _pos);};
+	CreateEnemyEvent[Tail] = [this](int _modelHandle, VECTOR _pos) {return CreateTail(_modelHandle, _pos);};
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type, VECTOR _pos){
+std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type, VECTOR _pos) {
 	int typeID = static_cast<int>(_type);
 	int modelHandle = originEnemyModelHandle[typeID];
 	// モデルが無ければ帰る
@@ -68,21 +69,22 @@ std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type, VECTOR _
 			"Model Nothing");
 		assert(false && errorText.c_str());
 #endif // _DEBUG
-		return nullptr; 
+		return nullptr;
 	}
 	// モデルの複製
 	int dupHandle = MV1DuplicateModel(modelHandle);
 
-	std::unique_ptr<EnemyBase> enemy = std::move(CreateEnemyEvent[typeID](dupHandle,_pos));
+	std::unique_ptr<EnemyBase> enemy = std::move(CreateEnemyEvent[typeID](dupHandle, _pos));
 	// アニメーションの複製
 	int animHandle = MV1DuplicateModel(originEnemyAnimHandle[typeID]);
 	// アニメーションのロード
 	enemy->GetAnimator()->Load(animHandle, false);
-	enemy->LoopAnim("Walk");
+	if (enemy->GetAnimator()->GetAnimation("Walk") != nullptr)
+		enemy->LoopAnim("Walk");
 	return std::move(enemy);
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateWalker(int _modelHandle,VECTOR _pos){
+std::unique_ptr<EnemyBase> EnemyGenerator::CreateWalker(int _modelHandle, VECTOR _pos) {
 	return std::make_unique<WalkEnemy>(_modelHandle, _pos);
 }
 
@@ -90,6 +92,10 @@ std::unique_ptr<EnemyBase> EnemyGenerator::CreateShooter(int _modelHandle, VECTO
 	return std::make_unique<ShooterEnemy>(_modelHandle, _pos);
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateBomber(int _modelHandle, VECTOR _pos){
+std::unique_ptr<EnemyBase> EnemyGenerator::CreateBomber(int _modelHandle, VECTOR _pos) {
 	return std::make_unique<BomberEnemy>(_modelHandle, _pos);
+}
+
+std::unique_ptr<EnemyBase> EnemyGenerator::CreateTail(int _modelHandle, VECTOR _pos) {
+	return std::make_unique<TailEnemy>(_modelHandle, _pos);
 }

@@ -24,8 +24,7 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, wantUnuse(false)
 	, endAttack(true)
 	, canAttack(true)
-	, standbyElapsedTime(0.0f)
-{
+	, standbyElapsedTime(0.0f) {
 }
 
 EnemyBase::~EnemyBase() {}
@@ -87,8 +86,7 @@ void EnemyBase::Update() {
 		HitObject();
 }
 
-void EnemyBase::Render()
-{
+void EnemyBase::Render() {
 	Character::Render();
 
 #if _DEBUG
@@ -105,9 +103,11 @@ void EnemyBase::Setup() {
 	if (pAnimator) {
 		auto attackAnim = pAnimator->GetAnimation("Attack");
 		// 攻撃終了時処理を持たせる
-		attackAnim->SetEvent([this]() {EndAttack();}, pAnimator->GetTotalTime("Attack"));
+		if (attackAnim != nullptr)
+			attackAnim->SetEvent([this]() {EndAttack();}, pAnimator->GetTotalTime("Attack"));
 		auto dieAnim = pAnimator->GetAnimation("Die");
-		dieAnim->SetEvent([this]() {wantUnuse = true;}, pAnimator->GetTotalTime("Die"));
+		if (dieAnim != nullptr)
+			dieAnim->SetEvent([this]() {wantUnuse = true;}, pAnimator->GetTotalTime("Die"));
 	}
 
 	// 再度更新できるように
@@ -203,7 +203,7 @@ void EnemyBase::Wait() {
 
 	if (standbyElapsedTime >= standbyTime) {
 		standbyElapsedTime = 0.0f;
-		
+
 		canAttack = true;
 	}
 	else {
@@ -213,7 +213,7 @@ void EnemyBase::Wait() {
 	}
 }
 
-void EnemyBase::Dead(){
+void EnemyBase::Dead() {
 	pAnimator->Play("Die");
 
 	ChangeNextState(Die);
@@ -321,7 +321,7 @@ void EnemyBase::EndAttack() {
 	ChangeNextState(NoneAction);
 }
 
-void EnemyBase::ChangeNextState(EnemyActionState _state){
+void EnemyBase::ChangeNextState(EnemyActionState _state) {
 	// 死亡ならそのまま変える
 	if (_state == Die) {
 		nextState = _state;
@@ -339,7 +339,7 @@ void EnemyBase::LoopAnim(std::string _animName) {
 	GetAnimator()->GetAnimation(_animName)->isLoop = true;
 }
 
-void EnemyBase::OnTriggerEnter(Collider* _pOther){
+void EnemyBase::OnTriggerEnter(Collider* _pOther) {
 	if (GetCurrentCaughtState() != CaughtState::Throwing) return;
 	// 何かしらに当たったら
 	HitObject();
@@ -352,41 +352,41 @@ void EnemyBase::OnTriggerStay(Collider* _pOther) {
 	}
 }
 
-void EnemyBase::CaughtAction(){
+void EnemyBase::CaughtAction() {
 	// 行動不能状態にする
 	ChangeNextState(OutofControl);
 	// 捕まった状態にする
 	ChangeCaughtState(Catch);
 }
 
-void EnemyBase::ThrownAction(){
+void EnemyBase::ThrownAction() {
 	// 投げられた状態にする
 	ChangeCaughtState(Throw);
 }
 
-void EnemyBase::CatchStart(){
+void EnemyBase::CatchStart() {
 	CaughtObject::CatchStart();
 
-	pAnimator->Play("Walk",2.0f);
+	pAnimator->Play("Walk", 2.0f);
 	GetTransform()->SetRotation(VScale(VForward, 180.0f));
 	ChangeNextState(OutofControl);
 }
 
-void EnemyBase::Catching(){
+void EnemyBase::Catching() {
 	ChangeNextState(OutofControl);
 }
 
-void EnemyBase::ThrowStart(){
+void EnemyBase::ThrowStart() {
 	CaughtObject::ThrowStart();
 	GetTransform()->SetRotation(VScale(VForward, 0.0f));
 	ChangeNextState(OutofControl);
 }
 
-void EnemyBase::Throwing(){
-	GetTransform()->AddRotation(VScale(VUp,10));
+void EnemyBase::Throwing() {
+	GetTransform()->AddRotation(VScale(VUp, 10));
 	ChangeNextState(OutofControl);
 }
 
-void EnemyBase::HitObject(){
+void EnemyBase::HitObject() {
 	ChangeNextState(Die);
 }

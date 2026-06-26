@@ -32,7 +32,7 @@ void EnemyDebugScene::Start()
 	StageManager::GetInstance().Initialize();
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(4);
-		
+	StageManager::GetInstance().TransitionStage(4);
 }
 
 void EnemyDebugScene::Update(){
@@ -111,7 +111,7 @@ void EnemyDebugScene::Render(){
 }
 
 void EnemyDebugScene::Setup(){
-	EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, 0));
+	EnemyManager::GetInstance().UseEnemy(Tail,VGet(0, 400, 0));
 }
 
 void EnemyDebugScene::Cleanup(){
