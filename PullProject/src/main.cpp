@@ -4,6 +4,7 @@
 #include "Manager/SceneManager.h"
 #include "Manager/InputManager.h"
 #include "Manager/TimeManager.h"
+#include "Manager/CollisionManager.h"
 
 constexpr double FRAME_TIME = 1.0f / 60.0f;
 
@@ -121,11 +122,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	}
 
+	CollisionManager::GetInstance().UnRegisterAll();
 	DeleteLightHandleAll();
 	MV1InitModel();
 	InitSoundMem();
 	InitGraph();
 	InitFontToHandle();
+	
 
 	// DxLibの終了
 	//Effkseer_End();
