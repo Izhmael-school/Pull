@@ -15,9 +15,8 @@ void TailEnemy::Start() {
 	VECTOR tailPos = MV1GetFramePosition(modelHandle, tailFrameIndex);
 
 	pTailCollider = std::make_unique<ColliderObject>(tailPos,50,Enemy,0.0f);
-
 	auto sphere = static_cast<SphereCollider*>(pCollider.get());
-
+	sphere->SetResolve(false);
 	sphere->SetRadius(sphere->GetRadius() / 2);
 
 	type = Tail;
