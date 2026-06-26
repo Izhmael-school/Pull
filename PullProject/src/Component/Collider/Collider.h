@@ -26,6 +26,8 @@ protected:
 	bool isHit = false;
 	bool prevHit = false;
 
+	bool isResolve = true;
+
 public:
 	Collider(GameObject* _pObj);
 	virtual ~Collider();
@@ -37,6 +39,9 @@ public:
 public:
 	bool IsEnable() const { return isEnable; }
 	void SetEnable(bool _v) { isEnable = _v; }
+
+	void SetResolve(bool v) { isResolve = v; }
+	bool IsResolve() const { return isResolve; }
 
 	GameObject* GetGameObject() const { return pGameObject; }
 	void SetGameObject(GameObject* _pObj) { pGameObject = _pObj; }

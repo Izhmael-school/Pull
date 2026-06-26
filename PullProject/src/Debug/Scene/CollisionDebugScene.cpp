@@ -8,7 +8,6 @@
 #include "Definition/Const/VECTORConst.h"
 #include "Manager/InputManager.h"
 #include "Manager/Stage/StageManager.h"
-#include "Generator/StageCollisionGenerator.h"
 #include "Manager/CameraManager.h"
 #include "GameObject/Camera/CameraObject.h"
 #include "Component/Collider/Collider.h"
@@ -18,15 +17,6 @@
 CollisionDebugScene::CollisionDebugScene() { Start(); }
 
 void CollisionDebugScene::Start() {
-	CollisionManager::GetInstance().Clear();
-	// カメラ生成
-	CameraManager::GetInstance().CreateCamera();
-
-	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(4);
-
-	StageCollisionGenerator generator;
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
 void CollisionDebugScene::Update() {
@@ -34,6 +24,15 @@ void CollisionDebugScene::Update() {
 
 	CollisionManager::GetInstance().Update();
 }
+
+void CollisionDebugScene::Setup() {
+	CollisionManager::GetInstance().Clear();
+	StageManager::GetInstance().Initialize();
+	StageManager::GetInstance().LoadStage(4);
+	
+	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+}
+
 void CollisionDebugScene::Render() {
 #if _DEBUG 線
 
