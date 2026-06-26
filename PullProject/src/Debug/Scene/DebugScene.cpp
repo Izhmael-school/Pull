@@ -17,16 +17,16 @@
 DebugScene::DebugScene() { Start(); }
 
 void DebugScene::Start() {
-	CollisionManager::GetInstance().Clear();
-	// カメラ生成
-	CameraManager::GetInstance().CreateCamera();
+	//CollisionManager::GetInstance().Clear();
+	//// カメラ生成
+	//CameraManager::GetInstance().CreateCamera();
 
-	// ステージの初期化処理
-	StageManager::GetInstance().Initialize();
-	// モデルハンドルを複製してStageの実体にハンドルを渡す
-	StageManager::GetInstance().LoadStage(4);
+	//// ステージの初期化処理
+	//StageManager::GetInstance().Initialize();
+	//// モデルハンドルを複製してStageの実体にハンドルを渡す
+	//StageManager::GetInstance().LoadStage(4);
 
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
 void DebugScene::Update() {
@@ -38,6 +38,19 @@ void DebugScene::Update() {
 	// 当たり判定
 	CollisionManager::GetInstance().Update();
 
+}
+
+void DebugScene::Setup() {
+	CollisionManager::GetInstance().Clear();
+	// カメラ生成
+	CameraManager::GetInstance().CreateCamera();
+
+	// ステージの初期化処理
+	StageManager::GetInstance().Initialize();
+	// モデルハンドルを複製してStageの実体にハンドルを渡す
+	StageManager::GetInstance().LoadStage(4);
+
+	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
 void DebugScene::Render() {

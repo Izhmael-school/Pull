@@ -117,7 +117,10 @@ void CollisionManager::Update() {
 			currents[i][j] = hit;
 
 			if (hit) {
-				Resolve(a, b);
+
+				if (a->IsResolve() && b->IsResolve()) {
+					Resolve(a, b);
+				}
 			}
 
 			if (!prevs[i][j] && hit) {
