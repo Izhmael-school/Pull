@@ -75,6 +75,11 @@ public:
 	 *	@return bool	引き抜いたか否か
 	 */
 	bool Pull();
+	/*
+	 *	掴み移動の移動処理
+	 *	@param	float 移動速度
+	 */
+	void CatchMovingMove(float moveSpeed);
 
 public:
 	/*

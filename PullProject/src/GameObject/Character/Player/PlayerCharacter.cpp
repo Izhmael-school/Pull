@@ -124,6 +124,14 @@ bool PlayerCharacter::Pull() {
 }
 
 /*
+ *	掴み移動の移動処理
+ *	@param	float 移動速度
+ */
+void PlayerCharacter::CatchMovingMove(float moveSpeed) {
+	pTransform->AddPosition(pTransform->GetForward(), -moveSpeed);
+}
+
+/*
  *	手生成
  *	@param	int モデルハンドル
  *	@param	std::shared_ptr<PlayerCharacter> 所有者(プレイヤー)

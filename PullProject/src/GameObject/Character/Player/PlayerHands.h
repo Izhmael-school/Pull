@@ -29,8 +29,9 @@ private:
 	enum class CatchState {
 		Invalid = -1,
 		None,
-		GimmickCatch,
+		LeverCatch,
 		EnemyCatch,
+		PillerCatch,
 
 		Max,
 	};
@@ -65,6 +66,10 @@ private:
 	 *	手の移動処理
 	 */
 	void HandsMove();
+	/*
+	 *	掴み移動処理
+	 */
+	void CatchMoving();
 
 public:
 	/*
@@ -73,10 +78,10 @@ public:
 	 */
 	inline bool IsCatch() { return handsState == HandsState::Catch; }
 	/*
-	 *　ギミックを掴んでいるか否か
+	 *　レバーを掴んでいるか否か
 	 *	@return bool
 	 */
-	inline bool IsGimmickCatch() { return catchState == CatchState::GimmickCatch; }
+	inline bool IsLeverCatch() { return catchState == CatchState::LeverCatch; }
 	/*
 	 *	ウデ伸ばし中か否か
 	 *	@return bool
