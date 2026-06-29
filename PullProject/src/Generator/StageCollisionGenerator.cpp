@@ -17,7 +17,7 @@ struct AABB {
 };
 
 // 2つの浮動小数点数が近いかどうかを判定する関数
-bool IsNear(float a, float b, float eps = 5.0f) {
+bool IsNear(float a, float b, float eps = 2.0f) {
 	return fabsf(a - b) < eps;
 }
 
@@ -152,27 +152,13 @@ void StageCollisionGenerator::GenerateFromUnity(
 	for (auto& b : boxes) {
 		GameObject* obj = new GameObject(-1, VZero, Tag::Ground);
 
-		auto col = new AABBCollider(obj, VZero, VZero);
-
-		float shrink = 1.0f;
-
-		VECTOR min = b.min;
-		VECTOR max = b.max;
-
-		min.x += shrink;
-		min.z += shrink;
-		max.x -= shrink;
-		max.z -= shrink;
-
-		col->SetMin(min);
-		col->SetMax(max);
+		AABBCollider* col = std::make_unique<AABBCollider>(obj, VZero, VZero).release();
+		col->SetMin(b.min);
+		col->SetMax(b.max);
 
 		col->SetLayer(ColliderLayer::Stage);
-
-		manager.Register(col); // ← これも忘れず！！
 		colCount++;
 	}
-
 	// 結合後のAABBの数を表示
 	printfDx("collider: %d\n", colCount);
 }
