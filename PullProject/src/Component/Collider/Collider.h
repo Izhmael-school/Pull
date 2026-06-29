@@ -9,6 +9,7 @@
  * @author Tanaka
  */
 
+ //	レイヤー
 enum class ColliderLayer {
 	Default,
 	Player,
@@ -123,7 +124,7 @@ private:
 	VECTOR worldEnd;
 
 	bool hasErrorShown = false;
-	
+
 	float radius;
 
 public:
@@ -161,7 +162,7 @@ public:
 	void Render() override;
 
 	bool CheckHitPoint(VECTOR target);
-	
+
 	const char* GetTypeName() const override { return "Ray"; }
 
 	VECTOR GetOriginWorld() const {

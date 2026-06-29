@@ -140,7 +140,6 @@ void CapsuleCollider::Render() {
 	DrawCapsule3D(worldStart, worldEnd, radius, 16, GetColor(0, 255, 0), GetColor(0, 255, 0), FALSE);
 }
 
-
 void CapsuleCollider::Move(VECTOR offset) {
 	localStart = VAdd(localStart, offset);
 	localEnd = VAdd(localEnd, offset);
@@ -157,7 +156,7 @@ RayCollider::RayCollider(GameObject* owner, VECTOR ori, VECTOR dir, float len, f
 	length(len),
 	height(h),
 	angle(angDeg)
-	, worldDirection(VZero) 
+	, worldDirection(VZero)
 	, worldOrigin(VZero)
 	, bottomOffset(_bottomOffset) {
 }
