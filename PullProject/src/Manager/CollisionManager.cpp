@@ -69,12 +69,13 @@ void CollisionManager::UnRegisterAll() {
 #pragma endregion
 
 #pragma region 更新
-
+//	更新
 void CollisionManager::Update() {
 
 
 	int stage = 0, player = 0, enemy = 0, other = 0;
 
+	// レイヤーごとのコライダー数をカウント
 	for (auto c : pColliderArray) {
 		switch (c->GetLayer()) {
 		case ColliderLayer::Stage: stage++; break;
@@ -86,16 +87,19 @@ void CollisionManager::Update() {
 
 	//printfDx("Stage:%d Player:%d Enemy:%d Other:%d\n", stage, player, enemy, other);
 
+	// コライダーの更新
 	for (auto col : pColliderArray) {
 		if (col && col->IsEnable()) {
 			col->Update();
 		}
 	}
 
+	//	当たり判定の処理
 	int n = pColliderArray.size();
 
 	static int prevSize = -1;
 
+	//	前回のサイズと異なる場合は、prevsとcurrentsをリサイズ
 	if (prevSize != n) {
 		prevs.assign(n, std::vector<bool>(n, false));
 		currents.assign(n, std::vector<bool>(n, false));
@@ -103,6 +107,7 @@ void CollisionManager::Update() {
 		prevSize = n;
 	}
 
+	//	当たり判定の処理
 	for (int i = 0; i < n; i++) {
 		for (int j = i + 1; j < n; j++) {
 
@@ -127,14 +132,17 @@ void CollisionManager::Update() {
 				}
 			}
 
+			// イベントの呼び出し
 			if (!prevs[i][j] && hit) {
 				goA->OnTriggerEnter(a, b);
 				goB->OnTriggerEnter(b, a);
 			}
+			// 前回当たっていて今回も当たっている場合はOnTriggerStay
 			else if (prevs[i][j] && hit) {
 				goA->OnTriggerStay(a, b);
 				goB->OnTriggerStay(b, a);
 			}
+			//	前回当たっていて今回当たっていない場合はOnTriggerExit
 			else if (prevs[i][j] && !hit) {
 				goA->OnTriggerExit(a, b);
 				goB->OnTriggerExit(b, a);
@@ -149,50 +157,61 @@ void CollisionManager::Update() {
 #pragma endregion
 
 #pragma region 判定
+//	判定関数の呼び出し
 bool CollisionManager::CheckHit(Collider* a, Collider* b) {
+	//	コライダーの型名を組み合わせてキーを作成
 	std::string key =
 		std::string(a->GetTypeName()) + "_" + b->GetTypeName();
 
+	//	キーに対応する判定関数を検索
 	auto it = hitFuncTable.find(key);
 	if (it != hitFuncTable.end()) {
 		return it->second(a, b);
 	}
 
-	// ★ 逆を試す
+	//	逆順のキーを作成して検索
 	std::string revKey =
 		std::string(b->GetTypeName()) + "_" + a->GetTypeName();
 
+	//	逆順のキーに対応する判定関数を検索
 	auto it2 = hitFuncTable.find(revKey);
 	if (it2 != hitFuncTable.end()) {
-		return it2->second(b, a); // ← 引数も逆にする
+		return it2->second(b, a);
 	}
 
 	return false;
 }
 
 #pragma endregion
-
+//	押し出し関数の呼び出し
 void CollisionManager::Resolve(Collider* a, Collider* b) {
+	// コライダーの型名を組み合わせてキーを作成
 	std::string key =
 		std::string(a->GetTypeName()) + "_" + b->GetTypeName();
 
+	// キーに対応する押し出し関数を検索
 	auto it = resolveFuncTable.find(key);
+	// 逆順のキーを作成して検索
 	if (it == resolveFuncTable.end()) return;
 
+	// 逆順のキーに対応する押し出し関数を検索
 	it->second(a, b);
 }
 
-
+// JSONから当たり判定ルールを読み込む
 void CollisionManager::LoadCollisionRules(const std::string& path) {
+	// JSONファイルを読み込む
 	auto json = MyJson::LoadJsonFile(path);
 
+	// ルールを読み込む
 	for (auto& rule : json["collision_rules"]) {
 
+		//	コライダーの型名を組み合わせてキーを作成
 		std::string key =
 			rule["a"].get<std::string>() + "_" +
 			rule["b"].get<std::string>();
 
-		// ★ 判定関数（hit）
+		//	判定関数の名前を取得して、funcMapから対応する関数ポインタを取得
 		std::string hitName = rule["hit"].get<std::string>();
 		auto it = funcMap.find(hitName);
 		if (it == funcMap.end()) {
@@ -201,7 +220,6 @@ void CollisionManager::LoadCollisionRules(const std::string& path) {
 		}
 		hitFuncTable[key] = it->second;
 
-		// ★ 押し出し関数（resolve）
 		std::string resolveName = rule["resolve"].get<std::string>();
 		if (resolveName != "None") {
 			auto it2 = resolveFuncMap.find(resolveName);
@@ -214,7 +232,6 @@ void CollisionManager::LoadCollisionRules(const std::string& path) {
 
 
 #pragma region 判定処理
-
 bool CollisionManager::SphereVsSphere(Collider* a, Collider* b) {
 	auto sa = static_cast<SphereCollider*>(a);
 	auto sb = static_cast<SphereCollider*>(b);
@@ -326,8 +343,83 @@ bool CollisionManager::CapsuleVsCapsule(Collider* a, Collider* b) {
 	return dist <= (capA->GetRadius() + capB->GetRadius());
 }
 
+bool CollisionManager::RayVsSphere(Collider* a, Collider* b) {
+	RayCollider* ray = (RayCollider*)a;
+	SphereCollider* sphere = (SphereCollider*)b;
+
+	VECTOR center = sphere->GetWorldCenter();
+	float radius = sphere->GetRadius();
+
+	// 中心点が当たっているなら true
+	if (ray->CheckHitPoint(center))
+		return true;
+
+	// 半径分だけ内側に寄せた点をチェック
+	VECTOR dir = VNorm(VSub(center, ray->GetWorldOrigin()));
+	VECTOR nearPoint = VSub(center, VScale(dir, radius));
+
+	return ray->CheckHitPoint(nearPoint);
+}
+
+
+bool CollisionManager::RayVsAABB(Collider* a, Collider* b) {
+	RayCollider* ray = (RayCollider*)a;
+	AABBCollider* box = (AABBCollider*)b;
+
+	VECTOR min = box->GetMin();
+	VECTOR max = box->GetMax();
+
+	VECTOR points[8] = {
+		VGet(min.x, min.y, min.z),
+		VGet(max.x, min.y, min.z),
+		VGet(min.x, max.y, min.z),
+		VGet(max.x, max.y, min.z),
+		VGet(min.x, min.y, max.z),
+		VGet(max.x, min.y, max.z),
+		VGet(min.x, max.y, max.z),
+		VGet(max.x, max.y, max.z),
+	};
+
+	for (int i = 0; i < 8; i++) {
+		if (ray->CheckHitPoint(points[i]))
+			return true;
+	}
+
+	return false;
+}
+
+bool CollisionManager::RayVsCapsule(Collider* a, Collider* b) {
+	RayCollider* ray = (RayCollider*)a;
+	CapsuleCollider* cap = (CapsuleCollider*)b;
+
+	VECTOR aPos = cap->GetWorldStart();
+	VECTOR bPos = cap->GetWorldEnd();
+	float radius = cap->GetRadius();
+
+	const int div = 8;
+
+	for (int i = 0; i <= div; i++) {
+		float t = (float)i / div;
+		VECTOR p = VAdd(aPos, VScale(VSub(bPos, aPos), t));
+
+		// 中心線の点
+		if (ray->CheckHitPoint(p))
+			return true;
+
+		// 半径分だけ内側に寄せた点
+		VECTOR dir = VNorm(VSub(p, ray->GetWorldOrigin()));
+		VECTOR nearP = VSub(p, VScale(dir, radius));
+
+		if (ray->CheckHitPoint(nearP))
+			return true;
+	}
+
+	return false;
+}
+
 #pragma endregion
 
+#pragma region 押し出し
 void CollisionManager::ResolveSphereSphere(Collider* aCol, Collider* bCol) {
 	auto a = static_cast<SphereCollider*>(aCol);
 	auto b = static_cast<SphereCollider*>(bCol);
@@ -420,80 +512,8 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 		cap->GetGameObject()->GetTransform()->AddPosition(bestMove);
 	}
 }
+#pragma endregion
 
-bool CollisionManager::RayVsSphere(Collider* a, Collider* b) {
-	RayCollider* ray = (RayCollider*)a;
-	SphereCollider* sphere = (SphereCollider*)b;
-
-	VECTOR center = sphere->GetWorldCenter();
-	float radius = sphere->GetRadius();
-
-	// 中心点が当たっているなら true
-	if (ray->CheckHitPoint(center))
-		return true;
-
-	// 半径分だけ内側に寄せた点をチェック
-	VECTOR dir = VNorm(VSub(center, ray->GetWorldOrigin()));
-	VECTOR nearPoint = VSub(center, VScale(dir, radius));
-
-	return ray->CheckHitPoint(nearPoint);
-}
-
-
-bool CollisionManager::RayVsAABB(Collider* a, Collider* b) {
-	RayCollider* ray = (RayCollider*)a;
-	AABBCollider* box = (AABBCollider*)b;
-
-	VECTOR min = box->GetMin();
-	VECTOR max = box->GetMax();
-
-	VECTOR points[8] = {
-		VGet(min.x, min.y, min.z),
-		VGet(max.x, min.y, min.z),
-		VGet(min.x, max.y, min.z),
-		VGet(max.x, max.y, min.z),
-		VGet(min.x, min.y, max.z),
-		VGet(max.x, min.y, max.z),
-		VGet(min.x, max.y, max.z),
-		VGet(max.x, max.y, max.z),
-	};
-
-	for (int i = 0; i < 8; i++) {
-		if (ray->CheckHitPoint(points[i]))
-			return true;
-	}
-
-	return false;
-}
-
-bool CollisionManager::RayVsCapsule(Collider* a, Collider* b) {
-	RayCollider* ray = (RayCollider*)a;
-	CapsuleCollider* cap = (CapsuleCollider*)b;
-
-	VECTOR aPos = cap->GetWorldStart();
-	VECTOR bPos = cap->GetWorldEnd();
-	float radius = cap->GetRadius();
-
-	const int div = 8;
-
-	for (int i = 0; i <= div; i++) {
-		float t = (float)i / div;
-		VECTOR p = VAdd(aPos, VScale(VSub(bPos, aPos), t));
-
-		// 中心線の点
-		if (ray->CheckHitPoint(p))
-			return true;
-
-		// 半径分だけ内側に寄せた点
-		VECTOR dir = VNorm(VSub(p, ray->GetWorldOrigin()));
-		VECTOR nearP = VSub(p, VScale(dir, radius));
-
-		if (ray->CheckHitPoint(nearP))
-			return true;
-	}
-
-	return false;
-}
 
 
 #pragma region 描画

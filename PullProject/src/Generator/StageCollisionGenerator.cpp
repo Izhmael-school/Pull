@@ -17,7 +17,7 @@ struct AABB {
 };
 
 // 2つの浮動小数点数が近いかどうかを判定する関数
-bool IsNear(float a, float b, float eps = 0.01f) {
+bool IsNear(float a, float b, float eps = 5.0f) {
 	return fabsf(a - b) < eps;
 }
 
@@ -115,7 +115,7 @@ void StageCollisionGenerator::GenerateFromUnity(
 	for (auto& b : json["blocks"]) {
 
 		// "type"が"tree"または"bridge"の場合はスキップ
-		if (b.contains("type") && (b["type"] == "tree" || b["type"] == "bridge")) {
+		if (b.contains("type") && (b["type"] == "tree")) {
 			continue;
 		}
 
@@ -143,7 +143,7 @@ void StageCollisionGenerator::GenerateFromUnity(
 		boxes.push_back({ min, max });
 	}
 
-	// AABBの結合処理を実行s
+	// AABBの結合処理を実行
 	MergeAABB3D(boxes);
 
 	int colCount = 0;
@@ -152,13 +152,27 @@ void StageCollisionGenerator::GenerateFromUnity(
 	for (auto& b : boxes) {
 		GameObject* obj = new GameObject(-1, VZero, Tag::Ground);
 
-		AABBCollider* col = std::make_unique<AABBCollider>(obj, VZero, VZero).release();
-		col->SetMin(b.min);
-		col->SetMax(b.max);
+		auto col = new AABBCollider(obj, VZero, VZero);
+
+		float shrink = 1.0f;
+
+		VECTOR min = b.min;
+		VECTOR max = b.max;
+
+		min.x += shrink;
+		min.z += shrink;
+		max.x -= shrink;
+		max.z -= shrink;
+
+		col->SetMin(min);
+		col->SetMax(max);
 
 		col->SetLayer(ColliderLayer::Stage);
+
+		manager.Register(col); // ← これも忘れず！！
 		colCount++;
 	}
+
 	// 結合後のAABBの数を表示
 	printfDx("collider: %d\n", colCount);
 }
