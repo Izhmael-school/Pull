@@ -36,7 +36,7 @@ void CameraObject::Update() {
 #if _DEBUG
 	// 引っ張りモード
 	if (mode == CameraMode::Player || mode == CameraMode::Pull) {
-		bool catchGimmick = PlayerManager::GetInstance().GetPlayer()->GetHands()->IsGimmickCatch();
+		bool catchGimmick = PlayerManager::GetInstance().GetPlayer()->GetHands()->IsLeverCatch();
 		if (catchGimmick) {
 			mode = CameraMode::Pull;
 		}

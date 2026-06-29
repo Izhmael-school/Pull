@@ -56,6 +56,11 @@ void PlayerHands::Update() {
 	// 手の移動
 	HandsMove();
 
+	// 掴み移動
+	if (catchState == CatchState::PillerCatch) {
+		CatchMoving();
+	}
+
 }
 
 void PlayerHands::Render() {
@@ -78,6 +83,12 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		handsState = HandsState::Catch;
 		// 敵の掴まった時処理
 		enemy->CaughtAction();
+	}
+
+	// 当たったのがレバーの場合
+	auto lever = dynamic_cast<Lever*>(other);
+	if (lever && InputManager::GetInstance().IsKey(KEY_INPUT_Q)) {
+		handsState = HandsState::Catch;
 	}
 }
 
@@ -103,9 +114,14 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 
 	// 当たったのがレバーの場合
 	auto lever = dynamic_cast<Lever*>(other);
-	if (lever) {
+	// デバッグ用でQを押しながらだと掴み移動になる
+	if (lever && InputManager::GetInstance().IsKey(KEY_INPUT_Q)) {
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
+			catchState = CatchState::PillerCatch;
+	}
+	else if (lever) {
 		// ステート変更
-		catchState = CatchState::GimmickCatch;
+		catchState = CatchState::LeverCatch;
 		handsState = HandsState::Catch;
 		// 引っこ抜き
 		bool pull = owner->Pull();
@@ -128,6 +144,9 @@ void PlayerHands::HandsMove() {
 	// ウデ伸ばし中なら前に進む
 	if (handsState == HandsState::ArmsExtending) {
 		pTransform->AddPosition(VForward, -extendSpeed);
+
+		// ウデ伸ばし中は当たり判定の押し出しあり
+		pCollider->SetResolve(true);
 	}
 	// ウデ戻し中なら戻ってくる
 	else if (handsState == HandsState::ArmsReturning){
@@ -142,5 +161,23 @@ void PlayerHands::HandsMove() {
 			pTransform->SetPosition(VGet(0, 0, posZ * returnSpeedRatio));
 		}
 
+		// ウデ戻し中は当たり判定の押し出しなし
+		pCollider->SetResolve(false);
+	}
+}
+
+/*
+ *	掴み移動処理
+ */
+void PlayerHands::CatchMoving() {
+	// プレイヤーが手の位置に戻るまで移動
+	if (pTransform->GetLocalPosition().z > 0) {
+		catchState = CatchState::None;
+		handsState = HandsState::Idle;
+		pTransform->SetPosition(VZero);
+	}
+	else {
+		owner->CatchMovingMove(extendSpeed);
+		pTransform->AddPosition(VForward, extendSpeed);
 	}
 }
