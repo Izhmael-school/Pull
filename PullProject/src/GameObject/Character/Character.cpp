@@ -5,8 +5,8 @@ Character::Character(int _modelHandle, VECTOR _pos, Tag _tag)
 	:GameObject(_modelHandle, _pos, _tag)
 	,isGravity(false)
 	, fallSpeed(0.0f)
-	, FALL_SPEED_MAX(20.0f)
-	, GRAVITY_ACCELERATION(20.0f)
+	, FALL_SPEED_MAX(100.0f)
+	, GRAVITY_ACCELERATION(100.0f)
 	, hitGroundingFrag(false)
 {
 	Start();
@@ -76,7 +76,7 @@ void Character::GravityFall() {
 
 
 	// 落下速度計算
-	fallSpeed += GRAVITY_ACCELERATION;
+	fallSpeed += GRAVITY_ACCELERATION * 0.01f;
 	if (fallSpeed >= FALL_SPEED_MAX)
 		fallSpeed = FALL_SPEED_MAX;
 

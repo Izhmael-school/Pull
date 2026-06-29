@@ -38,8 +38,10 @@ void PlayerCharacter::Update() {
 	if (!pHands->IsCatch())
 		Move();
 
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE))
-		AddFallSpeed(-200);
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE)) {
+		AddFallSpeed(-30);
+		hitGroundingFrag = false;
+	}
 }
 
 void PlayerCharacter::Render() {
