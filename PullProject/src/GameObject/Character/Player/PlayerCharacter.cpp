@@ -21,8 +21,9 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 
 	, PULL_VALUE_MAX(100.0f)
 	, PULL_CAMERA_SHAKE_POWER(20.0f)
-	, PULL_CAMERA_SHAKE_TIME(5.0f) {
-}
+	, PULL_CAMERA_SHAKE_TIME(5.0f) 
+	, JUMP_POWER(30)
+{}
 
 void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
@@ -37,11 +38,6 @@ void PlayerCharacter::Update() {
 	// 移動
 	if (!pHands->IsCatch())
 		Move();
-
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE)) {
-		AddFallSpeed(-30);
-		hitGroundingFrag = false;
-	}
 }
 
 void PlayerCharacter::Render() {
@@ -94,7 +90,12 @@ void PlayerCharacter::Move() {
 		// 角度を移動方向へ(現在モデルが逆向きなので反対向きにするようにしている)
 		pTransform->SetRotation(VGet(0, MyMath::Rad2Deg(atan2f(-moveDir.x, -moveDir.z)), 0));
 	}
-
+	
+	// ジャンプ
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE)) {
+		AddFallSpeed(-JUMP_POWER);
+		hitGroundingFrag = false;
+	}
 }
 /*
  *	引っこ抜き

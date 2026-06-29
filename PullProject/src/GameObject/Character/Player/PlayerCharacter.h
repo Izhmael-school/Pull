@@ -36,6 +36,8 @@ private:
 	const float PULL_CAMERA_SHAKE_POWER;
 	// 引っこ抜き時のカメラシェイクの時間
 	const float PULL_CAMERA_SHAKE_TIME;
+	// ジャンプ力
+	const float JUMP_POWER;
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
