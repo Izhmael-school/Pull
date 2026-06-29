@@ -72,17 +72,17 @@ void ColliderObject::Render(){
 	GameObject::Render();
 }
 
-void ColliderObject::OnTriggerEnter(Collider* _pOther) {
+void ColliderObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (enterEvent)
 		enterEvent(_pOther);
 }
 
-void ColliderObject::OnTriggerStay(Collider* _pOther) {
+void ColliderObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	if (stayEvent)
 		stayEvent(_pOther);
 }
 
-void ColliderObject::OnTriggerExit(Collider* _pOther) {
+void ColliderObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	if (exitEvent)
 		exitEvent(_pOther);
 }

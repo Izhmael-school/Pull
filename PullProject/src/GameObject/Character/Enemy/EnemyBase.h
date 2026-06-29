@@ -140,8 +140,8 @@ public:
 	 */
 	void LoopAnim(std::string _animName);
 
-	void OnTriggerEnter(Collider* _pOther) override;
-	void OnTriggerStay(Collider* _pOther) override;
+	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
+	void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
 
 public:
 	/*

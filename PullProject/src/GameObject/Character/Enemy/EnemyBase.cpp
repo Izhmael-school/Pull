@@ -346,13 +346,13 @@ void EnemyBase::LoopAnim(std::string _animName) {
 	GetAnimator()->GetAnimation(_animName)->isLoop = true;
 }
 
-void EnemyBase::OnTriggerEnter(Collider* _pOther) {
+void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (GetCurrentCaughtState() != CaughtState::Throwing) return;
 	// 何かしらに当たったら
 	HitObject();
 }
 
-void EnemyBase::OnTriggerStay(Collider* _pOther) {
+void EnemyBase::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	Tag tag = _pOther->GetGameObject()->GetTag();
 	if (tag == Player) {
 		ChangeNextState(Attack);

@@ -84,11 +84,11 @@ void GimmickObject::DeleteModel() {
 	MV1DeleteModel(modelHandle);
 }
 
-void GimmickObject::OnTriggerEnter(Collider* _pOther) {
+void GimmickObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 }
 
-void GimmickObject::OnTriggerStay(Collider* _pOther) {
+void GimmickObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 }
 
-void GimmickObject::OnTriggerExit(Collider* _pOther) {
+void GimmickObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 }

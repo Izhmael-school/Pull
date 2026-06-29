@@ -46,13 +46,13 @@ void PlayerCharacter::Render() {
 	Character::Render();
 }
 
-void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {	
+void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {	
 }
 
-void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
+void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 }
 
-void PlayerCharacter::OnTriggerExit(Collider* _pOther) {
+void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 }
 
 /*

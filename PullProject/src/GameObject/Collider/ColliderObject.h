@@ -65,9 +65,9 @@ public:
 
 	void Render() override;
 
-	void OnTriggerEnter(Collider* _pOther) override;
-	void OnTriggerStay(Collider* _pOther) override;
-	void OnTriggerExit(Collider* _pOther) override;
+	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
+	void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
+	void OnTriggerExit(Collider* _pSelf, Collider* _pOther) override;
 
 	inline bool WantDelete() const { return wantDelete; }
 };

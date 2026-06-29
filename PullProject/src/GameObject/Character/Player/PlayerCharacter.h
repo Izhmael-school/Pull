@@ -49,11 +49,11 @@ public:
 	// 描画処理
 	void Render() override;
 	// 当たった時
-	void OnTriggerEnter(Collider* _pOther) override;
+	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 	// 当たっているとき
-	void OnTriggerStay(Collider* _pOther) override;
+	void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
 	// 離れた時
-	void OnTriggerExit(Collider* _pOther) override;
+	void OnTriggerExit(Collider* _pSelf, Collider* _pOther) override;
 
 private:
 	/*

@@ -64,7 +64,7 @@ void PlayerHands::Render() {
 		pCollider->Render();
 }
 
-void PlayerHands::OnTriggerEnter(Collider* _pOther) {
+void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
 	// ウデを伸ばしていない状態なら無視
 	if (handsState != HandsState::ArmsExtending)
@@ -81,7 +81,7 @@ void PlayerHands::OnTriggerEnter(Collider* _pOther) {
 	}
 }
 
-void PlayerHands::OnTriggerStay(Collider* _pOther) {
+void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
 	if (other->GetTag() == Player)
 		return;
@@ -118,7 +118,7 @@ void PlayerHands::OnTriggerStay(Collider* _pOther) {
 	}
 }
 
-void PlayerHands::OnTriggerExit(Collider* _pOther) {
+void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 }
 
 /*

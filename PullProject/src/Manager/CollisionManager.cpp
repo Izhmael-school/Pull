@@ -124,16 +124,16 @@ void CollisionManager::Update() {
 			}
 
 			if (!prevs[i][j] && hit) {
-				goA->OnTriggerEnter(b);
-				goB->OnTriggerEnter(a);
+				goA->OnTriggerEnter(a, b);
+				goB->OnTriggerEnter(b, a);
 			}
 			else if (prevs[i][j] && hit) {
-				goA->OnTriggerStay(b);
-				goB->OnTriggerStay(a);
+				goA->OnTriggerStay(a, b);
+				goB->OnTriggerStay(b, a);
 			}
 			else if (prevs[i][j] && !hit) {
-				goA->OnTriggerExit(b);
-				goB->OnTriggerExit(a);
+				goA->OnTriggerExit(a, b);
+				goB->OnTriggerExit(b, a);
 			}
 
 			prevs[i][j] = hit;
