@@ -2,6 +2,7 @@
 #include "Definition/CommonModule/MyJson.h"
 #include <map>
 
+// 当たり判定関数のマップ
 static const std::unordered_map<std::string, HitFunc> funcMap = {
 	{ "SphereVsSphere",   &CollisionManager::SphereVsSphere },
 	{ "SphereVsAABB",     &CollisionManager::SphereVsAABB },
@@ -14,12 +15,14 @@ static const std::unordered_map<std::string, HitFunc> funcMap = {
 	{ "RayVsCapsule",	  &CollisionManager::RayVsCapsule}
 };
 
+// 押し出し関数のマップ
 static const std::unordered_map<std::string, ResolveFunc> resolveFuncMap = {
 	{ "SphereVsSphere",   &CollisionManager::ResolveSphereSphere },
 	{ "SphereVsAABB",     &CollisionManager::ResolveSphereAABB },
 	{ "CapsuleVsAABB",    &CollisionManager::ResolveCapsuleAABB }
 };
 
+//	コンストラクタ・デストラクタ
 CollisionManager::CollisionManager() {
 	LoadCollisionRules("src/Data/collision_rules.json");
 }
@@ -28,14 +31,13 @@ CollisionManager::~CollisionManager() {
 }
 
 #pragma region 登録
-
+// 登録
 void CollisionManager::Register(Collider* _pCol) {
 	if (!_pCol) return;
 
 	pColliderArray.push_back(_pCol);
 }
-
-
+// 登録済みか確認して登録
 void CollisionManager::CheckRegister(Collider* _pCol) {
 	if (!_pCol) return;
 
@@ -48,6 +50,7 @@ void CollisionManager::CheckRegister(Collider* _pCol) {
 #pragma endregion
 
 #pragma region 削除
+// 登録解除
 void CollisionManager::UnRegister(Collider* _pCol) {
 	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
 	if (itr == pColliderArray.end()) return;
@@ -55,6 +58,7 @@ void CollisionManager::UnRegister(Collider* _pCol) {
 	pColliderArray.erase(itr);
 }
 
+//	すべての登録解除
 void CollisionManager::UnRegisterAll() {
 	pColliderArray.clear();
 
