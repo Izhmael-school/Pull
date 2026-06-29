@@ -116,6 +116,8 @@ void CollisionManager::Update() {
 
 			if (!a || !b) continue;
 
+			if (!a->IsEnable() || !b->IsEnable()) continue;
+
 			auto goA = a->GetGameObject();
 			auto goB = b->GetGameObject();
 
@@ -307,7 +309,7 @@ bool CollisionManager::CapsuleVsAABB(Collider* a, Collider* b) {
 	VECTOR min = box->GetMin();
 	VECTOR max = box->GetMax();
 
-	const int steps = 5;
+	const int steps = 32;
 
 	for (int i = 0; i <= steps; i++) {
 		float t = (float)i / steps;
@@ -495,14 +497,24 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 
 		VECTOR diff = VSub(point, closest);
 		float distSq = VDot(diff, diff);
-
 		if (distSq <= r * r) {
 			float dist = sqrtf(distSq);
 			float push = r - dist;
 
+			VECTOR dir;
+
+			if (fabsf(diff.y) > fabsf(diff.x) && fabsf(diff.y) > fabsf(diff.z)) {
+
+				if (diff.y <= 0) continue;
+
+				dir = VGet(0, 1.0f, 0);
+			}
+			else {
+				dir = (dist > 0.0001f) ? VScale(diff, 1.0f / dist) : VZero;
+			}
+
 			if (push > bestPush) {
 				bestPush = push;
-				VECTOR dir = (dist > 0.0001f) ? VScale(diff, 1.0f / dist) : VGet(0, 1, 0);
 				bestMove = VScale(dir, push);
 			}
 		}
