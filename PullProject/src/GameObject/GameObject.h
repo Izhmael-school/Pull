@@ -45,6 +45,11 @@ public:
 	inline Transform* GetTransform() const { return pTransform.get(); }
 
 	/*
+	 * @brief コライダーの取得
+	 */
+	inline Collider* GetCollider() const { return pCollider.get(); }
+
+	/*
 	 * @brief 座標の取得
 	 */
 	inline VECTOR GetPosition() const { return pTransform->GetPosition(); }

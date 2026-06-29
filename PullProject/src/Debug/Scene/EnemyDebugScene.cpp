@@ -32,6 +32,7 @@ void EnemyDebugScene::Update(){
 	ColliderObjectManager::GetInstance().Update();
 	CollisionManager::GetInstance().Update();
 	PlayerManager::GetInstance().GetPlayer()->Update();
+	PlayerManager::GetInstance().GetPlayer()->GetHands()->Update();
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// 敵の更新
@@ -94,6 +95,7 @@ void EnemyDebugScene::Render(){
 #endif
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
+	player->GetHands()->Render();
 	DrawSphere3D(player->GetPosition(), 100, 16, 0xff0000, 0xff0000, TRUE);
 
 	// 描画

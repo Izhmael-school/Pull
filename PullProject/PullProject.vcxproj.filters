@@ -73,6 +73,15 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy\Walker">
       <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Resource">
+      <UniqueIdentifier>{94b63324-4cc0-4abe-97da-07a00d9cb7d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Resource\Model">
+      <UniqueIdentifier>{fbaa8a2f-2a39-460b-86b2-38dd8a587077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Instance">
+      <UniqueIdentifier>{2422a4fe-42b9-4e00-bff2-f08b96fe8f18}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -232,6 +241,30 @@
       <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Stage\Gimmick\BomBreakWall.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Camera\EventCameraMovement.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\HookShot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resource\ResourceBase.cpp">
+      <Filter>ソース ファイル\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resource\Model\ModelResource.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Instance\InstanceBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -434,6 +467,30 @@
     <ClInclude Include="src\GameObject\Stage\Gimmick\BomBreakWall.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\HookShot.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resource\ResourceBase.h">
+      <Filter>ソース ファイル\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resource\Model\ModelResource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Instance\InstanceBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">
@@ -443,5 +500,7 @@
     <None Include="src\Data\GameObjectModelData.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
+    <None Include="src\Data\collision_rules.json" />
+    <None Include="src\Data\EventCamera.json" />
   </ItemGroup>
 </Project>

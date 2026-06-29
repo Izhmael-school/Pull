@@ -110,6 +110,12 @@ public:
 
 	VECTOR GetWorldCenter() const { return worldCenter; }
 
+	/*
+	 * @author Sekion
+	 */
+	void SetLocalCenter(VECTOR _center) { localCenter = _center; }
+
+
 	const char* GetTypeName() const override { return "Sphere"; }
 };
 
