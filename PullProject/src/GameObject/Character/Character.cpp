@@ -7,6 +7,7 @@ Character::Character(int _modelHandle, VECTOR _pos, Tag _tag)
 	, fallSpeed(0.0f)
 	, FALL_SPEED_MAX(20.0f)
 	, GRAVITY_ACCELERATION(20.0f)
+	, hitGroundingFrag(false)
 {
 	Start();
 }
@@ -43,6 +44,18 @@ void Character::Setup() {
 	GameObject::Setup();
 }
 
+void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pGroundingCollider.get() &&
+		_pOther->GetGameObject()->GetTag() == Ground)
+		hitGroundingFrag = true;
+}
+
+void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pGroundingCollider.get() &&
+		_pOther->GetGameObject()->GetTag() == Ground)
+		hitGroundingFrag = false;
+}
+
 /*
  *	重力による落下処理
  *	@author Riku
@@ -55,11 +68,11 @@ void Character::GravityFall() {
 	}
 
 	// 接地していた場合は落下しない
-	//if (hitGroundingFrag) {
-	//	// 落下速度を0にする
-	//	fallSpeed = 0.0f;
-	//	return;
-	//}
+	if (hitGroundingFrag) {
+		// 落下速度を0にする
+		fallSpeed = 0.0f;
+		return;
+	}
 
 
 	// 落下速度計算

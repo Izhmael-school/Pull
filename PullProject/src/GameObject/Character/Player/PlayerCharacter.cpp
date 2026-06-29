@@ -27,7 +27,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
 	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -100), 10);
-	isGravity = false;
+	isGravity = true;
 }
 
 void PlayerCharacter::Update() {
@@ -46,13 +46,15 @@ void PlayerCharacter::Render() {
 	Character::Render();
 }
 
-void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {	
+void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	Character::OnTriggerEnter(_pSelf, _pOther);
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
+	Character::OnTriggerExit(_pSelf, _pOther);
 }
 
 /*

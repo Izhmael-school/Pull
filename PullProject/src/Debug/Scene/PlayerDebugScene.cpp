@@ -16,12 +16,12 @@
 #include "Manager/Playermanager.h"
 #include "../../Manager/Stage/GimmickObjectManager.h"
 #include "Manager/ColliderObjectManager.h"
+#include "Generator/StageCollisionGenerator.h"
 
 
 PlayerDebugScene::PlayerDebugScene() { Start(); }
 
-void PlayerDebugScene::Start()
-{
+void PlayerDebugScene::Start() {
 	CollisionManager::GetInstance().Clear();
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -40,8 +40,12 @@ void PlayerDebugScene::Start()
 
 }
 
-void PlayerDebugScene::Update()
-{
+void PlayerDebugScene::Setup() {
+	StageCollisionGenerator generator;
+	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+}
+
+void PlayerDebugScene::Update() {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// プレイヤーの更新
@@ -123,4 +127,6 @@ void PlayerDebugScene::Render(){
 
 	CollisionManager::GetInstance().Render();
 	ColliderObjectManager::GetInstance().Render();
+
+	
 }
