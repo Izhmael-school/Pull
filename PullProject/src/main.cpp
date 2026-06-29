@@ -1,10 +1,12 @@
 #include <ioStream>
 #include <DxLib.h>
 #include <random>
+#include <memory>
 #include "Manager/SceneManager.h"
 #include "Manager/InputManager.h"
 #include "Manager/TimeManager.h"
 #include "Manager/CollisionManager.h"
+#include "ImGui/ImGuiManager.h"
 
 constexpr double FRAME_TIME = 1.0f / 60.0f;
 
@@ -87,6 +89,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 #pragma endregion
 
+	// ImGuiの初期化
+	ImGuiManager imgui;
+	imgui.Init();
+
 	// 乱数調節(ガチ)
 	std::random_device rd;
 	std::mt19937_64 mt(rd());
@@ -99,6 +105,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		// 画面をクリアする
 		ClearDrawScreen();
+
+		// ImGuiのフレーム初めに呼ぶ処理
+		imgui.BeginFrame();
 		
 		// シーンの更新
 		TimeManager::GetInstance().Update();
@@ -110,6 +119,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		// シーンの描画
 		SceneManager::GetInstance().Render();
+
+		// ImGuiのフレーム終わりに呼ぶ処理
+		imgui.EndFrame();
 
 		// 裏画面と表画面を切り替える
 		ScreenFlip();
@@ -130,6 +142,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	InitSoundMem();
 	InitGraph();
 	InitFontToHandle();
+	// ImGuiの終了処理
+	imgui.Release();
 	
 
 	// DxLibの終了

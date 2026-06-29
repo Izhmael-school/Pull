@@ -36,6 +36,8 @@ private:
 	const float PULL_CAMERA_SHAKE_POWER;
 	// 引っこ抜き時のカメラシェイクの時間
 	const float PULL_CAMERA_SHAKE_TIME;
+	// ジャンプ力
+	const float JUMP_POWER;
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
@@ -49,11 +51,11 @@ public:
 	// 描画処理
 	void Render() override;
 	// 当たった時
-	void OnTriggerEnter(Collider* _pOther) override;
+	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 	// 当たっているとき
-	void OnTriggerStay(Collider* _pOther) override;
+	void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
 	// 離れた時
-	void OnTriggerExit(Collider* _pOther) override;
+	void OnTriggerExit(Collider* _pSelf, Collider* _pOther) override;
 
 private:
 	/*
@@ -73,6 +75,11 @@ public:
 	 *	@return bool	引き抜いたか否か
 	 */
 	bool Pull();
+	/*
+	 *	掴み移動の移動処理
+	 *	@param	float 移動速度
+	 */
+	void CatchMovingMove(float moveSpeed);
 
 public:
 	/*

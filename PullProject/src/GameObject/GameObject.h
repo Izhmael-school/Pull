@@ -45,6 +45,11 @@ public:
 	inline Transform* GetTransform() const { return pTransform.get(); }
 
 	/*
+	 * @brief コライダーの取得
+	 */
+	inline Collider* GetCollider() const { return pCollider.get(); }
+
+	/*
 	 * @brief 座標の取得
 	 */
 	inline VECTOR GetPosition() const { return pTransform->GetPosition(); }
@@ -87,16 +92,16 @@ public:
 	/*
 	 * @brief 当たった時
 	 */
-	virtual void OnTriggerEnter(Collider* _pOther);
+	virtual void OnTriggerEnter(Collider* _pSelf, Collider* _pOther);
 
 	/*
 	 * @brief 当たってるとき
 	 */
-	virtual void OnTriggerStay(Collider* _pOther);
+	virtual void OnTriggerStay(Collider* _pSelf, Collider* _pOther);
 
 	/*
 	 * @brief 離れた時
 	 */
-	virtual void OnTriggerExit(Collider* _pOther);
+	virtual void OnTriggerExit(Collider* _pSelf, Collider* _pOther);
 };
 #endif // !_GAMEOBJECT_

@@ -9,6 +9,7 @@
  * @author Tanaka
  */
 
+ //	レイヤー
 enum class ColliderLayer {
 	Default,
 	Player,
@@ -110,6 +111,12 @@ public:
 
 	VECTOR GetWorldCenter() const { return worldCenter; }
 
+	/*
+	 * @author Sekion
+	 */
+	void SetLocalCenter(VECTOR _center) { localCenter = _center; }
+
+
 	const char* GetTypeName() const override { return "Sphere"; }
 };
 
@@ -123,7 +130,7 @@ private:
 	VECTOR worldEnd;
 
 	bool hasErrorShown = false;
-	
+
 	float radius;
 
 public:
@@ -161,7 +168,7 @@ public:
 	void Render() override;
 
 	bool CheckHitPoint(VECTOR target);
-	
+
 	const char* GetTypeName() const override { return "Ray"; }
 
 	VECTOR GetOriginWorld() const {

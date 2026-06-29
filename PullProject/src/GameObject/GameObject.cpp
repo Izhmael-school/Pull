@@ -68,14 +68,14 @@ void GameObject::DeleteModel() {
 	MV1DeleteModel(modelHandle);
 }
 
-void GameObject::OnTriggerEnter(Collider* _pOther)
+void GameObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther)
 {
 }
 
-void GameObject::OnTriggerStay(Collider* _pOther)
+void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther)
 {
 }
 
-void GameObject::OnTriggerExit(Collider* _pOther)
+void GameObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther)
 {
 }

@@ -36,7 +36,7 @@ void CameraObject::Update() {
 #if _DEBUG
 	// 引っ張りモード
 	if (mode == CameraMode::Player || mode == CameraMode::Pull) {
-		bool catchGimmick = PlayerManager::GetInstance().GetPlayer()->GetHands()->IsGimmickCatch();
+		bool catchGimmick = PlayerManager::GetInstance().GetPlayer()->GetHands()->IsLeverCatch();
 		if (catchGimmick) {
 			mode = CameraMode::Pull;
 		}
@@ -116,20 +116,6 @@ void CameraObject::DebugUpdate() {
 void CameraObject::PlayerUpdate() {
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	if (!player) return;
-
-	// カメラの回転
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
-	//	pTransform->AddRotation(VLeft, 2);
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
-	//	pTransform->AddRotation(VRight, 2);
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
-	//	pTransform->AddRotation(VUp, 2);
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
-	//	pTransform->AddRotation(VDown, 2);
-	//
-	//// プレイヤーから離れた位置に配置
-	//VECTOR distance = VScale(pTransform->GetForward(), -PLAYER_DISTANCE);
-	//pTransform->SetPosition(VAdd(player->GetPosition(), distance));
 
 	// 入力方向を保持
 	VECTOR moveVec = VZero;

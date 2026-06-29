@@ -12,6 +12,7 @@
 #include "../Enemy/EnemyBase.h"
 #include "../../../Component/Collider/Collider.h"
 #include <DxLib.h>
+#include <ImGui/imgui.h>
 
 PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	: Character(_modelHandle, _pos, _tag)
@@ -21,13 +22,14 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 
 	, PULL_VALUE_MAX(100.0f)
 	, PULL_CAMERA_SHAKE_POWER(20.0f)
-	, PULL_CAMERA_SHAKE_TIME(5.0f) {
-}
+	, PULL_CAMERA_SHAKE_TIME(5.0f) 
+	, JUMP_POWER(30)
+{}
 
 void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
 	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -100), 10);
-	isGravity = false;
+	isGravity = true;
 }
 
 void PlayerCharacter::Update() {
@@ -37,22 +39,21 @@ void PlayerCharacter::Update() {
 	// 移動
 	if (!pHands->IsCatch())
 		Move();
-
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE))
-		AddFallSpeed(-200);
 }
 
 void PlayerCharacter::Render() {
 	Character::Render();
 }
 
-void PlayerCharacter::OnTriggerEnter(Collider* _pOther) {	
+void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	Character::OnTriggerEnter(_pSelf, _pOther);
 }
 
-void PlayerCharacter::OnTriggerStay(Collider* _pOther) {
+void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 }
 
-void PlayerCharacter::OnTriggerExit(Collider* _pOther) {
+void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
+	Character::OnTriggerExit(_pSelf, _pOther);
 }
 
 /*
@@ -90,7 +91,12 @@ void PlayerCharacter::Move() {
 		// 角度を移動方向へ(現在モデルが逆向きなので反対向きにするようにしている)
 		pTransform->SetRotation(VGet(0, MyMath::Rad2Deg(atan2f(-moveDir.x, -moveDir.z)), 0));
 	}
-
+	
+	// ジャンプ
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE)) {
+		AddFallSpeed(-JUMP_POWER);
+		hitGroundingFrag = false;
+	}
 }
 /*
  *	引っこ抜き
@@ -116,6 +122,14 @@ bool PlayerCharacter::Pull() {
 		return true;
 	}
 	return false;
+}
+
+/*
+ *	掴み移動の移動処理
+ *	@param	float 移動速度
+ */
+void PlayerCharacter::CatchMovingMove(float moveSpeed) {
+	pTransform->AddPosition(pTransform->GetForward(), -moveSpeed);
 }
 
 /*

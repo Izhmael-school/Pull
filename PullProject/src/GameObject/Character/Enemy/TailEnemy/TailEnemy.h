@@ -7,6 +7,7 @@ class TailEnemy : public EnemyBase {
 private:
 	std::unique_ptr<ColliderObject> pTailCollider;
 	int tailFrameIndex;
+	int shotFrameIndex;
 public:
 	TailEnemy(int _modelHandle, VECTOR _pos);
 	~TailEnemy() = default;
@@ -26,5 +27,9 @@ public:
 	void WanderingAction() override;
 
 	void TracingAction() override;
+
+	void ThrownAction() override;
+
+	void Catching() override;
 };
 

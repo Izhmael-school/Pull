@@ -29,8 +29,9 @@ private:
 	enum class CatchState {
 		Invalid = -1,
 		None,
-		GimmickCatch,
+		LeverCatch,
 		EnemyCatch,
+		PillerCatch,
 
 		Max,
 	};
@@ -54,17 +55,21 @@ public:
 	// 描画処理
 	void Render() override;
 	// 当たった時
-	void OnTriggerEnter(Collider* _pOther) override;
+	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 	// 当たっているとき
-	void OnTriggerStay(Collider* _pOther) override;
+	void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
 	// 離れた時
-	void OnTriggerExit(Collider* _pOther) override;
+	void OnTriggerExit(Collider* _pSelf, Collider* _pOther) override;
 
 private:
 	/*
 	 *	手の移動処理
 	 */
 	void HandsMove();
+	/*
+	 *	掴み移動処理
+	 */
+	void CatchMoving();
 
 public:
 	/*
@@ -73,10 +78,10 @@ public:
 	 */
 	inline bool IsCatch() { return handsState == HandsState::Catch; }
 	/*
-	 *　ギミックを掴んでいるか否か
+	 *　レバーを掴んでいるか否か
 	 *	@return bool
 	 */
-	inline bool IsGimmickCatch() { return catchState == CatchState::GimmickCatch; }
+	inline bool IsLeverCatch() { return catchState == CatchState::LeverCatch; }
 	/*
 	 *	ウデ伸ばし中か否か
 	 *	@return bool

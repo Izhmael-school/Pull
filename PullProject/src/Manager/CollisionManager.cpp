@@ -2,6 +2,7 @@
 #include "Definition/CommonModule/MyJson.h"
 #include <map>
 
+// 当たり判定関数のマップ
 static const std::unordered_map<std::string, HitFunc> funcMap = {
 	{ "SphereVsSphere",   &CollisionManager::SphereVsSphere },
 	{ "SphereVsAABB",     &CollisionManager::SphereVsAABB },
@@ -14,12 +15,14 @@ static const std::unordered_map<std::string, HitFunc> funcMap = {
 	{ "RayVsCapsule",	  &CollisionManager::RayVsCapsule}
 };
 
+// 押し出し関数のマップ
 static const std::unordered_map<std::string, ResolveFunc> resolveFuncMap = {
 	{ "SphereVsSphere",   &CollisionManager::ResolveSphereSphere },
 	{ "SphereVsAABB",     &CollisionManager::ResolveSphereAABB },
 	{ "CapsuleVsAABB",    &CollisionManager::ResolveCapsuleAABB }
 };
 
+//	コンストラクタ・デストラクタ
 CollisionManager::CollisionManager() {
 	LoadCollisionRules("src/Data/collision_rules.json");
 }
@@ -28,14 +31,13 @@ CollisionManager::~CollisionManager() {
 }
 
 #pragma region 登録
-
+// 登録
 void CollisionManager::Register(Collider* _pCol) {
 	if (!_pCol) return;
 
 	pColliderArray.push_back(_pCol);
 }
-
-
+// 登録済みか確認して登録
 void CollisionManager::CheckRegister(Collider* _pCol) {
 	if (!_pCol) return;
 
@@ -48,6 +50,7 @@ void CollisionManager::CheckRegister(Collider* _pCol) {
 #pragma endregion
 
 #pragma region 削除
+// 登録解除
 void CollisionManager::UnRegister(Collider* _pCol) {
 	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
 	if (itr == pColliderArray.end()) return;
@@ -55,6 +58,7 @@ void CollisionManager::UnRegister(Collider* _pCol) {
 	pColliderArray.erase(itr);
 }
 
+//	すべての登録解除
 void CollisionManager::UnRegisterAll() {
 	pColliderArray.clear();
 
@@ -65,12 +69,13 @@ void CollisionManager::UnRegisterAll() {
 #pragma endregion
 
 #pragma region 更新
-
+//	更新
 void CollisionManager::Update() {
 
 
 	int stage = 0, player = 0, enemy = 0, other = 0;
 
+	// レイヤーごとのコライダー数をカウント
 	for (auto c : pColliderArray) {
 		switch (c->GetLayer()) {
 		case ColliderLayer::Stage: stage++; break;
@@ -82,16 +87,19 @@ void CollisionManager::Update() {
 
 	//printfDx("Stage:%d Player:%d Enemy:%d Other:%d\n", stage, player, enemy, other);
 
+	// コライダーの更新
 	for (auto col : pColliderArray) {
 		if (col && col->IsEnable()) {
 			col->Update();
 		}
 	}
 
+	//	当たり判定の処理
 	int n = pColliderArray.size();
 
 	static int prevSize = -1;
 
+	//	前回のサイズと異なる場合は、prevsとcurrentsをリサイズ
 	if (prevSize != n) {
 		prevs.assign(n, std::vector<bool>(n, false));
 		currents.assign(n, std::vector<bool>(n, false));
@@ -99,6 +107,7 @@ void CollisionManager::Update() {
 		prevSize = n;
 	}
 
+	//	当たり判定の処理
 	for (int i = 0; i < n; i++) {
 		for (int j = i + 1; j < n; j++) {
 
@@ -106,6 +115,8 @@ void CollisionManager::Update() {
 			Collider* b = pColliderArray[j];
 
 			if (!a || !b) continue;
+
+			if (!a->IsEnable() || !b->IsEnable()) continue;
 
 			auto goA = a->GetGameObject();
 			auto goB = b->GetGameObject();
@@ -123,17 +134,20 @@ void CollisionManager::Update() {
 				}
 			}
 
+			// イベントの呼び出し
 			if (!prevs[i][j] && hit) {
-				goA->OnTriggerEnter(b);
-				goB->OnTriggerEnter(a);
+				goA->OnTriggerEnter(a, b);
+				goB->OnTriggerEnter(b, a);
 			}
+			// 前回当たっていて今回も当たっている場合はOnTriggerStay
 			else if (prevs[i][j] && hit) {
-				goA->OnTriggerStay(b);
-				goB->OnTriggerStay(a);
+				goA->OnTriggerStay(a, b);
+				goB->OnTriggerStay(b, a);
 			}
+			//	前回当たっていて今回当たっていない場合はOnTriggerExit
 			else if (prevs[i][j] && !hit) {
-				goA->OnTriggerExit(b);
-				goB->OnTriggerExit(a);
+				goA->OnTriggerExit(a, b);
+				goB->OnTriggerExit(b, a);
 			}
 
 			prevs[i][j] = hit;
@@ -145,50 +159,61 @@ void CollisionManager::Update() {
 #pragma endregion
 
 #pragma region 判定
+//	判定関数の呼び出し
 bool CollisionManager::CheckHit(Collider* a, Collider* b) {
+	//	コライダーの型名を組み合わせてキーを作成
 	std::string key =
 		std::string(a->GetTypeName()) + "_" + b->GetTypeName();
 
+	//	キーに対応する判定関数を検索
 	auto it = hitFuncTable.find(key);
 	if (it != hitFuncTable.end()) {
 		return it->second(a, b);
 	}
 
-	// ★ 逆を試す
+	//	逆順のキーを作成して検索
 	std::string revKey =
 		std::string(b->GetTypeName()) + "_" + a->GetTypeName();
 
+	//	逆順のキーに対応する判定関数を検索
 	auto it2 = hitFuncTable.find(revKey);
 	if (it2 != hitFuncTable.end()) {
-		return it2->second(b, a); // ← 引数も逆にする
+		return it2->second(b, a);
 	}
 
 	return false;
 }
 
 #pragma endregion
-
+//	押し出し関数の呼び出し
 void CollisionManager::Resolve(Collider* a, Collider* b) {
+	// コライダーの型名を組み合わせてキーを作成
 	std::string key =
 		std::string(a->GetTypeName()) + "_" + b->GetTypeName();
 
+	// キーに対応する押し出し関数を検索
 	auto it = resolveFuncTable.find(key);
+	// 逆順のキーを作成して検索
 	if (it == resolveFuncTable.end()) return;
 
+	// 逆順のキーに対応する押し出し関数を検索
 	it->second(a, b);
 }
 
-
+// JSONから当たり判定ルールを読み込む
 void CollisionManager::LoadCollisionRules(const std::string& path) {
+	// JSONファイルを読み込む
 	auto json = MyJson::LoadJsonFile(path);
 
+	// ルールを読み込む
 	for (auto& rule : json["collision_rules"]) {
 
+		//	コライダーの型名を組み合わせてキーを作成
 		std::string key =
 			rule["a"].get<std::string>() + "_" +
 			rule["b"].get<std::string>();
 
-		// ★ 判定関数（hit）
+		//	判定関数の名前を取得して、funcMapから対応する関数ポインタを取得
 		std::string hitName = rule["hit"].get<std::string>();
 		auto it = funcMap.find(hitName);
 		if (it == funcMap.end()) {
@@ -197,7 +222,6 @@ void CollisionManager::LoadCollisionRules(const std::string& path) {
 		}
 		hitFuncTable[key] = it->second;
 
-		// ★ 押し出し関数（resolve）
 		std::string resolveName = rule["resolve"].get<std::string>();
 		if (resolveName != "None") {
 			auto it2 = resolveFuncMap.find(resolveName);
@@ -210,7 +234,6 @@ void CollisionManager::LoadCollisionRules(const std::string& path) {
 
 
 #pragma region 判定処理
-
 bool CollisionManager::SphereVsSphere(Collider* a, Collider* b) {
 	auto sa = static_cast<SphereCollider*>(a);
 	auto sb = static_cast<SphereCollider*>(b);
@@ -286,7 +309,7 @@ bool CollisionManager::CapsuleVsAABB(Collider* a, Collider* b) {
 	VECTOR min = box->GetMin();
 	VECTOR max = box->GetMax();
 
-	const int steps = 5;
+	const int steps = 32;
 
 	for (int i = 0; i <= steps; i++) {
 		float t = (float)i / steps;
@@ -320,101 +343,6 @@ bool CollisionManager::CapsuleVsCapsule(Collider* a, Collider* b) {
 	);
 
 	return dist <= (capA->GetRadius() + capB->GetRadius());
-}
-
-#pragma endregion
-
-void CollisionManager::ResolveSphereSphere(Collider* aCol, Collider* bCol) {
-	auto a = static_cast<SphereCollider*>(aCol);
-	auto b = static_cast<SphereCollider*>(bCol);
-
-	VECTOR pa = a->GetWorldCenter();
-	VECTOR pb = b->GetWorldCenter();
-
-	VECTOR diff = VSub(pa, pb);
-	float dist = sqrtf(VDot(diff, diff));
-	float r = a->GetRadius() + b->GetRadius();
-
-	if (dist == 0.0f) return;
-
-	float push = r - dist;
-	VECTOR dir = VScale(diff, 1.0f / dist);
-
-	VECTOR move = VScale(dir, push * 0.5f);
-
-	a->GetGameObject()->GetTransform()->AddPosition(move);
-	b->GetGameObject()->GetTransform()->AddPosition(VScale(move, -1.0f));
-}
-
-void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
-	auto s = static_cast<SphereCollider*>(sCol);
-	auto box = static_cast<AABBCollider*>(boxCol);
-
-	VECTOR center = s->GetWorldCenter();
-	VECTOR min = box->GetMin();
-	VECTOR max = box->GetMax();
-	float r = s->GetRadius();
-
-	VECTOR closest;
-	closest.x = max(min.x, min(center.x, max.x));
-	closest.y = max(min.y, min(center.y, max.y));
-	closest.z = max(min.z, min(center.z, max.z));
-
-	VECTOR diff = VSub(center, closest);
-	float distSq = VDot(diff, diff);
-
-	if (distSq <= 0.00001f) return;
-
-	float dist = sqrtf(distSq);
-	float push = r - dist;
-
-	VECTOR dir = VScale(diff, 1.0f / dist);
-	VECTOR move = VScale(dir, push);
-
-	s->GetGameObject()->GetTransform()->AddPosition(move);
-}
-
-void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
-	auto cap = static_cast<CapsuleCollider*>(capCol);
-	auto box = static_cast<AABBCollider*>(boxCol);
-
-	VECTOR p1 = cap->GetWorldStart();
-	VECTOR p2 = cap->GetWorldEnd();
-	VECTOR min = box->GetMin();
-	VECTOR max = box->GetMax();
-	float r = cap->GetRadius();
-
-	const int steps = 32;
-	float bestPush = 0.0f;
-	VECTOR bestMove = VGet(0, 0, 0);
-
-	for (int i = 0; i <= steps; i++) {
-		float t = (float)i / steps;
-		VECTOR point = VAdd(p1, VScale(VSub(p2, p1), t));
-
-		VECTOR closest;
-		closest.x = max(min.x, min(point.x, max.x));
-		closest.y = max(min.y, min(point.y, max.y));
-		closest.z = max(min.z, min(point.z, max.z));
-
-		VECTOR diff = VSub(point, closest);
-		float distSq = VDot(diff, diff);
-
-		if (distSq <= r * r) {
-			float dist = sqrtf(distSq);
-			float push = r - dist;
-
-			if (push > bestPush) {
-				bestPush = push;
-				VECTOR dir = (dist > 0.0001f) ? VScale(diff, 1.0f / dist) : VGet(0, 1, 0);
-				bestMove = VScale(dir, push);
-			}
-		}
-	}
-
-	if (bestPush > 0.0f) {
-		cap->GetGameObject()->GetTransform()->AddPosition(bestMove);
-	}
 }
 
 bool CollisionManager::RayVsSphere(Collider* a, Collider* b) {
@@ -490,6 +418,114 @@ bool CollisionManager::RayVsCapsule(Collider* a, Collider* b) {
 
 	return false;
 }
+
+#pragma endregion
+
+#pragma region 押し出し
+void CollisionManager::ResolveSphereSphere(Collider* aCol, Collider* bCol) {
+	auto a = static_cast<SphereCollider*>(aCol);
+	auto b = static_cast<SphereCollider*>(bCol);
+
+	VECTOR pa = a->GetWorldCenter();
+	VECTOR pb = b->GetWorldCenter();
+
+	VECTOR diff = VSub(pa, pb);
+	float dist = sqrtf(VDot(diff, diff));
+	float r = a->GetRadius() + b->GetRadius();
+
+	if (dist == 0.0f) return;
+
+	float push = r - dist;
+	VECTOR dir = VScale(diff, 1.0f / dist);
+
+	VECTOR move = VScale(dir, push * 0.5f);
+
+	a->GetGameObject()->GetTransform()->AddPosition(move);
+	b->GetGameObject()->GetTransform()->AddPosition(VScale(move, -1.0f));
+}
+
+void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
+	auto s = static_cast<SphereCollider*>(sCol);
+	auto box = static_cast<AABBCollider*>(boxCol);
+
+	VECTOR center = s->GetWorldCenter();
+	VECTOR min = box->GetMin();
+	VECTOR max = box->GetMax();
+	float r = s->GetRadius();
+
+	VECTOR closest;
+	closest.x = max(min.x, min(center.x, max.x));
+	closest.y = max(min.y, min(center.y, max.y));
+	closest.z = max(min.z, min(center.z, max.z));
+
+	VECTOR diff = VSub(center, closest);
+	float distSq = VDot(diff, diff);
+
+	if (distSq <= 0.00001f) return;
+
+	float dist = sqrtf(distSq);
+	float push = r - dist;
+
+	VECTOR dir = VScale(diff, 1.0f / dist);
+	VECTOR move = VScale(dir, push);
+
+	s->GetGameObject()->GetTransform()->AddPosition(move);
+}
+
+void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
+	auto cap = static_cast<CapsuleCollider*>(capCol);
+	auto box = static_cast<AABBCollider*>(boxCol);
+
+	VECTOR p1 = cap->GetWorldStart();
+	VECTOR p2 = cap->GetWorldEnd();
+	VECTOR min = box->GetMin();
+	VECTOR max = box->GetMax();
+	float r = cap->GetRadius();
+
+	const int steps = 32;
+	float bestPush = 0.0f;
+	VECTOR bestMove = VGet(0, 0, 0);
+
+	for (int i = 0; i <= steps; i++) {
+		float t = (float)i / steps;
+		VECTOR point = VAdd(p1, VScale(VSub(p2, p1), t));
+
+		VECTOR closest;
+		closest.x = max(min.x, min(point.x, max.x));
+		closest.y = max(min.y, min(point.y, max.y));
+		closest.z = max(min.z, min(point.z, max.z));
+
+		VECTOR diff = VSub(point, closest);
+		float distSq = VDot(diff, diff);
+		if (distSq <= r * r) {
+			float dist = sqrtf(distSq);
+			float push = r - dist;
+
+			VECTOR dir;
+
+			if (fabsf(diff.y) > fabsf(diff.x) && fabsf(diff.y) > fabsf(diff.z)) {
+
+				if (diff.y <= 0) continue;
+
+				dir = VGet(0, 1.0f, 0);
+			}
+			else {
+				dir = (dist > 0.0001f) ? VScale(diff, 1.0f / dist) : VZero;
+			}
+
+			if (push > bestPush) {
+				bestPush = push;
+				bestMove = VScale(dir, push);
+			}
+		}
+	}
+
+	if (bestPush > 0.0f) {
+		cap->GetGameObject()->GetTransform()->AddPosition(bestMove);
+	}
+}
+#pragma endregion
+
 
 
 #pragma region 描画

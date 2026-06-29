@@ -20,6 +20,8 @@ private:
 	void Start() override;
 
 public:
+	void Setup() override;
+
 	void Update() override;
 
 	void Render() override;

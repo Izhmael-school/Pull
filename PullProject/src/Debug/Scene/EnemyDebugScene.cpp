@@ -32,6 +32,7 @@ void EnemyDebugScene::Update(){
 	ColliderObjectManager::GetInstance().Update();
 	CollisionManager::GetInstance().Update();
 	PlayerManager::GetInstance().GetPlayer()->Update();
+	PlayerManager::GetInstance().GetPlayer()->GetHands()->Update();
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// 敵の更新
@@ -94,6 +95,7 @@ void EnemyDebugScene::Render(){
 #endif
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
+	player->GetHands()->Render();
 	DrawSphere3D(player->GetPosition(), 100, 16, 0xff0000, 0xff0000, TRUE);
 
 	// 描画
@@ -103,9 +105,9 @@ void EnemyDebugScene::Render(){
 }
 
 void EnemyDebugScene::Setup(){
-	EnemyManager::GetInstance().UseEnemy(Walker,VGet(0, 400, 0));
-	EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
-	EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
+	//EnemyManager::GetInstance().UseEnemy(Walker,VGet(0, 400, 0));
+	//EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
+	//EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
 	EnemyManager::GetInstance().UseEnemy(Tail,VGet(1000, 400, -1000));
 }
 

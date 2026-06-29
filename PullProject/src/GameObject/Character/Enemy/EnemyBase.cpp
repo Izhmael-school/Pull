@@ -34,10 +34,23 @@ void EnemyBase::Start() {
 
 	isGravity = false;
 
-
 	// モデルの最小点と最大点を取得
-	VECTOR max = VScale(MV1GetMeshMaxPosition(modelHandle, 0),100);
-	VECTOR min = VScale(MV1GetMeshMinPosition(modelHandle, 0),100);
+	VECTOR maxBodyPos = VScale(MV1GetMeshMaxPosition(modelHandle, 0),100);
+	VECTOR minBodyPos = VScale(MV1GetMeshMinPosition(modelHandle, 0),100);
+	VECTOR maxLeg1 = VScale(MV1GetMeshMaxPosition(modelHandle, 1), 100);
+	VECTOR minLeg1 = VScale(MV1GetMeshMinPosition(modelHandle, 1), 100);
+	VECTOR maxLeg2 = VScale(MV1GetMeshMaxPosition(modelHandle, 2), 100);
+	VECTOR minLeg2 = VScale(MV1GetMeshMinPosition(modelHandle, 2), 100);
+
+	VECTOR min;
+	min.x = std::min(minBodyPos.x, std::min(minLeg1.x, minLeg2.x));
+	min.y = std::min(minBodyPos.y, std::min(minLeg1.y, minLeg2.y));
+	min.z = std::min(minBodyPos.z, std::min(minLeg1.z, minLeg2.z));
+
+	VECTOR max;
+	max.x = std::max(maxBodyPos.x, std::max(maxLeg1.x, maxLeg2.x));
+	max.y = std::max(maxBodyPos.y, std::max(maxLeg1.y, maxLeg2.y));
+	max.z = std::max(maxBodyPos.z, std::max(maxLeg1.z, maxLeg2.z));
 
 	// 当たり判定
 	pCollider = std::make_unique<AABBCollider>(this,min,max);
@@ -343,13 +356,13 @@ void EnemyBase::LoopAnim(std::string _animName) {
 	GetAnimator()->GetAnimation(_animName)->isLoop = true;
 }
 
-void EnemyBase::OnTriggerEnter(Collider* _pOther) {
+void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (GetCurrentCaughtState() != CaughtState::Throwing) return;
 	// 何かしらに当たったら
 	HitObject();
 }
 
-void EnemyBase::OnTriggerStay(Collider* _pOther) {
+void EnemyBase::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	Tag tag = _pOther->GetGameObject()->GetTag();
 	if (tag == Player) {
 		ChangeNextState(Attack);
@@ -371,18 +384,16 @@ void EnemyBase::ThrownAction() {
 void EnemyBase::CatchStart() {
 	CaughtObject::CatchStart();
 
-	pAnimator->Play("Walk", 2.0f);
-	GetTransform()->SetRotation(VScale(VForward, 180.0f));
 	ChangeNextState(OutofControl);
 }
 
 void EnemyBase::Catching() {
+	pAnimator->Play("Walk", 2.0f);
 	ChangeNextState(OutofControl);
 }
 
 void EnemyBase::ThrowStart() {
 	CaughtObject::ThrowStart();
-	GetTransform()->SetRotation(VScale(VForward, 0.0f));
 	ChangeNextState(OutofControl);
 }
 

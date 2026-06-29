@@ -12,6 +12,7 @@
 
 class StageCollisionGenerator {
 public:
+	//	UnityのJSONデータから当たり判定を生成する
 	void GenerateFromUnity(const std::string& path, CollisionManager& manager);
 };
 

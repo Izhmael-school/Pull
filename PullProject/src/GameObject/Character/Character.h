@@ -21,7 +21,8 @@ protected:
 	bool isGravity;									// 重力を掛けるかどうか
 	float fallSpeed;								// 落下速度
 	std::unique_ptr<Collider> pGroundingCollider;	// 接地判定用コライダー
-										 
+	bool hitGroundingFrag;
+	
 	const float FALL_SPEED_MAX;						// 最大落下速度
 	const float GRAVITY_ACCELERATION;				// 重力加速度
 
@@ -38,6 +39,10 @@ public:
 	virtual void Render() override;
 
 	virtual void Setup() override;
+	
+	virtual void OnTriggerEnter(Collider* _pSelf, Collider* _pOther);
+
+	virtual void OnTriggerExit(Collider* _pSelf, Collider* _pOther);
 
 private:
 	/*

@@ -14,3 +14,4 @@ constexpr VECTOR VLeft = { -1.0f, 0.0f, 0.0f };
 constexpr VECTOR VDown = { 0.0f, -1.0f, 0.0f };
 constexpr VECTOR VBack = { 0.0f, 0.0f, -1.0f };
 constexpr VECTOR VOne = { 1.0f, 1.0f, 1.0f };
+constexpr VECTOR VMinus = { -1.0f, -1.0f, -1.0f };
