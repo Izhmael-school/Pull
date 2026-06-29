@@ -74,7 +74,7 @@ void ColliderObject::Render(){
 
 void ColliderObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (enterEvent)
-		enterEvent(_pOther);
+		enterEvent( _pOther);
 }
 
 void ColliderObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {

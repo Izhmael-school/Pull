@@ -27,5 +27,9 @@ public:
 	void WanderingAction() override;
 
 	void TracingAction() override;
+
+	void ThrownAction() override;
+
+	void Catching() override;
 };
 
