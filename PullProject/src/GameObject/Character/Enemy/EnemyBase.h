@@ -23,7 +23,7 @@ protected:
 		float raySpan = 0.1f;		// レイが更新される間隔
 		float rayTime = raySpan;	// レイが更新される時間
 	};
-private:
+protected:
 	struct Point {
 		VECTOR position;
 	};
@@ -140,19 +140,19 @@ public:
 	 */
 	void LoopAnim(std::string _animName);
 
-	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
-	void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
+	virtual void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
+	virtual void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
 
 public:
 	/*
 	 * @brief 捕まった
 	 */
-	void CaughtAction();
+	virtual void CaughtAction();
 
 	/*
 	 * @brief 投げられた
 	 */
-	void ThrownAction();
+	virtual void ThrownAction();
 
 protected:
 	/*
