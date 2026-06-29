@@ -73,6 +73,12 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy\Walker">
       <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{08e40538-6e4f-49c5-adf1-e2407aa482d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ImGui\backends">
+      <UniqueIdentifier>{99dd1136-3f38-4636-88d8-29405d479692}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -233,6 +239,45 @@
     </ClCompile>
     <ClCompile Include="src\GameObject\Stage\Gimmick\BomBreakWall.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Camera\EventCameraMovement.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\HookShot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\ImGuiManager.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\backends\imgui_impl_dx11.cpp">
+      <Filter>ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\backends\imgui_impl_win32.cpp">
+      <Filter>ImGui\backends</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -434,6 +479,48 @@
     <ClInclude Include="src\GameObject\Stage\Gimmick\BomBreakWall.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\HookShot.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\ImGuiManager.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\backends\imgui_impl_dx11.h">
+      <Filter>ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\backends\imgui_impl_win32.h">
+      <Filter>ImGui\backends</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">
@@ -443,5 +530,7 @@
     <None Include="src\Data\GameObjectModelData.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
+    <None Include="src\Data\collision_rules.json" />
+    <None Include="src\Data\EventCamera.json" />
   </ItemGroup>
 </Project>

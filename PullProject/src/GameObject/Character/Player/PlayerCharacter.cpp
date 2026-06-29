@@ -12,6 +12,7 @@
 #include "../Enemy/EnemyBase.h"
 #include "../../../Component/Collider/Collider.h"
 #include <DxLib.h>
+#include <ImGui/imgui.h>
 
 PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	: Character(_modelHandle, _pos, _tag)

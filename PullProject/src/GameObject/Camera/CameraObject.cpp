@@ -117,20 +117,6 @@ void CameraObject::PlayerUpdate() {
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	if (!player) return;
 
-	// カメラの回転
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
-	//	pTransform->AddRotation(VLeft, 2);
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
-	//	pTransform->AddRotation(VRight, 2);
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
-	//	pTransform->AddRotation(VUp, 2);
-	//if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
-	//	pTransform->AddRotation(VDown, 2);
-	//
-	//// プレイヤーから離れた位置に配置
-	//VECTOR distance = VScale(pTransform->GetForward(), -PLAYER_DISTANCE);
-	//pTransform->SetPosition(VAdd(player->GetPosition(), distance));
-
 	// 入力方向を保持
 	VECTOR moveVec = VZero;
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
