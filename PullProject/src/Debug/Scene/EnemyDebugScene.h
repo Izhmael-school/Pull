@@ -17,9 +17,9 @@ class EnemyDebugScene : public SceneBase {
 private:
 	StageCollisionGenerator generator;
 
-	EffectManager effectManager;
+	//EffectManager effectManager;
 
-	EffectResourceManager effectResourceManager;
+	//EffectResourceManager effectResourceManager;
 public:
 	EnemyDebugScene();
 	~EnemyDebugScene() = default;
