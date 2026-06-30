@@ -13,7 +13,6 @@
 class StageDebugScene : public SceneBase {
 
 private:
-	std::unique_ptr<WalkEnemy> enemy;
 
 	class AABBCollider* AABB;
 	class CapsuleCollider* capsule;
@@ -32,7 +31,7 @@ private:
 
 public:
 	void Update() override;
-
+	void Setup()override;
 	void Render() override;
 
 };

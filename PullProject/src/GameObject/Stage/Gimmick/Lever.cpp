@@ -6,6 +6,7 @@
 #include "Lever.h"
 #include "Manager/Stage/GimmickManager.h"
 #include "../../../Component\Collider/Collider.h"
+#include "Manager/CollisionManager.h"
 
  /*
   *  コンストラクタ
@@ -64,6 +65,9 @@ void Lever::Render() {
  */
 void Lever::Execute() {
 	GimmickObject::Execute();
+	if (isActivated) {
+		pCollider->SetEnable(false);
+	}
 }
 
 /*
@@ -75,13 +79,9 @@ void Lever::Activate() {
 	// 使用状態に変更
 	isActivated = true;
 	
-	// レバーを使用不可にする
-	SetActive(false);
-	// コライダーを消す
-	if (pCollider) {
-		pCollider->SetEnable(false);
-	}
-
+	// 当たり判定削除
+	CollisionManager::GetInstance().UnRegister(pCollider.get());
+	
 	// 起動したレバーのIDを渡す
 	GimmickManager::GetInstance().ActivateLever(triggerID);
 
