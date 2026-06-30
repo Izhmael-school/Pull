@@ -25,7 +25,7 @@ BomBreakWall::BomBreakWall(int modelHandle, VECTOR pos, VECTOR rota)
 void BomBreakWall::Setup() {
 	GimmickObject::Setup();
 	// コライダーを付与
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-300, -300, -500), VGet(300, 300, 500));
+	pCollider = std::make_unique<AABBCollider>(this, VGet(-300, -300, -200), VGet(300, 300, 200));
 }
 
 /*
