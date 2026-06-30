@@ -25,22 +25,6 @@ void StageDebugScene::Start() {
 
 }
 
-void StageDebugScene::Update() {
-	// カメラの更新
-	CameraManager::GetInstance().GetCamera()->Update();
-	// プレイヤーの更新
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->Update();
-	player->GetHands()->Update();
-	// 敵の更新
-	EnemyManager::GetInstance().Update();
-	// ギミックの更新
-	GimmickObjectManager::GetInstance().Update();
-	// ===== 当たり判定 =====
-	CollisionManager::GetInstance().Update();
-	ColliderObjectManager::GetInstance().Update();
-}
-
 void StageDebugScene::Setup() {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -72,6 +56,24 @@ void StageDebugScene::Setup() {
 	// ====ギミックの更新====
 	GimmickObjectManager::GetInstance().Update();
 }
+
+
+void StageDebugScene::Update() {
+	// カメラの更新
+	CameraManager::GetInstance().GetCamera()->Update();
+	// プレイヤーの更新
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Update();
+	player->GetHands()->Update();
+	// 敵の更新
+	EnemyManager::GetInstance().Update();
+	// ギミックの更新
+	GimmickObjectManager::GetInstance().Update();
+	// ===== 当たり判定 =====
+	CollisionManager::GetInstance().Update();
+	ColliderObjectManager::GetInstance().Update();
+}
+
 
 void StageDebugScene::Render() {
 
