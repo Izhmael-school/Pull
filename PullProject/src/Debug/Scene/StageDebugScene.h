@@ -31,7 +31,7 @@ private:
 
 public:
 	void Update() override;
-
+	void Setup()override;
 	void Render() override;
 
 };

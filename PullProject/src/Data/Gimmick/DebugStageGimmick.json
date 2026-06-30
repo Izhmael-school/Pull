@@ -1,10 +1,10 @@
 {
-  "Lever": [
+  "Levers": [
     {
       "Model": "res/Model/Gimmick/Lever.mv1",
       "LeverID": 1,
       "Position": "LeverPoint",
-      "Rotarion": 0.0
+      "Rotation": 0.0
     }
   ],
 
@@ -25,19 +25,19 @@
     {
       "Type": "HookShot",
       "Model": "res/Model/Gimmick/HookShot/HookShot.mv1",
-      "Position": "HookShotl_SP0",
+      "Position": "HookShot_SP0",
       "Rotation": 0.0
     },
     {
       "Type": "HookShot",
       "Model": "res/Model/Gimmick/HookShot/HookShot.mv1",
-      "Position": "HookShotl_SP1",
+      "Position": "HookShot_SP1",
       "Rotation": 0.0
     },
     {
       "Type": "HookShot",
       "Model": "res/Model/Gimmick/HookShot/HookShot.mv1",
-      "Position": "HookShotl_SP2",
+      "Position": "HookShot_SP2",
       "Rotation": 0.0
     }
   ]
