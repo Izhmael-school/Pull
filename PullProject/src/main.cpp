@@ -1,5 +1,6 @@
 #include <ioStream>
 #include <DxLib.h>
+#include "EffekseerForDXLib.h"
 #include <random>
 #include "Manager/SceneManager.h"
 #include "Manager/InputManager.h"
@@ -47,10 +48,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (DxLib_Init() == -1)
 		return 0;
 
-	/*if (Effekseer_Init(8000) == -1) {
+	if (Effekseer_Init(8000) == -1) {
 		DxLib_End();
 		return 0;
-	}*/
+	}
 
 	// 描画する先を設定する 裏画面に変更する
 	SetDrawScreen(DX_SCREEN_BACK);
@@ -133,7 +134,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 
 	// DxLibの終了
-	//Effkseer_End();
+	Effkseer_End();
 	DxLib_End();
 
 	return 0;
