@@ -21,8 +21,8 @@
 #include "Generator/StageCollisionGenerator.h"
 
 EnemyDebugScene::EnemyDebugScene() 
-	:effectManager(effectResourceManager)
-	,effectResourceManager()
+	//:effectManager(effectResourceManager)
+	//,effectResourceManager()
 { Start(); }
 
 void EnemyDebugScene::Start()
@@ -118,7 +118,7 @@ void EnemyDebugScene::Setup(){
 	//EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
 	EnemyManager::GetInstance().UseEnemy(Tail,VGet(1000, 400, -1000));
 
-	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
+	//effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
 }
 
 void EnemyDebugScene::Cleanup(){
