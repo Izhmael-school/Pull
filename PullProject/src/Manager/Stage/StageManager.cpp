@@ -27,10 +27,18 @@ void StageManager::Initialize() {
 void StageManager::LoadStage(int stageID) {
 	GimmickObjectManager::GetInstance().Clear();
 	//ステージ設定JSONのパス生成
-	std::string stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
+	if (stageID == 111) {
+		stageFile = "src/Data/Gimmick/DebugStageGimmick.json";
+		// ステージモデルロード
+		stageModel = ModelManager::GetInstance().Load("res/Model/Stage/DebugStage/DebugStage.mv1");
 
-	// ステージモデルロード
-	int stageModel =ModelManager::GetInstance().Load("res/Model/Stage/Stage4/Stage_4.mv1");
+	}
+	else {
+		stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
+		// ステージモデルロード
+		stageModel =ModelManager::GetInstance().Load("res/Model/Stage/Stage4/Stage_4.mv1");
+	}
+
 
 	// モデルの複製
 	int duplicate = MV1DuplicateModel(stageModel);

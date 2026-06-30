@@ -27,7 +27,7 @@ void StageDebugScene::Start() {
 
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(4);
+	StageManager::GetInstance().LoadStage(111);
 
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer();
