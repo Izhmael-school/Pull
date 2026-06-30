@@ -5,6 +5,7 @@
 #include "BreakWall.h"
 #include "Manager/Stage/GimmickManager.h"
 #include "../../../Component\Collider/Collider.h"
+#include "Manager/CollisionManager.h"
 
 namespace {
 	// ƒŒƒo[‚Ì¶¬ˆÊ’u
@@ -104,7 +105,8 @@ void BreakWall::OpacityChange() {
 	// 0ˆÈ‰º‘Îô
 	if (opacity <= 0.0f) {
 		opacity = 0.0f;
-
+		// “–‚½‚è”»’èíœ
+		CollisionManager::GetInstance().UnRegister(pCollider.get());
 		// Á‚¦‚½”»’è‚É‚·‚é
 		isFading = false;
 		isBroken = true;

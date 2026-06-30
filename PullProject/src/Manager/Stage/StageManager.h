@@ -11,6 +11,7 @@
 #include "../../GameObject/Stage/StageState.h"
 #include "../../Manager/ModelManager.h"
 #include "../../Data/Gimmick/StageLoader.h"
+#include "../../GameObject/Stage/CharacterSpawnPos.h"
 
 #include <memory>
 #include <string>
@@ -27,7 +28,10 @@ class StageManager :public Singleton<StageManager> {
 private:
 	std::unique_ptr<StageBase> loadedStage;		// 読み込み済みのステージデータ
 	StageState stageState;						// ステージの状態保持
+	CharacterSpawnPos characterSpawnPos;		// キャラクターの生成位置
 
+	std::string stageFile;
+	int stageModel;
 private:
 	/*
 	 *	コンストラクタ
@@ -102,6 +106,15 @@ public:
 	 */
 	StageBase* GetCurrentStage() const { return loadedStage.get(); }
 
+	/*
+	 *	敵の生成位置配列の取得
+	 */
+	const std::vector<VECTOR>& GetEnemySpawnPositions() const { return characterSpawnPos.GetEnemyPositions(); }
+
+	/*
+	 *	プレイヤーの生成位置の取得
+	 */
+	const VECTOR& GetPlayerSpawnPosition() const { return characterSpawnPos.GetPlayerPositions(); }
 };
 
 

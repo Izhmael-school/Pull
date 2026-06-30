@@ -3,6 +3,9 @@
  * @author Sekino
  */
 #pragma once
+#ifndef _MANAGERBASE_H_
+#define _MANAGERBASE_H_
+
 class ManagerBase{
 
 public:
@@ -29,4 +32,4 @@ public:
 	/// </summary>
 	virtual void Cleanup();
 };
-
+#endif

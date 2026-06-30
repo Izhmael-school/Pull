@@ -19,7 +19,8 @@ static const std::unordered_map<std::string, HitFunc> funcMap = {
 static const std::unordered_map<std::string, ResolveFunc> resolveFuncMap = {
 	{ "SphereVsSphere",   &CollisionManager::ResolveSphereSphere },
 	{ "SphereVsAABB",     &CollisionManager::ResolveSphereAABB },
-	{ "CapsuleVsAABB",    &CollisionManager::ResolveCapsuleAABB }
+	{ "CapsuleVsAABB",    &CollisionManager::ResolveCapsuleAABB },
+	{ "AABBVsAABB" ,	  &CollisionManager::ResolveAABBVsAABB}
 };
 
 //	コンストラクタ・デストラクタ
@@ -453,6 +454,9 @@ void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
 	VECTOR max = box->GetMax();
 	float r = s->GetRadius();
 
+	// 床の隙間吸収
+	min.y -= 0.02f;
+
 	VECTOR closest;
 	closest.x = max(min.x, min(center.x, max.x));
 	closest.y = max(min.y, min(center.y, max.y));
@@ -461,14 +465,23 @@ void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
 	VECTOR diff = VSub(center, closest);
 	float distSq = VDot(diff, diff);
 
-	if (distSq <= 0.00001f) return;
+	if (distSq >= r * r) return;
 
 	float dist = sqrtf(distSq);
 	float push = r - dist;
 
-	VECTOR dir = VScale(diff, 1.0f / dist);
-	VECTOR move = VScale(dir, push);
+	VECTOR dir;
 
+	if (dist < 0.0001f) {
+		// 深いめり込み → 上方向に押し出す
+		dir = VGet(0, 1, 0);
+	}
+	else {
+		// 通常 → 上方向に限定
+		dir = VGet(0, 1, 0);
+	}
+
+	VECTOR move = VScale(dir, push);
 	s->GetGameObject()->GetTransform()->AddPosition(move);
 }
 
@@ -476,54 +489,133 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	auto cap = static_cast<CapsuleCollider*>(capCol);
 	auto box = static_cast<AABBCollider*>(boxCol);
 
+	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::Gimick) {
+		return;
+	}
+
 	VECTOR p1 = cap->GetWorldStart();
 	VECTOR p2 = cap->GetWorldEnd();
-	VECTOR min = box->GetMin();
-	VECTOR max = box->GetMax();
-	float r = cap->GetRadius();
+	VECTOR bmin = box->GetMin();
+	VECTOR bmax = box->GetMax();
+	float radius = cap->GetRadius();
 
-	const int steps = 32;
-	float bestPush = 0.0f;
-	VECTOR bestMove = VGet(0, 0, 0);
+	// 線分上の最近点を解析的に求める
+	VECTOR seg = VSub(p2, p1);
+	float segLenSq = VDot(seg, seg);
 
-	for (int i = 0; i <= steps; i++) {
-		float t = (float)i / steps;
-		VECTOR point = VAdd(p1, VScale(VSub(p2, p1), t));
+	VECTOR boxCenter = VScale(VAdd(bmin, bmax), 0.5f);
 
-		VECTOR closest;
-		closest.x = max(min.x, min(point.x, max.x));
-		closest.y = max(min.y, min(point.y, max.y));
-		closest.z = max(min.z, min(point.z, max.z));
+	float t = VDot(VSub(boxCenter, p1), seg) / segLenSq;
+	t = max(0.0f, min(1.0f, t));
 
-		VECTOR diff = VSub(point, closest);
-		float distSq = VDot(diff, diff);
-		if (distSq <= r * r) {
-			float dist = sqrtf(distSq);
-			float push = r - dist;
+	VECTOR point = VAdd(p1, VScale(seg, t));
 
-			VECTOR dir;
+	// AABB 内の最近点
+	VECTOR closest;
+	closest.x = max(bmin.x, min(point.x, bmax.x));
+	closest.y = max(bmin.y, min(point.y, bmax.y));
+	closest.z = max(bmin.z, min(point.z, bmax.z));
 
-			if (fabsf(diff.y) > fabsf(diff.x) && fabsf(diff.y) > fabsf(diff.z)) {
+	VECTOR diff = VSub(point, closest);
+	float distSq = VDot(diff, diff);
 
-				if (diff.y <= 0) continue;
+	if (distSq >= radius * radius) return;
 
-				dir = VGet(0, 1.0f, 0);
-			}
-			else {
-				dir = (dist > 0.0001f) ? VScale(diff, 1.0f / dist) : VZero;
-			}
+	float penetrationDist = sqrtf(distSq);
+	float push = radius - penetrationDist;
 
-			if (push > bestPush) {
-				bestPush = push;
-				bestMove = VScale(dir, push);
-			}
-		}
+	float diffLen = VSize(diff);
+
+	VECTOR dir;
+
+	if (diffLen < 0.0001f) {
+		// 深いめり込み → AABB の中心から押し出す
+		dir = VNorm(VSub(point, boxCenter));
+	}
+	else {
+		// 通常 → 最近点方向へ押し出す（正しい法線）
+		dir = VNorm(diff);
 	}
 
-	if (bestPush > 0.0f) {
-		cap->GetGameObject()->GetTransform()->AddPosition(bestMove);
-	}
+	VECTOR move = VScale(dir, push);
+
+	cap->GetGameObject()->GetTransform()->AddPosition(move);
 }
+
+void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
+	auto a = static_cast<AABBCollider*>(aCol);
+	auto b = static_cast<AABBCollider*>(bCol);
+
+	if (a->GetLayer() == ColliderLayer::Stage && b->GetLayer() == ColliderLayer::Stage) {
+		return;
+	}
+
+	if (a->GetLayer() == ColliderLayer::Gimick || b->GetLayer() == ColliderLayer::Gimick) {
+		return;
+	}
+
+	VECTOR aMin = a->GetMin();
+	VECTOR aMax = a->GetMax();
+	VECTOR bMin = b->GetMin();
+	VECTOR bMax = b->GetMax();
+
+	// まず重なっているかチェック
+	bool overlapX = (aMin.x <= bMax.x) && (aMax.x >= bMin.x);
+	bool overlapY = (aMin.y <= bMax.y) && (aMax.y >= bMin.y);
+	bool overlapZ = (aMin.z <= bMax.z) && (aMax.z >= bMin.z);
+
+	if (!(overlapX && overlapY && overlapZ)) {
+		return; // 重なっていない
+	}
+
+	// 各軸の押し出し量を計算
+	float pushX1 = bMax.x - aMin.x; // A を +X に押す量
+	float pushX2 = aMax.x - bMin.x; // A を -X に押す量
+
+	float pushY1 = bMax.y - aMin.y;
+	float pushY2 = aMax.y - bMin.y;
+
+	float pushZ1 = bMax.z - aMin.z;
+	float pushZ2 = aMax.z - bMin.z;
+
+	// 最小押し出し量を選ぶ
+	float minPush = FLT_MAX;
+	VECTOR move = { 0,0,0 };
+
+	// X軸
+	if (pushX1 > 0 && pushX1 < minPush) {
+		minPush = pushX1;
+		move = { minPush, 0, 0 };
+	}
+	if (pushX2 > 0 && pushX2 < minPush) {
+		minPush = pushX2;
+		move = { -minPush, 0, 0 };
+	}
+
+	// Y軸
+	if (pushY1 > 0 && pushY1 < minPush) {
+		minPush = pushY1;
+		move = { 0, minPush, 0 };
+	}
+	if (pushY2 > 0 && pushY2 < minPush) {
+		minPush = pushY2;
+		move = { 0, -minPush, 0 };
+	}
+
+	// Z軸
+	if (pushZ1 > 0 && pushZ1 < minPush) {
+		minPush = pushZ1;
+		move = { 0, 0, minPush };
+	}
+	if (pushZ2 > 0 && pushZ2 < minPush) {
+		minPush = pushZ2;
+		move = { 0, 0, -minPush };
+	}
+
+	// A の Transform を押し出す
+	a->GetGameObject()->GetTransform()->AddPosition(move);
+}
+
 #pragma endregion
 
 

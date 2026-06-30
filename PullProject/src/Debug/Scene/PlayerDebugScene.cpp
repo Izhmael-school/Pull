@@ -22,25 +22,27 @@
 PlayerDebugScene::PlayerDebugScene() { Start(); }
 
 void PlayerDebugScene::Start() {
+
+
+}
+
+void PlayerDebugScene::Setup() {
+
 	CollisionManager::GetInstance().Clear();
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer();
-	
+
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
 	StageManager::GetInstance().LoadStage(4);
-	
+
 	// 敵生成
 	EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
 
 	// ===== ギミックの更新 ====
 	GimmickObjectManager::GetInstance().Update();
-
-}
-
-void PlayerDebugScene::Setup() {
 	StageCollisionGenerator generator;
 	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }

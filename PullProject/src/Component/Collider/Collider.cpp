@@ -13,12 +13,12 @@ Collider::Collider(GameObject* _pObj)
 	: isEnable(true)
 	, pGameObject(_pObj)
 	, layer(ColliderLayer::Default) {
+
 	CollisionManager::GetInstance().Register(this);
 }
 
 // デストラクタ
 Collider::~Collider() {
-	CollisionManager::GetInstance().UnRegister(this);
 }
 
 #pragma endregion

@@ -17,39 +17,12 @@
 #include "../../Manager/Stage/GimmickObjectManager.h"
 #include "../../Manager/PlayerManager.h"
 #include "../../Manager/EnemyManager.h"
-
+#include "Manager/ColliderObjectManager.h"
 
 StageDebugScene::StageDebugScene() { Start(); }
 
 void StageDebugScene::Start() {
-	// カメラ生成
-	CameraManager::GetInstance().CreateCamera();
 
-	// ステージの初期化処理
-	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(4);
-
-	// プレイヤー生成
-	PlayerManager::GetInstance().CreatePlayer();
-	// 敵生成
-	EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
-
-	// コライダー
-	AABB = new AABBCollider(nullptr,
-		VGet(-1820, 0, -2450),
-		VGet(1440, 310, 1400));
-
-	CollisionManager::GetInstance().Register(AABB);
-	
-	capsule = new CapsuleCollider(nullptr,
-		VGet(0, 361, 0),   // start
-		VGet(0, 500, 0),   // end
-		30.0f,
-		VGet(0, 0, 0));
-	CollisionManager::GetInstance().Register(capsule);
-
-	// ====ギミックの更新====
-	GimmickObjectManager::GetInstance().Update();
 }
 
 void StageDebugScene::Update() {
@@ -63,48 +36,41 @@ void StageDebugScene::Update() {
 	EnemyManager::GetInstance().Update();
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
-
-
-	VECTOR move = VGet(0, 0, 0);
-
-	// 上（8）
-	if (CheckHitKey(KEY_INPUT_8))
-		move.y += 2.0f;
-
-	// 下（0）
-	if (CheckHitKey(KEY_INPUT_0))
-		move.y -= 2.0f;
-
-	// 右（9）
-	if (CheckHitKey(KEY_INPUT_9))
-		move.x += 2.0f;
-
-	// 左（7）
-	if (CheckHitKey(KEY_INPUT_7))
-		move.x -= 2.0f;
-
-	// 前後（追加すると便利）
-	if (CheckHitKey(KEY_INPUT_6))
-		move.z += 2.0f;
-
-	if (CheckHitKey(KEY_INPUT_4))
-		move.z -= 2.0f;
-
-	capsule->Move(move);
-
-	// 上（8）
-	if (CheckHitKey(KEY_INPUT_C)) {
-		GimmickManager::GetInstance().ActivateLever(2);
-	}
-
-	// ===== 更新（重要）=====
-	capsule->Update();
-	AABB->Update();
-
-
 	// ===== 当たり判定 =====
 	CollisionManager::GetInstance().Update();
+	ColliderObjectManager::GetInstance().Update();
+}
 
+void StageDebugScene::Setup() {
+	// カメラ生成
+	CameraManager::GetInstance().CreateCamera();
+
+	// ステージの初期化処理
+	StageManager::GetInstance().Initialize();
+	StageManager::GetInstance().LoadStage(111);
+
+	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
+	// プレイヤー生成
+	PlayerManager::GetInstance().CreatePlayer();
+	// 敵生成
+	EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
+
+	// コライダー
+	AABB = new AABBCollider(nullptr,
+		VGet(-1820, 0, -2450),
+		VGet(1440, 310, 1400));
+
+	CollisionManager::GetInstance().Register(AABB);
+
+	capsule = new CapsuleCollider(nullptr,
+		VGet(0, 361, 0),   // start
+		VGet(0, 500, 0),   // end
+		30.0f,
+		VGet(0, 0, 0));
+	CollisionManager::GetInstance().Register(capsule);
+
+	// ====ギミックの更新====
+	GimmickObjectManager::GetInstance().Update();
 }
 
 void StageDebugScene::Render() {

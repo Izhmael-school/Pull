@@ -7,12 +7,19 @@
 #include <memory>
 #include "GameObject/GameObject.h"
 #include "GameObject/Character/Enemy/WalkEnemy/WalkEnemy.h"
-
+#include "Generator/StageCollisionGenerator.h"
+#include "Manager/EffectManager.h"
+#include "Manager/EffectResourceManager.h"
 
 class PlayerCharacrerPtr;
 
 class EnemyDebugScene : public SceneBase {
+private:
+	StageCollisionGenerator generator;
 
+	EffectManager effectManager;
+
+	EffectResourceManager effectResourceManager;
 public:
 	EnemyDebugScene();
 	~EnemyDebugScene() = default;
