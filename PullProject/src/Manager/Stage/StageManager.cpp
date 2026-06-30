@@ -47,6 +47,9 @@ void StageManager::LoadStage(int stageID) {
 	// 現在のステージの実体にモデルを登録
 	loadedStage->SetModelHandle(duplicate);
 
+
+	// 生成位置の読み込み
+	characterSpawnPos.Load(duplicate);
 	// ギミック生成
 	StageLoader::Load(stageFile,duplicate );
 
