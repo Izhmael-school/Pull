@@ -49,6 +49,7 @@ void StageDebugScene::Setup() {
 	StageManager::GetInstance().Initialize();
 	StageManager::GetInstance().LoadStage(111);
 
+	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer();
 	// 敵生成

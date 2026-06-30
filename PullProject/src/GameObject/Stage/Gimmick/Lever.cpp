@@ -65,9 +65,6 @@ void Lever::Render() {
  */
 void Lever::Execute() {
 	GimmickObject::Execute();
-	if (isActivated) {
-		pCollider->SetEnable(false);
-	}
 }
 
 /*

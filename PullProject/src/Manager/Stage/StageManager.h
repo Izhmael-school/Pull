@@ -29,6 +29,7 @@ private:
 	std::unique_ptr<StageBase> loadedStage;		// 読み込み済みのステージデータ
 	StageState stageState;						// ステージの状態保持
 	CharacterSpawnPos characterSpawnPos;		// キャラクターの生成位置
+
 	std::string stageFile;
 	int stageModel;
 private:
