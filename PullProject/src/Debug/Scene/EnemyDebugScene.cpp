@@ -15,16 +15,23 @@
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/ColliderObjectManager.h"
+#include "Manager/CollisionManager.h"
 #include "Manager/PlayerManager.h"
 #include "GameObject/Missile/Missile.h"
 #include "Generator/StageCollisionGenerator.h"
 
-EnemyDebugScene::EnemyDebugScene() { Start(); }
+EnemyDebugScene::EnemyDebugScene() 
+	:effectManager(effectResourceManager)
+	,effectResourceManager()
+{ Start(); }
 
 void EnemyDebugScene::Start()
 {
 	PlayerManager::GetInstance().CreatePlayer();
-	PlayerManager::GetInstance().GetPlayer()->GetTransform()->AddPosition(VScale(VUp, 600));
+	auto p = PlayerManager::GetInstance().GetPlayer();
+	p->GetTransform()->SetPosition(VGet(200,200,-600));
+
+	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
 void EnemyDebugScene::Update(){
@@ -102,6 +109,7 @@ void EnemyDebugScene::Render(){
 	StageManager::GetInstance().Render();
 
 	EnemyManager::GetInstance().Render();
+	CollisionManager::GetInstance().Render();
 }
 
 void EnemyDebugScene::Setup(){
@@ -109,6 +117,8 @@ void EnemyDebugScene::Setup(){
 	//EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
 	//EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
 	EnemyManager::GetInstance().UseEnemy(Tail,VGet(1000, 400, -1000));
+
+	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
 }
 
 void EnemyDebugScene::Cleanup(){
