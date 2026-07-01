@@ -11,6 +11,14 @@
 #include <string>
 
 class ResourceBase {
+protected:
+	// 名前
+	std::string name;
+	// ファイルパス
+	std::string path;
+	// 読み込んだハンドル
+	int loadHandle;
+
 public:
 	ResourceBase(const std::string& _name, const std::string& _path);
 	virtual ~ResourceBase() = default;
@@ -41,12 +49,5 @@ public:
 	ResourceBase(ResourceBase&&) = delete;
 	ResourceBase& operator = (ResourceBase&&) = delete;
 
-protected:
-	// 名前
-	std::string name;
-	// ファイルパス
-	std::string path;
-	// 読み込んだハンドル
-	int loadHandle;
 };
 #endif // !_RESOURCEBASE_H_

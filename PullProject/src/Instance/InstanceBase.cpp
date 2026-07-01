@@ -1,7 +1,7 @@
 #include "InstanceBase.h"
 #include <cassert>
 
-InstanceBase::InstanceBase(std::shared_ptr<ResourceBase> _resource) 
+InstanceBase::InstanceBase(ResourcePtr _resource)
 	:resource(_resource)
 	,wantDelete(false)
 {

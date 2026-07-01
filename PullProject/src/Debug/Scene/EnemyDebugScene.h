@@ -10,6 +10,8 @@
 #include "Generator/StageCollisionGenerator.h"
 #include "Manager/EffectManager.h"
 #include "Manager/EffectResourceManager.h"
+#include "Manager/EnemyManager.h"
+
 
 class PlayerCharacrerPtr;
 
@@ -17,9 +19,11 @@ class EnemyDebugScene : public SceneBase {
 private:
 	StageCollisionGenerator generator;
 
-	//EffectManager effectManager;
+	EffectManager effectManager;
 
-	//EffectResourceManager effectResourceManager;
+	EffectResourceManager effectResourceManager;
+
+	EnemyManager enemyManager;
 public:
 	EnemyDebugScene();
 	~EnemyDebugScene() = default;

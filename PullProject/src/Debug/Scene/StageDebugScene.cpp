@@ -33,7 +33,8 @@ void StageDebugScene::Update() {
 	player->Update();
 	player->GetHands()->Update();
 	// 敵の更新
-	EnemyManager::GetInstance().Update();
+		// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().Update();
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
 	// ===== 当たり判定 =====
@@ -53,7 +54,8 @@ void StageDebugScene::Setup() {
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer();
 	// 敵生成
-	EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
+	// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
 
 	// コライダー
 	AABB = new AABBCollider(nullptr,
@@ -128,7 +130,8 @@ void StageDebugScene::Render() {
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
-	EnemyManager::GetInstance().Render();
+	// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().Render();
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
 	player->GetHands()->Render();

@@ -143,7 +143,7 @@ void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 void PlayerHands::HandsMove() {
 	// ウデ伸ばし中なら前に進む
 	if (handsState == HandsState::ArmsExtending) {
-		pTransform->AddPosition(VForward, -extendSpeed);
+		pTransform->AddPosition(GetTransform()->GetForward(), -extendSpeed);
 
 		// ウデ伸ばし中は当たり判定の押し出しあり
 		pCollider->SetResolve(true);

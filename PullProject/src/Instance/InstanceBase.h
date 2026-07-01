@@ -7,16 +7,19 @@
 #define _INSTANCEBASE_H_
 
 #include <memory>
+#include "GameObject/GameObject.h"
 
 class ResourceBase;
 
-class InstanceBase {
+using ResourcePtr = std::shared_ptr<ResourceBase>;
+
+class InstanceBase : public GameObject {
 protected:
-	std::shared_ptr<ResourceBase> resource;	// 素材
+	ResourcePtr resource;	// 素材
 	bool wantDelete;	// 削除してほしいか
 
 public:
-	InstanceBase(std::shared_ptr<ResourceBase> _resource);
+	InstanceBase(ResourcePtr _resource);
 	~InstanceBase() = default;
 
 	// コピー禁止
@@ -29,12 +32,12 @@ public:
 	/*
 	 * @brief 更新
 	 */
-	virtual void Update() = 0;
+	virtual void Update() override = 0;
 
 	/*
 	 * @brief 描画
 	 */
-	virtual void Render() = 0;
+	virtual void Render() override = 0;
 
 	/*
 	 * @brief 削除要請

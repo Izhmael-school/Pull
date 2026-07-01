@@ -3,8 +3,8 @@
  */
 #pragma once
 #include "ManagerBase.h"
-#include "Component/Singleton.h"
 #include "Definition/Enum/EnemyType.h"
+#include "Generator/EnemyGenerator.h"
 #include <memory>
 #include <vector>
 #include "Dxlib.h"
@@ -15,13 +15,15 @@
 class EnemyBase;
 class EnemyGenerator;
 
-class EnemyManager : public ManagerBase, public Singleton<EnemyManager> {
+using EnemyPtr = std::unique_ptr<EnemyBase>;
+
+class EnemyManager : public ManagerBase {
 
 private:
-	std::unique_ptr<EnemyGenerator> generator;	// 生成管理
+	EnemyGenerator generator;	// 生成管理
 
-	std::vector<std::unique_ptr<EnemyBase>> useEnemyArray;	// 使用中の敵
-	std::vector<std::vector<std::unique_ptr<EnemyBase>>> unuseEnemyArray;	// 未使用の敵
+	std::vector<EnemyPtr> useEnemyArray;	// 使用中の敵
+	std::vector<std::vector<EnemyPtr>> unuseEnemyArray;	// 未使用の敵
 
 public:
 	EnemyManager();
@@ -55,7 +57,7 @@ private:
 	/*
 	 * @brief　敵の未使用化
 	 */
-	void UnuseEnemy(std::unique_ptr<EnemyBase> _unuseEnemy);
+	void UnuseEnemy(EnemyPtr _unuseEnemy);
 
 };
 
