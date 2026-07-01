@@ -1,9 +1,10 @@
 #include "EnemyManager.h"
 #include "GameObject/Character/Enemy/EnemyBase.h"
-
 #include "Manager/PlayerManager.h"
+#include "Manager/Stage/StageManager.h"
 
-EnemyManager::EnemyManager()
+EnemyManager::EnemyManager(EffectManager& _effectManager)
+	:effectManager(_effectManager)
 {
 	Start();
 }
@@ -67,6 +68,17 @@ void EnemyManager::UnuseAllEnemy(){
 	}
 
 	useEnemyArray.clear();
+}
+
+void EnemyManager::SpawnStageFramePoint(EnemyType _type,StageManager& _stageManager) {
+	// フレームのワールド座標を取得
+	std::vector<VECTOR> spawnPositions = _stageManager.GetEnemySpawnPositions();
+	int count = static_cast<int>(spawnPositions.size());
+
+	// 今は敵の種類を選べないからWalkerで固定
+	for (int i = 0; i < count; i++) {
+		UseEnemy(_type, spawnPositions[i]);
+	}
 }
 
 void EnemyManager::UnuseEnemy(EnemyPtr _unuseEnemy) {

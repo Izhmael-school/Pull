@@ -13,6 +13,8 @@
 #include "Definition/Enum/EnemyType.h"
 #include <string>
 
+class EffectManager;
+
 class EnemyBase : public Character, public CaughtObject {
 protected:
 
@@ -179,5 +181,6 @@ protected:
 	 * @brief 何かに当たった時
 	 */
 	virtual void HitObject();
+
 };
 #endif // !_ENEMYBASE_H_

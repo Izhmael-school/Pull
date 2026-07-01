@@ -6,6 +6,7 @@
 #include "Manager/TimeManager.h"
 #include "Manager/InputManager.h"
 #include "Manager/CollisionManager.h"
+#include "Manager/EffectManager.h"
 #include "Component/Collider/Collider.h"
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
@@ -239,7 +240,7 @@ void EnemyBase::Dead() {
 bool EnemyBase::VisionFan(VECTOR target) {
 	point.position = target;
 
-	Fan fan;
+	Fan fan = {};
 	fan.position = GetPosition();
 	fan.directionDegree = GetRotation().y;
 	fan.length = vision.rayLenght;
