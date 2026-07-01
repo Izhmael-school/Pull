@@ -30,15 +30,52 @@ void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
 	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -100), 10);
 	isGravity = true;
+
+	// ジャンプアニメーションにイベントを仕込む
+	auto jumpAnim = pAnimator->GetAnimation("Jump");
+	float jumpAnimTime = pAnimator->GetTotalTime("Jump");
+	// 跳ね上がり
+	jumpAnim->SetEvent([this]() {
+		pAnimator->ChangeSpeed("Jump", 1.0f);
+		pHands->GetAnimator()->ChangeSpeed("Jump", 1.0f);
+		}, jumpAnimTime * 0.4f);
+	// ループしないように停止
+	jumpAnim->SetEvent([this]() {
+		pAnimator->ChangeSpeed("Jump", 0.0f);
+		pHands->GetAnimator()->ChangeSpeed("Jump", 0.0f);
+		}, jumpAnimTime);
+
+	// 着地アニメーションにイベントを仕込む
+	auto landAnim = pAnimator->GetAnimation("Land");
+	// 再生終了時待機状態に
+	landAnim->SetEvent([this]() {
+		playerState = PlayerState::Idle;
+		}, pAnimator->GetTotalTime("Land"));
 }
 
 void PlayerCharacter::Update() {
 	Character::Update();
 	pTransform->Update();
+	
+	// ジャンプ後着地なら着地アニメーション再生
+	if (hitGroundingFrag && playerState == PlayerState::Jump) {
+		pAnimator->Play("Land", 1.0f);
+		pHands->GetAnimator()->Play("Land", 1.0f);
+	}
+	// 地面についているなら待機状態へ
+	else if (hitGroundingFrag) {
+		playerState = PlayerState::Idle;
+	}
 
 	// 移動
 	if (!pHands->IsCatch())
 		Move();
+
+	// 待機アニメーション
+	if (playerState == PlayerState::Idle) {
+		pAnimator->Play("Idle");
+		pHands->GetAnimator()->Play("Idle");
+	}
 }
 
 void PlayerCharacter::Render() {
@@ -60,9 +97,18 @@ void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
  *	移動
  */
 void PlayerCharacter::Move() {
+	// ジャンプ
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE)) {
+		AddFallSpeed(-JUMP_POWER);
+		hitGroundingFrag = false;
+		playerState = PlayerState::Jump;
+		// ジャンプアニメーション(最初は高速再生)
+		pAnimator->Play("Jump", 10.0f);
+		pHands->GetAnimator()->Play("Jump", 10.0f);
+	}
+
 	auto camera = CameraManager::GetInstance().GetCamera();
 	if (!camera) return;
-	playerState = PlayerState::Move;
 
 	// カメラのヨー(ラジアン)
 	float cameraYaw = MyMath::Deg2Rad(camera->GetRotation().y);
@@ -90,12 +136,13 @@ void PlayerCharacter::Move() {
 		pTransform->AddPosition(moveDir, speed);
 		// 角度を移動方向へ(現在モデルが逆向きなので反対向きにするようにしている)
 		pTransform->SetRotation(VGet(0, MyMath::Rad2Deg(atan2f(-moveDir.x, -moveDir.z)), 0));
-	}
-	
-	// ジャンプ
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE)) {
-		AddFallSpeed(-JUMP_POWER);
-		hitGroundingFrag = false;
+		
+		if (playerState != PlayerState::Jump) {
+			playerState = PlayerState::Move;
+			// アニメーション再生
+			pAnimator->Play("Run", 0.5f);
+			pHands->GetAnimator()->Play("Run", 0.5f);
+		}
 	}
 }
 /*
@@ -139,6 +186,7 @@ void PlayerCharacter::CatchMovingMove(float moveSpeed) {
  */
 void PlayerCharacter::CreateHands(std::shared_ptr<PlayerCharacter> owner, int modelHandle) {
 	pHands = std::make_shared<PlayerHands>(owner, modelHandle, VZero);
+	pHands->GetAnimator()->Load(modelHandle, false);
 	pHands->GetTransform()->AttachParent(GetTransform());
 	pHands->Start();
 }

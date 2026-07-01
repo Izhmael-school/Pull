@@ -1,5 +1,6 @@
 #include "ModelResource.h"
 #include "DxLib.h"
+#include "Definition/CommonModule/MyString.h"
 #include <cassert>
 
 ModelResource::ModelResource(const std::string& _name, const std::string& _path) 
@@ -19,12 +20,13 @@ bool ModelResource::Load() {
     // 読み込み
     loadHandle = MV1LoadModel(path.c_str());
 
-    // 失敗
     if (!IsLoaded()) {
+    // 失敗
 #if _DEBUG
-        assert(false && "Failed Load Model");
-        return false;
+        std::string fail = MyString::MergeString("Failed Load Model:", name);
+        assert(false && fail.c_str());
 #endif
+        return false;
     }
 
     return true;

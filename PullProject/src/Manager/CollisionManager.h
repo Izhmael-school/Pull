@@ -78,6 +78,7 @@ public:
     static void ResolveSphereSphere(Collider* a, Collider* b);
     static void ResolveSphereAABB(Collider* s, Collider* box);
     static void ResolveCapsuleAABB(Collider* cap, Collider* box);
+    static void ResolveAABBVsAABB(Collider* aCol, Collider* bCol);
 };
 
 #endif

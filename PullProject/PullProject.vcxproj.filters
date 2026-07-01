@@ -73,11 +73,20 @@
     <Filter Include="ソース ファイル\GameObject\Character\Enemy\Walker">
       <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{08e40538-6e4f-49c5-adf1-e2407aa482d7}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Resource">
+      <UniqueIdentifier>{94b63324-4cc0-4abe-97da-07a00d9cb7d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ImGui\backends">
-      <UniqueIdentifier>{99dd1136-3f38-4636-88d8-29405d479692}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Resource\Model">
+      <UniqueIdentifier>{fbaa8a2f-2a39-460b-86b2-38dd8a587077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Instance">
+      <UniqueIdentifier>{2422a4fe-42b9-4e00-bff2-f08b96fe8f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Resource\Effect">
+      <UniqueIdentifier>{b7fd385b-8e66-4da0-b758-7a2bc75c7e99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Instance\Effect">
+      <UniqueIdentifier>{32c3591e-ad49-474c-bda2-ff0bb74fb849}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -255,29 +264,26 @@
     <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\imgui.cpp">
-      <Filter>ImGui</Filter>
+    <ClCompile Include="src\Resource\ResourceBase.cpp">
+      <Filter>ソース ファイル\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
+    <ClCompile Include="src\Instance\InstanceBase.cpp">
+      <Filter>ソース ファイル\Instance</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
+    <ClCompile Include="src\Resource\Model\ModelResource.cpp">
+      <Filter>ソース ファイル\Resource\Model</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_tables.cpp">
-      <Filter>ImGui</Filter>
+    <ClCompile Include="src\Resource\Effect\EffectResource.cpp">
+      <Filter>ソース ファイル\Resource\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
+    <ClCompile Include="src\Manager\EffectResourceManager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\ImGuiManager.cpp">
-      <Filter>ImGui</Filter>
+    <ClCompile Include="src\Manager\EffectManager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="src\ImGui\backends\imgui_impl_dx11.cpp">
-      <Filter>ImGui\backends</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\backends\imgui_impl_win32.cpp">
-      <Filter>ImGui\backends</Filter>
+    <ClCompile Include="src\Instance\Effect\EffectInstance.cpp">
+      <Filter>ソース ファイル\Instance\Effect</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Stage\CharacterSpawnPos.cpp">
       <Filter>ソース ファイル</Filter>
@@ -500,32 +506,26 @@
     <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\imconfig.h">
-      <Filter>ImGui</Filter>
+    <ClInclude Include="src\Resource\ResourceBase.h">
+      <Filter>ソース ファイル\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\imgui.h">
-      <Filter>ImGui</Filter>
+    <ClInclude Include="src\Instance\InstanceBase.h">
+      <Filter>ソース ファイル\Instance</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\imgui_internal.h">
-      <Filter>ImGui</Filter>
+    <ClInclude Include="src\Resource\Model\ModelResource.h">
+      <Filter>ソース ファイル\Resource\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\ImGuiManager.h">
-      <Filter>ImGui</Filter>
+    <ClInclude Include="src\Resource\Effect\EffectResource.h">
+      <Filter>ソース ファイル\Resource\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\imstb_rectpack.h">
-      <Filter>ImGui</Filter>
+    <ClInclude Include="src\Manager\EffectResourceManager.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\imstb_textedit.h">
-      <Filter>ImGui</Filter>
+    <ClInclude Include="src\Manager\EffectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\ImGui\imstb_truetype.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\backends\imgui_impl_dx11.h">
-      <Filter>ImGui\backends</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\backends\imgui_impl_win32.h">
-      <Filter>ImGui\backends</Filter>
+    <ClInclude Include="src\Instance\Effect\EffectInstance.h">
+      <Filter>ソース ファイル\Instance\Effect</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Stage\CharacterSpawnPos.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -544,5 +544,8 @@
     </None>
     <None Include="src\Data\collision_rules.json" />
     <None Include="src\Data\EventCamera.json" />
+    <None Include="src\Data\EffectData.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
   </ItemGroup>
 </Project>

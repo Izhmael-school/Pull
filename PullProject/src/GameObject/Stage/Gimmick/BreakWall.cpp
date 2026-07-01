@@ -33,7 +33,7 @@ void BreakWall::Setup() {
 	GimmickManager::GetInstance().RegisterLeverReceiver(triggerID, this);
 	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, VGet(-300, -300, -30), VGet(300, 300, 30));
-
+	pCollider->SetLayer(ColliderLayer::BreakWall);
 }
 
 /*

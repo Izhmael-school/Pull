@@ -87,13 +87,15 @@ MATRIX Transform::CalcMatrix() {
 	MATRIX mTranslate = MGetTranslate(position);
 
 	// 回転→拡縮→平行移動の順で掛ける
-	matrix = MMult(MMult(mScale, mRotXYZ), mTranslate);
+	MATRIX local = MMult(MMult(mScale, mRotXYZ), mTranslate);
 
 	// 親がいないなら帰る
-	if (!parent) return matrix;
-
-	// 親の行列を掛ける
-	matrix = MMult(matrix, parent->matrix);
+	if (!parent) {
+		matrix = local;
+		return matrix;
+	}
+	// 親の行列を先に適用する (親->ローカル の順で合成)
+	matrix = MMult(parent->matrix, local);
 	return matrix;
 }
 

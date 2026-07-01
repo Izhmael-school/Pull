@@ -115,7 +115,7 @@ void StageCollisionGenerator::GenerateFromUnity(
 	for (auto& b : json["blocks"]) {
 
 		// "type"が"tree"または"bridge"の場合はスキップ
-		if (b.contains("type") && (b["type"] == "tree") || (b["type"] == "ground")) {
+		if (b.contains("type") && (b["type"] == "tree") || (b["type"] == "subground")) {
 			continue;
 		}
 

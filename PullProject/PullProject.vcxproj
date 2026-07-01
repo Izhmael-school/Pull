@@ -188,10 +188,14 @@
     <ClCompile Include="src\ImGui\imgui_draw.cpp" />
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Instance\Effect\EffectInstance.cpp" />
+    <ClCompile Include="src\Instance\InstanceBase.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Manager\CameraManager.cpp" />
     <ClCompile Include="src\Manager\ColliderObjectManager.cpp" />
     <ClCompile Include="src\Manager\CollisionManager.cpp" />
+    <ClCompile Include="src\Manager\EffectManager.cpp" />
+    <ClCompile Include="src\Manager\EffectResourceManager.cpp" />
     <ClCompile Include="src\Manager\EnemyManager.cpp" />
     <ClCompile Include="src\Manager\GameObjectManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
@@ -206,6 +210,9 @@
     <ClCompile Include="src\Pad\DirectInputPad.cpp" />
     <ClCompile Include="src\Pad\PadBase.cpp" />
     <ClCompile Include="src\Pad\XInputPad.cpp" />
+    <ClCompile Include="src\Resource\Effect\EffectResource.cpp" />
+    <ClCompile Include="src\Resource\Model\ModelResource.cpp" />
+    <ClCompile Include="src\Resource\ResourceBase.cpp" />
     <ClCompile Include="src\Scene\SceneBase.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -273,9 +280,13 @@
     <ClInclude Include="src\ImGui\imstb_rectpack.h" />
     <ClInclude Include="src\ImGui\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
+    <ClInclude Include="src\Instance\Effect\EffectInstance.h" />
+    <ClInclude Include="src\Instance\InstanceBase.h" />
     <ClInclude Include="src\Manager\CameraManager.h" />
     <ClInclude Include="src\Manager\ColliderObjectManager.h" />
     <ClInclude Include="src\Manager\CollisionManager.h" />
+    <ClInclude Include="src\Manager\EffectManager.h" />
+    <ClInclude Include="src\Manager\EffectResourceManager.h" />
     <ClInclude Include="src\Manager\EnemyManager.h" />
     <ClInclude Include="src\Manager\GameObjectManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
@@ -290,10 +301,14 @@
     <ClInclude Include="src\Pad\DirectInputPad.h" />
     <ClInclude Include="src\Pad\PadBase.h" />
     <ClInclude Include="src\Pad\XInputPad.h" />
+    <ClInclude Include="src\Resource\Effect\EffectResource.h" />
+    <ClInclude Include="src\Resource\Model\ModelResource.h" />
+    <ClInclude Include="src\Resource\ResourceBase.h" />
     <ClInclude Include="src\Scene\SceneBase.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\collision_rules.json" />
+    <None Include="src\Data\EffectData.json" />
     <None Include="src\Data\EnemyData.json" />
     <None Include="src\Data\EventCamera.json" />
     <None Include="src\Data\GameObjectModelData.json" />

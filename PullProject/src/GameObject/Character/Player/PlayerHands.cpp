@@ -28,9 +28,11 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 void PlayerHands::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
 	pCollider->SetResolve(false);
+	pCollider->SetLayer(ColliderLayer::PlayerArm);
 }
 
 void PlayerHands::Update() {
+	Character::Update();
 	pTransform->Update();
 	if (!pCollider) return;
 	pCollider->Update();
@@ -143,7 +145,7 @@ void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 void PlayerHands::HandsMove() {
 	// ウデ伸ばし中なら前に進む
 	if (handsState == HandsState::ArmsExtending) {
-		pTransform->AddPosition(VForward, -extendSpeed);
+		pTransform->AddPosition(GetTransform()->GetForward(), -extendSpeed);
 
 		// ウデ伸ばし中は当たり判定の押し出しあり
 		pCollider->SetResolve(true);

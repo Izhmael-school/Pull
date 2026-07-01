@@ -19,7 +19,8 @@ static const std::unordered_map<std::string, HitFunc> funcMap = {
 static const std::unordered_map<std::string, ResolveFunc> resolveFuncMap = {
 	{ "SphereVsSphere",   &CollisionManager::ResolveSphereSphere },
 	{ "SphereVsAABB",     &CollisionManager::ResolveSphereAABB },
-	{ "CapsuleVsAABB",    &CollisionManager::ResolveCapsuleAABB }
+	{ "CapsuleVsAABB",    &CollisionManager::ResolveCapsuleAABB },
+	{ "AABBVsAABB" ,	  &CollisionManager::ResolveAABBVsAABB}
 };
 
 //	コンストラクタ・デストラクタ
@@ -488,6 +489,10 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	auto cap = static_cast<CapsuleCollider*>(capCol);
 	auto box = static_cast<AABBCollider*>(boxCol);
 
+	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::Gimmick) {
+		return;
+	}
+
 	VECTOR p1 = cap->GetWorldStart();
 	VECTOR p2 = cap->GetWorldEnd();
 	VECTOR bmin = box->GetMin();
@@ -535,6 +540,84 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	VECTOR move = VScale(dir, push);
 
 	cap->GetGameObject()->GetTransform()->AddPosition(move);
+}
+
+void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
+	auto a = static_cast<AABBCollider*>(aCol);
+	auto b = static_cast<AABBCollider*>(bCol);
+
+	if (a->GetLayer() == ColliderLayer::Stage && b->GetLayer() == ColliderLayer::Stage) {
+		return;
+	}
+
+	if (a->GetLayer() == ColliderLayer::Gimmick || b->GetLayer() == ColliderLayer::Gimmick) {
+		return;
+	}
+
+	if (a->GetLayer() == ColliderLayer::BreakWall && b->GetLayer() == ColliderLayer::Stage || b->GetLayer() == ColliderLayer::BreakWall && a->GetLayer() == ColliderLayer::Stage) {
+		return;
+	}
+
+	VECTOR aMin = a->GetMin();
+	VECTOR aMax = a->GetMax();
+	VECTOR bMin = b->GetMin();
+	VECTOR bMax = b->GetMax();
+
+	// まず重なっているかチェック
+	bool overlapX = (aMin.x <= bMax.x) && (aMax.x >= bMin.x);
+	bool overlapY = (aMin.y <= bMax.y) && (aMax.y >= bMin.y);
+	bool overlapZ = (aMin.z <= bMax.z) && (aMax.z >= bMin.z);
+
+	if (!(overlapX && overlapY && overlapZ)) {
+		return; // 重なっていない
+	}
+
+	// 各軸の押し出し量を計算
+	float pushX1 = bMax.x - aMin.x; // A を +X に押す量
+	float pushX2 = aMax.x - bMin.x; // A を -X に押す量
+
+	float pushY1 = bMax.y - aMin.y;
+	float pushY2 = aMax.y - bMin.y;
+
+	float pushZ1 = bMax.z - aMin.z;
+	float pushZ2 = aMax.z - bMin.z;
+
+	// 最小押し出し量を選ぶ
+	float minPush = FLT_MAX;
+	VECTOR move = { 0,0,0 };
+
+	// X軸
+	if (pushX1 > 0 && pushX1 < minPush) {
+		minPush = pushX1;
+		move = { minPush, 0, 0 };
+	}
+	if (pushX2 > 0 && pushX2 < minPush) {
+		minPush = pushX2;
+		move = { -minPush, 0, 0 };
+	}
+
+	// Y軸
+	if (pushY1 > 0 && pushY1 < minPush) {
+		minPush = pushY1;
+		move = { 0, minPush, 0 };
+	}
+	if (pushY2 > 0 && pushY2 < minPush) {
+		minPush = pushY2;
+		move = { 0, -minPush, 0 };
+	}
+
+	// Z軸
+	if (pushZ1 > 0 && pushZ1 < minPush) {
+		minPush = pushZ1;
+		move = { 0, 0, minPush };
+	}
+	if (pushZ2 > 0 && pushZ2 < minPush) {
+		minPush = pushZ2;
+		move = { 0, 0, -minPush };
+	}
+
+	// A の Transform を押し出す
+	a->GetGameObject()->GetTransform()->AddPosition(move);
 }
 
 #pragma endregion

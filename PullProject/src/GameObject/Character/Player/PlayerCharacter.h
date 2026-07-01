@@ -22,6 +22,8 @@ private:
 		Invalid = -1,
 		Idle,
 		Move,
+		Jump,
+		ArmExtended,
 		
 		Max
 	};

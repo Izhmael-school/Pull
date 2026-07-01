@@ -10,6 +10,10 @@
 #include "../../Manager/PlayerManager.h"
 #include <DxLib.h>
 
+ /*
+  * @author Sekino
+  */
+#include "EffekseerForDXLib.h"
 #include "EventCameraMovement.h"
 
 CameraObject::CameraObject()
@@ -74,6 +78,12 @@ void CameraObject::Update() {
 		MyMath::Deg2Rad(rot.x),
 		MyMath::Deg2Rad(rot.y),
 		MyMath::Deg2Rad(rot.z));
+
+	/*
+	 * @brief Effekseerのカメラ設定を同期する
+	 * @author Sekino
+	 */
+	Effekseer_Sync3DSetting();
 
 #if _DEBUG
 	// カメラモード変更
@@ -175,6 +185,10 @@ void CameraObject::PullUpdate() {
 }
 
 void CameraObject::EventUpdate() {
+	/*
+	 * @author Sekino
+	 */
+
 	if (!isEvent) {
 		isEvent = true;
 		EventCameraMovement::StartEventCamera(this,"startStage");
