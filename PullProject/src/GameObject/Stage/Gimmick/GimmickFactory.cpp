@@ -8,6 +8,7 @@
 #include "Lever.h"
 #include "BomBreakWall.h"
 #include "HookShot.h"
+#include "ExitArea.h"
 
  /*
   *	レバー以外のギミック生成
@@ -37,6 +38,14 @@ GimmickObject* GimmickFactory::Create(const std::string& type, int modelHandle, 
 	if (type == "HookShot") {
 		return new HookShot(
 			modelHandle,
+			pos,
+			rota
+		);
+	}
+
+	// 出口オブジェクト生成
+	if (type == "ExitArea") {
+		return new ExitArea(
 			pos,
 			rota
 		);

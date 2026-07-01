@@ -39,6 +39,11 @@
       "Model": "res/Model/Gimmick/HookShot/HookShot.mv1",
       "Position": "HookShot_SP2",
       "Rotation": 0.0
+    },
+    {
+      "Type": "ExitArea",
+      "Position": "PlayerBP",
+      "Rotation": 0.0
     }
   ]
 

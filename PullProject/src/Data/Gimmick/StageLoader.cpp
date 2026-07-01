@@ -49,10 +49,17 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		// 位置を設定
 		VECTOR pos = MV1GetFramePosition(stageHandle, frame);
 
-		// ベースモデル取得
-		int baseModel = ModelManager::GetInstance().Load(gimmick[_DATENAME_MODEL]);
-		// 実体モデル生成
-		int model = MV1DuplicateModel(baseModel);
+		// モデルハンドル
+		int model = -1;
+
+		// Modelが存在する場合のみ読み込む
+		if (gimmick.contains(_DATENAME_MODEL)) {
+			// ベースモデル取得
+			int baseModel = ModelManager::GetInstance().Load(gimmick[_DATENAME_MODEL]);
+
+			// 実体モデル生成
+			model = MV1DuplicateModel(baseModel);
+		}
 
 		// 回転数を取得
 		float baseRota = gimmick[_DATENAME_ROTATION];
