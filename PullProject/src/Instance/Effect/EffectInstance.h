@@ -15,7 +15,7 @@ class EffectResource;
 class EffectInstance : public InstanceBase {
 private:
 	int playHandle;	// リソースが持っているハンドル
-
+	
 public:
 	EffectInstance(std::shared_ptr<EffectResource> _effectResource);
 	~EffectInstance() = default;
@@ -43,6 +43,6 @@ public:
 	/*
 	 * @brief 再生が終わってるか
 	 */
-	bool IsEffectEnd();
+	const bool IsEffectEnd() const;
 };
 #endif // !_EFFECTINSTANCE_H_

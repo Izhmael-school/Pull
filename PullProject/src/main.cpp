@@ -143,6 +143,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	InitSoundMem();
 	InitGraph();
 	InitFontToHandle();
+	
 	// ImGuiの終了処理
 	imgui.Release();
 	

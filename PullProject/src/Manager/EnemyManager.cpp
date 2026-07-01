@@ -1,6 +1,6 @@
 #include "EnemyManager.h"
 #include "GameObject/Character/Enemy/EnemyBase.h"
-#include "Generator/EnemyGenerator.h"
+
 #include "Manager/PlayerManager.h"
 
 EnemyManager::EnemyManager()
@@ -13,7 +13,6 @@ EnemyManager::~EnemyManager()
 }
 
 void EnemyManager::Start() {
-	generator = std::make_unique<EnemyGenerator>();
 	unuseEnemyArray.resize(EnemyType::MaxEnemyType);
 }
 
@@ -49,7 +48,7 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
 	std::unique_ptr<EnemyBase> enemy;
 	// 未使用状態がいなければつくる
 	if (unuseEnemyArray[_type].size() == 0)
-		unuseEnemyArray[_type].push_back(generator->CreateEnemy(_type, _pos));
+		unuseEnemyArray[_type].push_back(generator.CreateEnemy(_type, _pos));
 	// 末尾から取得
 	enemy = std::move(unuseEnemyArray[_type].back());
 	// 末尾削除
@@ -70,7 +69,7 @@ void EnemyManager::UnuseAllEnemy(){
 	useEnemyArray.clear();
 }
 
-void EnemyManager::UnuseEnemy(std::unique_ptr<EnemyBase> _unuseEnemy) {
+void EnemyManager::UnuseEnemy(EnemyPtr _unuseEnemy) {
 	auto itr = std::ranges::find(useEnemyArray, _unuseEnemy);
 	// 使用中配列になければ帰る
 	if (itr == useEnemyArray.end()) return;

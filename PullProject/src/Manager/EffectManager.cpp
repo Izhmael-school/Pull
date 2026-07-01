@@ -28,6 +28,7 @@ EffectPtr EffectManager::Play(const std::string& _effectName, const VECTOR& _pos
 void EffectManager::Update() {
     // Effekseerの更新
     UpdateEffekseer3D();
+
     // インスタンスの更新
     for (auto& instance : instances) {
         instance->Update();

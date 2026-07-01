@@ -8,7 +8,6 @@
 #include "Definition/Const/VECTORConst.h"
 #include "Manager/InputManager.h"
 #include "Manager/Stage/StageManager.h"
-#include "Manager/EnemyManager.h"
 #include "Manager/CameraManager.h"
 #include "Manager/GameObjectManager.h"
 #include "GameObject/Camera/CameraObject.h"
@@ -21,8 +20,8 @@
 #include "Generator/StageCollisionGenerator.h"
 
 EnemyDebugScene::EnemyDebugScene() 
-	//:effectManager(effectResourceManager)
-	//,effectResourceManager()
+	:effectManager(effectResourceManager)
+	,effectResourceManager()
 { Start(); }
 
 void EnemyDebugScene::Start()
@@ -30,6 +29,7 @@ void EnemyDebugScene::Start()
 	PlayerManager::GetInstance().CreatePlayer();
 	auto p = PlayerManager::GetInstance().GetPlayer();
 	p->GetTransform()->SetPosition(VGet(200,200,-600));
+
 
 	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
@@ -43,7 +43,8 @@ void EnemyDebugScene::Update(){
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// 敵の更新
-	EnemyManager::GetInstance().Update();
+	enemyManager.Update();
+	effectManager.Update();
 }
 
 void EnemyDebugScene::Render(){
@@ -107,8 +108,8 @@ void EnemyDebugScene::Render(){
 
 	// 描画
 	StageManager::GetInstance().Render();
-
-	EnemyManager::GetInstance().Render();
+	effectManager.Render();
+	enemyManager.Render();
 	CollisionManager::GetInstance().Render();
 }
 
@@ -116,11 +117,11 @@ void EnemyDebugScene::Setup(){
 	//EnemyManager::GetInstance().UseEnemy(Walker,VGet(0, 400, 0));
 	//EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
 	//EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
-	EnemyManager::GetInstance().UseEnemy(Tail,VGet(1000, 400, -1000));
-
-	//effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
+	enemyManager.UseEnemy(Tail,VGet(1000, 400, -1000));
+	CameraManager::GetInstance().CreateCamera();
+	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
 }
 
 void EnemyDebugScene::Cleanup(){
-	EnemyManager::GetInstance().UnuseAllEnemy();
+	enemyManager.UnuseAllEnemy();
 }

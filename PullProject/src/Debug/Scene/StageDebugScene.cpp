@@ -25,6 +25,23 @@ void StageDebugScene::Start() {
 
 }
 
+void StageDebugScene::Update() {
+	// カメラの更新
+	CameraManager::GetInstance().GetCamera()->Update();
+	// プレイヤーの更新
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Update();
+	player->GetHands()->Update();
+	// 敵の更新
+		// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().Update();
+	// ギミックの更新
+	GimmickObjectManager::GetInstance().Update();
+	// ===== 当たり判定 =====
+	CollisionManager::GetInstance().Update();
+	ColliderObjectManager::GetInstance().Update();
+}
+
 void StageDebugScene::Setup() {
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -37,7 +54,8 @@ void StageDebugScene::Setup() {
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer();
 	// 敵生成
-	EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
+	// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
 
 	// コライダー
 	AABB = new AABBCollider(nullptr,
@@ -56,24 +74,6 @@ void StageDebugScene::Setup() {
 	// ====ギミックの更新====
 	GimmickObjectManager::GetInstance().Update();
 }
-
-
-void StageDebugScene::Update() {
-	// カメラの更新
-	CameraManager::GetInstance().GetCamera()->Update();
-	// プレイヤーの更新
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->Update();
-	player->GetHands()->Update();
-	// 敵の更新
-	EnemyManager::GetInstance().Update();
-	// ギミックの更新
-	GimmickObjectManager::GetInstance().Update();
-	// ===== 当たり判定 =====
-	CollisionManager::GetInstance().Update();
-	ColliderObjectManager::GetInstance().Update();
-}
-
 
 void StageDebugScene::Render() {
 
@@ -130,7 +130,8 @@ void StageDebugScene::Render() {
 #endif
 	// 描画
 	StageManager::GetInstance().Render();
-	EnemyManager::GetInstance().Render();
+	// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().Render();
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
 	player->GetHands()->Render();
