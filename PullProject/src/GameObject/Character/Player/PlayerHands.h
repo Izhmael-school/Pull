@@ -37,7 +37,7 @@ private:
 	};
 	HandsState handsState;					// 手の状態
 	CatchState catchState;					// 所持状態
-	std::shared_ptr<PlayerCharacter> owner;	// 所有者(プレイヤー)
+	std::shared_ptr<PlayerCharacter> pOwner;// 所有者(プレイヤー)
 	float extendSpeed;						// 伸ばすスピード
 	float returnSpeedRatio;					// 戻ってくる速度割合
 
