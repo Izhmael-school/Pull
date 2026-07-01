@@ -32,6 +32,7 @@ void PlayerHands::Start() {
 }
 
 void PlayerHands::Update() {
+	Character::Update();
 	pTransform->Update();
 	if (!pCollider) return;
 	pCollider->Update();
