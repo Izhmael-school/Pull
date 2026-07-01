@@ -29,6 +29,7 @@ GimmickObject::~GimmickObject() {
  *	開始処理
  */
 void GimmickObject::Start() {
+	pCollider->SetLayer(ColliderLayer::Gimick);
 }
 
 /*
