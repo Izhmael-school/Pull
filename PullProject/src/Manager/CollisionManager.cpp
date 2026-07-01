@@ -489,7 +489,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	auto cap = static_cast<CapsuleCollider*>(capCol);
 	auto box = static_cast<AABBCollider*>(boxCol);
 
-	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::Gimick) {
+	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::Gimmick) {
 		return;
 	}
 
@@ -550,7 +550,11 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 		return;
 	}
 
-	if (a->GetLayer() == ColliderLayer::Gimick || b->GetLayer() == ColliderLayer::Gimick) {
+	if (a->GetLayer() == ColliderLayer::Gimmick || b->GetLayer() == ColliderLayer::Gimmick) {
+		return;
+	}
+
+	if (a->GetLayer() == ColliderLayer::BreakWall && b->GetLayer() == ColliderLayer::Stage || b->GetLayer() == ColliderLayer::BreakWall && a->GetLayer() == ColliderLayer::Stage) {
 		return;
 	}
 
