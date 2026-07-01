@@ -13,12 +13,13 @@
 class EffectResource;
 
 const char* const EFFECT_FILEPATH = "res/Model/Effect/";	// エフェクトのファイルパス
-//const char* const EFFECTDATA_FILEPATH = "src/Data/EffectData.json";	// エフェクトデータのファイルパス
+const char* const EFFECTDATA_FILEPATH = "src/Data/EffectData.json";	// エフェクトデータのファイルパス
+
+using EffectResourcePtr = std::shared_ptr<EffectResource>;
 
 class EffectResourceManager {
 private:
-	std::unordered_map<std::string, std::shared_ptr<EffectResource>> resources;
-
+	std::unordered_map<std::string, EffectResourcePtr> resources;
 
 public:
 	/*
@@ -34,7 +35,7 @@ public:
 	/*
 	 * @brief エフェクトリソースの取得
 	 */
-	std::shared_ptr<EffectResource> GetResource(const std::string& _name) const;
+	EffectResourcePtr GetResource(const std::string& _name) const;
 
 	/*
 	 * @brief 読み込んだリソースの数取得

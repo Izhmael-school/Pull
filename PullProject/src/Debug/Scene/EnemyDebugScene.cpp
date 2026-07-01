@@ -22,6 +22,9 @@
 EnemyDebugScene::EnemyDebugScene() 
 	:effectManager(effectResourceManager)
 	,effectResourceManager()
+	, audioManager(audioResourceManager)
+	,audioResourceManager()
+	, enemyManager(effectManager)
 { Start(); }
 
 void EnemyDebugScene::Start()
@@ -38,13 +41,19 @@ void EnemyDebugScene::Update(){
 	GameObjectManager::GetInstance().Update();
 	ColliderObjectManager::GetInstance().Update();
 	CollisionManager::GetInstance().Update();
-	PlayerManager::GetInstance().GetPlayer()->Update();
-	PlayerManager::GetInstance().GetPlayer()->GetHands()->Update();
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Update();
+	player->GetHands()->Update();
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
+
+	// 仮
+	effectManager.Play("Earthquake", player->GetPosition(), 1.0f, VZero);
+
 	// 敵の更新
 	enemyManager.Update();
 	effectManager.Update();
+	audioManager.Update();
 }
 
 void EnemyDebugScene::Render(){
@@ -114,12 +123,13 @@ void EnemyDebugScene::Render(){
 }
 
 void EnemyDebugScene::Setup(){
-	//EnemyManager::GetInstance().UseEnemy(Walker,VGet(0, 400, 0));
-	//EnemyManager::GetInstance().UseEnemy(Bomber,VGet(1000, 400, 0));
-	//EnemyManager::GetInstance().UseEnemy(Shooter,VGet(0, 400, -1000));
-	enemyManager.UseEnemy(Tail,VGet(1000, 400, -1000));
+	StageManager::GetInstance().Initialize();
+	StageManager::GetInstance().LoadStage(4);
+	enemyManager.SpawnStageFramePoint(Shooter,StageManager::GetInstance());
 	CameraManager::GetInstance().CreateCamera();
 	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
+	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
+	audioManager.Play("test", 100.0f, true);
 }
 
 void EnemyDebugScene::Cleanup(){

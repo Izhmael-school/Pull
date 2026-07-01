@@ -10,6 +10,8 @@
 #include "Generator/StageCollisionGenerator.h"
 #include "Manager/EffectManager.h"
 #include "Manager/EffectResourceManager.h"
+#include "Manager/AudioManager.h"
+#include "Manager/AudioResourceManager.h"
 #include "Manager/EnemyManager.h"
 
 
@@ -22,6 +24,10 @@ private:
 	EffectManager effectManager;
 
 	EffectResourceManager effectResourceManager;
+
+	AudioManager audioManager;
+
+	AudioResourceManager audioResourceManager;
 
 	EnemyManager enemyManager;
 public:
