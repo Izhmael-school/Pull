@@ -18,18 +18,21 @@
 
 CameraObject::CameraObject()
 	: mode(CameraMode::Debug)
-	, speed(10.0f)
+	, speed(30.0f)
 	, shakePower(0.0f)
 	, shakeTime(0.0f)
 	, shakeElapsedTime(0.0f)
 	, isShaking(false)
+	, isChase(false)
 
 	, isEvent(false)
 
 	, PLAYER_DISTANCE(1000)
 	, PULL_ZOOM_RATIO_MAX(0.95f)
-	, PULL_ZOOM_RATIO_MIN(0.7f) {
-}
+	, PULL_ZOOM_RATIO_MIN(0.7f) 
+	, TARGET_MOVE_RATIO(0.2f)
+	, TARGET_DISTANCE_MAX(10.0f)
+{}
 
 void CameraObject::Start() {
 }
@@ -147,17 +150,30 @@ void CameraObject::PlayerUpdate() {
 	}
 
 	// プレイヤーの方を向く
-	pTransform->LookAt(player->GetPosition());
+	pTransform->LookAt(target);
 
 	// プレイヤーとカメラの距離が規定距離を超えていたら近づける
-	VECTOR dir = VSub(player->GetPosition(), GetPosition());
-	float dist = VDot(dir, dir) - PLAYER_DISTANCE * PLAYER_DISTANCE;
-	if (dist > 0) {
-		dir.y = 0;
-		dir = VNorm(dir);
-		dist = sqrtf(dist);
-		pTransform->AddPosition(dir, speed);
+	//VECTOR dir = VSub(player->GetPosition(), GetPosition());
+	//float dist = VDot(dir, dir) - PLAYER_DISTANCE * PLAYER_DISTANCE;
+	//if (dist > 0) {
+	//	dir.y = 0;
+	//	dir = VNorm(dir);
+	//	dist = sqrtf(dist);
+	//	pTransform->AddPosition(dir, speed);
+	//}
+
+	// ターゲットとプレイヤーの距離が規定距離を超えたら近づく
+	// XZ平面上
+	VECTOR playerPos = player->GetPosition();
+	playerPos.y = 0;
+	VECTOR targetPos = target;
+	targetPos.y = 0;
+	VECTOR dist = VSub(targetPos, playerPos);
+	float distSq = VDot(dist, dist);
+	if (distSq > TARGET_DISTANCE_MAX * TARGET_DISTANCE_MAX) {
+		//isChase = false;
 	}
+	TargetMove();
 }
 
 void CameraObject::PullUpdate() {
@@ -218,6 +234,16 @@ void CameraObject::CameraShake() {
 			isShaking = false;
 		}
 	}
+}
+
+/*
+ *	ターゲットの移動
+ */
+void CameraObject::TargetMove() {
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	target = MyMath::Lerp(target, player->GetPosition(), TARGET_MOVE_RATIO);
+	// ターゲットの移動に合わせてカメラも移動
+	pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
 }
 
 /*

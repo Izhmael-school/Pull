@@ -25,11 +25,13 @@ private:
 		Max
 	};
 	CameraMode mode;		// カメラのモード
+	VECTOR target;			// 追従カメラのターゲット
 	float speed;			// 移動速度
 	float shakePower;		// シェイクの大きさ
 	float shakeTime;		// シェイクの時間
 	float shakeElapsedTime;	// シェイクの経過時間
 	bool isShaking;			// シェイク中か否か
+	bool isChase;			// 追うか否か
 
 	bool isEvent;
 
@@ -39,6 +41,11 @@ private:
 	const float PULL_ZOOM_RATIO_MAX;
 	// 引っ張り時のズーム割合の最小
 	const float PULL_ZOOM_RATIO_MIN;
+	// ターゲットがプレイヤーを追う時の補間割合
+	const float TARGET_MOVE_RATIO;
+	// ターゲットがプレイヤーと離れられる最大距離
+	const float TARGET_DISTANCE_MAX;
+
 public:
 	CameraObject();
 	~CameraObject() = default;
@@ -70,6 +77,11 @@ private:
 	 *	カメラのシェイク
 	 */
 	void CameraShake();
+	/*
+	 *	ターゲットの移動
+	 *  @param	VECTOR 
+	 */
+	void TargetMove();
 
 public:
 	/*
