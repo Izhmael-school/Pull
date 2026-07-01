@@ -16,7 +16,8 @@ enum class ColliderLayer {
 	PlayerArm,
 	Enemy,
 	Stage,
-	Gimick
+	Gimmick,
+	BreakWall,
 };
 
 class Collider {

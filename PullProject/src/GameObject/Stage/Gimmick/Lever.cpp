@@ -27,6 +27,7 @@ void Lever::Setup() {
 	GimmickObject::Setup();
 	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -50, -50), VGet(50, 50, 50));
+	pCollider->SetLayer(ColliderLayer::Gimmick);
 }
 
 
