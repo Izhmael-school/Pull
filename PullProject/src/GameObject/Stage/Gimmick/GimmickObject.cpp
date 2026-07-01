@@ -38,17 +38,18 @@ void GimmickObject::Start() {
  *  @param[in]	VECTOR& 最大値
  */
 void GimmickObject::CalculateLocalAABB(VECTOR& outMin, VECTOR& outMax) const {
-	// 最初は1つ目のメッシュを基準にする
+	// 基準のメッシュの最大、最小座標を取得
 	outMin = MV1GetMeshMinPosition(modelHandle, 0);
 	outMax = MV1GetMeshMaxPosition(modelHandle, 0);
 
-	// モデルに含まれるメッシュ数を取得
+	// メッシュ数を取得
 	int meshNum = MV1GetMeshNum(modelHandle);
 
-	// 2つ目以降のメッシュを比較
+	// それぞれのメッシュを比較
 	for (int i = 1; i < meshNum; i++) {
-		// メッシュの最小・最大座標を取得
+		// メッシュ毎の最小座標を取得
 		VECTOR minPos = MV1GetMeshMinPosition(modelHandle, i);
+		// メッシュ毎の最大座標を取得
 		VECTOR maxPos = MV1GetMeshMaxPosition(modelHandle, i);
 
 		// モデル全体の最小値を更新
