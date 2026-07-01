@@ -310,7 +310,7 @@ bool CollisionManager::CapsuleVsAABB(Collider* a, Collider* b) {
 	VECTOR min = box->GetMin();
 	VECTOR max = box->GetMax();
 
-	const int steps = 32;
+	const int steps = 64;
 
 	for (int i = 0; i <= steps; i++) {
 		float t = (float)i / steps;
@@ -538,6 +538,8 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	}
 
 	VECTOR move = VScale(dir, push);
+
+	
 
 	cap->GetGameObject()->GetTransform()->AddPosition(move);
 }
