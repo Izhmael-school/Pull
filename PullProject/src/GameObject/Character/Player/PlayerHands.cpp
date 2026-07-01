@@ -17,9 +17,9 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	: Character(_modelHandle, _pos, _tag)
 	, handsState(HandsState::Idle)
 	, catchState(CatchState::None)
-	, owner(_owner)
+	, pOwner(_owner)
 	, extendSpeed(20.0f)
-	, returnSpeedRatio(0.7f)
+	, returnSpeedRatio(0.2f)
 
 	, RETURN_THRESHOLD(1.0f)
 {
@@ -126,7 +126,7 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 		catchState = CatchState::LeverCatch;
 		handsState = HandsState::Catch;
 		// 引っこ抜き
-		bool pull = owner->Pull();
+		bool pull = pOwner->Pull();
 		// ギミック発動
 		if (pull) {
 			lever->SetLeverTrigger(pull);
@@ -145,22 +145,29 @@ void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 void PlayerHands::HandsMove() {
 	// ウデ伸ばし中なら前に進む
 	if (handsState == HandsState::ArmsExtending) {
-		pTransform->AddPosition(GetTransform()->GetForward(), -extendSpeed);
+		pTransform->AddPosition(pTransform->GetForward(), -extendSpeed);
 
 		// ウデ伸ばし中は当たり判定の押し出しあり
 		pCollider->SetResolve(true);
 	}
 	// ウデ戻し中なら戻ってくる
 	else if (handsState == HandsState::ArmsReturning){
-		float posZ = pTransform->GetLocalPosition().z;
+		VECTOR dist = VSub(pOwner->GetPosition(), pTransform->GetPosition());
+		// 手とプレイヤーの距離の2乗
+		float distSq = VDot(dist, dist);
 		// 戻ってきたとみなす
-		if (posZ > -RETURN_THRESHOLD) {
+		if (distSq < RETURN_THRESHOLD) {
 			pTransform->SetPosition(VZero);
 			handsState = HandsState::Idle;
 		}
 		// 戻ってくる
 		else {
-			pTransform->SetPosition(VGet(0, 0, posZ * returnSpeedRatio));
+			pTransform->SetPosition(
+				MyMath::Lerp(
+					pTransform->GetLocalPosition(), 
+					VZero,
+					returnSpeedRatio)
+			);
 		}
 
 		// ウデ戻し中は当たり判定の押し出しなし
@@ -172,14 +179,18 @@ void PlayerHands::HandsMove() {
  *	掴み移動処理
  */
 void PlayerHands::CatchMoving() {
-	// プレイヤーが手の位置に戻るまで移動
-	if (pTransform->GetLocalPosition().z > 0) {
+	VECTOR dist = VSub(pOwner->GetPosition(), pTransform->GetPosition());
+	// 手とプレイヤーの距離の2乗
+	float distSq = VDot(dist, dist);
+	// 戻ってきたとみなす
+	if (distSq < RETURN_THRESHOLD) {
 		catchState = CatchState::None;
 		handsState = HandsState::Idle;
 		pTransform->SetPosition(VZero);
 	}
+	// プレイヤーが手の位置に戻るまで移動
 	else {
-		owner->CatchMovingMove(extendSpeed);
-		pTransform->AddPosition(VForward, extendSpeed);
+		pOwner->CatchMovingMove(extendSpeed);
+		pTransform->AddPosition(pTransform->GetForward(), extendSpeed);
 	}
 }
