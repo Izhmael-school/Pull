@@ -33,6 +33,8 @@ void EnemyDebugScene::Start()
 	PlayerManager::GetInstance().CreatePlayer(pos);
 	auto p = PlayerManager::GetInstance().GetPlayer();
 	p->GetTransform()->SetPosition(VGet(200,200,-600));
+
+
 }
 
 void EnemyDebugScene::Update(){

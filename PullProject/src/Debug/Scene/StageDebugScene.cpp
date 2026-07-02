@@ -18,6 +18,7 @@
 #include "../../Manager/PlayerManager.h"
 #include "../../Manager/EnemyManager.h"
 #include "Manager/ColliderObjectManager.h"
+#include "Generator/StageCollisionGenerator.h"
 
 StageDebugScene::StageDebugScene() { Start(); }
 
@@ -42,6 +43,10 @@ void StageDebugScene::Setup() {
 
 	// ====ギミックの更新====
 	GimmickObjectManager::GetInstance().Update();
+
+	StageCollisionGenerator generator;
+	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }
 
 void StageDebugScene::Update() {

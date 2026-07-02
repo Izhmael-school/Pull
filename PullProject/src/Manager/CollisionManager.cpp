@@ -539,7 +539,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 
 	VECTOR move = VScale(dir, push);
 
-	
+
 
 	cap->GetGameObject()->GetTransform()->AddPosition(move);
 }
