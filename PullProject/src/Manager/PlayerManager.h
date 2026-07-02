@@ -28,8 +28,9 @@ public:
 public:
 	/*
 	 *	プレイヤー生成
+	 *	@param	VECTOR	startPosition	開始位置
 	 */
-	void CreatePlayer();
+	void CreatePlayer(VECTOR startPossition);
 
 public:
 	/*

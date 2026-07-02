@@ -11,10 +11,10 @@
 PlayerManager::PlayerManager()
 	: pPlayer(nullptr)
 {}
-void PlayerManager::CreatePlayer() {
+void PlayerManager::CreatePlayer(VECTOR startPossition) {
 	// プレイヤーの生成
 	int playerModelHandle = MV1LoadModel("res/Model/Player/HandlessPlayer.mv1");
-	pPlayer = std::make_shared<PlayerCharacter>(playerModelHandle, VGet(500, 600, 300));
+	pPlayer = std::make_shared<PlayerCharacter>(playerModelHandle, startPossition);
 	pPlayer->GetAnimator()->Load(playerModelHandle, false);
 	pPlayer->Start();
 
