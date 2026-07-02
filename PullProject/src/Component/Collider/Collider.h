@@ -19,6 +19,7 @@ enum class ColliderLayer {
 	Gimmick,
 	BreakWall,
 	ExitArea,
+	BomBreakWall,
 };
 
 class Collider {
@@ -92,6 +93,23 @@ public:
 	void Move(VECTOR offset);
 
 	const char* GetTypeName() const override { return "AABB"; }
+
+
+	static void RotateBounds(
+		VECTOR& min,
+		VECTOR& max,
+		const VECTOR& rotation);
+private:
+	static void CreateCorners(
+		const VECTOR& min,
+		const VECTOR& max,
+		VECTOR corners[8]);
+
+	static void CalculateBounds(
+		const VECTOR corners[8],
+		VECTOR& min,
+		VECTOR& max);
+
 };
 
 
