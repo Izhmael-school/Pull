@@ -29,15 +29,15 @@ void PlayerDebugScene::Start() {
 void PlayerDebugScene::Setup() {
 
 	CollisionManager::GetInstance().Clear();
-	// カメラ生成
-	CameraManager::GetInstance().CreateCamera();
-	// プレイヤー生成
-	PlayerManager::GetInstance().CreatePlayer();
 
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
 	StageManager::GetInstance().LoadStage(4);
-
+	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
+	// カメラ生成
+	CameraManager::GetInstance().CreateCamera();
+	// プレイヤー生成
+	PlayerManager::GetInstance().CreatePlayer(pos);
 	// 敵生成
 	// シングルトンをやめたためコメントアウト
 	//EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));

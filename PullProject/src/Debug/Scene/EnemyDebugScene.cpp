@@ -29,7 +29,8 @@ EnemyDebugScene::EnemyDebugScene()
 
 void EnemyDebugScene::Start()
 {
-	PlayerManager::GetInstance().CreatePlayer();
+	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
+	PlayerManager::GetInstance().CreatePlayer(pos);
 	auto p = PlayerManager::GetInstance().GetPlayer();
 	p->GetTransform()->SetPosition(VGet(200,200,-600));
 
