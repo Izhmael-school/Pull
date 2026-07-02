@@ -37,31 +37,77 @@ void GimmickObject::Start() {
  *  @param[in]	VECTOR& 最小値
  *  @param[in]	VECTOR& 最大値
  */
-void GimmickObject::CalculateLocalAABB(VECTOR& outMin, VECTOR& outMax) const {
-	// 基準のメッシュの最大、最小座標を取得
-	outMin = MV1GetMeshMinPosition(modelHandle, 0);
-	outMax = MV1GetMeshMaxPosition(modelHandle, 0);
+void GimmickObject::CalculateLocalAABB(VECTOR& outMin, VECTOR& outMax, VECTOR scale, VECTOR rotation) const {
+    
+    // メッシュの最大、最小点を探す
+    outMin = MV1GetMeshMinPosition(modelHandle, 0);
+    outMax = MV1GetMeshMaxPosition(modelHandle, 0);
 
-	// メッシュ数を取得
-	int meshNum = MV1GetMeshNum(modelHandle);
+    int meshNum = MV1GetMeshNum(modelHandle);
 
-	// それぞれのメッシュを比較
-	for (int i = 1; i < meshNum; i++) {
-		// メッシュ毎の最小座標を取得
-		VECTOR minPos = MV1GetMeshMinPosition(modelHandle, i);
-		// メッシュ毎の最大座標を取得
-		VECTOR maxPos = MV1GetMeshMaxPosition(modelHandle, i);
+    for (int i = 1; i < meshNum; i++) {
+        VECTOR minPos = MV1GetMeshMinPosition(modelHandle, i);
+        VECTOR maxPos = MV1GetMeshMaxPosition(modelHandle, i);
 
-		// モデル全体の最小値を更新
-		outMin.x = std::min(outMin.x, minPos.x);
-		outMin.y = std::min(outMin.y, minPos.y);
-		outMin.z = std::min(outMin.z, minPos.z);
+        outMin.x = std::min(outMin.x, minPos.x);
+        outMin.y = std::min(outMin.y, minPos.y);
+        outMin.z = std::min(outMin.z, minPos.z);
 
-		// モデル全体の最大値を更新
-		outMax.x = std::max(outMax.x, maxPos.x);
-		outMax.y = std::max(outMax.y, maxPos.y);
-		outMax.z = std::max(outMax.z, maxPos.z);
-	}
+        outMax.x = std::max(outMax.x, maxPos.x);
+        outMax.y = std::max(outMax.y, maxPos.y);
+        outMax.z = std::max(outMax.z, maxPos.z);
+    }
+
+    // スケールを反映させる
+    outMin.x *= scale.x;
+    outMin.y *= scale.y;
+    outMin.z *= scale.z;
+
+    outMax.x *= scale.x;
+    outMax.y *= scale.y;
+    outMax.z *= scale.z;
+
+    // AABBの八頂点を作成
+    VECTOR corners[8] =
+    {
+        VGet(outMin.x, outMin.y, outMin.z),
+        VGet(outMax.x, outMin.y, outMin.z),
+        VGet(outMin.x, outMax.y, outMin.z),
+        VGet(outMax.x, outMax.y, outMin.z),
+
+        VGet(outMin.x, outMin.y, outMax.z),
+        VGet(outMax.x, outMin.y, outMax.z),
+        VGet(outMin.x, outMax.y, outMax.z),
+        VGet(outMax.x, outMax.y, outMax.z),
+    };
+
+    // 回転行列を作成
+
+    MATRIX rotX = MGetRotX(MyMath::Deg2Rad(rotation.x));
+    MATRIX rotY = MGetRotY(MyMath::Deg2Rad(rotation.y));
+    MATRIX rotZ = MGetRotZ(MyMath::Deg2Rad(rotation.z));
+
+    // Transformと同じ回転順
+    MATRIX rotMat = MMult(MMult(rotZ, rotX), rotY);
+
+    // 八頂点を回転させる
+    for (int i = 0; i < 8; i++) {
+        corners[i] = VTransform(corners[i], rotMat);
+    }
+
+    // 回転後のAABBを求める
+    outMin = corners[0];
+    outMax = corners[0];
+
+    for (int i = 1; i < 8; i++) {
+        outMin.x = std::min(outMin.x, corners[i].x);
+        outMin.y = std::min(outMin.y, corners[i].y);
+        outMin.z = std::min(outMin.z, corners[i].z);
+
+        outMax.x = std::max(outMax.x, corners[i].x);
+        outMax.y = std::max(outMax.y, corners[i].y);
+        outMax.z = std::max(outMax.z, corners[i].z);
+    }
 }
 
 /*

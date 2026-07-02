@@ -21,6 +21,7 @@ void ExitArea::Setup() {
 	GimmickObject::Setup();
 	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, VGet(-30, -300, -200), VGet(30, 300, 200));
+	pCollider->SetLayer(ColliderLayer::ExitArea);
 }
 
 /*

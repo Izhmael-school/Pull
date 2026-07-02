@@ -35,7 +35,8 @@ void BreakWall::Setup() {
 	// ƒ‚ƒfƒ‹‚Ìƒ[ƒJƒ‹AABB‚ðŽæ“¾
 	VECTOR minPos;
 	VECTOR maxPos;
-	CalculateLocalAABB(minPos, maxPos);
+	VECTOR scale = VGet(15.9f, 7.0f, 0.46f);
+	CalculateLocalAABB(minPos, maxPos,scale,this->GetRotation());
 
 	printfDx("Min : %.2f %.2f %.2f\n", minPos.x, minPos.y, minPos.z);
 	printfDx("Max : %.2f %.2f %.2f\n", maxPos.x, maxPos.y, maxPos.z);
