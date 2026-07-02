@@ -11,14 +11,17 @@
 #include <functional>
 #include "Definition/Enum/EnemyType.h"
 #include "DxLib.h"
+#include "GameObject/Character/Enemy/EnemyBase.h"
 
-class EnemyBase;
+class EffectManager;
+
+using EnemyPtr = std::unique_ptr<EnemyBase>;
 
 class EnemyGenerator{
 private:
 	std::vector<int> originEnemyModelHandle;	// モデルの配列
 	std::vector<int> originEnemyAnimHandle;	// アニメーションの配列
-	std::vector<std::function<std::unique_ptr<EnemyBase>(int,VECTOR)>> CreateEnemyEvent;// 敵を生成する関数の配列
+	std::vector<std::function<EnemyPtr(int,VECTOR)>> CreateEnemyEvent;// 敵を生成する関数の配列
 
 public:
 	EnemyGenerator();
@@ -37,28 +40,29 @@ private:
 	/*
 	 * @brief 歩く敵の生成
 	 */
-	std::unique_ptr<EnemyBase> CreateWalker(int _modelHandle,VECTOR _pos);
+	EnemyPtr CreateWalker(int _modelHandle,VECTOR _pos);
 
 	/*
 	 * @brief 弾を吐く敵の生成
 	 */
-	std::unique_ptr<EnemyBase> CreateShooter(int _modelHandle, VECTOR _pos);
+	EnemyPtr CreateShooter(int _modelHandle, VECTOR _pos);
 
 	/*
 	 * @brief 自爆する敵の生成
 	 */
-	std::unique_ptr<EnemyBase> CreateBomber(int _modelHandle, VECTOR _pos);
+	EnemyPtr CreateBomber(int _modelHandle, VECTOR _pos);
 
 	/*
 	 * @brief 尻尾を掴める敵の生成
 	 */
-	std::unique_ptr<EnemyBase> CreateTail(int _modelHandle, VECTOR _pos);
+	EnemyPtr CreateTail(int _modelHandle, VECTOR _pos);
 public:
 	/*
 	 * @brief 敵の生成
 	 * @param _type:敵の種類
 	 * @param _pos:初期位置
+	 * @param _effectManager:エフェクトマネージャー
 	 */
-	std::unique_ptr<EnemyBase> CreateEnemy(EnemyType _type,VECTOR _pos);
+	EnemyPtr CreateEnemy(EnemyType _type,VECTOR _pos);
 };
 #endif // !_ENEMYGENERATOR_H_

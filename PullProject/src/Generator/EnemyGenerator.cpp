@@ -84,18 +84,18 @@ std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type, VECTOR _
 	return std::move(enemy);
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateWalker(int _modelHandle, VECTOR _pos) {
+EnemyPtr EnemyGenerator::CreateWalker(int _modelHandle, VECTOR _pos) {
 	return std::make_unique<WalkEnemy>(_modelHandle, _pos);
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateShooter(int _modelHandle, VECTOR _pos) {
+EnemyPtr EnemyGenerator::CreateShooter(int _modelHandle, VECTOR _pos) {
 	return std::make_unique<ShooterEnemy>(_modelHandle, _pos);
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateBomber(int _modelHandle, VECTOR _pos) {
+EnemyPtr EnemyGenerator::CreateBomber(int _modelHandle, VECTOR _pos) {
 	return std::make_unique<BomberEnemy>(_modelHandle, _pos);
 }
 
-std::unique_ptr<EnemyBase> EnemyGenerator::CreateTail(int _modelHandle, VECTOR _pos) {
+EnemyPtr EnemyGenerator::CreateTail(int _modelHandle, VECTOR _pos) {
 	return std::make_unique<TailEnemy>(_modelHandle, _pos);
 }

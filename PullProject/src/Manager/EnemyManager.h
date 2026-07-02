@@ -7,6 +7,7 @@
 #include "Generator/EnemyGenerator.h"
 #include <memory>
 #include <vector>
+#include <string>
 #include "Dxlib.h"
 
 #ifndef _ENEMYMANAGER_H_
@@ -14,6 +15,8 @@
 
 class EnemyBase;
 class EnemyGenerator;
+class EffectManager;
+class StageManager;
 
 using EnemyPtr = std::unique_ptr<EnemyBase>;
 
@@ -25,8 +28,10 @@ private:
 	std::vector<EnemyPtr> useEnemyArray;	// 使用中の敵
 	std::vector<std::vector<EnemyPtr>> unuseEnemyArray;	// 未使用の敵
 
+	EffectManager& effectManager;
+
 public:
-	EnemyManager();
+	EnemyManager(EffectManager& _effectManager);
 	~EnemyManager();
 	
 private:
@@ -53,12 +58,13 @@ public:
 	 */
 	void UnuseAllEnemy();
 
+	void SpawnStageFramePoint(EnemyType _type ,StageManager& _stageManager);
+
 private:
 	/*
 	 * @brief　敵の未使用化
 	 */
 	void UnuseEnemy(EnemyPtr _unuseEnemy);
-
 };
 
 #endif
