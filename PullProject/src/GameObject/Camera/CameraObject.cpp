@@ -39,6 +39,7 @@ CameraObject::CameraObject()
 {}
 
 void CameraObject::Start() {
+	//pCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -30), 5);
 }
 
 void CameraObject::Update() {
