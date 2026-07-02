@@ -10,6 +10,7 @@
 #include "../../Manager/PlayerManager.h"
 #include "../../Component/Collider/Collider.h"
 #include <DxLib.h>
+#include <ImGui/imgui.h>
 
  /*
   * @author Sekino
@@ -37,6 +38,8 @@ CameraObject::CameraObject()
 	, TARGET_MOVE_RATIO(0.15f)
 	, TARGET_DISTANCE_MAX(30.0f)
 	, TARGET_THRESHOLD(0.5f)
+	, POSITION_Y_LIMIT_UP(-900.0f)
+	, POSITION_Y_LIMIT_DOWN(0.0f)
 {}
 
 void CameraObject::Start() {
@@ -146,35 +149,38 @@ void CameraObject::PlayerUpdate() {
 
 	// 入力方向を保持
 	VECTOR moveVec = VZero;
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
-		moveVec = VAdd(moveVec, VScale(pTransform->GetUp(), -1));
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
-		moveVec = VAdd(moveVec, pTransform->GetUp());
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
 		moveVec = VAdd(moveVec, VScale(pTransform->GetRight(), -1));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
 		moveVec = VAdd(moveVec, pTransform->GetRight());
+	// 上下移動には制限を掛ける
+	VECTOR move = VAdd(GetPosition(), VScale(pTransform->GetUp(), -speed));
+	float moveY = target.y - move.y;
+	if (moveY < POSITION_Y_LIMIT_DOWN) {
+		if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
+			moveVec = VAdd(moveVec, VScale(pTransform->GetUp(), -1));
+	}
+	move = VAdd(GetPosition(), VScale(pTransform->GetUp(), speed));
+	moveY = target.y - move.y;
+	if (moveY > POSITION_Y_LIMIT_UP) {
+		if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
+			moveVec = VAdd(moveVec, pTransform->GetUp());
+	}
 
 	// 入力があれば回転
 	if (moveVec.x != 0 ||
 		moveVec.y != 0 ||
-		moveVec.z != 0) {
+		moveVec.z != 0) {	
 		// カメラの移動
 		pTransform->AddPosition(moveVec, speed);
 	}
+	float y = target.y - GetPosition().y;
+	ImGui::Begin("PositionY");
+	ImGui::Text("%f", y);
+	ImGui::End();
 
-	// プレイヤーの方を向く
+	// ターゲットの方を向く
 	pTransform->LookAt(target);
-
-	// プレイヤーとカメラの距離が規定距離を超えていたら近づける
-	//VECTOR dir = VSub(player->GetPosition(), GetPosition());
-	//float dist = VDot(dir, dir) - PLAYER_DISTANCE * PLAYER_DISTANCE;
-	//if (dist > 0) {
-	//	dir.y = 0;
-	//	dir = VNorm(dir);
-	//	dist = sqrtf(dist);
-	//	pTransform->AddPosition(dir, speed);
-	//}
 
 	// ターゲットとプレイヤーの距離が規定距離を超えたら近づく
 	// XZ平面上
