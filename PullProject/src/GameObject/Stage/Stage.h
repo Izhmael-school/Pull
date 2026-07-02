@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include "../GameObject.h"
+#include "Generator/StageCollisionGenerator.h"
 
 class Stage :public StageBase {
 private:

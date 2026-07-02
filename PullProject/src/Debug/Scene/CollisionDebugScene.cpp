@@ -29,8 +29,6 @@ void CollisionDebugScene::Setup() {
 	CollisionManager::GetInstance().Clear();
 	StageManager::GetInstance().Initialize();
 	StageManager::GetInstance().LoadStage(4);
-	
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
 void CollisionDebugScene::Render() {

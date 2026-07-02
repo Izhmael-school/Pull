@@ -12,6 +12,7 @@
 #include "../../Manager/ModelManager.h"
 #include "../../Data/Gimmick/StageLoader.h"
 #include "../../GameObject/Stage/CharacterSpawnPos.h"
+#include "Generator/StageCollisionGenerator.h"
 
 #include <memory>
 #include <string>
@@ -29,6 +30,8 @@ private:
 	std::unique_ptr<StageBase> loadedStage;		// 読み込み済みのステージデータ
 	StageState stageState;						// ステージの状態保持
 	CharacterSpawnPos characterSpawnPos;		// キャラクターの生成位置
+
+	StageCollisionGenerator generator;		// ステージの当たり判定生成器
 
 	std::string stageFile;
 	int stageModel;
