@@ -20,7 +20,7 @@
       "Type": "BomBreakWall",
       "Model": "res/Model/Gimmick/BomBreakWall/BomBreakWall.mv1",
       "Position": "BomBreakWall_SP0",
-      "Rotation": 90.0
+      "Rotation": 0.0
     },
     {
       "Type": "HookShot",

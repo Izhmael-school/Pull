@@ -1,6 +1,7 @@
 #include "Collider.h"
 #include "Definition/Const/ColorConst.h"
 #include "Manager/CollisionManager.h"
+#include "../../Definition/CommonModule/MyMath.h"
 #pragma region Collider
 
 /*
@@ -65,6 +66,72 @@ void AABBCollider::SetMax(VECTOR max) {
 void AABBCollider::Move(VECTOR offset) {
 	localMin = VAdd(localMin, offset);
 	localMax = VAdd(localMax, offset);
+}
+
+/*
+ *	回転行列を作成
+ */
+void AABBCollider::RotateBounds(VECTOR& min, VECTOR& max, const VECTOR& rotation) {
+	// 頂点数
+	VECTOR corners[8];
+	// AABBの八頂点を作成
+	CreateCorners(min, max, corners);
+
+	// 回転行列を作成
+	MATRIX rotX = MGetRotX(MyMath::Deg2Rad(rotation.x));
+	MATRIX rotY = MGetRotY(MyMath::Deg2Rad(rotation.y));
+	MATRIX rotZ = MGetRotZ(MyMath::Deg2Rad(rotation.z));
+
+	// Transformと同じ回転軸
+	MATRIX mat = MMult(MMult(rotZ, rotX), rotY);
+
+	// 八頂点を回転させる
+	for (int i = 0; i < 8; i++) {
+		corners[i] = VTransform(corners[i], mat);
+	}
+	// 回転後のAABBを求める
+	CalculateBounds(corners, min, max);
+}
+
+/*
+ *	AABBの八頂点を作成
+ *  @param[in] const VECTOR& 最小点
+ *  @param[in] const VECTOR& 最大点
+ *  @param[in] VECTOR	     頂点数
+ */
+void AABBCollider::CreateCorners(const VECTOR& min, const VECTOR& max, VECTOR corners[8]) {
+	// AABBの八頂点を作成
+	corners[0] = VGet(min.x, min.y, min.z);
+	corners[1] = VGet(max.x, min.y, min.z);
+	corners[2] = VGet(min.x, max.y, min.z);
+	corners[3] = VGet(max.x, max.y, min.z);
+
+	corners[4] = VGet(min.x, min.y, max.z);
+	corners[5] = VGet(max.x, min.y, max.z);
+	corners[6] = VGet(min.x, max.y, max.z);
+	corners[7] = VGet(max.x, max.y, max.z);
+}
+
+/*
+ *	回転後のAABBを求める
+ *  @param[in]	const VECTOR 頂点数
+ *  @param[in]	VECTOR&		 最小点
+ *  @param[in]	VECTOR&		 最大点
+ */
+void AABBCollider::CalculateBounds(const VECTOR corners[8], VECTOR& min, VECTOR& max) {
+	min = corners[0];
+	max = corners[0];
+
+	//　最大、最小点を更新する
+	for (int i = 1; i < 8; i++) {
+		min.x = std::min(min.x, corners[i].x);
+		min.y = std::min(min.y, corners[i].y);
+		min.z = std::min(min.z, corners[i].z);
+
+		max.x = std::max(max.x, corners[i].x);
+		max.y = std::max(max.y, corners[i].y);
+		max.z = std::max(max.z, corners[i].z);
+	}
 }
 
 #pragma endregion

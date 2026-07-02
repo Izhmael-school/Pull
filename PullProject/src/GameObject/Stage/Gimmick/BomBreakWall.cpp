@@ -24,8 +24,14 @@ BomBreakWall::BomBreakWall(int modelHandle, VECTOR pos, VECTOR rota)
  */
 void BomBreakWall::Setup() {
 	GimmickObject::Setup();
+	// モデルのローカルAABBを取得
+	VECTOR minPos;
+	VECTOR maxPos;
+	VECTOR scale = VGet(15.9f, 7.0f, 8.12f);
+	CalculateLocalAABB(minPos, maxPos, scale, this->GetRotation());
 	// コライダーを付与
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-300, -300, -200), VGet(300, 300, 200));
+	pCollider = std::make_unique<AABBCollider>(this, minPos,maxPos);
+
 }
 
 /*
