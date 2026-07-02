@@ -175,7 +175,7 @@ void CameraObject::PlayerUpdate() {
 		pTransform->AddPosition(moveVec, speed);
 	}
 	float y = target.y - GetPosition().y;
-	ImGui::Begin("PositionY");
+	ImGui::Begin("CameraPositionY");
 	ImGui::Text("%f", y);
 	ImGui::End();
 

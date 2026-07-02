@@ -40,6 +40,8 @@ void PlayerHands::Update() {
 		if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F)) {
 			handsState = HandsState::ArmsReturning;
 			catchState = CatchState::None;
+			// 引っこ抜き解除時処理を呼ぶ
+			pOwner->PullReset();
 		}
 	}
 	// 何も掴んでいなければ
