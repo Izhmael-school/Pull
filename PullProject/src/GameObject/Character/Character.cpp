@@ -23,19 +23,25 @@ void Character::Start() {
 void Character::Update() {
 	GameObject::Update();
 
+	if (pAnimator != nullptr)
+		pAnimator->Update();
+
+	/*
+	 *	@author Riku
+	 */
 	// 重力落下
 	GravityFall();
 
 	if (pGroundingCollider)
 		pGroundingCollider->Update();
-
-	if (pAnimator != nullptr)
-		pAnimator->Update();
 }
 
 void Character::Render() {
 	GameObject::Render();
 
+	/*
+	 *	@author Riku
+	 */
 	if (pGroundingCollider)
 		pGroundingCollider->Render();
 }
@@ -44,12 +50,18 @@ void Character::Setup() {
 	GameObject::Setup();
 }
 
+/*
+ *	@author Riku
+ */
 void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
 		_pOther->GetGameObject()->GetTag() == Ground)
 		hitGroundingFrag = true;
 }
 
+/*
+ *	@author Riku
+ */
 void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
 		_pOther->GetGameObject()->GetTag() == Ground)

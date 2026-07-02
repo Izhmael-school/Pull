@@ -30,8 +30,10 @@ private:
 	float shakePower;		// シェイクの大きさ
 	float shakeTime;		// シェイクの時間
 	float shakeElapsedTime;	// シェイクの経過時間
+	float chasePlayerPosY;	// プレイヤーを追うためのY座標
 	bool isShaking;			// シェイク中か否か
-	bool isChase;			// 追うか否か
+	bool isChaseXZ;			// 追うか否か(XZ平面)
+	bool isChaseY;			// 追うか否か(Y軸)
 
 	bool isEvent;
 
@@ -45,6 +47,8 @@ private:
 	const float TARGET_MOVE_RATIO;
 	// ターゲットがプレイヤーと離れられる最大距離
 	const float TARGET_DISTANCE_MAX;
+	// ターゲットとプレイヤーが重なったとみなす閾値
+	const float TARGET_THRESHOLD;
 
 public:
 	CameraObject();
@@ -78,10 +82,13 @@ private:
 	 */
 	void CameraShake();
 	/*
-	 *	ターゲットの移動
-	 *  @param	VECTOR 
+	 *	ターゲットのXZ平面上の移動
 	 */
-	void TargetMove();
+	void TargetMoveXZ();
+	/*
+	 *	ターゲットのY軸移動
+	 */
+	void TargetMoveY();
 
 public:
 	/*

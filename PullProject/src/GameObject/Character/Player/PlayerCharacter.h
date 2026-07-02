@@ -93,7 +93,14 @@ public:
 	 *	@return	float
 	 */
 	inline float GetPullValueRatio() { return pullValue / PULL_VALUE_MAX; }
-	
+	/*
+	 *	プレイヤーの接地判定取得
+	 */
+	inline bool GetHitGroundingFrag() { return hitGroundingFrag; }
+	/*
+	 *	ジャンプ中か否か
+	 */
+	inline bool IsJump() { return playerState == PlayerState::Jump; }
 };
 // 別名定義
 using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;

@@ -18,20 +18,24 @@
 
 CameraObject::CameraObject()
 	: mode(CameraMode::Debug)
+	, target(VZero)
 	, speed(30.0f)
 	, shakePower(0.0f)
 	, shakeTime(0.0f)
 	, shakeElapsedTime(0.0f)
+	, chasePlayerPosY(0.0f)
 	, isShaking(false)
-	, isChase(false)
+	, isChaseXZ(false)
+	, isChaseY(false)
 
 	, isEvent(false)
 
 	, PLAYER_DISTANCE(1000)
 	, PULL_ZOOM_RATIO_MAX(0.95f)
 	, PULL_ZOOM_RATIO_MIN(0.7f) 
-	, TARGET_MOVE_RATIO(0.2f)
-	, TARGET_DISTANCE_MAX(10.0f)
+	, TARGET_MOVE_RATIO(0.15f)
+	, TARGET_DISTANCE_MAX(30.0f)
+	, TARGET_THRESHOLD(0.5f)
 {}
 
 void CameraObject::Start() {
@@ -171,9 +175,30 @@ void CameraObject::PlayerUpdate() {
 	VECTOR dist = VSub(targetPos, playerPos);
 	float distSq = VDot(dist, dist);
 	if (distSq > TARGET_DISTANCE_MAX * TARGET_DISTANCE_MAX) {
-		//isChase = false;
+		isChaseXZ = true;
 	}
-	TargetMove();
+	// Y軸上
+	// 下方向
+	float playerY = player->GetPosition().y;
+	float targetY = target.y;
+	if (targetY - playerY > TARGET_DISTANCE_MAX) {
+		// 上方向の制限の関係でこの位置で更新
+		chasePlayerPosY = player->GetPosition().y;
+		isChaseY = true;
+	}
+	// 上方向
+	if (playerY - targetY > TARGET_DISTANCE_MAX) {
+		isChaseY = true;
+		// プレイヤージャンプ中か地に足がついていなければ更新はしない
+		if (!player->IsJump() || player->GetHitGroundingFrag())
+			chasePlayerPosY = player->GetPosition().y;
+	}
+
+	// ターゲットの追いかけ
+	if (isChaseXZ)
+		TargetMoveXZ();
+	if (isChaseY)
+		TargetMoveY();
 }
 
 void CameraObject::PullUpdate() {
@@ -214,6 +239,8 @@ void CameraObject::EventUpdate() {
 
 	if (EventCameraMovement::IsEventEnd())
 		isEvent = false;
+
+	/**/
 }
 
 /*
@@ -237,13 +264,43 @@ void CameraObject::CameraShake() {
 }
 
 /*
- *	ターゲットの移動
+ *	ターゲットのXZ平面上の移動
  */
-void CameraObject::TargetMove() {
+void CameraObject::TargetMoveXZ() {
+	VECTOR playerPos = PlayerManager::GetInstance().GetPlayer()->GetPosition();
+	// XZ平面上なのでYは合わせる
+	playerPos.y = target.y;
+	// ターゲットがプレイヤーと重なるまで移動
+	VECTOR dist = VSub(target, playerPos);
+	float distSq = VDot(dist, dist);
+	if (distSq > TARGET_THRESHOLD) {
+		target = MyMath::Lerp(target, playerPos, TARGET_MOVE_RATIO);
+		// ターゲットの移動に合わせてカメラも移動
+		pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
+	}
+	else {
+		isChaseXZ = false;
+	}
+}
+
+/*
+ *	ターゲットのY軸移動
+ */
+void CameraObject::TargetMoveY() {
 	auto player = PlayerManager::GetInstance().GetPlayer();
-	target = MyMath::Lerp(target, player->GetPosition(), TARGET_MOVE_RATIO);
-	// ターゲットの移動に合わせてカメラも移動
-	pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
+	// Y軸移動なのでXZは合わせる
+	VECTOR newTargetPos = VGet(target.x, chasePlayerPosY, target.z);
+	// ターゲットがプレイヤーと重なるまで移動
+	VECTOR dist = VSub(target, newTargetPos);
+	float distSq = VDot(dist, dist);
+	if (distSq > TARGET_THRESHOLD) {
+		target = MyMath::Lerp(target, newTargetPos, TARGET_MOVE_RATIO);
+		// ターゲットの移動に合わせてカメラも移動
+		pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
+	}
+	else {
+		isChaseY = false;
+	}
 }
 
 /*

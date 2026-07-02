@@ -41,7 +41,7 @@ private:
 	float extendSpeed;						// 伸ばすスピード
 	float returnSpeedRatio;					// 戻ってくる速度割合
 
-	float RETURN_THRESHOLD;					// 戻ってきたとみなす閾値
+	const float RETURN_THRESHOLD;			// 戻ってきたとみなす閾値
 	
 public:
 	PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag = Player);
