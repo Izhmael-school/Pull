@@ -9,6 +9,7 @@ CameraManager::CameraManager()
  */
 void CameraManager::CreateCamera() {
 	camera = std::make_shared<CameraObject>();
+	camera->Start();
 }
 
 /*

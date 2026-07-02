@@ -59,6 +59,9 @@ public:
 	void Start() override;
 	// 更新処理
 	void Update() override;
+	// 描画処理
+	void Render() override;
+	void OnTriggerExit(Collider* _pSelf, Collider* _pOther);
 
 private:
 	/*
