@@ -31,13 +31,12 @@ void StageManager::LoadStage(int stageID) {
 		stageFile = "src/Data/Gimmick/DebugStageGimmick.json";
 		// ステージモデルロード
 		stageModel = ModelManager::GetInstance().Load("res/Model/Stage/DebugStage/DebugStage.mv1");
-		generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
+
 	}
 	else {
 		stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
 		// ステージモデルロード
 		stageModel =ModelManager::GetInstance().Load("res/Model/Stage/Stage4/Stage_4.mv1");
-		generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 	}
 
 
