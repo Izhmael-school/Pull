@@ -27,8 +27,8 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 {}
 
 void PlayerCharacter::Start() {
-	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 70), VZero, 100, VZero);
-	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -100), 10);
+	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 50), VScale(VUp, 10), 40, VZero);
+	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -30), 5);
 	isGravity = true;
 
 	// ジャンプアニメーションにイベントを仕込む
