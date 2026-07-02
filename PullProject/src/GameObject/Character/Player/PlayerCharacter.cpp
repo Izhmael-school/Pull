@@ -55,7 +55,6 @@ void PlayerCharacter::Start() {
 
 void PlayerCharacter::Update() {
 	Character::Update();
-	pTransform->Update();
 	
 	// ジャンプ後着地なら着地アニメーション再生
 	if (hitGroundingFrag && playerState == PlayerState::Jump) {
