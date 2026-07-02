@@ -8,6 +8,7 @@
 #include "../../Definition/Const/VECTORConst.h"
 #include "../../Definition/CommonModule/MyMath.h"
 #include "../../Manager/PlayerManager.h"
+#include "../../Component/Collider/Collider.h"
 #include <DxLib.h>
 
  /*
@@ -39,11 +40,11 @@ CameraObject::CameraObject()
 {}
 
 void CameraObject::Start() {
-	//pCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -30), 5);
+	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
 }
 
 void CameraObject::Update() {
-	pTransform->Update();
+	GameObject::Update();
 
 #if _DEBUG
 	// 引っ張りモード
@@ -103,6 +104,14 @@ void CameraObject::Update() {
 		mode = CameraMode::Event;
 #endif
 
+}
+
+void CameraObject::Render() {
+	GameObject::Render();
+}
+
+void CameraObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
+	int a = 1;
 }
 
 void CameraObject::DebugUpdate() {

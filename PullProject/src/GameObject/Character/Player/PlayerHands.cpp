@@ -33,9 +33,6 @@ void PlayerHands::Start() {
 
 void PlayerHands::Update() {
 	Character::Update();
-	pTransform->Update();
-	if (!pCollider) return;
-	pCollider->Update();
 
 	// 掴み状態
 	if (handsState == HandsState::Catch) {
@@ -67,8 +64,6 @@ void PlayerHands::Update() {
 
 void PlayerHands::Render() {
 	Character::Render();
-	if (pCollider)
-		pCollider->Render();
 }
 
 void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
