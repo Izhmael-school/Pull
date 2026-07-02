@@ -44,8 +44,6 @@ void PlayerDebugScene::Setup() {
 
 	// ===== ギミックの更新 ====
 	GimmickObjectManager::GetInstance().Update();
-	StageCollisionGenerator generator;
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
 void PlayerDebugScene::Update() {
