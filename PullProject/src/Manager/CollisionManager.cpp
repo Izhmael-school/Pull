@@ -560,6 +560,10 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 		return;
 	}
 
+	if (a->GetLayer() == ColliderLayer::ExitArea && b->GetLayer() == ColliderLayer::Stage || b->GetLayer() == ColliderLayer::ExitArea && a->GetLayer() == ColliderLayer::Stage) {
+		return;
+	}
+
 	VECTOR aMin = a->GetMin();
 	VECTOR aMax = a->GetMax();
 	VECTOR bMin = b->GetMin();

@@ -31,8 +31,20 @@ void BreakWall::Setup() {
 	GimmickObject::Setup();
 	// レバー対応ギミックの末尾に追加
 	GimmickManager::GetInstance().RegisterLeverReceiver(triggerID, this);
+
+	// モデルのローカルAABBを取得
+	VECTOR minPos;
+	VECTOR maxPos;
+	VECTOR scale = VGet(15.9f, 7.0f, 0.46f);
+	CalculateLocalAABB(minPos, maxPos,scale,this->GetRotation());
+
+	printfDx("Min : %.2f %.2f %.2f\n", minPos.x, minPos.y, minPos.z);
+	printfDx("Max : %.2f %.2f %.2f\n", maxPos.x, maxPos.y, maxPos.z);
+
+	int frameNum = MV1GetFrameNum(modelHandle);
+
 	// コライダーを付与
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-300, -300, -30), VGet(300, 300, 30));
+	pCollider = std::make_unique<AABBCollider>(this, minPos, maxPos);
 	pCollider->SetLayer(ColliderLayer::BreakWall);
 }
 

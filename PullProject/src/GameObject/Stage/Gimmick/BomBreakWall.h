@@ -11,18 +11,18 @@
 
 #include "../../../Definition/CommonModule/MyMath.h"
 
-/*
- *	爆弾で壊れる壁
- *  @param	GameObject
- */
+ /*
+  *	爆弾で壊れる壁
+  *  @param	GameObject
+  */
 class BomBreakWall : public GimmickObject {
-	private:
-		bool isBroken;		// 壊れたかどうか
-		bool isFading;		// フェード中かどうか
-		bool isActiv;		// ギミック起動チェック
+private:
+	bool isBroken;		// 壊れたかどうか
+	bool isFading;		// フェード中かどうか
+	bool isActiv;		// ギミック起動チェック
 
-		float opacity;		// アルファ値
-		float fadeSpeed;	// フェード速度
+	float opacity;		// アルファ値
+	float fadeSpeed;	// フェード速度
 
 public:
 	/*

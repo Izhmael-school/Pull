@@ -170,6 +170,7 @@
     <ClCompile Include="src\GameObject\Stage\CharacterSpawnPos.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\BomBreakWall.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Gimmick\ExitArea.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\HookShot.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="src\GameObject\Stage\CharacterSpawnPos.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\BomBreakWall.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\ExitArea.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\HookShot.h" />

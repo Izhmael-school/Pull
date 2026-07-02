@@ -18,6 +18,7 @@ enum class ColliderLayer {
 	Stage,
 	Gimmick,
 	BreakWall,
+	ExitArea,
 };
 
 class Collider {

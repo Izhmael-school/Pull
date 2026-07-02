@@ -23,6 +23,12 @@ public:
 protected:
 	virtual void Start();
 
+	/*
+	 *	モデルのローカル座標からAABBを求める
+	 *  @param[in]	VECTOR& 最小値
+	 *  @param[in]	VECTOR& 最大値
+	 */
+	void CalculateLocalAABB(VECTOR& outMin, VECTOR& outMax, VECTOR scale, VECTOR rotation) const;
 public:
 	virtual void Update();
 	virtual void Render();

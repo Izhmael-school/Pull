@@ -285,6 +285,12 @@
     <ClCompile Include="src\Instance\Effect\EffectInstance.cpp">
       <Filter>ソース ファイル\Instance\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\CharacterSpawnPos.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\ExitArea.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Manager\ManagerBase.h">
@@ -520,6 +526,12 @@
     </ClInclude>
     <ClInclude Include="src\Instance\Effect\EffectInstance.h">
       <Filter>ソース ファイル\Instance\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\CharacterSpawnPos.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\ExitArea.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

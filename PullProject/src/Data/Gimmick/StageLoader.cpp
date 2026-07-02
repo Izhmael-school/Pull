@@ -22,8 +22,8 @@ namespace {
 	constexpr const char* _DATENAME_LeverID = "LeverID";	// レバー対応ID
 	constexpr const char* _DATENAME_POSITION = "Position";	// 座標
 	constexpr const char* _DATENAME_MODEL = "Model";		// モデル
-	constexpr const char* _DATENAME_TYPE = "Type";		// ギミックの種類
-	constexpr const char* _DATENAME_LEVER = "Levers";	// レバー
+	constexpr const char* _DATENAME_TYPE = "Type";			// ギミックの種類
+	constexpr const char* _DATENAME_LEVER = "Levers";		// レバー
 	constexpr const char* _DATENAME_ROTATION = "Rotation";	// 回転
 
 }
@@ -49,10 +49,17 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		// 位置を設定
 		VECTOR pos = MV1GetFramePosition(stageHandle, frame);
 
-		// ベースモデル取得
-		int baseModel = ModelManager::GetInstance().Load(gimmick[_DATENAME_MODEL]);
-		// 実体モデル生成
-		int model = MV1DuplicateModel(baseModel);
+		// モデルハンドル
+		int model = -1;
+
+		// Modelが存在する場合のみ読み込む
+		if (gimmick.contains(_DATENAME_MODEL)) {
+			// ベースモデル取得
+			int baseModel = ModelManager::GetInstance().Load(gimmick[_DATENAME_MODEL]);
+
+			// 実体モデル生成
+			model = MV1DuplicateModel(baseModel);
+		}
 
 		// 回転数を取得
 		float baseRota = gimmick[_DATENAME_ROTATION];
@@ -105,7 +112,7 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		}
 
 		// レバーオブジェクト生成
-		Lever* obj = new Lever(id, model, pos,vRota);
+		Lever* obj = new Lever(id, model, pos, vRota);
 		// オブジェクトを登録
 		GimmickObjectManager::GetInstance().Register(obj);
 
