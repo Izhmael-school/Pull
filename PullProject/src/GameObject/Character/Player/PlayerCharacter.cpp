@@ -23,7 +23,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, PULL_VALUE_MAX(100.0f)
 	, PULL_CAMERA_SHAKE_POWER(20.0f)
 	, PULL_CAMERA_SHAKE_TIME(5.0f) 
-	, JUMP_POWER(30)
+	, JUMP_POWER(20)
 {}
 
 void PlayerCharacter::Start() {
@@ -159,15 +159,34 @@ bool PlayerCharacter::Pull() {
 		pullValue = 0;
 	}
 
+	// 引っこ抜き具合によって赤く変色
+	float pullRatio = 1 - pullValue / PULL_VALUE_MAX;
+	MV1SetDifColorScale(modelHandle, GetColorF(1, pullRatio, pullRatio, 1));
+	MV1SetDifColorScale(pHands->GetModelHandle(), GetColorF(1, pullRatio, pullRatio, 1));
+
+	ImGui::Begin("PullValue");
+	ImGui::Text("%f", pullValue);
+	ImGui::End();
 	// ある程度引くと引っこ抜き
 	if (pullValue >= PULL_VALUE_MAX) {
-		pullValue = 0;
 		// カメラシェイク
 		CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
-
+		// 解除時処理を呼ぶ
+		PullReset();
+		
 		return true;
 	}
 	return false;
+}
+
+/*
+ *	引っこ抜き解除時処理
+ */
+void PlayerCharacter::PullReset() {
+	pullValue = 0;
+	// 色を戻す
+	MV1SetDifColorScale(modelHandle, GetColorF(1, 1, 1, 1));
+	MV1SetDifColorScale(pHands->GetModelHandle(), GetColorF(1, 1, 1, 1));
 }
 
 /*

@@ -36,7 +36,11 @@ private:
 	bool isChaseY;			// 追うか否か(Y軸)
 
 	bool isEvent;
-
+	
+	// Y軸移動の上限
+	const float POSITION_Y_LIMIT_UP;
+	// Y軸移動の下限
+	const float POSITION_Y_LIMIT_DOWN;
 	// プレイヤーから離れる距離
 	const float PLAYER_DISTANCE;
 	// 引っ張り時のズーム割合の最大
