@@ -65,7 +65,7 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
 	// イベントをセット
 	enemy->SetEvent(std::bind(&EnemyManager::PlayAnimEvent_Effect, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
 					std::bind(&EnemyManager::PlayAnimEvent_Audio, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5),
-					std::bind(&EnemyManager::PlayAnimEvent_Missile, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
+					std::bind(&EnemyManager::PlayAnimEvent_Missile, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
 					std::bind(&EnemyManager::PlayAnimEvent_Sphere, this, std::placeholders::_1, std::placeholders::_2),
 					std::bind(&EnemyManager::PlayAnimEvent_AABB, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
@@ -111,8 +111,8 @@ void EnemyManager::PlayAnimEvent_Effect(const std::string& _effectName, VECTOR _
 void EnemyManager::PlayAnimEvent_Audio(const std::string& _audioName, float _volume, bool _isLoop, VECTOR _pos, float distance) {
 	audioManager.Play(_audioName, _volume, _isLoop, _pos, distance);
 }
-void EnemyManager::PlayAnimEvent_Missile(std::string _modelName,VECTOR _dir, VECTOR _pos) {
-	gameObjectManager.CreateGameObject<Missile>(_modelName,&effectManager, _dir, _pos);
+void EnemyManager::PlayAnimEvent_Missile(std::string _modelName,GameObject* _pOwner, VECTOR _dir, VECTOR _pos) {
+	gameObjectManager.CreateGameObject<Missile>(_modelName,_pOwner,&effectManager, _dir, _pos);
 }
 
 

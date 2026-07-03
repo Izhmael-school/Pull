@@ -21,7 +21,9 @@ void ShooterEnemy::Start() {
 void ShooterEnemy::Setup() {
 	EnemyBase::Setup();
 	// アニメーションに合わせてミサイルを出させる
-	SetAnimEvent("Attack",13,[this]() {createEvent("Missile",GetTransform()->GetForward(), GetPosition());});
+	int frameCount = MV1SearchFrame(modelHandle, "ShotPoint");
+	VECTOR shotPoint = MV1GetFramePosition(modelHandle, frameCount);
+	SetAnimEvent("Attack",13,[this, shotPoint]() {createEvent("Missile",this,GetTransform()->GetForward(), VAdd(shotPoint, GetPosition()));});
 }
 
 void ShooterEnemy::WanderingAction() {

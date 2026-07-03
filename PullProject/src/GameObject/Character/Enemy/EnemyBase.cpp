@@ -25,7 +25,9 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, wantUnuse(false)
 	, endAttack(true)
 	, canAttack(true)
-	, standbyElapsedTime(0.0f) {
+	, standbyElapsedTime(0.0f) 
+	, thrownDir(VZero)
+{
 }
 
 EnemyBase::~EnemyBase() {}

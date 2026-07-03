@@ -1,5 +1,11 @@
 #include "CaughtObject.h"
 
+void CaughtObject::CaughtAction() {
+}
+
+void CaughtObject::ThrownAction(VECTOR _dir) {
+}
+
 void CaughtObject::CaughtUpdate(){
 	switch (currentState){
 	case CaughtState::Catch:

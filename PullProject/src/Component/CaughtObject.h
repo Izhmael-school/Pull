@@ -8,6 +8,7 @@
 #define _CAUGHTOBJECT_H_
 
 #include "../Definition/Enum/CaughtState.h"
+#include "Dxlib.h"
 
 class CaughtObject{
 public:
@@ -15,6 +16,16 @@ public:
 
 public:
 	inline CaughtState GetCurrentCaughtState() const { return currentState; }
+
+	/*
+	 * @brief 捕まった
+	 */
+	virtual void CaughtAction();
+
+	/*
+	 * @brief 投げられた
+	 */
+	virtual void ThrownAction(VECTOR _dir);
 
 protected:
 	/*

@@ -18,9 +18,10 @@ class EffectManager;
 
 using EffectEvent = std::function<void(const std::string& _effectName, VECTOR _pos, float _scale, VECTOR rot)>;
 using AudioEvent = std::function<void(const std::string& _audioName, float _volume, bool _isLoop, VECTOR _pos, float distance)>;
-using MissileEvent = std::function<void(std::string _modelName, VECTOR _dir, VECTOR _pos)>;
+using MissileEvent = std::function<void(std::string _modelName,GameObject* _pOwner, VECTOR _dir, VECTOR _pos)>;
 using SphereEvent = std::function<void(VECTOR _pos, float _radius)>;
 using AABBEvent = std::function<void(VECTOR _pos, VECTOR _min, VECTOR _max)>;
+
 class EnemyBase : public Character, public CaughtObject {
 protected:
 
@@ -179,12 +180,12 @@ public:
 	/*
 	 * @brief 捕まった
 	 */
-	virtual void CaughtAction();
+	virtual void CaughtAction() override;
 
 	/*
 	 * @brief 投げられた
 	 */
-	virtual void ThrownAction(VECTOR _dir);
+	virtual void ThrownAction(VECTOR _dir) override;
 
 protected:
 	/*
