@@ -51,7 +51,7 @@ protected:
 protected:
 	bool rayAnswer;	// 視界内にいるか
 
-private:
+protected:
 	VECTOR spawnPoint;
 	VECTOR wanderingGoalPos;
 	VECTOR tracingTargetPos;
