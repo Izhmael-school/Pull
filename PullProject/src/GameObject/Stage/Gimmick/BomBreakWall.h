@@ -54,7 +54,7 @@ public:
 	 */
 	void Render() override;
 
-
+	void Reset() override;
 public:
 
 	/*
