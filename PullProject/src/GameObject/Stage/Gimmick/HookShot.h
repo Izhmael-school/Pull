@@ -7,7 +7,7 @@
 #define _HOOKSHOT_H_
 
 #include "GameObject/GameObject.h"
-#include "GameObject/Stage/Gimmick/GimmickObject.h";
+#include "GameObject/Stage/Gimmick/GimmickObject.h"
 #include "../../../Definition/CommonModule/MyMath.h"
 
 /*
@@ -18,7 +18,7 @@ public:
 	/*
 	 *	コンストラクタ
 	 */
-	HookShot(int modelHandle, VECTOR pos, VECTOR rota);
+	HookShot(int modelHandle, VECTOR pos, VECTOR rota,Tag tag = None);
 
 public:
 	/*

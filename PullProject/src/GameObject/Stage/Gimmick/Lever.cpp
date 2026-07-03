@@ -12,7 +12,7 @@
   *  コンストラクタ
   */
 Lever::Lever(int id, int modelHandle, VECTOR pos,VECTOR rota)
-	:GimmickObject(modelHandle, pos,rota)
+	:GimmickObject(modelHandle, pos,rota,tag)
 	, triggerID(id)
 	, isActivated(false)
 	, onLever(false)
@@ -26,7 +26,7 @@ void Lever::Start() {
 void Lever::Setup() {
 	GimmickObject::Setup();
 	// コライダーを付与
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -50, -50), VGet(50, 50, 50));
+	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -70, -50), VGet(50, 70, 50));
 	pCollider->SetLayer(ColliderLayer::Gimmick);
 }
 
@@ -66,6 +66,22 @@ void Lever::Render() {
  */
 void Lever::Execute() {
 	GimmickObject::Execute();
+}
+
+/*
+ *	
+ */
+void Lever::Reset() {
+	// 使用されていなければ行わない
+	if (!onLever)return;
+
+	GimmickObject::Reset();
+	// フラグを初期化
+	isActivated = false;
+	onLever = false;
+
+	// コライダーを登録済みか確認して再登録
+	CollisionManager::GetInstance().CheckRegister(pCollider.get());
 }
 
 /*

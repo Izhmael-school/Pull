@@ -49,6 +49,11 @@ public:
 	void Execute()override;
 
 	/*
+	 *	‰Šúó‘Ô‚É–ß‚·
+	 */
+	void Reset() override;
+
+	/*
 	 *	g—pó‘Ô
 	 */
 	void Activate();

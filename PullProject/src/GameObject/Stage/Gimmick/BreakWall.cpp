@@ -76,6 +76,24 @@ void BreakWall::Render() {
 }
 
 /*
+ *	初期状態に戻す
+ */
+void BreakWall::Reset() {
+	// 変更がなければ行わない
+	if (!isBroken && !isFading) return;
+	
+	
+	GimmickObject::Reset();
+
+	isBroken = false;
+	isFading = false;
+	opacity = 1.0f;
+
+	// コライダーを登録済みか確認して再登録
+	CollisionManager::GetInstance().CheckRegister(pCollider.get());
+}
+
+/*
  *	通知を受けた時の処理
  */
 void BreakWall::OnTriggered() {
