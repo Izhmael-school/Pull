@@ -188,17 +188,29 @@ bool CollisionManager::CheckHit(Collider* a, Collider* b) {
 #pragma endregion
 //	押し出し関数の呼び出し
 void CollisionManager::Resolve(Collider* a, Collider* b) {
-	// コライダーの型名を組み合わせてキーを作成
+
 	std::string key =
-		std::string(a->GetTypeName()) + "_" + b->GetTypeName();
+		std::string(a->GetTypeName()) + "_" +
+		b->GetTypeName();
 
-	// キーに対応する押し出し関数を検索
 	auto it = resolveFuncTable.find(key);
-	// 逆順のキーを作成して検索
-	if (it == resolveFuncTable.end()) return;
 
-	// 逆順のキーに対応する押し出し関数を検索
-	it->second(a, b);
+	if (it != resolveFuncTable.end()) {
+		it->second(a, b);
+		return;
+	}
+
+	std::string revKey =
+		std::string(b->GetTypeName()) + "_" +
+		a->GetTypeName();
+
+	auto it2 = resolveFuncTable.find(revKey);
+
+	if (it2 != resolveFuncTable.end()) {
+		it2->second(b, a);
+		return;
+	}
+
 }
 
 // JSONから当たり判定ルールを読み込む
@@ -539,7 +551,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 
 	VECTOR move = VScale(dir, push);
 
-
+	
 
 	cap->GetGameObject()->GetTransform()->AddPosition(move);
 }
