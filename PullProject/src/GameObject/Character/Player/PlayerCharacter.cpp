@@ -19,11 +19,14 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, playerState(PlayerState::Idle)
 	, speed(10.0f)
 	, pullValue(0.0f)
+	, returnColor(false)
 
 	, PULL_VALUE_MAX(100.0f)
 	, PULL_CAMERA_SHAKE_POWER(20.0f)
 	, PULL_CAMERA_SHAKE_TIME(5.0f) 
 	, JUMP_POWER(20)
+	, RETURN_COLOR_RATIO(0.95f)
+	, RETURN_PULL_VALUE_RATIO(0.95f)
 {}
 
 void PlayerCharacter::Start() {
@@ -75,6 +78,15 @@ void PlayerCharacter::Update() {
 		pAnimator->Play("Idle");
 		pHands->GetAnimator()->Play("Idle");
 	}
+
+	// 色戻し
+	if (returnColor) {
+		ReturnColor();
+	}
+	auto c = MV1GetDifColorScale(modelHandle);
+	ImGui::Begin("PlayerColor");
+	ImGui::Text("%f, %f, %f", c.r, c.g, c.b);
+	ImGui::End();
 }
 
 void PlayerCharacter::Render() {
@@ -145,6 +157,25 @@ void PlayerCharacter::Move() {
 	}
 }
 /*
+ *	色を戻す
+ */
+void PlayerCharacter::ReturnColor() {
+	// 今の色を取得
+	auto color = MV1GetDifColorScale(modelHandle);
+	// 線形補間で色を抜いていく
+	color.g = MyMath::Lerp(1, color.g, RETURN_COLOR_RATIO);
+	color.b = color.g;
+	// 1は超えないように
+	if (color.g > 1) {
+		color.g = 1;
+		color.b = 1;
+		returnColor = false;
+	}
+	// 適応
+	MV1SetDifColorScale(modelHandle, color);
+	MV1SetDifColorScale(pHands->GetModelHandle(), color);
+}
+/*
  *	引っこ抜き
  */
 bool PlayerCharacter::Pull() {
@@ -156,7 +187,7 @@ bool PlayerCharacter::Pull() {
 
 	}
 	else {
-		pullValue = 0;
+		pullValue = MyMath::Lerp(0, pullValue, RETURN_PULL_VALUE_RATIO);
 	}
 
 	// 引っこ抜き具合によって赤く変色
@@ -184,9 +215,7 @@ bool PlayerCharacter::Pull() {
  */
 void PlayerCharacter::PullReset() {
 	pullValue = 0;
-	// 色を戻す
-	MV1SetDifColorScale(modelHandle, GetColorF(1, 1, 1, 1));
-	MV1SetDifColorScale(pHands->GetModelHandle(), GetColorF(1, 1, 1, 1));
+	returnColor = true;
 }
 
 /*

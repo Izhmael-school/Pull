@@ -71,6 +71,9 @@ public:
     inline static VECTOR Lerp(VECTOR pos1, VECTOR pos2, float t) {
         return VAdd(pos1, VScale((VSub(pos2, pos1)), t));
     }
+    inline static float Lerp(float value1, float value2, float t) {
+        return value1 + (value2 - value1) * t;
+    }
 
     inline VECTOR Velocity(VECTOR dir, float speed) {
 

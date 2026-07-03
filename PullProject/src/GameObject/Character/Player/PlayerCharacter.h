@@ -31,6 +31,7 @@ private:
 	PlayerState playerState;	// プレイヤーの状態
 	float speed;				// 移動速度
 	float pullValue;			// 引っ張り値
+	bool returnColor;			// 色戻しフラグ
 
 	// 引っこ抜きライン
 	const float PULL_VALUE_MAX;
@@ -40,6 +41,10 @@ private:
 	const float PULL_CAMERA_SHAKE_TIME;
 	// ジャンプ力
 	const float JUMP_POWER;
+	// 色戻し割合
+	const float RETURN_COLOR_RATIO;
+	// 引っ張り値戻し割合
+	const float RETURN_PULL_VALUE_RATIO;
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
@@ -64,6 +69,10 @@ private:
 	 *	移動
 	 */
 	void Move();
+	/*
+	 *	色を戻す
+	 */
+	void ReturnColor();
 
 public:
 	/*
