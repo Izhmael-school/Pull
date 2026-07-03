@@ -13,6 +13,11 @@
 #include "../../../Component/Collider/Collider.h"
 #include "PlayerCharacter.h"
 
+/*
+ * author Sekino
+ */
+#include "GameObject/Missile/Missile.h"
+
 PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag)
 	: Character(_modelHandle, _pos, _tag)
 	, handsState(HandsState::Idle)
@@ -84,6 +89,18 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		enemy->CaughtAction();
 	}
 
+	/*
+	 * @author Sekino
+	 */
+	auto missile = dynamic_cast<Missile*>(other);
+	if (missile) {
+		// ステート変更
+		catchState = CatchState::EnemyCatch;
+		handsState = HandsState::Catch;
+		// 敵の掴まった時処理
+		missile->CaughtAction();
+	}
+
 	// 当たったのがレバーの場合
 	auto lever = dynamic_cast<Lever*>(other);
 	if (lever && InputManager::GetInstance().IsKey(KEY_INPUT_Q)) {
@@ -106,6 +123,19 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 		// 敵を離す
 		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
 			enemy->ThrownAction(GetTransform()->GetForward());
+			catchState = CatchState::None;
+			handsState = HandsState::ArmsReturning;
+		}
+	}
+
+	/*
+	 * @author Sekino
+	 */
+	auto missile = dynamic_cast<Missile*>(other);
+	if (missile) {
+		// ミサイルを離す
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
+			missile->ThrownAction(GetTransform()->GetForward());
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
 		}

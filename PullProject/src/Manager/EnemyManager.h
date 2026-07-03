@@ -99,7 +99,7 @@ public:
 	/*
 	 * @brief アニメーションイベント用のオブジェクト生成
 	 */
-	void PlayAnimEvent_Missile(std::string _modelName, VECTOR _dir,VECTOR _pos);
+	void PlayAnimEvent_Missile(std::string _modelName,GameObject* _pOwner, VECTOR _dir,VECTOR _pos);
 
 private:
 	/*

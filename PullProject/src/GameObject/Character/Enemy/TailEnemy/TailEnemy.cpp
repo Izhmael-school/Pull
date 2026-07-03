@@ -83,9 +83,9 @@ void TailEnemy::Setup() {
 	SetAnimEvent("BigShot", -1,[this]() {EndAttack();});
 
 	// アニメーションに合わせてミサイルを出す
-	SetAnimEvent("BigShot", 20, [this]() {createEvent("BossMissile",GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
-	SetAnimEvent("BigShot", 30, [this]() {createEvent("BossMissile",GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
-	SetAnimEvent("BigShot", 40, [this]() {createEvent("BossMissile",GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
+	SetAnimEvent("BigShot", 20, [this]() {createEvent("BossMissile",this,GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
+	SetAnimEvent("BigShot", 30, [this]() {createEvent("BossMissile",this,GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
+	SetAnimEvent("BigShot", 40, [this]() {createEvent("BossMissile",this,GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
 
 	SetAnimEvent("Taunt", 40, [this]() {
 		VECTOR min = VScale(VAdd(VLeft, VBack), 500);

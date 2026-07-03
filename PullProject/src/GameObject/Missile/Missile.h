@@ -21,8 +21,10 @@ public:
 	EffectManager& pEffectManager;
 	EffectPtr pEffect;
 
+	GameObject* pOwner;
+
 public:
-	Missile(int _modelHandle = -1,EffectManager* _effect = nullptr, VECTOR _dir = VForward, VECTOR _pos = VZero);
+	Missile(int _modelHandle = -1,GameObject* _owner = nullptr, EffectManager* _effect = nullptr, VECTOR _dir = VForward, VECTOR _pos = VZero);
 	~Missile() noexcept override;
 
 private:
@@ -44,6 +46,18 @@ public:
 	 * @brief ブーストエフェクトのフレーム位置を取得
 	 */
 	VECTOR GetBoostEffectPoint();
+
+	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
+
+	/*
+	 * @brief 捕まった
+	 */
+	void CaughtAction() override;
+
+	/*
+	 * @brief 投げられた
+	 */
+	void ThrownAction(VECTOR _dir) override;
 
 protected:
 	/*
