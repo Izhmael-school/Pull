@@ -462,38 +462,70 @@ void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
 	auto box = static_cast<AABBCollider*>(boxCol);
 
 	VECTOR center = s->GetWorldCenter();
-	VECTOR min = box->GetMin();
-	VECTOR max = box->GetMax();
-	float r = s->GetRadius();
+	VECTOR bmin = box->GetMin();
+	VECTOR bmax = box->GetMax();
+	float radius = s->GetRadius();
 
 	// 床の隙間吸収
-	min.y -= 0.02f;
+	bmin.y -= 0.02f;
 
+	// Sphere中心に最も近いAABB上の点
 	VECTOR closest;
-	closest.x = max(min.x, min(center.x, max.x));
-	closest.y = max(min.y, min(center.y, max.y));
-	closest.z = max(min.z, min(center.z, max.z));
+	closest.x = max(bmin.x, min(center.x, bmax.x));
+	closest.y = max(bmin.y, min(center.y, bmax.y));
+	closest.z = max(bmin.z, min(center.z, bmax.z));
 
 	VECTOR diff = VSub(center, closest);
 	float distSq = VDot(diff, diff);
 
-	if (distSq >= r * r) return;
+	if (distSq >= radius * radius)
+		return;
 
 	float dist = sqrtf(distSq);
-	float push = r - dist;
 
 	VECTOR dir;
 
-	if (dist < 0.0001f) {
-		// 深いめり込み → 上方向に押し出す
-		dir = VGet(0, 1, 0);
+	if (dist > 0.0001f) {
+		// 通常ケース
+		dir = VScale(diff, 1.0f / dist);
 	}
 	else {
-		// 通常 → 上方向に限定
-		dir = VGet(0, 1, 0);
+		// Sphere中心がAABB内部にある場合
+		float left = center.x - bmin.x;
+		float right = bmax.x - center.x;
+		float down = center.y - bmin.y;
+		float up = bmax.y - center.y;
+		float back = center.z - bmin.z;
+		float front = bmax.z - center.z;
+
+		float minDist = left;
+		dir = VGet(-1, 0, 0);
+
+
+		// 球の中心から各AABB面までの距離を比較し、
+		// 最も近い面の法線方向を押し出しベクトルとして選択する
+		if (right < minDist) { minDist = right; dir = VGet(1, 0, 0); }
+		if (down < minDist) { minDist = down;  dir = VGet(0, -1, 0); }
+		if (up < minDist) { minDist = up;    dir = VGet(0, 1, 0); }
+		if (back < minDist) { minDist = back;  dir = VGet(0, 0, -1); }
+		if (front < minDist) { dir = VGet(0, 0, 1); }
 	}
 
+	// カメラは上下方向の押し出しを禁止
+	if (s->GetLayer() == ColliderLayer::Camera) {
+		dir.y = 0.0f;
+
+		if (VSize(dir) > 0.0001f) {
+			dir = VNorm(dir);
+		}
+		else {
+			return;
+		}
+	}
+
+	float push = radius - dist;
 	VECTOR move = VScale(dir, push);
+
 	s->GetGameObject()->GetTransform()->AddPosition(move);
 }
 
@@ -551,7 +583,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 
 	VECTOR move = VScale(dir, push);
 
-	
+	move.y = min(move.y, 0.0f);
 
 	cap->GetGameObject()->GetTransform()->AddPosition(move);
 }

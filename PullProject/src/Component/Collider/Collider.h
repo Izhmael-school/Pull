@@ -20,6 +20,7 @@ enum class ColliderLayer {
 	BreakWall,
 	ExitArea,
 	BomBreakWall,
+	Camera,
 };
 
 class Collider {

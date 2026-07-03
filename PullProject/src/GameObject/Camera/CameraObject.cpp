@@ -44,6 +44,7 @@ CameraObject::CameraObject()
 
 void CameraObject::Start() {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
+	pCollider->SetLayer(ColliderLayer::Camera);
 }
 
 void CameraObject::Update() {
@@ -65,15 +66,19 @@ void CameraObject::Update() {
 	// 各モード毎の更新処理
 	switch (mode) {
 	case CameraObject::CameraMode::Debug:
+		pCollider->SetResolve(false);
 		DebugUpdate();
 		break;
 	case CameraObject::CameraMode::Player:
+		pCollider->SetResolve(true);
 		PlayerUpdate();
 		break;
 	case CameraObject::CameraMode::Pull:
+		pCollider->SetResolve(true);
 		PullUpdate();
 		break;
 	case CameraObject::CameraMode::Event:
+		pCollider->SetResolve(true);
 		EventUpdate();
 		break;
 	}
