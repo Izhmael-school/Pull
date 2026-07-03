@@ -21,6 +21,7 @@ void HookShot::Setup() {
 	GimmickObject::Setup();
 	// コライダーを付与:縦長
 	pCollider = std::make_unique<AABBCollider>(this, VGet(-50, -90, -50), VGet(50, 90, 50));
+	pCollider->SetLayer(ColliderLayer::Gimmick);
 }
 
 /*
