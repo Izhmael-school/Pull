@@ -29,9 +29,7 @@
       "Model": "res/Model/Gimmick/BreakWall/BreakWall.mv1",
       "LeverID": 2,
       "Position": "BreakWall_SP1",
-      "Rotation": 90.0,
-      "ChildFrame": "LeverPoint",
-      "ChildRotation": 1.570796
+      "Rotation": 90.0
     },
 
     {

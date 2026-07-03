@@ -38,11 +38,9 @@ void BreakWall::Setup() {
 	VECTOR scale = VGet(15.9f, 7.0f, 0.46f);
 	CalculateLocalAABB(minPos, maxPos, scale, this->GetRotation());
 
-	printfDx("Min : %.2f %.2f %.2f\n", minPos.x, minPos.y, minPos.z);
-	printfDx("Max : %.2f %.2f %.2f\n", maxPos.x, maxPos.y, maxPos.z);
-
 	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, minPos, maxPos);
+	// レイヤーを設定
 	pCollider->SetLayer(ColliderLayer::BreakWall);
 }
 
@@ -94,15 +92,17 @@ void BreakWall::OnTriggered() {
  *	レバーの生成位置を取得
  */
 VECTOR BreakWall::GetLeverSpawnPosition() const {
+	MV1SetMatrix(modelHandle, pTransform->GetMatrix());
 	// モデル内のLeverPointフレーム検索
 	int frame = MV1SearchFrame(modelHandle, _LEVER_SPAWNPOS_NAME);
-	// ローカル座標
-	VECTOR localPos = MV1GetFramePosition(modelHandle, frame);
-	// ワールド座標
-	VECTOR worldPos = VAdd(GetPosition(), localPos);
-
-	// 生成位置を返す
-	return worldPos;
+	// // ローカル座標
+	// VECTOR localPos = MV1GetFramePosition(modelHandle, frame);
+	// // ワールド座標
+	// VECTOR worldPos = VAdd(GetPosition(), localPos);
+	// 
+	// // 生成位置を返す
+	// return worldPos;
+	return MV1GetFramePosition(modelHandle, frame);
 }
 
 /*
