@@ -12,9 +12,15 @@
 #include "Definition/Enum/EnemyState.h"
 #include "Definition/Enum/EnemyType.h"
 #include <string>
+#include <functional>
 
 class EffectManager;
 
+using EffectEvent = std::function<void(const std::string& _effectName, VECTOR _pos, float _scale, VECTOR rot)>;
+using AudioEvent = std::function<void(const std::string& _audioName, float _volume, bool _isLoop, VECTOR _pos, float distance)>;
+using MissileEvent = std::function<void(std::string _modelName, VECTOR _dir, VECTOR _pos)>;
+using SphereEvent = std::function<void(VECTOR _pos, float _radius)>;
+using AABBEvent = std::function<void(VECTOR _pos, VECTOR _min, VECTOR _max)>;
 class EnemyBase : public Character, public CaughtObject {
 protected:
 
@@ -63,6 +69,14 @@ protected:
 	bool endAttack;		// 攻撃が終了したか
 	bool wantUnuse;		// 未使用化希望判定
 
+	VECTOR thrownDir;	// 投げられた方向
+
+protected:
+	EffectEvent effectEvent;
+	AudioEvent audioEvent;
+	MissileEvent createEvent;
+	SphereEvent sphereEvent;
+	AABBEvent aabbEvent;
 public:
 	EnemyBase(int _modelHandle, VECTOR _pos);
 	~EnemyBase();
@@ -131,6 +145,9 @@ private:
 	void DrawVisionFanDebug();
 
 
+private:
+	void Death();
+
 protected:
 	/*
 	 * @brief 行動変更
@@ -142,6 +159,19 @@ public:
 	 */
 	void LoopAnim(std::string _animName);
 
+	/*
+	 * @brief イベントのセット
+	 */
+	void SetEvent(EffectEvent _effectEvent, AudioEvent _audioEvent, MissileEvent _createEvent, SphereEvent _sphereEvent, AABBEvent _aabbEvent);
+
+protected:
+	/*
+	 * @brief アニメーションイベントのセット
+	 * @param _frameCount 0以下ならアニメーションの最後のフレームにセット
+	 */
+	void SetAnimEvent(std::string _animName, int _frameCount, std::function<void()> _animEvent);
+
+public:
 	virtual void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 	virtual void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
 
@@ -154,7 +184,7 @@ public:
 	/*
 	 * @brief 投げられた
 	 */
-	virtual void ThrownAction();
+	virtual void ThrownAction(VECTOR _dir);
 
 protected:
 	/*

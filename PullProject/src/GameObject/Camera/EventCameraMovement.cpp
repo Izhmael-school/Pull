@@ -28,9 +28,7 @@ void EventCameraMovement::StartEventCamera(CameraObject* _camera, std::string _e
 
 void EventCameraMovement::Update(CameraObject* _camera) {
 	// 先にアクションの確認更新をする
-	bool isMove = UpdateEventCamera_Action();
-
-	if (!isMove) return;
+	if (!UpdateEventCamera_Action()) return;
 
 	switch (eventCameraMove.eventID) {
 	case 0:
@@ -44,6 +42,7 @@ void EventCameraMovement::Update(CameraObject* _camera) {
 void EventCameraMovement::InitEventCamera_StartStage(CameraObject* _camera,nlohmann::json_abi_v3_12_0::json _json) {
 	if (_json == nullptr) return;
 	int modelHandle = StageManager::GetInstance().GetCurrentStageHandle();
+	if(modelHandle == -1) return;
 	// フレーム名からワールド座標を算出
 	std::string frameName = _json["lookAtStageFrameName"];
 	eventCameraMove.lookAtPos = MV1GetFramePosition(modelHandle, MV1SearchFrame(modelHandle, frameName.c_str()));
@@ -73,6 +72,8 @@ void EventCameraMovement::UpdateEventCamera_StartStage(CameraObject* _camera) {
 		// カメラモードを変える
 		_camera->ChangeCameraMode(1);
 		isEventEnd = true;
+		// 終了
+		return;
 	}
 
 	Transform* transform = _camera->GetTransform();

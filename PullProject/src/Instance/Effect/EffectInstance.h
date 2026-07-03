@@ -46,3 +46,6 @@ public:
 	const bool IsEffectEnd() const;
 };
 #endif // !_EFFECTINSTANCE_H_
+
+// 別名
+using EffectPtr = std::shared_ptr<EffectInstance>;

@@ -13,12 +13,10 @@
 #include <vector>
 #include "DxLib.h"
 #include "Definition/Const/VECTORConst.h"
+#include "Instance/Effect/EffectInstance.h"
 
 class EffectInstance;
 class EffectResourceManager;
-
-// 別名
-using EffectPtr = std::shared_ptr<EffectInstance>;
 
 class EffectManager : public ManagerBase {
 private:

@@ -21,8 +21,7 @@ void ShooterEnemy::Start() {
 void ShooterEnemy::Setup() {
 	EnemyBase::Setup();
 	// アニメーションに合わせてミサイルを出させる
-	auto anim = pAnimator->GetAnimation("Attack");
-	anim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("Missile", GetTransform()->GetForward(), GetPosition());}, 13);
+	SetAnimEvent("Attack",13,[this]() {createEvent("Missile",GetTransform()->GetForward(), GetPosition());});
 }
 
 void ShooterEnemy::WanderingAction() {

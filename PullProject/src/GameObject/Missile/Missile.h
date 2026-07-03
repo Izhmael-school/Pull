@@ -8,6 +8,9 @@
 
 #include "../GameObject.h"
 #include "Component/CaughtObject.h"
+#include "Instance/Effect/EffectInstance.h"
+
+class EffectManager;
 
 class Missile : public GameObject, public CaughtObject{
 public:
@@ -15,8 +18,11 @@ public:
 	float lifeLimitTime;
 	float lifeElapsedTime;
 
+	EffectManager& pEffectManager;
+	EffectPtr pEffect;
+
 public:
-	Missile(int _modelHandle = -1,VECTOR _dir = VForward, VECTOR _pos = VZero);
+	Missile(int _modelHandle = -1,EffectManager* _effect = nullptr, VECTOR _dir = VForward, VECTOR _pos = VZero);
 	~Missile() noexcept override;
 
 private:
@@ -29,7 +35,15 @@ public:
 	void Update() override;
 
 public:
+	/*
+	 * @brief 爆発
+	 */
 	void Exprosion();
+
+	/*
+	 * @brief ブーストエフェクトのフレーム位置を取得
+	 */
+	VECTOR GetBoostEffectPoint();
 
 protected:
 	/*

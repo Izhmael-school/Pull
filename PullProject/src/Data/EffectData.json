@@ -14,5 +14,10 @@
   {
     "name": "Earthquake",
     "path": "Earthquake.efkefc"
+  },
+  {
+    "name": "EnemyDeath",
+    "path": "EnemyDeath.efkefc"
   }
+
 ]

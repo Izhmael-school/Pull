@@ -9,7 +9,7 @@
 #include "Manager/CollisionManager.h"
 #include "ImGui/ImGuiManager.h"
 
-constexpr double FRAME_TIME = 1.0f / 60.0f;
+constexpr double FRAME_TIME = 1.0 / 60.0;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
@@ -104,6 +104,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// フレーム開始時刻を取得
 		int frameStart = GetNowCount();
 
+
 		// 画面をクリアする
 		ClearDrawScreen();
 
@@ -126,10 +127,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		// 裏画面と表画面を切り替える
 		ScreenFlip();
+		// Debugログクリア
+		clsDx();
 
 		// 処理にかかった時間を計算
 		int elapsed = GetNowCount() - frameStart;
 		int update = int(FRAME_TIME * 1000.0f);
+
+		//printfDx("FPS: %d", 1000 / elapsed == 0 ? 1 : elapsed);
 
 		// 処理が速すぎたら待つ
 		if (elapsed < update)

@@ -79,21 +79,21 @@ void TailEnemy::Setup() {
 		pCollider->SetEnable(false);
 
 	// 攻撃終了時処理を持たせる
-	std::string taunt = "Taunt";
-	auto tauntAnim = pAnimator->GetAnimation(taunt);
-	if (tauntAnim != nullptr)
-		tauntAnim->SetEvent([this]() {EndAttack();}, pAnimator->GetTotalTime(taunt));
-	std::string bigShot = "BigShot";
-	auto shotAnim = pAnimator->GetAnimation(bigShot);
-	if (shotAnim != nullptr)
-		shotAnim->SetEvent([this]() {EndAttack();}, pAnimator->GetTotalTime(bigShot));
+	SetAnimEvent("Taunt", -1,[this]() {EndAttack();});
+	SetAnimEvent("BigShot", -1,[this]() {EndAttack();});
 
 	// アニメーションに合わせてミサイルを出す
-	shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 20);
-	shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 30);
-	shotAnim->SetEvent([this]() {GameObjectManager::GetInstance().CreateGameObject<Missile>("BossMissile", GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));}, 40);
+	SetAnimEvent("BigShot", 20, [this]() {createEvent("BossMissile",GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
+	SetAnimEvent("BigShot", 30, [this]() {createEvent("BossMissile",GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
+	SetAnimEvent("BigShot", 40, [this]() {createEvent("BossMissile",GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
 
-	tauntAnim->SetEvent([this]() {ColliderObjectManager::GetInstance().CreateAABB(GetPosition(), VScale(VAdd(VLeft, VBack), 500), VAdd(VScale(VAdd(VRight, VForward), 500), VScale(VUp, 100)), None, 0.1f);}, 40);
+	SetAnimEvent("Taunt", 40, [this]() {
+		VECTOR min = VScale(VAdd(VLeft, VBack), 500);
+		VECTOR max = VAdd(VScale(VAdd(VRight, VForward), 500), VScale(VUp, 100));
+		VECTOR pos = GetPosition();
+		aabbEvent(pos,min , max);
+		effectEvent("Earthquake", pos, 0.7f, VZero);
+		});
 }
 
 void TailEnemy::AttackAction() {
@@ -123,8 +123,8 @@ void TailEnemy::TracingAction() {
 	ChangeNextState(Attack);
 }
 
-void TailEnemy::ThrownAction() {
-	EnemyBase::ThrownAction();
+void TailEnemy::ThrownAction(VECTOR _dir) {
+	EnemyBase::ThrownAction(_dir);
 	pCollider->SetEnable(true);
 }
 
@@ -132,4 +132,6 @@ void TailEnemy::Catching() {
 	EnemyBase::Catching();
 
 	pAnimator->Play("Shot", 2.0f);
+	auto sphere = static_cast<SphereCollider*>(pTailCollider->GetCollider());
+	sphere->SetRadius(100);
 }

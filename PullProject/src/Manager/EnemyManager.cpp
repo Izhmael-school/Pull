@@ -1,10 +1,18 @@
 #include "EnemyManager.h"
 #include "GameObject/Character/Enemy/EnemyBase.h"
-#include "Manager/PlayerManager.h"
-#include "Manager/Stage/StageManager.h"
+#include "PlayerManager.h"
+#include "Stage/StageManager.h"
+#include "ColliderObjectManager.h"
+#include "GameObjectManager.h"
+#include "EffectManager.h" 
+#include "AudioManager.h"
+#include "GameObject/Missile/Missile.h"
 
-EnemyManager::EnemyManager(EffectManager& _effectManager)
-	:effectManager(_effectManager)
+EnemyManager::EnemyManager(EnemyNeedManager _need)
+	:effectManager(_need.effectManager)
+	,audioManager(_need.audioManager)
+	, gameObjectManager(GameObjectManager::GetInstance())
+	, colliderObjectManager(ColliderObjectManager::GetInstance())
 {
 	Start();
 }
@@ -54,6 +62,13 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
 	enemy = std::move(unuseEnemyArray[_type].back());
 	// 末尾削除
 	unuseEnemyArray[_type].pop_back();
+	// イベントをセット
+	enemy->SetEvent(std::bind(&EnemyManager::PlayAnimEvent_Effect, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
+					std::bind(&EnemyManager::PlayAnimEvent_Audio, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5),
+					std::bind(&EnemyManager::PlayAnimEvent_Missile, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3),
+					std::bind(&EnemyManager::PlayAnimEvent_Sphere, this, std::placeholders::_1, std::placeholders::_2),
+					std::bind(&EnemyManager::PlayAnimEvent_AABB, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
 	// 使用準備
 	enemy->Setup();
 	useEnemyArray.push_back(std::move(enemy));
@@ -80,6 +95,26 @@ void EnemyManager::SpawnStageFramePoint(EnemyType _type,StageManager& _stageMana
 		UseEnemy(_type, spawnPositions[i]);
 	}
 }
+
+void EnemyManager::PlayAnimEvent_Sphere(VECTOR _pos, float _radius) {
+	colliderObjectManager.CreateSphere(_pos, _radius,None,0.2f);
+}
+
+void EnemyManager::PlayAnimEvent_AABB(VECTOR _pos, VECTOR _min, VECTOR _max) {
+	colliderObjectManager.CreateAABB(_pos, _min, _max,None,0.2f	);
+}
+
+void EnemyManager::PlayAnimEvent_Effect(const std::string& _effectName, VECTOR _pos, float _scale, VECTOR rot) {
+	effectManager.Play(_effectName, _pos, _scale, rot);
+}
+
+void EnemyManager::PlayAnimEvent_Audio(const std::string& _audioName, float _volume, bool _isLoop, VECTOR _pos, float distance) {
+	audioManager.Play(_audioName, _volume, _isLoop, _pos, distance);
+}
+void EnemyManager::PlayAnimEvent_Missile(std::string _modelName,VECTOR _dir, VECTOR _pos) {
+	gameObjectManager.CreateGameObject<Missile>(_modelName,&effectManager, _dir, _pos);
+}
+
 
 void EnemyManager::UnuseEnemy(EnemyPtr _unuseEnemy) {
 	auto itr = std::ranges::find(useEnemyArray, _unuseEnemy);

@@ -49,6 +49,11 @@ public:
 	void Clean();
 
 	/*
+	 * @brief 全てのインスタンスを停止
+	 */
+	void StopAll();
+
+	/*
 	 * @brief 管理してるインスタンスの数
 	 */
 	int GetInstanceCount() const { return instances.size(); }
