@@ -36,8 +36,8 @@ void EnemyBase::Start() {
 	isGravity = false;
 
 	// モデルの最小点と最大点を取得
-	VECTOR maxBodyPos = VScale(MV1GetMeshMaxPosition(modelHandle, 0),100);
-	VECTOR minBodyPos = VScale(MV1GetMeshMinPosition(modelHandle, 0),100);
+	VECTOR maxBodyPos = VScale(MV1GetMeshMaxPosition(modelHandle, 0), 100);
+	VECTOR minBodyPos = VScale(MV1GetMeshMinPosition(modelHandle, 0), 100);
 	VECTOR maxLeg1 = VScale(MV1GetMeshMaxPosition(modelHandle, 1), 100);
 	VECTOR minLeg1 = VScale(MV1GetMeshMinPosition(modelHandle, 1), 100);
 	VECTOR maxLeg2 = VScale(MV1GetMeshMaxPosition(modelHandle, 2), 100);
@@ -54,7 +54,7 @@ void EnemyBase::Start() {
 	max.z = std::max(maxBodyPos.z, std::max(maxLeg1.z, maxLeg2.z));
 
 	// 当たり判定
-	pCollider = std::make_unique<AABBCollider>(this,min,max);
+	pCollider = std::make_unique<AABBCollider>(this, min, max);
 	pCollider->SetResolve(false);
 }
 
@@ -93,15 +93,6 @@ void EnemyBase::Update() {
 	if (prevState == Tracing && currentState == Wandering)
 		ChangeNextState(NoneAction);
 
-	// Debug
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_P))
-		CaughtAction();
-
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_O))
-		ThrownAction();
-
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_I))
-		HitObject();
 }
 
 void EnemyBase::Render() {
@@ -119,13 +110,9 @@ void EnemyBase::Setup() {
 	wanderingGoalPos = VGet(static_cast<float>(INT_MAX), 0, 0);
 
 	if (pAnimator) {
-		auto attackAnim = pAnimator->GetAnimation("Attack");
 		// 攻撃終了時処理を持たせる
-		if (attackAnim != nullptr)
-			attackAnim->SetEvent([this]() {EndAttack();}, pAnimator->GetTotalTime("Attack"));
-		auto dieAnim = pAnimator->GetAnimation("Die");
-		if (dieAnim != nullptr)
-			dieAnim->SetEvent([this]() {wantUnuse = true;}, pAnimator->GetTotalTime("Die"));
+		SetAnimEvent("Attack", pAnimator->GetTotalTime("Attack"), [this]() {EndAttack();});
+		SetAnimEvent("Die", pAnimator->GetTotalTime("Die"), [this]() {Death();});
 	}
 
 	// 再度更新できるように
@@ -334,6 +321,11 @@ void EnemyBase::DrawVisionFanDebug() {
 	}
 }
 
+void EnemyBase::Death() {
+	wantUnuse = true;
+	effectEvent("EnemyDeath", GetPosition(), 50.0f, VZero);
+}
+
 void EnemyBase::EndAttack() {
 	isAttacking = false;
 	ChangeNextState(NoneAction);
@@ -357,6 +349,21 @@ void EnemyBase::LoopAnim(std::string _animName) {
 	GetAnimator()->GetAnimation(_animName)->isLoop = true;
 }
 
+void EnemyBase::SetEvent(EffectEvent _effectEvent, AudioEvent _audioEvent, MissileEvent _createEvent, SphereEvent _sphereEvent, AABBEvent _aabbEvent) {
+	effectEvent = _effectEvent;
+	audioEvent = _audioEvent;
+	createEvent = _createEvent;
+	sphereEvent = _sphereEvent;
+	aabbEvent = _aabbEvent;
+}
+
+void EnemyBase::SetAnimEvent(std::string _animName, int _frameCount, std::function<void()> _animEvent) {
+	auto anim = pAnimator->GetAnimation(_animName);
+	if (anim == nullptr) return;
+	if (_frameCount < 0) _frameCount = pAnimator->GetTotalTime(_animName);
+	anim->SetEvent(_animEvent, _frameCount);
+}
+
 void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (GetCurrentCaughtState() != CaughtState::Throwing) return;
 	// 何かしらに当たったら
@@ -366,7 +373,8 @@ void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 void EnemyBase::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	Tag tag = _pOther->GetGameObject()->GetTag();
 	if (tag == Player) {
-		ChangeNextState(Attack);
+		if (rayAnswer)
+			ChangeNextState(Attack);
 	}
 }
 
@@ -377,9 +385,12 @@ void EnemyBase::CaughtAction() {
 	ChangeCaughtState(Catch);
 }
 
-void EnemyBase::ThrownAction() {
+void EnemyBase::ThrownAction(VECTOR _dir) {
 	// 投げられた状態にする
 	ChangeCaughtState(Throw);
+
+	// 投げられた方向を保存
+	thrownDir = _dir;
 }
 
 void EnemyBase::CatchStart() {
@@ -400,6 +411,7 @@ void EnemyBase::ThrowStart() {
 
 void EnemyBase::Throwing() {
 	GetTransform()->AddRotation(VScale(VUp, 10));
+	GetTransform()->AddPosition(VScale(thrownDir, -10));
 	ChangeNextState(OutofControl);
 }
 

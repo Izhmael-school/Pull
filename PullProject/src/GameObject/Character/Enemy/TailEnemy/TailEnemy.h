@@ -28,7 +28,7 @@ public:
 
 	void TracingAction() override;
 
-	void ThrownAction() override;
+	void ThrownAction(VECTOR _dir) override;
 
 	void Catching() override;
 };

@@ -108,7 +108,7 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	if (enemy) {
 		// 敵を離す
 		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
-			enemy->ThrownAction();
+			enemy->ThrownAction(GetTransform()->GetForward());
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
 		}

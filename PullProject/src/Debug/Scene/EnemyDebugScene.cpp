@@ -14,7 +14,6 @@
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/ColliderObjectManager.h"
-#include "Manager/CollisionManager.h"
 #include "Manager/PlayerManager.h"
 #include "GameObject/Missile/Missile.h"
 #include "Generator/StageCollisionGenerator.h"
@@ -24,7 +23,7 @@ EnemyDebugScene::EnemyDebugScene()
 	,effectResourceManager()
 	, audioManager(audioResourceManager)
 	,audioResourceManager()
-	, enemyManager(effectManager)
+	, enemyManager({ effectManager, audioManager })
 { Start(); }
 
 void EnemyDebugScene::Start()
@@ -32,8 +31,11 @@ void EnemyDebugScene::Start()
 	PlayerManager::GetInstance().CreatePlayer();
 	auto p = PlayerManager::GetInstance().GetPlayer();
 	p->GetTransform()->SetPosition(VGet(200,200,-600));
-
-
+	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
+	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
+	StageManager& stageManager = StageManager::GetInstance();
+	stageManager.Initialize();
+	stageManager.LoadStage(4);
 	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 }
 
@@ -48,7 +50,7 @@ void EnemyDebugScene::Update(){
 	CameraManager::GetInstance().GetCamera()->Update();
 
 	// 仮
-	effectManager.Play("Earthquake", player->GetPosition(), 1.0f, VZero);
+	//effectManager.Play("Earthquake", player->GetPosition(), 1.0f, VZero);
 
 	// 敵の更新
 	enemyManager.Update();
@@ -123,15 +125,16 @@ void EnemyDebugScene::Render(){
 }
 
 void EnemyDebugScene::Setup(){
-	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(4);
-	enemyManager.SpawnStageFramePoint(Shooter,StageManager::GetInstance());
+	StageManager& stageManager = StageManager::GetInstance();
+
+	stageManager.TransitionStage(0);
+	enemyManager.SpawnStageFramePoint(Walker, stageManager);
+	enemyManager.UseEnemy(Tail, VGet(500, 400, -1000));
 	CameraManager::GetInstance().CreateCamera();
-	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
-	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
 	audioManager.Play("test", 100.0f, true);
 }
 
 void EnemyDebugScene::Cleanup(){
 	enemyManager.UnuseAllEnemy();
+	audioManager.StopAll();
 }

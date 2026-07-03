@@ -36,9 +36,13 @@ void AudioManager::Render() {
 }
 
 void AudioManager::Clean() {
+	StopAll();
+	instances.clear();
+	instances.shrink_to_fit();
+}
+
+void AudioManager::StopAll() {
 	for (auto& instance : instances) {
 		instance->Stop();
 	}
-	instances.clear();
-	instances.shrink_to_fit();
 }

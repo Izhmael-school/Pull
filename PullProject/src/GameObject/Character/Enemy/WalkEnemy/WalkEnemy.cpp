@@ -3,7 +3,6 @@
 #include "Definition/Const/EnemyConst.h"
 #include "Definition/CommonModule/MyString.h"
 #include "Component/Collider/Collider.h"
-#include "Manager/ColliderObjectManager.h"
 
 WalkEnemy::WalkEnemy(int _modelHandle, VECTOR _pos)
 	:EnemyBase(_modelHandle,_pos)
@@ -18,8 +17,11 @@ void WalkEnemy::Setup(){
 	EnemyBase::Setup();
 
 	// アニメーションに合わせて攻撃する
-	auto anim = pAnimator->GetAnimation("Attack");
-	anim->SetEvent([this]() {ColliderObjectManager::GetInstance().CreateSphere(VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 100)),200);}, 22);
+	SetAnimEvent("Attack", 22, [this]() {
+		VECTOR pos = VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 300));
+		sphereEvent(pos, 200.0f);
+		effectEvent("EnemyAttack", pos,100.0f,GetTransform()->GetForward());
+		});
 }
 
 void WalkEnemy::Start(){

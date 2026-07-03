@@ -1,6 +1,4 @@
 #include "BomberEnemy.h"
-#include "Manager/ColliderObjectManager.h"
-#include "Component/Collider/Collider.h"
 
 BomberEnemy::BomberEnemy(int _modelHandle, VECTOR _pos)
 	:EnemyBase(_modelHandle, _pos) {
@@ -17,8 +15,7 @@ void BomberEnemy::Start(){
 void BomberEnemy::Setup(){
 	EnemyBase::Setup();
 	// アニメーションの終了に合わせて爆発させる
-	auto anim = pAnimator->GetAnimation("Attack");
-	anim->SetEvent([this]() {Exprosion();}, pAnimator->GetTotalTime("Attack"));
+	SetAnimEvent("Attack",-1, [this]() {Exprosion(); });
 }
 
 void BomberEnemy::HitObject(){
@@ -27,7 +24,8 @@ void BomberEnemy::HitObject(){
 
 void BomberEnemy::Exprosion(){
 	// 爆発を作る
-	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 1000);
+	sphereEvent(GetPosition(), 1000);
+	effectEvent("Explosion", GetPosition(), 200.0f, VZero);
 	// 自分を消すように要請する
 	wantUnuse = true;
 }
