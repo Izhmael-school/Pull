@@ -101,9 +101,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		missile->CaughtAction();
 	}
 
-	// 当たったのがレバーの場合
-	auto lever = dynamic_cast<Lever*>(other);
-	if (lever && InputManager::GetInstance().IsKey(KEY_INPUT_Q)) {
+	// 当たったのがフックの場合
+	if (other->GetTag() == Hook) {
 		handsState = HandsState::Catch;
 	}
 }
@@ -143,12 +142,7 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 
 	// 当たったのがレバーの場合
 	auto lever = dynamic_cast<Lever*>(other);
-	// デバッグ用でQを押しながらだと掴み移動になる
-	if (lever && InputManager::GetInstance().IsKey(KEY_INPUT_Q)) {
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
-			catchState = CatchState::PillerCatch;
-	}
-	else if (lever) {
+	if (lever) {
 		// ステート変更
 		catchState = CatchState::LeverCatch;
 		handsState = HandsState::Catch;
@@ -159,6 +153,14 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 			lever->SetLeverTrigger(pull);
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
+		}
+	}
+
+	// 当たったのがフックの場合
+	if (other->GetTag() == Hook) {
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
+			catchState = CatchState::PillerCatch;
+			pOwner->SetIsGravity(false);
 		}
 	}
 }
@@ -214,6 +216,7 @@ void PlayerHands::CatchMoving() {
 		catchState = CatchState::None;
 		handsState = HandsState::Idle;
 		pTransform->SetPosition(VZero);
+		pOwner->SetIsGravity(true);
 	}
 	// プレイヤーが手の位置に戻るまで移動
 	else {
