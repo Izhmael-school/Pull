@@ -32,4 +32,5 @@ void ShooterEnemy::WanderingAction() {
 
 void ShooterEnemy::TracingAction() {
 	ChangeNextState(Attack);
+	GetTransform()->LookAt(tracingTargetPos);
 }

@@ -14,6 +14,7 @@
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/ColliderObjectManager.h"
+#include "Manager/Stage/GimmickObjectManager.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/PlayerManager.h"
 #include "GameObject/Missile/Missile.h"
@@ -49,7 +50,7 @@ void EnemyDebugScene::Update(){
 
 	// 仮
 	//effectManager.Play("Earthquake", player->GetPosition(), 1.0f, VZero);
-
+	GimmickObjectManager::GetInstance().Update();
 	// 敵の更新
 	enemyManager.Update();
 	effectManager.Update();
@@ -109,17 +110,17 @@ void EnemyDebugScene::Render(){
 	}
 	ColliderObjectManager::GetInstance().Render();
 	GameObjectManager::GetInstance().Render();
+	CollisionManager::GetInstance().Render();
 #endif
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
 	player->GetHands()->Render();
 	DrawSphere3D(player->GetPosition(), 100, 16, 0xff0000, 0xff0000, TRUE);
-
+	GimmickObjectManager::GetInstance().Render();
 	// 描画
 	StageManager::GetInstance().Render();
 	effectManager.Render();
 	enemyManager.Render();
-	CollisionManager::GetInstance().Render();
 }
 
 void EnemyDebugScene::Setup(){
@@ -131,7 +132,7 @@ void EnemyDebugScene::Setup(){
 	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
 	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
 	audioManager.Play("test", 100.0f, true);
-
+	GimmickObjectManager::GetInstance().Update();
 	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }

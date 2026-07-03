@@ -4,6 +4,7 @@
 #include "Manager/EffectManager.h"
 #include "Component/Collider/Collider.h"
 #include "GameObject/Character/Player/PlayerHands.h"
+#include "GameObject/Stage/Gimmick/BomBreakWall.h"
 
 Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, VECTOR _dir, VECTOR _pos)
 	:GameObject(_modelHandle, _pos)
@@ -60,7 +61,12 @@ void Missile::Update() {
 }
 
 void Missile::Exprosion() {
-	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300);
+	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300,None,0.5f,[](Collider* _pOther){
+		auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
+		if(breakWall != nullptr) {
+			breakWall->ActivGimmick(true);
+		}
+	});
 	isActive = false;
 	pEffectManager.Play("Explosion", GetPosition(), 50.0f, VZero);
 	lifeElapsedTime = 0;
