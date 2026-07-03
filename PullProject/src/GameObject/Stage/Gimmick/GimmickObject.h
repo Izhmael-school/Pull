@@ -1,10 +1,10 @@
 /*
- * @file GameObject.h
+ * @file GimmickObject.h
  * @author oorui
  */
 
-#ifndef _GAMEOBJECT_H_
-#define _GAMEOBJECT_H_
+#ifndef _GIMMICKOBJECT_H_
+#define _GIMMICKOBJECT_H_
 
 #include "Component/Transform.h"
 #include "Definition/Enum/TagEnum.h"
@@ -21,6 +21,9 @@ public:
 	virtual ~GimmickObject();
 
 protected:
+	/*
+	 *	開始処理
+	 */
 	virtual void Start();
 
 	/*
@@ -34,6 +37,7 @@ public:
 	virtual void Render();
 	virtual void Setup();
 	virtual void Execute();
+	virtual void Reset();
 	/*
 	 * @brief モデルの削除
 	 */
@@ -96,4 +100,4 @@ public:
 
 };
 
-#endif // !_GAMEOBJECT_H_
+#endif // !_GIMMICKOBJECT_H_

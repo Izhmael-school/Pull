@@ -54,6 +54,11 @@ public:
 	void Render();
 
 	/*
+	 *	@brief 初期状態に戻す
+	 */
+	void Reset();
+
+	/*
 	 * @brief 全削除
 	 */
 	void Clear();

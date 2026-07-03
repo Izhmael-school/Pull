@@ -39,7 +39,8 @@ GimmickObject* GimmickFactory::Create(const std::string& type, int modelHandle, 
 		return new HookShot(
 			modelHandle,
 			pos,
-			rota
+			rota,
+			Hook
 		);
 	}
 

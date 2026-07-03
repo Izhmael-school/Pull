@@ -10,8 +10,8 @@
  /*
   *	コンストラクタ
   */
-HookShot::HookShot(int modelHandle, VECTOR pos, VECTOR rota)
-	:GimmickObject(modelHandle, pos, rota) {
+HookShot::HookShot(int modelHandle, VECTOR pos, VECTOR rota, Tag tag)
+	:GimmickObject(modelHandle, pos, rota, tag) {
 }
 
 /*
@@ -39,7 +39,7 @@ void HookShot::Update() {
 void HookShot::Render() {
 	// モデルハンドルがなければ処理を抜ける
 	if (modelHandle <= 0)return;
-	
+
 	// 描画
 	GimmickObject::Render();
 	pCollider->Render();

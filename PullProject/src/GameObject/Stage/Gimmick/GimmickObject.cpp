@@ -115,6 +115,9 @@ void GimmickObject::Execute() {
 	DeleteModel();
 }
 
+void GimmickObject::Reset() {
+}
+
 /*
  *	モデルを削除
  */

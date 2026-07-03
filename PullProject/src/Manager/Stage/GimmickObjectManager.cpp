@@ -90,6 +90,19 @@ void GimmickObjectManager::Render() {
 }
 
 /*
+ *	初期状態に戻す
+ */
+void GimmickObjectManager::Reset() {
+	// 登録済みオブジェクトを走査
+	for (auto object : objects) {
+		if (object == nullptr)
+			continue;
+		// 登録オブジェクトのリセット関数を呼ぶ
+		object->Reset();
+	}
+}
+
+/*
  * 全削除
  */
 void GimmickObjectManager::Clear() {

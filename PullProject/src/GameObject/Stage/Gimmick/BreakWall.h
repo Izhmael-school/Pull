@@ -58,6 +58,8 @@ public:
 	 */
 	void Render() override;
 
+	void Reset() override;
+
 	/*
 	 *	ƒŒƒo[‚©‚ç’Ê’m‚ğó‚¯‚½‚Ìˆ—
 	 */
