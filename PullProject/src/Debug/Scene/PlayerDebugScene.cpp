@@ -32,7 +32,7 @@ void PlayerDebugScene::Setup() {
 
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(4);
+	StageManager::GetInstance().LoadStage(111);
 	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -45,8 +45,8 @@ void PlayerDebugScene::Setup() {
 	// ===== ギミックの更新 ====
 	GimmickObjectManager::GetInstance().Update();
 	StageCollisionGenerator generator;
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
-	//generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
+	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }
 
 void PlayerDebugScene::Update() {

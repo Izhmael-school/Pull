@@ -43,7 +43,7 @@ CameraObject::CameraObject()
 {}
 
 void CameraObject::Start() {
-	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
+//	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
 }
 
 void CameraObject::Update() {
