@@ -48,7 +48,7 @@ void EnemyDebugScene::Update(){
 	CameraManager::GetInstance().GetCamera()->Update();
 
 	// 仮
-	effectManager.Play("Earthquake", player->GetPosition(), 1.0f, VZero);
+	//effectManager.Play("Earthquake", player->GetPosition(), 1.0f, VZero);
 
 	// 敵の更新
 	enemyManager.Update();
@@ -131,6 +131,9 @@ void EnemyDebugScene::Setup(){
 	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
 	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
 	audioManager.Play("test", 100.0f, true);
+
+	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }
 
 void EnemyDebugScene::Cleanup(){
