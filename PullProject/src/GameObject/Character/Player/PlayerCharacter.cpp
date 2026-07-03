@@ -216,6 +216,7 @@ bool PlayerCharacter::Pull() {
 void PlayerCharacter::PullReset() {
 	pullValue = 0;
 	returnColor = true;
+	isGravity = true;
 }
 
 /*
