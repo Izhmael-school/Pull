@@ -6,7 +6,7 @@
 #include "BomBreakWall.h"
 #include "Manager/Stage/GimmickManager.h"
 #include "../../../Component\Collider/Collider.h"
-
+#include <ImGUI/imgui.h>
  /*
   *	コンストラクタ
   */
@@ -31,7 +31,7 @@ void BomBreakWall::Setup() {
 	CalculateLocalAABB(minPos, maxPos, scale, this->GetRotation());
 	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, minPos,maxPos);
-
+	pCollider->SetLayer(ColliderLayer::BreakWall);
 }
 
 /*
@@ -45,6 +45,8 @@ void BomBreakWall::Update() {
 		OpacityChange();
 	}
 	pCollider->Update();
+	float y = this->GetPosition().y;
+
 }
 
 /*
