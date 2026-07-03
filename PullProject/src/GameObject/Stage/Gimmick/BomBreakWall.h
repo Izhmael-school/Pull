@@ -61,7 +61,7 @@ public:
 	 *	ギミック起動
 	 *  @param[in]	bool	起動するかどうか
 	 */
-	void ActivGimmick(bool flag) { isActiv == flag; }
+	void ActivGimmick(bool flag) { isActiv = flag; }
 };
 
 
