@@ -89,6 +89,9 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		enemy->CaughtAction();
 	}
 
+	/*
+	 * @author Sekino
+	 */
 	auto missile = dynamic_cast<Missile*>(other);
 	if (missile) {
 		// ステート変更
@@ -125,6 +128,9 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 		}
 	}
 
+	/*
+	 * @author Sekino
+	 */
 	auto missile = dynamic_cast<Missile*>(other);
 	if (missile) {
 		// ミサイルを離す
