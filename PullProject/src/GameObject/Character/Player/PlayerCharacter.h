@@ -78,6 +78,10 @@ public:
 	 */
 	bool Pull();
 	/*
+	 *	引っこ抜き解除時処理
+	 */
+	void PullReset();
+	/*
 	 *	掴み移動の移動処理
 	 *	@param	float 移動速度
 	 */
