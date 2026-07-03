@@ -24,7 +24,7 @@ EnemyDebugScene::EnemyDebugScene()
 	,effectResourceManager()
 	, audioManager(audioResourceManager)
 	,audioResourceManager()
-	, enemyManager(effectManager)
+	, enemyManager({ effectManager ,audioManager})
 { Start(); }
 
 void EnemyDebugScene::Start()
@@ -124,7 +124,8 @@ void EnemyDebugScene::Render(){
 
 void EnemyDebugScene::Setup(){
 	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(4);
+	StageManager::GetInstance().LoadStage(111);
+	StageManager::GetInstance().TransitionStage(0);
 	enemyManager.SpawnStageFramePoint(Shooter,StageManager::GetInstance());
 	CameraManager::GetInstance().CreateCamera();
 	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
