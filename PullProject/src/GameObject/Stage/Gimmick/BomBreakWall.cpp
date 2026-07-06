@@ -6,6 +6,8 @@
 #include "BomBreakWall.h"
 #include "Manager/Stage/GimmickManager.h"
 #include "../../../Component\Collider/Collider.h"
+#include "Manager/CollisionManager.h"
+
 #include <ImGUI/imgui.h>
  /*
   *	コンストラクタ
@@ -67,6 +69,22 @@ void BomBreakWall::Render() {
 }
 
 /*
+ *	初期状態に戻す
+ */
+void BomBreakWall::Reset() {
+	if (!isActiv)return;
+	GimmickObject::Reset();
+	isActiv = false;
+	isBroken = false;
+	isFading = false;
+
+	opacity = 1.0f;
+
+	// コライダーを登録済みか確認して再登録
+	CollisionManager::GetInstance().CheckRegister(pCollider.get());
+}
+
+/*
  *	オブジェクトの不透明度を変更する
  */
 void BomBreakWall::OpacityChange() {
@@ -76,6 +94,9 @@ void BomBreakWall::OpacityChange() {
 	// 0以下対策
 	if (opacity <= 0.0f) {
 		opacity = 0.0f;
+
+		// 当たり判定削除
+		CollisionManager::GetInstance().UnRegister(pCollider.get());
 
 		// 消えた判定にする
 		isFading = false;
