@@ -12,6 +12,7 @@
 #include "../../Stage/Gimmick/Lever.h"
 #include "../../../Component/Collider/Collider.h"
 #include "PlayerCharacter.h"
+#include "../../../Pad/PadBase.h"
 
 /*
  * author Sekino
@@ -27,8 +28,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, returnSpeedRatio(0.2f)
 
 	, RETURN_THRESHOLD(1.0f)
-{
-}
+{}
 
 void PlayerHands::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 50), VScale(VUp, 10), 40, VZero);
@@ -39,10 +39,13 @@ void PlayerHands::Start() {
 void PlayerHands::Update() {
 	Character::Update();
 
+	auto pad = InputManager::GetInstance().GetPad(0);
+
 	// 掴み状態
 	if (handsState == HandsState::Catch) {
 		// 掴み解除
-		if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F)) {
+		if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_F) ||
+			pad->IsPadDown(XINPUT_BUTTON_X)) {
 			handsState = HandsState::ArmsReturning;
 			catchState = CatchState::None;
 			// 引っこ抜き解除時処理を呼ぶ
@@ -52,10 +55,12 @@ void PlayerHands::Update() {
 	// 何も掴んでいなければ
 	else {
 		// ウデ伸ばし
-		if (InputManager::GetInstance().IsKey(KEY_INPUT_E))
+		if (InputManager::GetInstance().IsKey(KEY_INPUT_E) ||
+			pad->IsPad(XINPUT_BUTTON_RIGHT_SHOULDER))
 			handsState = HandsState::ArmsExtending;
 		// ウデ戻し
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E))
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E) ||
+			pad->IsPadUp(XINPUT_BUTTON_RIGHT_SHOULDER))
 			handsState = HandsState::ArmsReturning;
 	}
 
@@ -116,11 +121,14 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 		handsState != HandsState::Catch)
 		return;
 
+	auto pad = InputManager::GetInstance().GetPad(0);
+
 	// 当たったのが敵の場合
 	auto enemy = dynamic_cast<EnemyBase*>(other);
 	if (enemy) {
 		// 敵を離す
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E) ||
+			pad->IsPadUp(XINPUT_BUTTON_RIGHT_SHOULDER)) {
 			enemy->ThrownAction(GetTransform()->GetForward());
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
@@ -133,7 +141,8 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	auto missile = dynamic_cast<Missile*>(other);
 	if (missile) {
 		// ミサイルを離す
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E) ||
+			pad->IsPadUp(XINPUT_BUTTON_RIGHT_SHOULDER)) {
 			missile->ThrownAction(GetTransform()->GetForward());
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
@@ -158,7 +167,8 @@ void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 
 	// 当たったのがフックの場合
 	if (other->GetTag() == Hook) {
-		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E)) {
+		if (InputManager::GetInstance().IsKeyUp(KEY_INPUT_E) ||
+			pad->IsPadUp(XINPUT_BUTTON_RIGHT_SHOULDER)) {
 			catchState = CatchState::PillerCatch;
 			pOwner->SetIsGravity(false);
 		}
