@@ -11,7 +11,16 @@ InputManager::InputManager()
 	:currentKeyState{}
 	, prevKeyState{}
 	, currentMouseState(-1)
-	, prevMouseState(-1) {
+	, prevMouseState(-1) 
+	, nowMousePosX(0.0f)
+	, prevMousePosX(0.0f)
+	, nowMousePosY(0.0f)
+	, prevMousePosY(0.0f)
+	, mouseVisible(true)
+	, prevInputMouse(false)
+	, mouseMoveSkip(false) 
+	, WINDOW_WIDTH(1920)
+	, WINDOW_HEIGHT(1080){
 	Start();
 }
 
@@ -35,6 +44,9 @@ void InputManager::Update() {
 
 	// コントローラの更新
 	UpdatePad();
+
+	// マウスポインターの更新	@author Riku
+	UpdateMousePointer();
 }
 
 void InputManager::UpdatePad() {
@@ -65,6 +77,49 @@ void InputManager::UpdatePad() {
 				pads[i].reset();
 			}
 		}
+	}
+}
+
+/*
+ *	マウスポインターの更新
+ *	@author Riku
+ */
+void InputManager::UpdateMousePointer() {
+	// マウスの表示非表示切り替え
+	SetMouseDispFlag(mouseVisible);
+
+	// 1フレーム前のマウスの位置を保存
+	prevMousePosX = nowMousePosX;
+	prevMousePosY = nowMousePosY;
+	// 現在のマウスの位置を保存
+	GetMousePoint(&nowMousePosX, &nowMousePosY);
+	// マウスカーソルが非表示ならカーソルは中央固定
+	if (!mouseVisible) {
+		// 1フレーム目はスキップ
+		if (mouseMoveSkip) {
+			mouseMoveSkip = false;
+		}
+		else {
+			// 画面中央
+			int windowWidthCenter = WINDOW_WIDTH / 2;
+			int windowHeightCenter = WINDOW_HEIGHT / 2;
+			// マウスを画面中央に固定
+			SetMousePoint(windowWidthCenter, windowHeightCenter);
+			// 1フレーム前位置は画面中央とする
+			prevMousePosX = windowWidthCenter;
+			prevMousePosY = windowHeightCenter;
+		}
+	}
+
+	// 直前の入力がマウスかどうか管理
+	for (auto key : currentKeyState) {
+		if (key == 1)
+			prevInputMouse = false;
+	}
+	if (currentMouseState != 0 ||
+		prevMousePosX - nowMousePosX != 0 ||
+		prevMousePosY - nowMousePosY != 0) {
+		prevInputMouse = true;
 	}
 }
 

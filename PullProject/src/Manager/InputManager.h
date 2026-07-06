@@ -9,6 +9,7 @@
 #include <array>
 #include <memory>
 #include "../Definition/Const/InputConst.h"
+#include "../Definition/Const/VECTORConst.h"
 
 class PadBase;
 
@@ -29,6 +30,12 @@ public:
 private:
 	// コントローラの更新
 	void UpdatePad();
+
+	/*
+	 *	マウスポインターの更新
+	 *	@author Riku
+	 */
+	void UpdateMousePointer();
 
 public:
 #pragma region KeyBoard
@@ -66,6 +73,35 @@ public:
 	  MOUSE_INPUT_##
 	*/
 	inline bool IsMouseUp(int _mouse) const { return !(currentMouseState & _mouse) && (prevMouseState & _mouse); }
+
+	/*
+	 *	マウスの移動量取得
+	 *	@retrun VECETOR	移動量
+	 *  @outhor Riku
+	 */
+	inline VECTOR GetMouseMove() {
+		VECTOR move = VZero;
+		move.x = prevMousePosX - nowMousePosX;
+		move.y = prevMousePosY - nowMousePosY;
+		return move;
+	}
+	/*
+	 *	マウスの位置取得
+	 *	@param[out]	int mousePosX	マウスの位置X
+	 *	@param[out] int mousePosY	マウスの位置Y
+	 *  @outhor Riku
+	 */
+	inline void GetMousePosition(int& mousePosX, int& mousePosY) {
+		if (!mouseVisible) {
+			mousePosX = -1;
+			mousePosY = -1;
+		}
+		else {
+			mousePosX = nowMousePosX;
+			mousePosY = nowMousePosY;
+		}
+	}
+
 #pragma endregion
 
 	// コントローラの取得
@@ -73,6 +109,25 @@ public:
 
 	// XINPUTのボタン番号をDirectInputのボタン番号に変換
 	int ExchangeXInputButton(int _XINPUT, int _padNum);
+
+	/*
+	 *	マウスカーソルの表示非表示切り替え
+	 *	@param[in]	bool setVisible	切り替え先
+	 *  @outhor Riku
+	 */
+	inline void SetMouseVisible(bool setVisible) {
+		mouseVisible = setVisible;
+		mouseMoveSkip = true;
+	}
+	/*
+	 *	直前の入力がマウスかどうか取得
+	 *  @return bool
+	 *  @author Riku
+	 */
+	inline bool GetPrevInputMouse() {
+		return prevInputMouse;
+	}
+
 private:
 	// キーボードの入力状況
 	char currentKeyState[KEY_NUM];
@@ -85,4 +140,15 @@ private:
 	// コントローラ管理配列
 	std::array<std::unique_ptr<PadBase>, MAX_PAD_PORT> pads;
 
+	/* @author Riku */
+	int nowMousePosX;		// 現在のマウス位置X
+	int prevMousePosX;		// 直前のマウス位置X
+	int nowMousePosY;		// 現在のマウス位置Y
+	int prevMousePosY;		// 直前のマウス位置Y
+	bool mouseVisible;		// マウスカーソルの表示非表示フラグ
+	bool prevInputMouse;	// 直前の入力がマウスかどうか
+	bool mouseMoveSkip;		// マウスの中央固定を1フレームスキップするためのフラグ
+
+	const int WINDOW_WIDTH;
+	const int WINDOW_HEIGHT;
 };
