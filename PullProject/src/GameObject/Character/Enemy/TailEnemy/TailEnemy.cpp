@@ -48,7 +48,7 @@ void TailEnemy::Start() {
 	sphere->SetResolve(false);
 	sphere->SetGameObject(this);
 	sphere->SetLocalCenter(VSub(GetPosition(), MV1GetFramePosition(modelHandle, tailFrameIndex)));
-
+	sphere->SetLayer(ColliderLayer::Tail);
 	type = Tail;
 }
 

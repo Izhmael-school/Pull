@@ -11,6 +11,7 @@
 #include "../../Stage/Gimmick/Lever.h"
 #include "../Enemy/EnemyBase.h"
 #include "../../../Component/Collider/Collider.h"
+#include "../../../Pad/PadBase.h"
 #include <DxLib.h>
 #include <ImGui/imgui.h>
 
@@ -108,8 +109,11 @@ void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
  *	移動
  */
 void PlayerCharacter::Move() {
+	auto pad = InputManager::GetInstance().GetPad(0);
+
 	// ジャンプ
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE)) {
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_SPACE) ||
+		pad->IsPadDown(XINPUT_BUTTON_A)) {
 		AddFallSpeed(-JUMP_POWER);
 		hitGroundingFrag = false;
 		playerState = PlayerState::Jump;
@@ -130,14 +134,33 @@ void PlayerCharacter::Move() {
 
 	// 入力
 	VECTOR moveDir = VZero;
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_W))
-		moveDir = VAdd(moveDir, VGet(cameraSin, 0, cameraCos));
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_S))
-		moveDir = VAdd(moveDir, VGet(-cameraSin, 0, -cameraCos));
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_D))
-		moveDir = VAdd(moveDir, VGet(cameraCos, 0, -cameraSin));
-	if (InputManager::GetInstance().IsKey(KEY_INPUT_A))
-		moveDir = VAdd(moveDir, VGet(-cameraCos, 0, cameraSin));
+
+	// 前方向
+	VECTOR forward = VGet(cameraSin, 0, cameraCos);
+	// 右方向
+	VECTOR right = VGet(cameraCos, 0, -cameraSin);
+	// キーボード入力
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_W)) {
+		moveDir = VAdd(moveDir, forward);
+	}
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_S)) {
+		moveDir = VAdd(moveDir, VScale(forward, -1));
+	}
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_D)) {
+		moveDir = VAdd(moveDir, right);
+	}
+	if (InputManager::GetInstance().IsKey(KEY_INPUT_A)) {
+		moveDir = VAdd(moveDir, VScale(right, -1));
+	}
+
+	// コントローラー入力
+	VECTOR LStick = pad->GetLStick();
+	if (LStick.y != 0) {
+		moveDir = VAdd(moveDir, VScale(forward, LStick.y));
+	}
+	if (LStick.x != 0) {
+		moveDir = VAdd(moveDir, VScale(right, LStick.x));
+	}
 
 	// 入力があれば移動
 	if (moveDir.x != 0 ||
@@ -179,9 +202,19 @@ void PlayerCharacter::ReturnColor() {
  *	引っこ抜き
  */
 bool PlayerCharacter::Pull() {
+	float Ldown = InputManager::GetInstance().GetPad(0)->GetLStick().y;
+
 	// 後ろに引き続けないと引っこ抜けない
+	// キーボード入力
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_S)) {
 		pullValue++;
+		// 微量のシェイク
+		CameraManager::GetInstance().CameraShake(1, 1);
+
+	}
+	// コントローラー入力
+	else if (Ldown < 0) {
+		pullValue -= Ldown;
 		// 微量のシェイク
 		CameraManager::GetInstance().CameraShake(1, 1);
 
@@ -216,6 +249,7 @@ bool PlayerCharacter::Pull() {
 void PlayerCharacter::PullReset() {
 	pullValue = 0;
 	returnColor = true;
+	isGravity = true;
 }
 
 /*

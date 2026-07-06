@@ -60,6 +60,12 @@ public:
 	void AddFallSpeed(float addValue) {
 		fallSpeed += addValue;
 	}
+	/*
+	 *	重力の有効無効変更
+	 */
+	void SetIsGravity(bool setValue) {
+		isGravity = setValue;
+	}
 
 public:
 

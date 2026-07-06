@@ -9,6 +9,7 @@
 #include "../../Definition/CommonModule/MyMath.h"
 #include "../../Manager/PlayerManager.h"
 #include "../../Component/Collider/Collider.h"
+#include "../../Pad/PadBase.h"
 #include <DxLib.h>
 #include <ImGui/imgui.h>
 
@@ -19,7 +20,7 @@
 #include "EventCameraMovement.h"
 
 CameraObject::CameraObject()
-	: mode(CameraMode::Debug)
+	: mode(CameraMode::Player)
 	, target(VZero)
 	, speed(30.0f)
 	, shakePower(0.0f)
@@ -152,24 +153,44 @@ void CameraObject::PlayerUpdate() {
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	if (!player) return;
 
+	auto pad = InputManager::GetInstance().GetPad(0);
+
 	// 入力方向を保持
 	VECTOR moveVec = VZero;
+	// コントローラーの入力(反転しておく)
+	VECTOR RStick = VScale(pad->GetRStick(), -1);
+
+	// キーボード入力
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_RIGHT))
 		moveVec = VAdd(moveVec, VScale(pTransform->GetRight(), -1));
 	if (InputManager::GetInstance().IsKey(KEY_INPUT_LEFT))
 		moveVec = VAdd(moveVec, pTransform->GetRight());
+	// コントローラー入力
+	if (RStick.x != 0) {
+		moveVec = VAdd(moveVec, VScale(pTransform->GetRight(), RStick.x));
+	}
 	// 上下移動には制限を掛ける
 	VECTOR move = VAdd(GetPosition(), VScale(pTransform->GetUp(), -speed));
 	float moveY = target.y - move.y;
 	if (moveY < POSITION_Y_LIMIT_DOWN) {
+		// キーボード入力
 		if (InputManager::GetInstance().IsKey(KEY_INPUT_UP))
 			moveVec = VAdd(moveVec, VScale(pTransform->GetUp(), -1));
+		// コントローラー入力
+		if (RStick.y < 0) {
+			moveVec = VAdd(moveVec, VScale(pTransform->GetUp(), RStick.y));
+		}
 	}
 	move = VAdd(GetPosition(), VScale(pTransform->GetUp(), speed));
 	moveY = target.y - move.y;
 	if (moveY > POSITION_Y_LIMIT_UP) {
+		// キーボード入力
 		if (InputManager::GetInstance().IsKey(KEY_INPUT_DOWN))
 			moveVec = VAdd(moveVec, pTransform->GetUp());
+		// コントローラー入力
+		if (RStick.y > 0) {
+			moveVec = VAdd(moveVec, VScale(pTransform->GetUp(), RStick.y));
+		}
 	}
 
 	// 入力があれば回転
