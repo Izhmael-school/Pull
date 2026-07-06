@@ -10,7 +10,7 @@
 #include "HookShot.h"
 #include "ExitArea.h"
 #include "PullOutFloor.h"
-
+#include "Turret.h"
  /*
   *	レバー以外のギミック生成
   */
@@ -52,6 +52,16 @@ GimmickObject* GimmickFactory::Create(const std::string& type, int modelHandle, 
 			modelHandle,
 			pos,
 			rota
+		);
+	}
+
+	// タレット生成
+	if (type == "Turret") {
+		return new Turret(
+			modelHandle,
+			pos,
+			rota,
+			Turrets
 		);
 	}
 
