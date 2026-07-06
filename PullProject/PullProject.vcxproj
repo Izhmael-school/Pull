@@ -151,6 +151,8 @@
     <ClCompile Include="src\Debug\Scene\EnemyDebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\PlayerDebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\StageDebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\StageSelectScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\TitleScene.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyJson.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyMath.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyString.cpp" />
@@ -234,6 +236,8 @@
     <ClInclude Include="src\Debug\Scene\EnemyDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\PlayerDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\StageDebugScene.h" />
+    <ClInclude Include="src\Debug\Scene\StageSelectScene.h" />
+    <ClInclude Include="src\Debug\Scene\TitleScene.h" />
     <ClInclude Include="src\Definition\CommonModule\MyJson.h" />
     <ClInclude Include="src\Definition\CommonModule\MyMath.h" />
     <ClInclude Include="src\Definition\CommonModule\MyString.h" />
