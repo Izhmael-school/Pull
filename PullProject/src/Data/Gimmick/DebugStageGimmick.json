@@ -5,6 +5,12 @@
       "LeverID": 1,
       "Position": "LeverPoint",
       "Rotation": 0.0
+    },
+    {
+      "Model": "res/Model/Gimmick/Lever.mv1",
+      "LeverID": 2,
+      "Position": "Lever_SP",
+      "Rotation": 180.0
     }
   ],
 
@@ -43,6 +49,13 @@
     {
       "Type": "ExitArea",
       "Position": "PlayerBP",
+      "Rotation": 0.0
+    },
+    {
+      "Type": "PullOutFloor",
+      "Model": "res/Model/Gimmick/PullOutFloor/PullOutFloor.mv1",
+      "LeverID": 2,
+      "Position": "PullOutFloor_SP0",
       "Rotation": 0.0
     }
   ]

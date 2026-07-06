@@ -109,18 +109,20 @@ void BreakWall::OnTriggered() {
 /*
  *	レバーの生成位置を取得
  */
-VECTOR BreakWall::GetLeverSpawnPosition() const {
+bool BreakWall::GetLeverSpawnPosition(VECTOR& pos) const {
+	// モデルの行列を更新
 	MV1SetMatrix(modelHandle, pTransform->GetMatrix());
 	// モデル内のLeverPointフレーム検索
 	int frame = MV1SearchFrame(modelHandle, _LEVER_SPAWNPOS_NAME);
-	// // ローカル座標
-	// VECTOR localPos = MV1GetFramePosition(modelHandle, frame);
-	// // ワールド座標
-	// VECTOR worldPos = VAdd(GetPosition(), localPos);
-	// 
-	// // 生成位置を返す
-	// return worldPos;
-	return MV1GetFramePosition(modelHandle, frame);
+
+	// フレームが存在しない
+	if (frame == -1) return false;
+
+	// 座標を取得
+	pos = MV1GetFramePosition(modelHandle, frame);
+
+
+	return true;
 }
 
 /*

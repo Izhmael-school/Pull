@@ -37,7 +37,7 @@ float MyMath::EaseQuadIn(const float start, const float end, const float time) {
     // 距離を計算
     float dis = end - start;
     // 二次関数を計算
-    float quadIn = powf(time, 2.0f);
+    float quadIn = powf(time, 1.5f);
 
     // 現在位置を計算
     float ref = start + dis * quadIn;

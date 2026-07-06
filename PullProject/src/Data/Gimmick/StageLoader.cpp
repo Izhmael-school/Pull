@@ -25,14 +25,14 @@ namespace {
 	constexpr const char* _DATENAME_TYPE = "Type";			// ギミックの種類
 	constexpr const char* _DATENAME_LEVER = "Levers";		// レバー
 	constexpr const char* _DATENAME_ROTATION = "Rotation";	// 回転
-
+	constexpr const char* _LEVER_POS = "Lever_SP{}";			// レバー生成位置
 }
 
 void StageLoader::Load(const std::string& fileName, int stageHandle) {
 	std::ifstream file(fileName);
 	json data;
 	file >> data;
-	// 
+	// レバー対応オブジェクト
 	std::unordered_map<int, TriggerInterface*> triggerMap;
 
 	// ギミック生成
@@ -103,14 +103,24 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 		VECTOR vRota = { 0.0f,baseRota,0.0f };
 
 		// 同じIDのギミック検索
-		auto it = triggerMap.find(id);
+		auto triggerObj = triggerMap.find(id);
 
 		// 同じIDを持つギミックが存在するかどうか
-		if (it != triggerMap.end()) {
-			// レバーを配置したい座標を取得
-			pos = it->second->GetLeverSpawnPosition();
+		if (triggerObj != triggerMap.end() &&
+			triggerObj->second->GetLeverSpawnPosition(pos)) {
+			// ギミックから取得成功
 		}
+		else {
+			// 保険としてStageHandleから取得
+			// レバーの位置をIDと合わせる
+			std::string leverposFrame = std::format(_LEVER_POS, id);
 
+			// モデル内のLeverPointフレーム検索
+			int frame = MV1SearchFrame(stageHandle, leverposFrame.c_str());
+			// 座標を設定
+			pos =  MV1GetFramePosition(stageHandle, frame);
+		}
+		
 		// レバーオブジェクト生成
 		Lever* obj = new Lever(id, model, pos, vRota);
 		// オブジェクトを登録

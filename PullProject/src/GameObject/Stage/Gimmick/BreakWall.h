@@ -73,7 +73,7 @@ public:
 	/*
 	 * レバー配置位置取得
 	 */
-	VECTOR GetLeverSpawnPosition() const override;
+	bool GetLeverSpawnPosition(VECTOR& pos) const override;
 
 };
 
