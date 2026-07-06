@@ -149,6 +149,7 @@
     <ClCompile Include="src\Debug\Scene\DebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\DebugSceneSelectScene.cpp" />
     <ClCompile Include="src\Debug\Scene\EnemyDebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\MainGameScene.cpp" />
     <ClCompile Include="src\Debug\Scene\PlayerDebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\StageDebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\StageSelectScene.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="src\Debug\Scene\DebugScene.h" />
     <ClInclude Include="src\Debug\Scene\DebugSceneSelectScene.h" />
     <ClInclude Include="src\Debug\Scene\EnemyDebugScene.h" />
+    <ClInclude Include="src\Debug\Scene\MainGameScene.h" />
     <ClInclude Include="src\Debug\Scene\PlayerDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\StageDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\StageSelectScene.h" />
