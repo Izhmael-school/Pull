@@ -149,8 +149,11 @@
     <ClCompile Include="src\Debug\Scene\DebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\DebugSceneSelectScene.cpp" />
     <ClCompile Include="src\Debug\Scene\EnemyDebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\MainGameScene.cpp" />
     <ClCompile Include="src\Debug\Scene\PlayerDebugScene.cpp" />
     <ClCompile Include="src\Debug\Scene\StageDebugScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\StageSelectScene.cpp" />
+    <ClCompile Include="src\Debug\Scene\TitleScene.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyJson.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyMath.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyString.cpp" />
@@ -176,6 +179,7 @@
     <ClCompile Include="src\GameObject\Stage\Gimmick\HookShot.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Gimmick\Turret.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
     <ClCompile Include="src\Generator\GameObjectGenerator.cpp" />
@@ -188,8 +192,6 @@
     <ClCompile Include="src\ImGui\imgui_draw.cpp" />
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="src\Input\ActionMapBase.cpp" />
-    <ClCompile Include="src\Input\PlayerActionMap.cpp" />
     <ClCompile Include="src\Instance\Audio\AudioInstance.cpp" />
     <ClCompile Include="src\Instance\Effect\EffectInstance.cpp" />
     <ClCompile Include="src\Instance\InstanceBase.cpp" />
@@ -204,7 +206,6 @@
     <ClCompile Include="src\Manager\EnemyManager.cpp" />
     <ClCompile Include="src\Manager\GameObjectManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
-    <ClCompile Include="src\Manager\InputSystemManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
     <ClCompile Include="src\Manager\ModelManager.cpp" />
     <ClCompile Include="src\Manager\PlayerManager.cpp" />
@@ -235,21 +236,21 @@
     <ClInclude Include="src\Debug\Scene\DebugScene.h" />
     <ClInclude Include="src\Debug\Scene\DebugSceneSelectScene.h" />
     <ClInclude Include="src\Debug\Scene\EnemyDebugScene.h" />
+    <ClInclude Include="src\Debug\Scene\MainGameScene.h" />
     <ClInclude Include="src\Debug\Scene\PlayerDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\StageDebugScene.h" />
-    <ClInclude Include="src\Definition\CommonModule\ActionMapData.h" />
+    <ClInclude Include="src\Debug\Scene\StageSelectScene.h" />
+    <ClInclude Include="src\Debug\Scene\TitleScene.h" />
     <ClInclude Include="src\Definition\CommonModule\MyJson.h" />
     <ClInclude Include="src\Definition\CommonModule\MyMath.h" />
     <ClInclude Include="src\Definition\CommonModule\MyString.h" />
     <ClInclude Include="src\Definition\Const\ColorConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
-    <ClInclude Include="src\Definition\Enum\ActionMapEnum.h" />
     <ClInclude Include="src\Definition\Enum\CaughtState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyType.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
-    <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
@@ -275,6 +276,7 @@
     <ClInclude Include="src\GameObject\Stage\Gimmick\Lever.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\TriggerInterface.h" />
+    <ClInclude Include="src\GameObject\Stage\Gimmick\Turret.h" />
     <ClInclude Include="src\GameObject\Stage\Stage.h" />
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
@@ -290,8 +292,6 @@
     <ClInclude Include="src\ImGui\imstb_rectpack.h" />
     <ClInclude Include="src\ImGui\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
-    <ClInclude Include="src\Input\ActionMapBase.h" />
-    <ClInclude Include="src\Input\PlayerActionMap.h" />
     <ClInclude Include="src\Instance\Audio\AudioInstance.h" />
     <ClInclude Include="src\Instance\Effect\EffectInstance.h" />
     <ClInclude Include="src\Instance\InstanceBase.h" />
@@ -305,7 +305,6 @@
     <ClInclude Include="src\Manager\EnemyManager.h" />
     <ClInclude Include="src\Manager\GameObjectManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
-    <ClInclude Include="src\Manager\InputSystemManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\ModelManager.h" />
     <ClInclude Include="src\Manager\PlayerManager.h" />

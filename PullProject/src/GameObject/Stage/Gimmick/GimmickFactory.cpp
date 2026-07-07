@@ -9,7 +9,8 @@
 #include "BomBreakWall.h"
 #include "HookShot.h"
 #include "ExitArea.h"
-
+#include "PullOutFloor.h"
+#include "Turret.h"
  /*
   *	レバー以外のギミック生成
   */
@@ -41,6 +42,26 @@ GimmickObject* GimmickFactory::Create(const std::string& type, int modelHandle, 
 			pos,
 			rota,
 			Hook
+		);
+	}
+
+	// 引き出し床生成
+	if (type == "PullOutFloor") {
+		return new PullOutFloor(
+			triggerId,
+			modelHandle,
+			pos,
+			rota
+		);
+	}
+
+	// タレット生成
+	if (type == "Turret") {
+		return new Turret(
+			modelHandle,
+			pos,
+			rota,
+			Turrets
 		);
 	}
 

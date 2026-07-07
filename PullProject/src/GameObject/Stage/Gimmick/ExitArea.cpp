@@ -7,6 +7,7 @@
 #include "../../Character/Player/PlayerCharacter.h"
 #include "../../../Manager/Stage/StageManager.h"
 #include "../../../Manager/Stage/GimmickObjectManager.h"
+#include "Manager/SceneManager.h"
 
  /*
   *	コンストラクタ
@@ -55,12 +56,11 @@ void ExitArea::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
 		// プレイヤーの座標を変更
 		player->GetTransform()->SetPosition(pos);
-		// 登録されているギミックをリセット
-		GimmickObjectManager::GetInstance().Reset();
+		// クリア判定
+		StageManager::GetInstance().RequestStageClear(true);
 	}
 
-	// シーンを変更させる※後日実装
-	
+
 
 }
 

@@ -13,5 +13,10 @@ enum class SceneType {
 	EnemyDebug,
 	StageDebug,
 	CollisionDebug,
+	Title,				// タイトルシーン
+	GameModeSelect,		// デバッグか本編か選択※後で削除
+	StageSelect,		// ステージ選択シーン
+	Game,				// ゲームプレイシーン
+	End,				// リザルト、終了シーン
 	Max
 };

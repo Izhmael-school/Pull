@@ -10,9 +10,12 @@
 #include "Debug/Scene/StageDebugScene.h"
 #include "Debug/Scene/DebugScene.h"
 #include "Manager/InputManager.h"
+#include "Debug/Scene/TitleScene.h"
+#include "Debug/Scene/StageSelectScene.h"
+#include "Debug/Scene/MainGameScene.h"
 
 SceneManager::SceneManager() 
-	: currentSceneType(SceneType::DebugSceneSelect)
+	: currentSceneType(SceneType::Title)
 { Start(); }
 
 void SceneManager::Start(){
@@ -24,6 +27,10 @@ void SceneManager::Start(){
 	scene[static_cast<int>(SceneType::EnemyDebug)] = std::make_unique<EnemyDebugScene>();
 	scene[static_cast<int>(SceneType::StageDebug)] = std::make_unique<StageDebugScene>();
 	scene[static_cast<int>(SceneType::CollisionDebug)] = std::make_unique<CollisionDebugScene>();
+	
+	scene[static_cast<int>(SceneType::Title)] = std::make_unique<TitleScene>();
+	scene[static_cast<int>(SceneType::StageSelect)] = std::make_unique<StageSelectScene>();
+	scene[static_cast<int>(SceneType::Game)] = std::make_unique<MainGameScene>();
 }
 
 void SceneManager::Update(){

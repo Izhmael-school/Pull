@@ -18,11 +18,16 @@
  */
 class PullOutFloor :public GimmickObject, public TriggerInterface {
 private:
-	int triggerID;	// 自身のID
+	int triggerID;		// 自身のID
 
-	bool isMoving;	// 動いているかどうか
+	bool isMoving;		// 動いているかどうか
+	bool isActiv;		// 起動したかどうか
 
-	float moveTime;	// 移動時間
+	float moveTime;		// 移動時間
+	VECTOR reStartPos;	// 初期位置
+
+	VECTOR moveStartPos;	// 初期位置
+	VECTOR moveEndPos;		// 終了位置
 
 public:
 	/*
@@ -52,16 +57,25 @@ public:
 	 */
 	void Render()override;
 
+	void Reset() override;
+	/*
+	 *	レバーから通知を受けた時の処理
+	 */
+	void OnTriggered() override;
 public:
 	/*
 	 *	IDの取得
 	 */
 	int GetTriggerID() const override { return triggerID; }
+	/*
+	 *	進行方向の取得
+	 */
+	VECTOR GetPullDirPos();
 
 	/*
 	 *	レバー配置位置取得
 	 */
-	VECTOR GetLeverSpawnPosition() const override;
+	bool GetLeverSpawnPosition(VECTOR& pos) const override;
 };
 
 #endif // !_PULLOUTFLOOR_H_

@@ -28,9 +28,11 @@ public:
 	virtual int GetTriggerID() const = 0;
 
 	/*
-	 * レバー配置位置取得
+	 *  レバー配置位置取得可否判定
+	 *  @param[in]	VECTOR& 生成位置を返す用
+	 * 
 	 */
-	virtual VECTOR GetLeverSpawnPosition() const = 0;
+	virtual bool GetLeverSpawnPosition(VECTOR& pos) const = 0;
 };
 
 
