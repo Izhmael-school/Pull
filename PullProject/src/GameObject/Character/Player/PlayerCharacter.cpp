@@ -75,13 +75,18 @@ void PlayerCharacter::Update() {
 	}
 
 	// 移動
-	if (!pHands->IsCatch())
+	if (pHands->IsHandIdle())
 		Move();
 
 	// 待機アニメーション
 	if (playerState == PlayerState::Idle) {
 		pAnimator->Play("Idle");
 		pHands->GetAnimator()->Play("Idle");
+	}
+
+	// 落下速度に応じて微振動
+	if (fallSpeed > 0) {
+		StartJoypadVibration(DX_INPUT_PAD1, fallSpeed * 0.1f, 180, -1);
 	}
 
 	// 色戻し
@@ -193,6 +198,7 @@ bool PlayerCharacter::Pull() {
 		pullValue -= back;
 		// 微量のシェイク
 		CameraManager::GetInstance().CameraShake(1, 1);
+		StartJoypadVibration(DX_INPUT_PAD1, pullValue * 0.5f, 10, -1);
 
 	}
 	else {
@@ -213,6 +219,7 @@ bool PlayerCharacter::Pull() {
 		CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
 		// 解除時処理を呼ぶ
 		PullReset();
+		StartJoypadVibration(DX_INPUT_PAD1, 1000, 180, -1);
 		
 		return true;
 	}
