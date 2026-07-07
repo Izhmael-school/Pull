@@ -192,6 +192,8 @@
     <ClCompile Include="src\ImGui\imgui_draw.cpp" />
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Input\ActionMapBase.cpp" />
+    <ClCompile Include="src\Input\PlayerActionMap.cpp" />
     <ClCompile Include="src\Instance\Audio\AudioInstance.cpp" />
     <ClCompile Include="src\Instance\Effect\EffectInstance.cpp" />
     <ClCompile Include="src\Instance\InstanceBase.cpp" />
@@ -206,6 +208,7 @@
     <ClCompile Include="src\Manager\EnemyManager.cpp" />
     <ClCompile Include="src\Manager\GameObjectManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
+    <ClCompile Include="src\Manager\InputSystemManager.cpp" />
     <ClCompile Include="src\Manager\ManagerBase.cpp" />
     <ClCompile Include="src\Manager\ModelManager.cpp" />
     <ClCompile Include="src\Manager\PlayerManager.cpp" />
@@ -292,6 +295,8 @@
     <ClInclude Include="src\ImGui\imstb_rectpack.h" />
     <ClInclude Include="src\ImGui\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
+    <ClInclude Include="src\Input\ActionMapBase.h" />
+    <ClInclude Include="src\Input\PlayerActionMap.h" />
     <ClInclude Include="src\Instance\Audio\AudioInstance.h" />
     <ClInclude Include="src\Instance\Effect\EffectInstance.h" />
     <ClInclude Include="src\Instance\InstanceBase.h" />
@@ -305,6 +310,7 @@
     <ClInclude Include="src\Manager\EnemyManager.h" />
     <ClInclude Include="src\Manager\GameObjectManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
+    <ClInclude Include="src\Manager\InputSystemManager.h" />
     <ClInclude Include="src\Manager\ManagerBase.h" />
     <ClInclude Include="src\Manager\ModelManager.h" />
     <ClInclude Include="src\Manager\PlayerManager.h" />
