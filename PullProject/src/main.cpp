@@ -8,6 +8,7 @@
 #include "Manager/TimeManager.h"
 #include "Manager/CollisionManager.h"
 #include "ImGui/ImGuiManager.h"
+#include "Manager/InputSystemManager.h"
 
 constexpr double FRAME_TIME = 1.0 / 60.0;
 
@@ -114,6 +115,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		// シーンの更新
 		TimeManager::GetInstance().Update();
 		InputManager::GetInstance().Update();
+		InputSystemManager::GetInstance().Update();
 		SceneManager::GetInstance().Update();
 
 		if(InputManager::GetInstance().IsKeyDown(KEY_INPUT_ESCAPE)) {
