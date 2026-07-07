@@ -25,9 +25,10 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, catchState(CatchState::None)
 	, pOwner(_owner)
 	, extendSpeed(20.0f)
-	, returnSpeedRatio(0.2f)
+	, returnSpeedRatio(0.3f)
 
 	, RETURN_THRESHOLD(1.0f)
+	, ARM_LENGTH_MAX(100.0f)
 {}
 
 void PlayerHands::Start() {
@@ -52,8 +53,8 @@ void PlayerHands::Update() {
 			pOwner->PullReset();
 		}
 	}
-	// 何も掴んでいなければ
-	else {
+	// 何も掴んでいなければ(かつ地に足ついていれば)
+	else if (pOwner->GetHitGroundingFrag()) {
 		// ウデ伸ばし
 		if (action.button[static_cast<int>(PlayerAction::ArmExtend)])
 			handsState = HandsState::ArmsExtending;
@@ -90,6 +91,7 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		handsState = HandsState::Catch;
 		// 敵の掴まった時処理
 		enemy->CaughtAction();
+		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 	}
 
 	/*
@@ -102,11 +104,14 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		handsState = HandsState::Catch;
 		// 敵の掴まった時処理
 		missile->CaughtAction();
+		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 	}
 
 	// 当たったのがフックの場合
 	if (other->GetTag() == Hook) {
 		handsState = HandsState::Catch;
+
+		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 	}
 }
 
@@ -180,6 +185,7 @@ void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 void PlayerHands::HandsMove() {
 	// ウデ伸ばし中なら前に進む
 	if (handsState == HandsState::ArmsExtending) {
+		
 		pTransform->AddPosition(pTransform->GetForward(), -extendSpeed);
 
 		// ウデ伸ばし中は当たり判定の押し出しあり

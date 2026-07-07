@@ -44,6 +44,7 @@ private:
 	ActionState action;						// アクション状態
 
 	const float RETURN_THRESHOLD;			// 戻ってきたとみなす閾値
+	const float ARM_LENGTH_MAX;				// ウデ伸ばし上限
 	
 public:
 	PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag = Player);
@@ -89,7 +90,11 @@ public:
 	 *	@return bool
 	 */
 	inline bool IsArmExtended() { return handsState == HandsState::ArmsExtending; }
-
+	/*
+	 *	手は待機状態か否か
+	 *	@return bool
+	 */
+	inline bool IsHandIdle() { return handsState == HandsState::Idle; }
 };
 // 別名定義
 using PlayerHandsPtr = std::shared_ptr<PlayerHands>;
