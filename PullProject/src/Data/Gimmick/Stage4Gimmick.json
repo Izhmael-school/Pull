@@ -1,13 +1,11 @@
 {
   "Levers": [
     {
-      "Model": "res/Model/Gimmick/Lever.mv1",
       "LeverID": 1,
       "Position": "LeverPoint",
       "Rotation": 0.0
     },
     {
-      "Model": "res/Model/Gimmick/Lever.mv1",
       "LeverID": 2,
       "Position": "LeverPoint",
       "Rotation": 90.0
@@ -18,7 +16,6 @@
   "Gimmicks": [
     {
       "Type": "BreakWall",
-      "Model": "res/Model/Gimmick/BreakWall/BreakWall.mv1",
       "LeverID": 1,
       "Position": "BreakWall_SP0",
       "Rotation": 0.0
@@ -26,7 +23,6 @@
 
     {
       "Type": "BreakWall",
-      "Model": "res/Model/Gimmick/BreakWall/BreakWall.mv1",
       "LeverID": 2,
       "Position": "BreakWall_SP1",
       "Rotation": 90.0

@@ -56,6 +56,8 @@ void ExitArea::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
 		// プレイヤーの座標を変更
 		player->GetTransform()->SetPosition(pos);
+		// ギミックをリセット
+		GimmickObjectManager::GetInstance().Reset();
 		// クリア判定
 		StageManager::GetInstance().RequestStageClear(true);
 	}

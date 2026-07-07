@@ -11,7 +11,7 @@
 #include <string>
 
 class GimmickObject;
-class GimmickFactory{
+class GimmickFactory {
 
 public:
 	/*
@@ -23,11 +23,17 @@ public:
 	 */
 	static GimmickObject* Create(
 		const std::string& type,
-		int modelHandle,
 		int triggerId,
 		VECTOR pos,
 		VECTOR rota
 	);
+
+
+	/*
+	 *	モデル複製
+	 *  @param[in]	std::string	モデルのファイルパス
+	 */
+	static int CraftBaseModel(std::string path);
 
 
 };

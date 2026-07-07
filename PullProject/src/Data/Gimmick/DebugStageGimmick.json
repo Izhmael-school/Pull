@@ -1,13 +1,11 @@
 {
   "Levers": [
     {
-      "Model": "res/Model/Gimmick/Lever.mv1",
       "LeverID": 1,
       "Position": "LeverPoint",
       "Rotation": 0.0
     },
     {
-      "Model": "res/Model/Gimmick/Lever.mv1",
       "LeverID": 2,
       "Position": "Lever_SP",
       "Rotation": 180.0
@@ -17,32 +15,27 @@
   "Gimmicks": [
     {
       "Type": "BreakWall",
-      "Model": "res/Model/Gimmick/BreakWall/BreakWall.mv1",
       "LeverID": 1,
       "Position": "BreakWall_SP0",
       "Rotation": 0.0
     },
     {
       "Type": "BomBreakWall",
-      "Model": "res/Model/Gimmick/BomBreakWall/BomBreakWall.mv1",
       "Position": "BomBreakWall_SP0",
       "Rotation": 0.0
     },
     {
       "Type": "HookShot",
-      "Model": "res/Model/Gimmick/HookShot/HookShot.mv1",
       "Position": "HookShot_SP0",
       "Rotation": 0.0
     },
     {
       "Type": "HookShot",
-      "Model": "res/Model/Gimmick/HookShot/HookShot.mv1",
       "Position": "HookShot_SP1",
       "Rotation": 0.0
     },
     {
       "Type": "HookShot",
-      "Model": "res/Model/Gimmick/HookShot/HookShot.mv1",
       "Position": "HookShot_SP2",
       "Rotation": 0.0
     },
@@ -53,7 +46,6 @@
     },
     {
       "Type": "PullOutFloor",
-      "Model": "res/Model/Gimmick/PullOutFloor/PullOutFloor.mv1",
       "LeverID": 2,
       "Position": "PullOutFloor_SP0",
       "Rotation": 0.0
