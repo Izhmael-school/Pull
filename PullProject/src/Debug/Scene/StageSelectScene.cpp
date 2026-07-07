@@ -20,11 +20,11 @@ StageSelectScene::StageSelectScene() :currentScene(0){ Start(); }
  *	開始処理
  */
 void StageSelectScene::Start() {
-	selectInfoArray.push_back({ "Stage1 x",[]() {StageManager::GetInstance().SetStageID(1);SceneManager::GetInstance().ChangeScene(SceneType::Debug);} });
-	selectInfoArray.push_back({ "Stage2 x",[]() {StageManager::GetInstance().SetStageID(2);SceneManager::GetInstance().ChangeScene(SceneType::PlayerDebug);} });
+	selectInfoArray.push_back({ "Stage1 x",[]() {StageManager::GetInstance().SetStageID(1);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
+	selectInfoArray.push_back({ "Stage2 x",[]() {StageManager::GetInstance().SetStageID(2);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage3 x",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
-	selectInfoArray.push_back({ "Stage4 x",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
-	selectInfoArray.push_back({ "Stage5 x",[]() {StageManager::GetInstance().SetStageID(5);SceneManager::GetInstance().ChangeScene(SceneType::CollisionDebug);} });
+	selectInfoArray.push_back({ "Stage4 o",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
+	selectInfoArray.push_back({ "Stage5 x",[]() {StageManager::GetInstance().SetStageID(5);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "DebugSelect o",[]() {SceneManager::GetInstance().ChangeScene(SceneType::DebugSceneSelect);} });
 }
 
