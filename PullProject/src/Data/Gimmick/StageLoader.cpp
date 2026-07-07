@@ -106,11 +106,11 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 			// モデル内のLeverPointフレーム検索
 			int frame = MV1SearchFrame(stageHandle, leverposFrame.c_str());
 			// 座標を設定
-			pos =  MV1GetFramePosition(stageHandle, frame);
+			pos = MV1GetFramePosition(stageHandle, frame);
 		}
-		
+
 		// レバーオブジェクト生成
-		Lever* obj = new Lever(id, model, pos, vRota);
+		Lever* obj = new Lever(id, model, pos, vRota, LeverTag);
 		// オブジェクトを登録
 		GimmickObjectManager::GetInstance().Register(obj);
 

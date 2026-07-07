@@ -11,8 +11,8 @@
  /*
   *  コンストラクタ
   */
-Lever::Lever(int id, int modelHandle, VECTOR pos,VECTOR rota)
-	:GimmickObject(modelHandle, pos,rota,tag)
+Lever::Lever(int id, int modelHandle, VECTOR pos, VECTOR rota, Tag tag)
+	:GimmickObject(modelHandle, pos, rota, tag)
 	, triggerID(id)
 	, isActivated(false)
 	, onLever(false)
@@ -69,7 +69,7 @@ void Lever::Execute() {
 }
 
 /*
- *	
+ *
  */
 void Lever::Reset() {
 	// 使用されていなければ行わない
@@ -92,10 +92,10 @@ void Lever::Activate() {
 	if (isActivated) return;
 	// 使用状態に変更
 	isActivated = true;
-	
+
 	// 当たり判定削除
 	CollisionManager::GetInstance().UnRegister(pCollider.get());
-	
+
 	// 起動したレバーのIDを渡す
 	GimmickManager::GetInstance().ActivateLever(triggerID);
 

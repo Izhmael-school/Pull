@@ -11,5 +11,6 @@ enum Tag {
 	Player,
 	Ground,
 	Hook,
-	Turrets
+	Turrets,
+	LeverTag
 };
