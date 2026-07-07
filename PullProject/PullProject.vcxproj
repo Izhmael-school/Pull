@@ -189,6 +189,7 @@
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Input\ActionMapBase.cpp" />
+    <ClCompile Include="src\Input\PlayerActionMap.cpp" />
     <ClCompile Include="src\Instance\Audio\AudioInstance.cpp" />
     <ClCompile Include="src\Instance\Effect\EffectInstance.cpp" />
     <ClCompile Include="src\Instance\InstanceBase.cpp" />
@@ -236,16 +237,19 @@
     <ClInclude Include="src\Debug\Scene\EnemyDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\PlayerDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\StageDebugScene.h" />
+    <ClInclude Include="src\Definition\CommonModule\ActionMapData.h" />
     <ClInclude Include="src\Definition\CommonModule\MyJson.h" />
     <ClInclude Include="src\Definition\CommonModule\MyMath.h" />
     <ClInclude Include="src\Definition\CommonModule\MyString.h" />
     <ClInclude Include="src\Definition\Const\ColorConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
+    <ClInclude Include="src\Definition\Enum\ActionMapEnum.h" />
     <ClInclude Include="src\Definition\Enum\CaughtState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyType.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
+    <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
@@ -287,6 +291,7 @@
     <ClInclude Include="src\ImGui\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\Input\ActionMapBase.h" />
+    <ClInclude Include="src\Input\PlayerActionMap.h" />
     <ClInclude Include="src\Instance\Audio\AudioInstance.h" />
     <ClInclude Include="src\Instance\Effect\EffectInstance.h" />
     <ClInclude Include="src\Instance\InstanceBase.h" />

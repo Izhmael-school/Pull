@@ -6,6 +6,7 @@
 #include "ActionMapBase.h"
 #include "../Manager/InputSystemManager.h"
 #include "../Manager/InputManager.h"
+#include "../Pad/PadBase.h"
 
 void ActionMapBase::InputUpdate() {
 	// 入力のタイプ別で入力判定
@@ -45,12 +46,12 @@ void ActionMapBase::InputUpdate() {
 			break;
 		}
 		case BindingType::AxisValue:{
-			// マウスの移動入力量
-			if (bind.input.type == InputType::MouseMove) {
-				VECTOR mouse = InputManager::GetInstance().GetMouseMove();
-				state.axis[bind.action].x = mouse.x;
-				state.axis[bind.action].y = mouse.y;
-			}
+			VECTOR move = input.GetAxisValue(bind.input.type);
+			if (move.x == 0.0f && move.y == 0.0f)
+				break;
+			state.axis[bind.action].x = move.x;
+			state.axis[bind.action].y = move.y;
+			break;
 		}
 		}
 	}

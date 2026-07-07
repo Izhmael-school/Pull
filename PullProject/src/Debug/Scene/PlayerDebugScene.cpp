@@ -17,6 +17,7 @@
 #include "../../Manager/Stage/GimmickObjectManager.h"
 #include "Manager/ColliderObjectManager.h"
 #include "Generator/StageCollisionGenerator.h"
+#include "../../Manager/InputSystemManager.h"
 
 
 PlayerDebugScene::PlayerDebugScene() { Start(); }
@@ -50,6 +51,10 @@ void PlayerDebugScene::Setup() {
 }
 
 void PlayerDebugScene::Update() {
+	// 入力の更新
+	InputSystemManager::GetInstance().Update();
+	// プレイヤーアクションマップを有効化
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// プレイヤーの更新

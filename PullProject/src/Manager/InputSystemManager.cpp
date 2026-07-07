@@ -5,38 +5,52 @@
 
 #include "InputSystemManager.h"
 #include "InputManager.h"
-#include "../Input/ActionMapBase.h"
 #include "../Pad/PadBase.h"
+#include "../Input/PlayerActionMap.h"
 
-InputSystemManager::InputSystemManager()
-{}
+InputSystemManager::InputSystemManager() {
+	Start();
+}
 
 InputSystemManager::~InputSystemManager()
 {}
 
 // 初期化処理
 void InputSystemManager::Start() {
+	// 全ての入力受付の生成
+	actionMaps[ActionMap::PlayerAction] = std::make_shared<PlayerActionMap>();
+	for (auto [mapNum, actionMap] : actionMaps) {
+		// 全アクションマップの初期化
+		actionMap->Start();
+	}
 }
 
 // 更新処理
 void InputSystemManager::Update() {
-	
+	// 各アクションマップの更新処理
+	for (auto [mapNum, actionMap] : actionMaps) {
+		// まず入力状態のリセット
+		actionMap->InputReset();
+		// 有効なら更新処理
+		if (actionMap->isActive)
+			actionMap->InputUpdate();
+	}
 }
 
 /*
  *	ボタンが押されたかどうか
- *  @param[in]	ActionMapBase::InputType _type	種類
+ *  @param[in]	InputType _type	種類
  *  @param[in]	int _button						入力
  *	@return		bool
  */
-bool InputSystemManager::IsInputDown(ActionMapBase::InputType _type, int _button) {
+bool InputSystemManager::IsInputDown(InputType _type, int _button) {
 	auto& input = InputManager::GetInstance();
 	switch (_type) {
-	case ActionMapBase::InputType::Key:
+	case InputType::Key:
 		return input.IsKeyDown(_button);
-	case ActionMapBase::InputType::MouseButton:
+	case InputType::MouseButton:
 		return input.IsMouseDown(_button);
-	case ActionMapBase::InputType::PadButton:
+	case InputType::PadButton:
 		auto pad = input.GetPad(0);
 		if (!pad)
 			return false;
@@ -45,17 +59,18 @@ bool InputSystemManager::IsInputDown(ActionMapBase::InputType _type, int _button
 }
 /*
  *	ボタンが押されているかどうか
- *  @param[in]	ActionMapBase::InputType _type	種類
+ *  @param[in]	InputType _type	種類
  *  @param[in]	int _button						入力
  *	@return		bool
  */
-bool InputSystemManager::IsInput(ActionMapBase::InputType _type, int _button) {
+bool InputSystemManager::IsInput(InputType _type, int _button) {
 	auto& input = InputManager::GetInstance();
 	switch (_type) {
-	case ActionMapBase::InputType::Key:
+	case InputType::Key:
 		return input.IsKey(_button);
-	case ActionMapBase::InputType::MouseButton:
+	case InputType::MouseButton:
 		return input.IsMouse(_button);
+	case InputType::PadButton:
 		auto pad = input.GetPad(0);
 		if (!pad)
 			return false;
@@ -64,20 +79,44 @@ bool InputSystemManager::IsInput(ActionMapBase::InputType _type, int _button) {
 }
 /*
  *	ボタンを離したかどうか
- *  @param[in]	ActionMapBase::InputType _type	種類
+ *  @param[in]	InputType _type	種類
  *  @param[in]	int _button						入力
  *	@return		bool
  */
-bool InputSystemManager::IsInputUp(ActionMapBase::InputType _type, int _button) {
+bool InputSystemManager::IsInputUp(InputType _type, int _button) {
 	auto& input = InputManager::GetInstance();
 	switch (_type) {
-	case ActionMapBase::InputType::Key:
+	case InputType::Key:
 		return input.IsKeyUp(_button);
-	case ActionMapBase::InputType::MouseButton:
+	case InputType::MouseButton:
 		return input.IsMouseUp(_button);
+	case InputType::PadButton:
 		auto pad = input.GetPad(0);
 		if (!pad)
 			return false;
 		return pad->IsPadUp(_button);
 	}
+}
+
+/*
+ *	2軸入力の値取得
+ *  @param[in]	InputType _type	種類
+ *	@return		bool
+ */
+VECTOR InputSystemManager::GetAxisValue(InputType _type) {
+	auto& input = InputManager::GetInstance();
+	auto pad = input.GetPad(0);
+	VECTOR move = VZero;
+	// マウスの移動入力量
+	if (_type == InputType::MouseMove) {
+		move = input.GetMouseMove();
+	}
+	// コントローラースティック
+	else if (pad) {
+		if (_type == InputType::PadStickL)
+			move = pad->GetLStick();
+		if (_type == InputType::PadStickR)
+			move = pad->GetRStick();
+	}
+	return move;
 }

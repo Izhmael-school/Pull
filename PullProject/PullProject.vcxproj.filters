@@ -333,6 +333,9 @@
     <ClCompile Include="src\Manager\InputSystemManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="src\Input\PlayerActionMap.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Manager\ManagerBase.h">
@@ -619,6 +622,18 @@
     </ClInclude>
     <ClInclude Include="src\Manager\InputSystemManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Enum\ActionMapEnum.h">
+      <Filter>ソース ファイル\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\PlayerActionMap.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h">
+      <Filter>ソース ファイル\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\CommonModule\ActionMapData.h">
+      <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

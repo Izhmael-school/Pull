@@ -8,10 +8,12 @@
 
 #include "../Character.h"
 #include "PlayerHands.h"
+#include "../../../Definition/CommonModule/ActionMapData.h"
 #include <memory>
 
 class Cliider;
 class EnemyBase;
+class ActionMapBase;
 
 /*
  *	プレイヤーキャラクタークラス
@@ -32,6 +34,7 @@ private:
 	float speed;				// 移動速度
 	float pullValue;			// 引っ張り値
 	bool returnColor;			// 色戻しフラグ
+	ActionState action;			// アクション状態
 
 	// 引っこ抜きライン
 	const float PULL_VALUE_MAX;
@@ -114,6 +117,10 @@ public:
 	 *	ジャンプ中か否か
 	 */
 	inline bool IsJump() { return playerState == PlayerState::Jump; }
+	/*
+	 *	入力アクション状態取得
+	 */
+	inline ActionState GetInputAction() { return action; }
 };
 // 別名定義
 using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;

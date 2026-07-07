@@ -7,6 +7,7 @@
 #define _PLAYERHANDS_H_
 
 #include "../Character.h"
+#include "../../../Definition/CommonModule/ActionMapData.h"
 #include <memory>
 
 class Collider;
@@ -40,6 +41,7 @@ private:
 	std::shared_ptr<PlayerCharacter> pOwner;// 所有者(プレイヤー)
 	float extendSpeed;						// 伸ばすスピード
 	float returnSpeedRatio;					// 戻ってくる速度割合
+	ActionState action;						// アクション状態
 
 	const float RETURN_THRESHOLD;			// 戻ってきたとみなす閾値
 	

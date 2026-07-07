@@ -6,7 +6,7 @@
 #ifndef _ACTIONMAPBASE_H_
 #define _ACTIONMAPBASE_H_
 
-#include <unordered_map>
+#include "../Definition/CommonModule/ActionMapData.h"
 #include <variant>
 
 /*
@@ -14,15 +14,6 @@
  */
 class ActionMapBase {
 public:
-	// 入力機の種類 
-	enum class InputType {
-		Key,			// キーボード
-		MouseButton,	// マウスのボタン
-		MouseMove,		// マウスの移動
-		PadButton,		// パッドのボタン
-		PadStick,		// パッドのスティック
-	};
-
 	// 入力
 	struct Input {
 		InputType type;
@@ -31,38 +22,11 @@ public:
 		int right = -1;
 		int left = -1;
 	};
-
-	// マウス移動
-	enum class MouseMove {
-		X,
-		Y,
-	};
-
-	// 入力の種類
-	enum class BindingType {
-		AxisButton,	// 軸のボタン入力
-		Button,		// ボタン入力
-		AxisValue,	// 軸の入力量
-	};
-
-	// 2軸
-	struct Axis2D {
-		float x;
-		float y;
-	};
-
 	// 入力の設定
 	struct Binding {
 		int action;			// 入力に対する行動
 		BindingType type;	// 入力の種類
 		Input input;		// 確認する入力
-	};
-	// 行動の状態
-	struct ActionState {
-		std::unordered_map<int, Axis2D> axis;
-		std::unordered_map<int, bool> button;
-		std::unordered_map<int, bool> buttonDown;
-		std::unordered_map<int, bool> buttonUp;
 	};
 
 	std::vector<Binding> bindings;	// アクションマップの入力設定
@@ -76,7 +40,7 @@ public:
 
 public:
 	/*
-	 *	軸入力設定
+	 *	ボタンの軸入力設定
 	 *	@param	int	action		行動設定
 	 *	@param	InputType type	入力機の種類
 	 *	@param	int forward		前方向ボタン
@@ -107,16 +71,15 @@ public:
 	}
 
 	/*
-	 *	軸入力設定
+	 *	2軸入力機の軸入力設定
 	 *	@param	int action		行動設定
 	 *	@param	InputType type	入力機の種類
-	 *	@param	Input input		入力物
 	 */
-	void AddAxisValue(int action, InputType type, int input) {
+	void AddAxisValue(int action, InputType type) {
 		bindings.push_back({
 			action,
 			BindingType::AxisValue,
-			{type, input}
+			type
 			});
 	}
 
@@ -139,7 +102,7 @@ public:
 	/*
 	 *	初期化処理
 	 */
-	virtual void Initialize() = 0;
+	virtual void Start() = 0;
 };
 
 #endif // !_ACTIONMAPBASE_H_
