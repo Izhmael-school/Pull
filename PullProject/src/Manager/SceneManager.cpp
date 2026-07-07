@@ -12,6 +12,7 @@
 #include "Manager/InputManager.h"
 #include "Debug/Scene/TitleScene.h"
 #include "Debug/Scene/StageSelectScene.h"
+#include "Debug/Scene/MainGameScene.h"
 
 SceneManager::SceneManager() 
 	: currentSceneType(SceneType::Title)
@@ -29,6 +30,7 @@ void SceneManager::Start(){
 	
 	scene[static_cast<int>(SceneType::Title)] = std::make_unique<TitleScene>();
 	scene[static_cast<int>(SceneType::StageSelect)] = std::make_unique<StageSelectScene>();
+	scene[static_cast<int>(SceneType::Game)] = std::make_unique<MainGameScene>();
 }
 
 void SceneManager::Update(){

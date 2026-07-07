@@ -19,10 +19,10 @@
 #include "Generator/StageCollisionGenerator.h"
 
 #include <DxLib.h>
-
-/*
- *	コンストラクタ
- */
+#include <format>
+ /*
+  *	コンストラクタ
+  */
 MainGameScene::MainGameScene() {
 	Start();
 }
@@ -40,7 +40,8 @@ void MainGameScene::Setup() {
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
 	// ステージのロード
-	StageManager::GetInstance().LoadStage(111);
+	int stageID = StageManager::GetInstance().GetStageID();
+	StageManager::GetInstance().LoadStage(stageID);
 	// プレイヤーの生成位置を取得
 	VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
 
@@ -51,10 +52,11 @@ void MainGameScene::Setup() {
 
 	// ギミックの更新s
 	GimmickObjectManager::GetInstance().Update();
-	
+
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
-	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
+	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
+	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
 }
 
 /*
@@ -69,7 +71,7 @@ void MainGameScene::Update() {
 	player->Update();
 	player->GetHands()->Update();
 
-	
+
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
 
@@ -133,7 +135,7 @@ void MainGameScene::Render() {
 #endif
 	// ステージの描画処理
 	StageManager::GetInstance().Render();
-	
+
 	// プレイヤーの描画処理
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
@@ -145,5 +147,14 @@ void MainGameScene::Render() {
 	// 当たり判定の描画処理
 	CollisionManager::GetInstance().Render();
 	ColliderObjectManager::GetInstance().Render();
+
+}
+
+/*
+ * シーンの片付け処理
+ */
+void MainGameScene::Cleanup() {
+	// ギミックの片付け処理
+	GimmickObjectManager::GetInstance().Clear();
 
 }

@@ -13,7 +13,7 @@
 
 class MainGameScene :public SceneBase {
 private:
-
+	
 public:
 	MainGameScene();
 	~MainGameScene() = default;
@@ -27,6 +27,8 @@ public:
 	void Update() override;
 
 	void Render() override;
+
+	void Cleanup() override;
 };
 
 

@@ -7,6 +7,7 @@
 #include "Manager/SceneManager.h"
 #include "Definition/Enum/SceneType.h"
 #include "Manager/InputManager.h"
+#include "Manager/Stage/StageManager.h"
 #include <algorithm>
 #include <math.h>
 
@@ -19,11 +20,11 @@ StageSelectScene::StageSelectScene() :currentScene(0){ Start(); }
  *	開始処理
  */
 void StageSelectScene::Start() {
-	selectInfoArray.push_back({ "Stage1 x",[]() {SceneManager::GetInstance().ChangeScene(SceneType::Debug);} });
-	selectInfoArray.push_back({ "Stage2 x",[]() {SceneManager::GetInstance().ChangeScene(SceneType::PlayerDebug);} });
-	selectInfoArray.push_back({ "Stage3 x",[]() {SceneManager::GetInstance().ChangeScene(SceneType::EnemyDebug);} });
-	selectInfoArray.push_back({ "Stage4 x",[]() {SceneManager::GetInstance().ChangeScene(SceneType::StageDebug);} });
-	selectInfoArray.push_back({ "Stage5 x",[]() {SceneManager::GetInstance().ChangeScene(SceneType::CollisionDebug);} });
+	selectInfoArray.push_back({ "Stage1 x",[]() {StageManager::GetInstance().SetStageID(1);SceneManager::GetInstance().ChangeScene(SceneType::Debug);} });
+	selectInfoArray.push_back({ "Stage2 x",[]() {StageManager::GetInstance().SetStageID(2);SceneManager::GetInstance().ChangeScene(SceneType::PlayerDebug);} });
+	selectInfoArray.push_back({ "Stage3 x",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
+	selectInfoArray.push_back({ "Stage4 x",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
+	selectInfoArray.push_back({ "Stage5 x",[]() {StageManager::GetInstance().SetStageID(5);SceneManager::GetInstance().ChangeScene(SceneType::CollisionDebug);} });
 	selectInfoArray.push_back({ "DebugSelect o",[]() {SceneManager::GetInstance().ChangeScene(SceneType::DebugSceneSelect);} });
 }
 
@@ -79,9 +80,9 @@ void StageSelectScene::Update() {
 	int size = static_cast<int>(selectInfoArray.size());
 
 	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_UP))
-		currentScene = max(currentScene - 1, 0);
+		currentScene = std::max(currentScene - 1, 0);
 	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_DOWN))
-		currentScene = min(currentScene + 1, size - 1);
+		currentScene = std::min(currentScene + 1, size - 1);
 	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_RETURN))
 		selectInfoArray[currentScene].SceneChangeFunc();
 

@@ -35,6 +35,9 @@ private:
 
 	std::string stageFile;
 	int stageModel;
+
+	int stageID = 1;
+
 private:
 	/*
 	 *	コンストラクタ
@@ -118,6 +121,9 @@ public:
 	 *	プレイヤーの生成位置の取得
 	 */
 	const VECTOR& GetPlayerSpawnPosition() const { return characterSpawnPos.GetPlayerPositions(); }
+
+	void SetStageID(int id) { stageID = id; }
+	int GetStageID() const { return stageID; }
 };
 
 

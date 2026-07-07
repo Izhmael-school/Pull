@@ -29,14 +29,15 @@ void StageManager::LoadStage(int stageID) {
 	//ステージ設定JSONのパス生成
 	if (stageID == 111) {
 		stageFile = "src/Data/Gimmick/DebugStageGimmick.json";
-		// ステージモデルロード
+		// ステージモデルロード	
 		stageModel = ModelManager::GetInstance().Load("res/Model/Stage/DebugStage/DebugStage.mv1");
 
 	}
 	else {
 		stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
 		// ステージモデルロード
-		stageModel =ModelManager::GetInstance().Load("res/Model/Stage/Stage4/Stage_4.mv1");
+		std::string filePath = std::format("res/Model/Stage/Stage{}/Stage_{}.mv1", stageID, stageID);
+		stageModel =ModelManager::GetInstance().Load(filePath);
 	}
 
 

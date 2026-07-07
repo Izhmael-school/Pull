@@ -57,9 +57,9 @@ void ExitArea::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		// プレイヤーの座標を変更
 		player->GetTransform()->SetPosition(pos);
 		// 登録されているギミックをリセット
-		GimmickObjectManager::GetInstance().Reset();
+		//GimmickObjectManager::GetInstance().Reset();
 		// シーンを変更させる
-		//SceneManager::GetInstance().ChangeScene(SceneType::DebugSceneSelect);
+		SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
 	}
 
 
