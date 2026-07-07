@@ -17,6 +17,7 @@
 #include "../../Manager/Stage/GimmickObjectManager.h"
 #include "Manager/ColliderObjectManager.h"
 #include "Generator/StageCollisionGenerator.h"
+#include "Manager/SceneManager.h"
 
 #include <DxLib.h>
 #include <format>
@@ -77,6 +78,12 @@ void MainGameScene::Update() {
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
+	// クリア判定
+	if (StageManager::GetInstance().IsStageClear()) {
+		// シーンを切り替える
+		SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
+		return;
+	}
 	ColliderObjectManager::GetInstance().Update();
 }
 
@@ -156,5 +163,5 @@ void MainGameScene::Render() {
 void MainGameScene::Cleanup() {
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Clear();
-
+	StageManager::GetInstance().RequestStageClear(false);
 }

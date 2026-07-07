@@ -9,7 +9,9 @@
  /*
   *	コンストラクタ
   */
-StageManager::StageManager() {
+StageManager::StageManager()
+	:isStageClear(false)
+{
 }
 
 

@@ -19,13 +19,13 @@
 #include <unordered_map>
 
 
-/*
- *	ステージ全体の管理
- */
+ /*
+  *	ステージ全体の管理
+  */
 class StageManager :public Singleton<StageManager> {
 	// フレンド宣言
 	friend class Singleton<StageManager>;
-	
+
 private:
 	std::unique_ptr<StageBase> loadedStage;		// 読み込み済みのステージデータ
 	StageState stageState;						// ステージの状態保持
@@ -34,10 +34,11 @@ private:
 	StageCollisionGenerator generator;		// ステージの当たり判定生成器
 
 	std::string stageFile;
+	
 	int stageModel;
+	int stageID = 1;		// ステージのID
 
-	int stageID = 1;
-
+	bool isStageClear;		// ステージクリア判定
 private:
 	/*
 	 *	コンストラクタ
@@ -45,7 +46,7 @@ private:
 	StageManager();
 	/*
 	 *	デストラクタ
-	 */ 
+	 */
 	~StageManager() = default;
 
 private:
@@ -124,6 +125,20 @@ public:
 
 	void SetStageID(int id) { stageID = id; }
 	int GetStageID() const { return stageID; }
+	
+	/*
+	 *	ステージをクリア判定にする
+	 */
+	void RequestStageClear(bool value) {
+		isStageClear = value;
+	}
+
+	/*
+	 *	ステージがクリアされたかどうか
+	 */
+	bool IsStageClear() const {
+		return isStageClear;
+	}
 };
 
 

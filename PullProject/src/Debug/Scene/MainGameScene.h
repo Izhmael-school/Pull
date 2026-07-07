@@ -13,7 +13,7 @@
 
 class MainGameScene :public SceneBase {
 private:
-	
+	bool isStageClear = false;	// ステージクリア判定
 public:
 	MainGameScene();
 	~MainGameScene() = default;
@@ -29,6 +29,7 @@ public:
 	void Render() override;
 
 	void Cleanup() override;
+
 };
 
 

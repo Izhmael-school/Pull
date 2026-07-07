@@ -31,6 +31,7 @@ namespace {
 void StageLoader::Load(const std::string& fileName, int stageHandle) {
 	std::ifstream file(fileName);
 	json data;
+	// dataにjsonを格納する
 	file >> data;
 	// レバー対応オブジェクト
 	std::unordered_map<int, TriggerInterface*> triggerMap;
