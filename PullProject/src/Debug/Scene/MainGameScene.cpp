@@ -18,6 +18,8 @@
 #include "Manager/ColliderObjectManager.h"
 #include "Generator/StageCollisionGenerator.h"
 #include "Manager/SceneManager.h"
+#include "Manager/InputSystemManager.h"
+#include "../../Definition/CommonModule/ActionMapData.h"
 
 #include <DxLib.h>
 #include <format>
@@ -58,12 +60,15 @@ void MainGameScene::Setup() {
 	StageCollisionGenerator generator;
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
 	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
+	// プレイヤーアクションマップを有効化
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 }
 
 /*
  *	更新処理
  */
 void MainGameScene::Update() {
+
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 
