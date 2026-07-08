@@ -1,41 +1,95 @@
 {
-  "Levers": [
-    {
-      "Model": "res/Model/Gimmick/Lever.mv1",
-      "LeverID": 1,
-      "Position": "LeverPoint",
-      "Rotation": 0.0
-    },
-    {
-      "Model": "res/Model/Gimmick/Lever.mv1",
-      "LeverID": 2,
-      "Position": "LeverPoint",
-      "Rotation": 90.0
-
-    }
-  ],
-
+  "Levers": [],
   "Gimmicks": [
     {
-      "Type": "BreakWall",
-      "Model": "res/Model/Gimmick/BreakWall/BreakWall.mv1",
-      "LeverID": 1,
-      "Position": "BreakWall_SP0",
-      "Rotation": 0.0
-    },
-
-    {
-      "Type": "BreakWall",
-      "Model": "res/Model/Gimmick/BreakWall/BreakWall.mv1",
-      "LeverID": 2,
-      "Position": "BreakWall_SP1",
+      "Type": "HookShot",
+      "Position": "HookShot_SP15",
       "Rotation": 90.0
     },
-
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP14",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP13",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP12",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP11",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP11",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP10",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP9",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP8",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP7",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP6",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP5",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP4",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP3",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP2",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP1",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "HookShot",
+      "Position": "HookShot_SP0",
+      "Rotation": 90.0
+    },
     {
       "Type": "ExitArea",
       "Position": "PlayerBP",
-      "Rotation": 90.0
+      "Rotation": 0.0
     }
   ]
 }

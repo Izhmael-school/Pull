@@ -533,6 +533,10 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	auto cap = static_cast<CapsuleCollider*>(capCol);
 	auto box = static_cast<AABBCollider*>(boxCol);
 
+	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::Gimmick) {
+		return;
+	}
+
 	VECTOR p1 = cap->GetWorldStart();
 	VECTOR p2 = cap->GetWorldEnd();
 
