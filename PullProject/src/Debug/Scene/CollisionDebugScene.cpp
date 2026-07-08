@@ -9,9 +9,14 @@
 #include "Manager/InputManager.h"
 #include "Manager/Stage/StageManager.h"
 #include "Manager/CameraManager.h"
+#include "Manager/EnemyManager.h"
 #include "GameObject/Camera/CameraObject.h"
 #include "Component/Collider/Collider.h"
 #include "Manager/CollisionManager.h"
+#include "Manager/Playermanager.h"
+#include "../../Manager/Stage/GimmickObjectManager.h"
+#include "Manager/ColliderObjectManager.h"
+#include "Generator/StageCollisionGenerator.h"
 
 
 CollisionDebugScene::CollisionDebugScene() { Start(); }
@@ -20,16 +25,41 @@ void CollisionDebugScene::Start() {
 }
 
 void CollisionDebugScene::Update() {
+	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
-
+	// プレイヤーの更新
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Update();
+	player->GetHands()->Update();
+	// 敵の更新
+	// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().Update();
+	// ギミックの更新
+	GimmickObjectManager::GetInstance().Update();
+	// ===== 当たり判定 =====
 	CollisionManager::GetInstance().Update();
+	ColliderObjectManager::GetInstance().Update();
 }
 
 void CollisionDebugScene::Setup() {
 	CollisionManager::GetInstance().Clear();
+
+	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(4);
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+	StageManager::GetInstance().LoadStage(5);
+	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
+	// カメラ生成
+	CameraManager::GetInstance().CreateCamera();
+	// プレイヤー生成
+	PlayerManager::GetInstance().CreatePlayer(pos);
+	// 敵生成
+	// シングルトンをやめたためコメントアウト
+	//EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
+
+	// ===== ギミックの更新 ====
+	GimmickObjectManager::GetInstance().Update();
+	StageCollisionGenerator generator;
+	generator.GenerateFromUnity("src/Data/HookShotStage 1.json", CollisionManager::GetInstance());
 	//generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }
 
@@ -85,8 +115,16 @@ void CollisionDebugScene::Render() {
 	}
 
 #endif
-	// 描画
 	StageManager::GetInstance().Render();
+	// シングルトンをやめたためコメントアウト
+	// EnemyManager::GetInstance().Render();
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Render();
+	player->GetHands()->Render();
+
+	// ==== ギミックの描画 ====
+	GimmickObjectManager::GetInstance().Render();
 
 	CollisionManager::GetInstance().Render();
+	ColliderObjectManager::GetInstance().Render();
 }
