@@ -29,6 +29,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, JUMP_POWER(20)
 	, RETURN_COLOR_RATIO(0.95f)
 	, RETURN_PULL_VALUE_RATIO(0.95f)
+	, TURN_RATIO(0.3f)
 {}
 
 void PlayerCharacter::Start() {
@@ -159,7 +160,18 @@ void PlayerCharacter::Move() {
 		// 移動
 		pTransform->AddPosition(moveDir, speed);
 		// 角度を移動方向へ(現在モデルが逆向きなので反対向きにするようにしている)
-		pTransform->SetRotation(VGet(0, MyMath::Rad2Deg(atan2f(-moveDir.x, -moveDir.z)), 0));
+		float targetY = MyMath::Rad2Deg(atan2f(-moveDir.x, -moveDir.z));
+		float currentY = GetRotation().y;
+		float diff = targetY - currentY;
+		// 振り向く方向が最適になるように
+		while (diff > 180)
+			diff -= 360;
+		while (diff < -180)
+			diff += 360;
+		// 徐々に振り向くように調整
+		float nextY = currentY + diff * TURN_RATIO;
+		// 角度適応
+		pTransform->SetRotation(VGet(0, nextY, 0));
 		
 		if (playerState != PlayerState::Jump) {
 			playerState = PlayerState::Move;
@@ -168,6 +180,10 @@ void PlayerCharacter::Move() {
 			pHands->GetAnimator()->Play("Run", 0.5f);
 		}
 	}
+	ImGui::Begin("PlayerRotation");
+	VECTOR rot = GetRotation();
+	ImGui::Text("%f, %f, %f", rot.x, rot.y, rot.z);
+	ImGui::End();
 }
 /*
  *	色を戻す

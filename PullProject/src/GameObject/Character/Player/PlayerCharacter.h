@@ -48,6 +48,8 @@ private:
 	const float RETURN_COLOR_RATIO;
 	// 引っ張り値戻し割合
 	const float RETURN_PULL_VALUE_RATIO;
+	// プレイヤーの振り向き割合
+	const float TURN_RATIO;
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
