@@ -533,59 +533,105 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	auto cap = static_cast<CapsuleCollider*>(capCol);
 	auto box = static_cast<AABBCollider*>(boxCol);
 
-	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::Gimmick) {
+	VECTOR p1 = cap->GetWorldStart();
+	VECTOR p2 = cap->GetWorldEnd();
+
+	VECTOR bmin = box->GetMin();
+	VECTOR bmax = box->GetMax();
+
+	float radius = cap->GetRadius();
+
+	const int steps = 64;
+
+	float bestDistSq = FLT_MAX;
+	VECTOR bestSegPoint{};
+	VECTOR bestBoxPoint{};
+
+	// カプセル線分上の最近点探索
+	for (int i = 0; i <= steps; i++) {
+		float t = (float)i / (float)steps;
+
+		VECTOR segPoint =
+			VAdd(p1, VScale(VSub(p2, p1), t));
+
+		VECTOR boxPoint;
+
+		boxPoint.x = max(bmin.x, min(segPoint.x, bmax.x));
+		boxPoint.y = max(bmin.y, min(segPoint.y, bmax.y));
+		boxPoint.z = max(bmin.z, min(segPoint.z, bmax.z));
+
+		VECTOR diff = VSub(segPoint, boxPoint);
+
+		float distSq = VDot(diff, diff);
+
+		if (distSq < bestDistSq) {
+			bestDistSq = distSq;
+			bestSegPoint = segPoint;
+			bestBoxPoint = boxPoint;
+		}
+	}
+
+	if (bestDistSq >= radius * radius) {
 		return;
 	}
 
-	VECTOR p1 = cap->GetWorldStart();
-	VECTOR p2 = cap->GetWorldEnd();
-	VECTOR bmin = box->GetMin();
-	VECTOR bmax = box->GetMax();
-	float radius = cap->GetRadius();
+	float dist = sqrtf(bestDistSq);
 
-	// 線分上の最近点を解析的に求める
-	VECTOR seg = VSub(p2, p1);
-	float segLenSq = VDot(seg, seg);
+	VECTOR normal;
 
-	VECTOR boxCenter = VScale(VAdd(bmin, bmax), 0.5f);
-
-	float t = VDot(VSub(boxCenter, p1), seg) / segLenSq;
-	t = max(0.0f, min(1.0f, t));
-
-	VECTOR point = VAdd(p1, VScale(seg, t));
-
-	// AABB 内の最近点
-	VECTOR closest;
-	closest.x = max(bmin.x, min(point.x, bmax.x));
-	closest.y = max(bmin.y, min(point.y, bmax.y));
-	closest.z = max(bmin.z, min(point.z, bmax.z));
-
-	VECTOR diff = VSub(point, closest);
-	float distSq = VDot(diff, diff);
-
-	if (distSq >= radius * radius) return;
-
-	float penetrationDist = sqrtf(distSq);
-	float push = radius - penetrationDist;
-
-	float diffLen = VSize(diff);
-
-	VECTOR dir;
-
-	if (diffLen < 0.0001f) {
-		// 深いめり込み → AABB の中心から押し出す
-		dir = VNorm(VSub(point, boxCenter));
+	if (dist > 0.0001f) {
+		normal = VNorm(
+			VSub(bestSegPoint, bestBoxPoint)
+		);
 	}
 	else {
-		// 通常 → 最近点方向へ押し出す（正しい法線）
-		dir = VNorm(diff);
+		// 完全めり込み時
+
+		float left = bestSegPoint.x - bmin.x;
+		float right = bmax.x - bestSegPoint.x;
+
+		float down = bestSegPoint.y - bmin.y;
+		float up = bmax.y - bestSegPoint.y;
+
+		float back = bestSegPoint.z - bmin.z;
+		float front = bmax.z - bestSegPoint.z;
+
+		float minDist = left;
+		normal = VGet(-1, 0, 0);
+
+		if (right < minDist) {
+			minDist = right;
+			normal = VGet(1, 0, 0);
+		}
+
+		if (down < minDist) {
+			minDist = down;
+			normal = VGet(0, -1, 0);
+		}
+
+		if (up < minDist) {
+			minDist = up;
+			normal = VGet(0, 1, 0);
+		}
+
+		if (back < minDist) {
+			minDist = back;
+			normal = VGet(0, 0, -1);
+		}
+
+		if (front < minDist) {
+			normal = VGet(0, 0, 1);
+		}
 	}
 
-	VECTOR move = VScale(dir, push);
+	float penetration = radius - dist;
 
-	move.y = min(move.y, 0.0f);
+	VECTOR move =
+		VScale(normal, penetration);
 
-	cap->GetGameObject()->GetTransform()->AddPosition(move);
+	cap->GetGameObject()
+		->GetTransform()
+		->AddPosition(move);
 }
 
 void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
