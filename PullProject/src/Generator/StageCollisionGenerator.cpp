@@ -114,8 +114,8 @@ void StageCollisionGenerator::GenerateFromUnity(
 	//	JSONのブロック情報を取得
 	for (auto& b : json["blocks"]) {
 
-		// "type"が"tree"または"bridge"の場合はスキップ
-		if (b.contains("type") && (b["type"] == "tree") || (b["type"] == "subground")) {
+		// "type"が"tree"または"subground"の場合はスキップ
+		if (b.contains("type") && (b["type"] == "tree" || b["type"] == "subground")) {
 			continue;
 		}
 
