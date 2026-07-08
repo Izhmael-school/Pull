@@ -9,11 +9,15 @@
 #include "../GameObject.h"
 #include "Component/CaughtObject.h"
 #include "Instance/Effect/EffectInstance.h"
+#include "Definition/Const/ColorConst.h"
+
+constexpr int EXPLOSION_LEVEL = 3;		// 爆発の段階
+constexpr float COLOR_CHANGE_INTERVAL[EXPLOSION_LEVEL] = { 0.5f,0.25f,0.1f };
 
 class EffectManager;
 
-class Missile : public GameObject, public CaughtObject{
-public:
+class Missile : public GameObject, public CaughtObject {
+private:
 	float moveSpeed;
 	float lifeLimitTime;
 	float lifeElapsedTime;
@@ -23,8 +27,18 @@ public:
 
 	GameObject* pOwner;
 
+	float explosionTime;		// 爆発するまでの時間
+	float explosionElapsedTime;	// 爆発までの経過時間
+
+	float texChangeTime;		// テクスチャ変更するまでの時間
+	float texChangeElapsedTime;	// 変更までの経過時間
+	bool isNoTexture;
+
+	int currentExplosionLevel;
+	COLOR_F BLINKING_COLOR[EXPLOSION_LEVEL] = { white_f,yellow_f,red_f };	// 爆発表現用の色
+
 public:
-	Missile(int _modelHandle = -1,GameObject* _owner = nullptr, EffectManager* _effect = nullptr, VECTOR _dir = VForward, VECTOR _pos = VZero);
+	Missile(int _modelHandle = -1, GameObject* _owner = nullptr, EffectManager* _effect = nullptr, VECTOR _dir = VForward, VECTOR _pos = VZero);
 	~Missile() noexcept override;
 
 private:
@@ -40,7 +54,7 @@ public:
 	/*
 	 * @brief 爆発
 	 */
-	void Exprosion();
+	void Explosion();
 
 	/*
 	 * @brief ブーストエフェクトのフレーム位置を取得
@@ -84,5 +98,15 @@ protected:
 	 * @brief 何かに当たった時
 	 */
 	virtual void HitObject();
+
+	/*
+	 * @brief 点滅
+	 */
+	void Blinking();
+
+	/*
+	 * @brief 移動
+	 */
+	void Move();
 };
 #endif // !_MISSILE_H_

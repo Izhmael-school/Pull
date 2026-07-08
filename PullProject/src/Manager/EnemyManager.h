@@ -28,6 +28,8 @@ struct EnemyNeedManager {
 	AudioManager& audioManager;
 };
 
+const char* const STAGE_ENEMY_DATA_FILEPATH = "src/Data/Stage/Stage_{}_EnemyData.json";
+
 class EnemyManager : public ManagerBase {
 
 private:
@@ -77,6 +79,11 @@ public:
 	void SpawnStageFramePoint(EnemyType _type ,StageManager& _stageManager);
 
 	/*
+	 * @brief Jsonからステージの生成ポイントを取得して生成する
+	 */
+	void SpawnStageFramePoint(int _stageID, StageManager& _stageManager);
+
+	/*
 	 * @brief アニメーションイベント用のコライダー生成
 	 */
 	void PlayAnimEvent_Sphere(VECTOR _pos, float _radius);
@@ -105,7 +112,7 @@ private:
 	/*
 	 * @brief　敵の未使用化
 	 */
-	void UnuseEnemy(EnemyPtr _unuseEnemy);
+	void UnuseEnemy(EnemyPtr& _unuseEnemy);
 };
 
 #endif

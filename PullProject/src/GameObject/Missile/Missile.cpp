@@ -12,7 +12,14 @@ Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, V
 	, lifeLimitTime(5.0f)
 	, lifeElapsedTime(0.0f)
 	, pEffectManager(*_effect)
-	, pOwner(_owner) {
+	, pOwner(_owner) 
+	, explosionElapsedTime(0.0f)
+	, explosionTime(2.0f * EXPLOSION_LEVEL)
+	, currentExplosionLevel(0)
+	, texChangeElapsedTime(0.5f)
+	, texChangeTime(0.5f)
+	, isNoTexture(false)
+{
 	GetTransform()->LookAtDir(_dir);
 	if (_effect)
 		pEffect = _effect->Play("MissileBoost", _pos, 10.0f, _dir);
@@ -27,6 +34,7 @@ void Missile::Start() {
 	VECTOR max = MV1GetMeshMaxPosition(modelHandle, 0);
 
 	pCollider = std::make_unique<AABBCollider>(this, VScale(min, 100.0f), VScale(max, 100.0f));
+	pCollider->SetLayer(ColliderLayer::Missile);
 }
 
 void Missile::Update() {
@@ -38,29 +46,18 @@ void Missile::Update() {
 	// 掴まれたら更新しない
 	if (GetCurrentCaughtState() != NoneCaughtState) return;
 
-	// 前方を取得
-	VECTOR forward = GetTransform()->GetForward();
-	// 正規化
-	VECTOR dir = VNorm(forward);
-	float d = TimeManager::GetInstance().GetDeltaTime();
-	VECTOR pos = VScale(dir, moveSpeed * d);
-	// 加算
-	GetTransform()->AddPosition(pos);
-
-	if (pEffect)
-		pEffect->GetTransform()->SetPosition(GetBoostEffectPoint());
-
+	Move();
 
 	if (lifeElapsedTime >= lifeLimitTime) {
 		// 爆発
-		Exprosion();
+		Explosion();
 	}
 	else {
-		lifeElapsedTime += d;
+		lifeElapsedTime += TimeManager::GetInstance().GetDeltaTime();
 	}
 }
 
-void Missile::Exprosion() {
+void Missile::Explosion() {
 	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300,None,0.5f,[](Collider* _pOther){
 		auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
 		if(breakWall != nullptr) {
@@ -86,7 +83,7 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	}
 
 	if (pOwner != _pOther->GetGameObject())
-		Exprosion();
+		Explosion();
 }
 
 void Missile::CaughtAction() {
@@ -99,19 +96,70 @@ void Missile::ThrownAction(VECTOR _dir) {
 }
 
 void Missile::CatchStart() {
-	// 掴まれたら時間をリセット
-	lifeElapsedTime = 0.0f;
+	CaughtObject::CatchStart();
 }
 
 void Missile::Catching() {
+	Blinking();
 }
 
 void Missile::ThrowStart() {
-	ChangeCaughtState(NoneCaughtState);
+	CaughtObject::ThrowStart();
 }
 
 void Missile::Throwing() {
+	Move();
+	Blinking();
 }
 
 void Missile::HitObject() {
 }
+
+void Missile::Blinking() {
+	if (explosionElapsedTime >= explosionTime / EXPLOSION_LEVEL) {
+		// 最終段階が終了したら爆発させる
+		if (currentExplosionLevel == EXPLOSION_LEVEL - 1) {
+			Explosion();
+		}
+		// 段階の上昇
+		currentExplosionLevel++;
+		explosionElapsedTime = 0.0f;
+	}
+	else {
+		// 時間経過
+		explosionElapsedTime += TimeManager::GetInstance().GetDeltaTime();
+	}
+
+	int currentLevel = std::min(currentExplosionLevel, EXPLOSION_LEVEL - 1);
+	if (texChangeElapsedTime >= COLOR_CHANGE_INTERVAL[currentLevel]) {
+		if (!isNoTexture) {
+			// 段階に応じて色の変化
+			MV1SetMaterialDifColor(modelHandle, 0, BLINKING_COLOR[currentLevel]);
+			isNoTexture = true;
+		}
+		else {
+			// 点滅させるために元に戻す
+			MV1SetMaterialDifColor(modelHandle, 0, GetColorF(1, 1, 1, 1));
+			isNoTexture = false;
+		}
+		texChangeElapsedTime = 0.0f;
+	}
+	else {
+		texChangeElapsedTime += TimeManager::GetInstance().GetDeltaTime();
+	}
+}
+
+void Missile::Move() {
+	// 前方を取得
+	VECTOR forward = GetTransform()->GetForward();
+	// 正規化
+	VECTOR dir = VNorm(forward);
+	float d = TimeManager::GetInstance().GetDeltaTime();
+	VECTOR pos = VScale(dir, moveSpeed * d);
+	// 加算
+	GetTransform()->AddPosition(pos);
+
+	if (pEffect)
+		pEffect->GetTransform()->SetPosition(GetBoostEffectPoint());
+}
+

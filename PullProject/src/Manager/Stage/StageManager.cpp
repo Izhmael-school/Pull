@@ -36,7 +36,7 @@ void StageManager::LoadStage(int stageID) {
 	else {
 		stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
 		// ステージモデルロード
-		stageModel =ModelManager::GetInstance().Load("res/Model/Stage/Stage4/Stage_4.mv1");
+		stageModel =ModelManager::GetInstance().Load(std::format("res/Model/Stage/Stage{}/Stage_{}.mv1", stageID, stageID));
 	}
 
 

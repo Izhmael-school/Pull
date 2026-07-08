@@ -72,6 +72,8 @@ protected:
 
 	VECTOR thrownDir;	// 投げられた方向
 
+	float footPos;		// 地面に埋まらないようにする足元の座標
+
 protected:
 	EffectEvent effectEvent;
 	AudioEvent audioEvent;
@@ -100,6 +102,8 @@ public:
 	 * @brief 未使用化希望判定取得
 	 */
 	inline bool IsWantUnuse() const { return wantUnuse; }
+
+	void SetFootPos(float _footPos) { footPos = _footPos; }
 protected:	// 行動
 	/*
 	 * @brief 移動

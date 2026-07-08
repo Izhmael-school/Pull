@@ -8,6 +8,7 @@
 #include "Manager/CollisionManager.h"
 #include "Manager/EffectManager.h"
 #include "Component/Collider/Collider.h"
+#include <vector>
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	:Character(_modelHandle, _pos, Enemy)
@@ -27,6 +28,7 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, canAttack(true)
 	, standbyElapsedTime(0.0f) 
 	, thrownDir(VZero)
+	, footPos(0.0f)
 {
 }
 
@@ -35,29 +37,48 @@ EnemyBase::~EnemyBase() {}
 void EnemyBase::Start() {
 	Character::Start();
 
-	isGravity = false;
+	isGravity = true;
 
-	// モデルの最小点と最大点を取得
-	VECTOR maxBodyPos = VScale(MV1GetMeshMaxPosition(modelHandle, 0), 100);
-	VECTOR minBodyPos = VScale(MV1GetMeshMinPosition(modelHandle, 0), 100);
-	VECTOR maxLeg1 = VScale(MV1GetMeshMaxPosition(modelHandle, 1), 100);
-	VECTOR minLeg1 = VScale(MV1GetMeshMinPosition(modelHandle, 1), 100);
-	VECTOR maxLeg2 = VScale(MV1GetMeshMaxPosition(modelHandle, 2), 100);
-	VECTOR minLeg2 = VScale(MV1GetMeshMinPosition(modelHandle, 2), 100);
+	int num = MV1GetMeshNum(modelHandle);
 
-	VECTOR min;
-	min.x = std::min(minBodyPos.x, std::min(minLeg1.x, minLeg2.x));
-	min.y = std::min(minBodyPos.y, std::min(minLeg1.y, minLeg2.y));
-	min.z = std::min(minBodyPos.z, std::min(minLeg1.z, minLeg2.z));
+	std::vector<VECTOR> mins;
+	std::vector<VECTOR> maxs;
+	for (int i = 0;i < num;i++) {
+		// 各メッシュの最大点と最小点を保持
+		maxs.push_back(VScale(MV1GetMeshMaxPosition(modelHandle, i),50));
+		mins.push_back(VScale(MV1GetMeshMinPosition(modelHandle, i),50));
+	}
 
-	VECTOR max;
-	max.x = std::max(maxBodyPos.x, std::max(maxLeg1.x, maxLeg2.x));
-	max.y = std::max(maxBodyPos.y, std::max(maxLeg1.y, maxLeg2.y));
-	max.z = std::max(maxBodyPos.z, std::max(maxLeg1.z, maxLeg2.z));
+	VECTOR min = VGet(INT_MAX,INT_MAX,INT_MAX);
+	VECTOR max = VGet(-INT_MAX, -INT_MAX, -INT_MAX);
+
+	for (int i = 0;i < num;i++) {
+		// 最小点配列の中のさらに最小を保持
+		min.x = std::min(min.x, mins[i].x);
+		min.y = std::min(min.y, mins[i].y);
+		min.z = std::min(min.z, mins[i].z);
+		// 最大点配列の中のさらに最大を保持
+		max.x = std::max(max.x, maxs[i].x);
+		max.y = std::max(max.y, maxs[i].y);
+		max.z = std::max(max.z, maxs[i].z);
+	}
+
+	// 地面に埋まらないように現在の座標を変える
+// footPoint取得
+	int footFrame = MV1SearchFrame(modelHandle, "FootPoint");
+	// footPointとスポーン位置の差だけ上昇させる
+	VECTOR footPos = MV1GetFramePosition(modelHandle, footFrame);
+	VECTOR enemyPos = GetPosition();
+	float up = (enemyPos.y - footPos.y);
+	// 上げる
+	GetTransform()->SetPosition(VGet(enemyPos.x, up, enemyPos.z));
 
 	// 当たり判定
 	pCollider = std::make_unique<AABBCollider>(this, min, max);
-	pCollider->SetResolve(false);
+	pCollider->SetResolve(true);
+
+	// 接地判定用当たり判定
+	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp,footPos.y), 10);
 }
 
 void EnemyBase::Update() {
@@ -121,6 +142,17 @@ void EnemyBase::Setup() {
 	if (pCollider)
 		pCollider->SetEnable(true);
 
+	if (pGroundingCollider)
+		pGroundingCollider->SetEnable(true);
+
+	// 足元まで当たり判定を伸ばす
+	auto aabb = dynamic_cast<AABBCollider*>(pCollider.get());
+	if (aabb) {
+		VECTOR min = aabb->GetMin();
+		aabb->SetMin(VGet(min.x, min.y + footPos, min.z));
+	}
+
+
 	wantUnuse = false;
 }
 
@@ -131,6 +163,8 @@ void EnemyBase::Cleanup() {
 	// 当たり判定の更新をしないように
 	if (pCollider)
 		pCollider->SetEnable(false);
+	if (pGroundingCollider)
+		pGroundingCollider->SetEnable(false);
 }
 
 void EnemyBase::Move(VECTOR targetPos) {
@@ -367,6 +401,8 @@ void EnemyBase::SetAnimEvent(std::string _animName, int _frameCount, std::functi
 }
 
 void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	Character::OnTriggerEnter(_pSelf,_pOther);
+
 	if (GetCurrentCaughtState() != CaughtState::Throwing) return;
 	// 何かしらに当たったら
 	HitObject();

@@ -592,7 +592,10 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	auto a = static_cast<AABBCollider*>(aCol);
 	auto b = static_cast<AABBCollider*>(bCol);
 
-	if (a->GetLayer() == ColliderLayer::Stage && b->GetLayer() == ColliderLayer::Stage) {
+	ColliderLayer aLayer = a->GetLayer();
+	ColliderLayer bLayer = b->GetLayer();
+
+	if (aLayer == ColliderLayer::Stage && b->GetLayer() == ColliderLayer::Stage) {
 		return;
 	}
 
@@ -605,6 +608,10 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	}
 
 	if (a->GetLayer() == ColliderLayer::ExitArea && b->GetLayer() == ColliderLayer::Stage || b->GetLayer() == ColliderLayer::ExitArea && a->GetLayer() == ColliderLayer::Stage) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::Missile && bLayer == ColliderLayer::Stage || bLayer == ColliderLayer::Missile && aLayer == ColliderLayer::Stage) {
 		return;
 	}
 
