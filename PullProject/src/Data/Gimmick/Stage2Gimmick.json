@@ -1,0 +1,44 @@
+{
+  "Levers": [
+    {
+      "LeverID": 3,
+      "Position": "Lever_SP",
+      "Rotation": -90.0
+    },
+    {
+      "LeverID": 2,
+      "Position": "Lever_SP",
+      "Rotation": -90.0
+    },
+    {
+      "LeverID": 1,
+      "Position": "Lever_SP",
+      "Rotation": -90.0
+    }
+  ],
+  "Gimmicks": [
+    {
+      "Type": "ExitArea",
+      "Position": "PlayerBP",
+      "Rotation": 0.0
+    },
+    {
+      "Type": "PullOutFloor",
+      "LeverID": 3,
+      "Position": "PullOutFloor_SP2",
+      "Rotation": 90.0
+    },
+    {
+      "Type": "PullOutFloor",
+      "LeverID": 2,
+      "Position": "PullOutFloor_SP1",
+      "Rotation": 270.0
+    },
+    {
+      "Type": "PullOutFloor",
+      "LeverID": 1,
+      "Position": "PullOutFloor_SP0",
+      "Rotation": 90.0
+    }
+  ]
+}

@@ -13,21 +13,20 @@ namespace {
 	// レバーの生成位置
 	constexpr const char* _PULL_DIR = "PullDir";	// 引き出し方向指定のフレームの名前
 	constexpr const char* _LEVER_SPAWNPOS_NAME = "LeverPoint";
-	constexpr const float _MAX_MOVEFLOOR = 1000.0f;	// 床の移動距離
+	constexpr const float _MAX_MOVEFLOOR = 950.0f;	// 床の移動距離
 }
 
 
 /*
  *	コンストラクタ
  */
-PullOutFloor::PullOutFloor(int id, int modelHandle, VECTOR pos, VECTOR rota)
-	:GimmickObject(modelHandle, pos, rota)
+PullOutFloor::PullOutFloor(int id, int modelHandle, VECTOR pos, VECTOR rota, Tag tag)
+	:GimmickObject(modelHandle, pos, rota, tag)
 	, triggerID(id)
 	, isMoving(false)
 	, moveTime(0.0f)
 	, reStartPos(pos)
-	, isActiv(false)
-{
+	, isActiv(false) {
 }
 
 /*
@@ -46,7 +45,7 @@ void PullOutFloor::Setup() {
 	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, minPos, maxPos);
 	// レイヤーを設定
-	pCollider->SetLayer(ColliderLayer::BreakWall);
+	pCollider->SetLayer(ColliderLayer::Stage);
 
 }
 
@@ -62,7 +61,7 @@ void PullOutFloor::Update() {
 	}
 	VECTOR posi = pTransform->GetPosition();
 	ImGui::Begin("PullOutFloor");
-	ImGui::Text("%f, %f, %f", posi.x,posi.y,posi.z);
+	ImGui::Text("%f, %f, %f", posi.x, posi.y, posi.z);
 	ImGui::End();
 	pCollider->Update();
 }
@@ -107,7 +106,7 @@ void PullOutFloor::OnTriggered() {
 	dir.y = 0;
 
 	// 移動後の座標
-	moveEndPos = VAdd(moveStartPos,VScale(dir, _MAX_MOVEFLOOR));
+	moveEndPos = VAdd(moveStartPos, VScale(dir, -_MAX_MOVEFLOOR));
 	// 移動時間を初期化
 	moveTime = 0.0f;
 	// ギミック起動
@@ -142,12 +141,12 @@ void PullOutFloor::Moving() {
 	moveTime += TimeManager::GetInstance().GetDeltaTime() / 2.0f;
 	// 移動時間を最大1秒に固定
 	moveTime = std::min(moveTime, 1.0f);
-	
+
 	// 自身の座標を時間で移動
 	pTransform->SetPosition(MyMath::EaseQuadInVEC(
-			moveStartPos,
-			moveEndPos,
-			moveTime)
+		moveStartPos,
+		moveEndPos,
+		moveTime)
 	);
 
 	// 移動が終了していればフラグを切り替える
