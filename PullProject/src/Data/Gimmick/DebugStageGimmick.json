@@ -11,12 +11,21 @@
       "Rotation": 180.0
     }
   ],
-
   "Gimmicks": [
     {
-      "Type": "BreakWall",
-      "LeverID": 1,
-      "Position": "BreakWall_SP0",
+      "Type": "ExitArea",
+      "Position": "PlayerBP",
+      "Rotation": 0.0
+    },
+    {
+      "Type": "Turret",
+      "Position": "Turret_SP0",
+      "Rotation": -90.0
+    },
+    {
+      "Type": "PullOutFloor",
+      "LeverID": 2,
+      "Position": "PullOutFloor_SP0",
       "Rotation": 0.0
     },
     {
@@ -26,30 +35,19 @@
     },
     {
       "Type": "HookShot",
-      "Position": "HookShot_SP0",
-      "Rotation": 0.0
-    },
-    {
-      "Type": "HookShot",
       "Position": "HookShot_SP1",
-      "Rotation": 0.0
+      "Rotation": 90.0
     },
     {
       "Type": "HookShot",
-      "Position": "HookShot_SP2",
-      "Rotation": 0.0
+      "Position": "HookShot_SP0",
+      "Rotation": 90.0
     },
     {
-      "Type": "ExitArea",
-      "Position": "PlayerBP",
-      "Rotation": 0.0
-    },
-    {
-      "Type": "PullOutFloor",
-      "LeverID": 2,
-      "Position": "PullOutFloor_SP0",
+      "Type": "BreakWall",
+      "LeverID": 1,
+      "Position": "BreakWall_SP0",
       "Rotation": 0.0
     }
   ]
-
 }
