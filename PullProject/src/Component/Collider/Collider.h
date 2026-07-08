@@ -22,6 +22,7 @@ enum class ColliderLayer {
 	BomBreakWall,
 	Camera,
 	Tail,
+	Missile
 };
 
 class Collider {

@@ -19,6 +19,7 @@
 #include "Manager/PlayerManager.h"
 #include "GameObject/Missile/Missile.h"
 #include "Generator/StageCollisionGenerator.h"
+#include <ImGui/imgui.h>
 
 EnemyDebugScene::EnemyDebugScene() 
 	:effectManager(effectResourceManager)
@@ -30,10 +31,6 @@ EnemyDebugScene::EnemyDebugScene()
 
 void EnemyDebugScene::Start()
 {
-	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
-	PlayerManager::GetInstance().CreatePlayer(pos);
-	auto p = PlayerManager::GetInstance().GetPlayer();
-	p->GetTransform()->SetPosition(VGet(200,200,-600));
 
 
 }
@@ -58,7 +55,15 @@ void EnemyDebugScene::Update(){
 }
 
 void EnemyDebugScene::Render(){
+	VECTOR p = PlayerManager::GetInstance().GetPlayer()->GetPosition();
 
+	int i = StageManager::GetInstance().GetCurrentStage()->GetStageModelHandle();
+	VECTOR sp = MV1GetPosition(i);
+
+	ImGui::Begin("PlayerPos");
+	ImGui::Text("%f, %f, %f", p.x, p.y, p.z);
+	ImGui::Text("%f, %f, %f", sp.x, sp.y, sp.z);
+	ImGui::End();
 #if _DEBUG 線
 
 	// オブジェクトの位置関係がわかるように地面にラインを描画する
@@ -115,7 +120,7 @@ void EnemyDebugScene::Render(){
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
 	player->GetHands()->Render();
-	DrawSphere3D(player->GetPosition(), 100, 16, 0xff0000, 0xff0000, TRUE);
+	//DrawSphere3D(player->GetPosition(), 100, 16, 0xff0000, 0xff0000, TRUE);
 	GimmickObjectManager::GetInstance().Render();
 	// 描画
 	StageManager::GetInstance().Render();
@@ -125,16 +130,20 @@ void EnemyDebugScene::Render(){
 
 void EnemyDebugScene::Setup(){
 	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(111);
+	StageManager::GetInstance().LoadStage(3);
 	StageManager::GetInstance().TransitionStage(0);
-	enemyManager.SpawnStageFramePoint(Tail,StageManager::GetInstance());
+	enemyManager.SpawnStageFramePoint(3,StageManager::GetInstance());
 	CameraManager::GetInstance().CreateCamera();
 	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
 	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
 	audioManager.Play("test", 100.0f, true);
 	GimmickObjectManager::GetInstance().Update();
 	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
-	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
+	generator.GenerateFromUnity("src/Data/Stage_3.json", CollisionManager::GetInstance());
+
+	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
+	PlayerManager::GetInstance().CreatePlayer(pos);
+	PlayerManager::GetInstance().GetPlayer()->GetTransform()->SetPosition(pos);
 }
 
 void EnemyDebugScene::Cleanup(){
