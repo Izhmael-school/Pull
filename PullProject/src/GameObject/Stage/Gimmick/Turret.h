@@ -32,6 +32,14 @@ public:
 	 *	描画処理
 	 */
 	void Render()override;
+
+public:
+
+	/*
+	 *	発射位置の取得
+	 *  @param[out]	VECTORT 弾の発射位置の取得
+	 */
+	VECTOR GetFirePoint()const;
 };
 
 #endif // !_TURRET_H_
