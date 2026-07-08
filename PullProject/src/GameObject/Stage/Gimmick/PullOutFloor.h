@@ -33,7 +33,7 @@ public:
 	/*
 	 *	コンストラクタ
 	 */
-	PullOutFloor(int id, int modelHandle, VECTOR pos, VECTOR rota);
+	PullOutFloor(int id, int modelHandle, VECTOR pos, VECTOR rota,Tag tag);
 
 public:
 	/*

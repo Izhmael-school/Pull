@@ -21,9 +21,9 @@ namespace {
 	constexpr const char* _TULLET_PATH = "res/Model/Gimmick/Turret/Turret.mv1";						// タレットのファイルパス
 }
 
- /*
-  *	レバー以外のギミック生成
-  */
+/*
+ *	レバー以外のギミック生成
+ */
 GimmickObject* GimmickFactory::Create(const std::string& type, int triggerId, VECTOR pos, VECTOR rota) {
 	// 壊れる壁生成
 	if (type == "BreakWall") {
@@ -72,7 +72,8 @@ GimmickObject* GimmickFactory::Create(const std::string& type, int triggerId, VE
 			triggerId,
 			model,
 			pos,
-			rota
+			rota,
+			Ground
 		);
 	}
 

@@ -22,7 +22,11 @@ enum class ColliderLayer {
 	BomBreakWall,
 	Camera,
 	Tail,
+<<<<<<< HEAD
 	Missile
+=======
+	PullOut
+>>>>>>> oorui_Branch
 };
 
 class Collider {
