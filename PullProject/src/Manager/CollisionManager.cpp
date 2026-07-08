@@ -684,7 +684,7 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 #pragma region 描画
 void CollisionManager::Render() {
 	for (auto col : pColliderArray) {
-		if (!col) continue;
+		if (!col || !col->IsEnable()) continue;
 		col->Render();
 	}
 }
