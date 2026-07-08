@@ -28,7 +28,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, returnSpeedRatio(0.3f)
 
 	, RETURN_THRESHOLD(1.0f)
-	, ARM_LENGTH_MAX(100.0f)
+	, ARM_LENGTH_MAX(2000.0f)
 {}
 
 void PlayerHands::Start() {
@@ -55,8 +55,9 @@ void PlayerHands::Update() {
 	}
 	// 何も掴んでいなければ(かつ地に足ついていれば)
 	else if (pOwner->GetHitGroundingFrag()) {
-		// ウデ伸ばし
-		if (action.button[static_cast<int>(PlayerAction::ArmExtend)])
+		// ウデ伸ばし(ウデ戻し中じゃなければ)
+		if (action.button[static_cast<int>(PlayerAction::ArmExtend)] &&
+			handsState != HandsState::ArmsReturning)
 			handsState = HandsState::ArmsExtending;
 		// ウデ戻し
 		if (action.buttonUp[static_cast<int>(PlayerAction::ArmExtend)])
@@ -79,6 +80,8 @@ void PlayerHands::Render() {
 
 void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
+	if (!other)
+		return;
 	// ウデを伸ばしていない状態なら無視
 	if (handsState != HandsState::ArmsExtending)
 		return;
@@ -117,6 +120,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 
 void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	auto other = _pOther->GetGameObject();
+	if (!other)
+		return;
 	if (other->GetTag() == Player)
 		return;
 	// ウデを伸ばしていない状態なら無視(キャッチなら無視しない)
@@ -183,21 +188,29 @@ void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
  *	手の移動処理
  */
 void PlayerHands::HandsMove() {
+	VECTOR dist = VSub(pOwner->GetPosition(), pTransform->GetPosition());
+	// 手とプレイヤーの距離の2乗
+	float distSq = VDot(dist, dist);
+
 	// ウデ伸ばし中なら前に進む
 	if (handsState == HandsState::ArmsExtending) {
-		
-		pTransform->AddPosition(pTransform->GetForward(), -extendSpeed);
+		// ウデ伸ばしの距離制限
+		if (distSq < ARM_LENGTH_MAX * ARM_LENGTH_MAX) {
+			// 移動
+			pTransform->AddPosition(pTransform->GetForward(), -extendSpeed);
+			// ウデ伸ばし中は当たり判定の押し出しあり
+			pCollider->SetResolve(true);
+		}
+		//else {
+		//	// 最大距離まで伸ばしたら戻る
+		//	handsState = HandsState::ArmsReturning;
+		//}
 
-		// ウデ伸ばし中は当たり判定の押し出しあり
-		pCollider->SetResolve(true);
 	}
 	// ウデ戻し中なら戻ってくる
 	else if (handsState == HandsState::ArmsReturning){
-		VECTOR dist = VSub(pOwner->GetPosition(), pTransform->GetPosition());
-		// 手とプレイヤーの距離の2乗
-		float distSq = VDot(dist, dist);
 		// 戻ってきたとみなす
-		if (distSq < RETURN_THRESHOLD) {
+		if (distSq < RETURN_THRESHOLD * RETURN_THRESHOLD) {
 			pTransform->SetPosition(VZero);
 			handsState = HandsState::Idle;
 		}

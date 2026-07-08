@@ -75,7 +75,7 @@ void PlayerCharacter::Update() {
 	}
 
 	// 移動
-	if (pHands->IsHandIdle())
+	if (!pHands->IsArmExtended() && !pHands->IsCatch())
 		Move();
 
 	// 待機アニメーション
