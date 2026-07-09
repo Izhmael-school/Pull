@@ -537,6 +537,14 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 		return;
 	}
 
+	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::Enemy) {
+		return;
+	}
+
+	if (cap->GetLayer() == ColliderLayer::PlayerArm && box->GetLayer() == ColliderLayer::ExitArea) {
+		return;
+	}
+
 	VECTOR p1 = cap->GetWorldStart();
 	VECTOR p2 = cap->GetWorldEnd();
 
@@ -654,6 +662,10 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	}
 
 	if (a->GetLayer() == ColliderLayer::BreakWall && b->GetLayer() == ColliderLayer::Stage || b->GetLayer() == ColliderLayer::BreakWall && a->GetLayer() == ColliderLayer::Stage) {
+		return;
+	}
+
+	if (a->GetLayer() == ColliderLayer::BreakWall && b->GetLayer() == ColliderLayer::Enemy || b->GetLayer() == ColliderLayer::BreakWall && a->GetLayer() == ColliderLayer::Enemy) {
 		return;
 	}
 

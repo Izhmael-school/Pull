@@ -76,6 +76,8 @@ void EnemyBase::Start() {
 	pCollider = std::make_unique<AABBCollider>(this, min, max);
 	pCollider->SetResolve(true);
 
+	pCollider->SetLayer(ColliderLayer::Enemy);
+
 	// 接地判定用当たり判定
 	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, footPos.y), 10);
 }
