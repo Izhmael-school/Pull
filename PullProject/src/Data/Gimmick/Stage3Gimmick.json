@@ -1,23 +1,29 @@
 {
-  "Gimmicks": [
-    {
-      "Type": "BomBreakWall",
-      "Model": "res/Model/Gimmick/BomBreakWall/BomBreakWall.mv1",
-      "Position": "BomBreakWall_SP0",
-      "Rotation": 0.0
-    },
-
-    {
-      "Type": "BomBreakWall",
-      "Model": "res/Model/Gimmick/BomBreakWall/BomBreakWall.mv1",
-      "Position": "BomBreakWall_SP1",
-      "Rotation": 90.0
-    },
-
-    {
-      "Type": "ExitArea",
-      "Position": "PlayerBP",
-      "Rotation": 90.0
-    }
-  ]
+    "Levers": [],
+    "Gimmicks": [
+        {
+            "Type": "Turret",
+            "LeverID": -1,
+            "Position": "Turret_SP0",
+            "Rotation": 0.0
+        },
+        {
+            "Type": "ExitArea",
+            "LeverID": 0,
+            "Position": "PlayerBP",
+            "Rotation": 0.0
+        },
+        {
+            "Type": "BomBreakWall",
+            "LeverID": -1,
+            "Position": "BomBreakWall_SP1",
+            "Rotation": 0.0
+        },
+        {
+            "Type": "BomBreakWall",
+            "LeverID": -1,
+            "Position": "BomBreakWall_SP0",
+            "Rotation": 0.0
+        }
+    ]
 }

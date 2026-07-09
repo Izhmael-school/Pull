@@ -11,6 +11,10 @@
 #include "../../../Definition/CommonModule/MyMath.h"
 
 class Turret :public GimmickObject {
+private:
+	float fireRate;
+	float fireElapsedTime;
+
 public:
 	/*
 	 *	コンストラクタ
@@ -40,6 +44,8 @@ public:
 	 *  @param[out]	VECTORT 弾の発射位置の取得
 	 */
 	VECTOR GetFirePoint()const;
+
+	void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
 };
 
 #endif // !_TURRET_H_

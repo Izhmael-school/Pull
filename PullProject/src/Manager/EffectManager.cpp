@@ -6,7 +6,6 @@ EffectManager::EffectManager(EffectResourceManager& _resourceManager)
     :pEffectResourceManager(_resourceManager)
     ,instances()
 {
-    //pEffectResourceManager.LoadEffectFromExternalFile();
 }
 
 EffectPtr EffectManager::Play(const std::string& _effectName, const VECTOR& _pos, float _scale, const VECTOR& _rot) {

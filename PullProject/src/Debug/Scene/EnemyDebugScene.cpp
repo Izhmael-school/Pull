@@ -15,10 +15,10 @@
 #include "Manager/CollisionManager.h"
 #include "Manager/ColliderObjectManager.h"
 #include "Manager/Stage/GimmickObjectManager.h"
-#include "Manager/CollisionManager.h"
 #include "Manager/PlayerManager.h"
 #include "GameObject/Missile/Missile.h"
 #include "Generator/StageCollisionGenerator.h"
+#include "../../Manager/InputSystemManager.h"
 #include <ImGui/imgui.h>
 
 EnemyDebugScene::EnemyDebugScene() 
@@ -36,6 +36,8 @@ void EnemyDebugScene::Start()
 }
 
 void EnemyDebugScene::Update(){
+	// プレイヤーアクションマップを有効化
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 	GameObjectManager::GetInstance().Update();
 	ColliderObjectManager::GetInstance().Update();
 	CollisionManager::GetInstance().Update();

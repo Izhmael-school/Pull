@@ -7,6 +7,14 @@
 #include "Turret.h"
 #include "Manager/Stage/GimmickManager.h"
 #include "../../../Component\Collider/Collider.h"
+#include "Manager/GameObjectManager.h"
+#include "GameObject/Missile/Missile.h"
+#include "Application.h"
+
+/*
+ * @author Sekino
+ */
+#include "Manager/TimeManager.h"
 
 namespace {
 	constexpr const char* _FIREPOINT_NAME = "FirePoint";	// 発射位置の名前
@@ -16,7 +24,10 @@ namespace {
  *	コンストラクタ
  */
 Turret::Turret(int modelHandle, VECTOR pos, VECTOR rota, Tag tag)
-	:GimmickObject(modelHandle, pos, rota, tag) {
+	:GimmickObject(modelHandle, pos, rota, tag) 
+	,fireRate(1.0f)
+	,fireElapsedTime(fireRate)
+{
 }
 
 /*
@@ -26,7 +37,7 @@ void Turret::Setup() {
 	GimmickObject::Setup();
 	// コライダー付与
 	// コライダーを付与
-	pCollider = std::make_unique<AABBCollider>(this, VGet(-200, -100, -200), VGet(200, 300, 200));
+	pCollider = std::make_unique<RayCollider>(this,VZero,VScale(GetTransform()->GetForward(),-1),1000,20,30,50);
 	// レイヤーを設定
 	pCollider->SetLayer(ColliderLayer::Stage);
 }
@@ -37,6 +48,10 @@ void Turret::Setup() {
 void Turret::Update() {
 	GimmickObject::Update();
 
+	/*
+	 * @author Sekino
+	 */
+	fireElapsedTime += TimeManager::GetInstance().GetDeltaTime();
 }
 
 /*
@@ -48,6 +63,7 @@ void Turret::Render() {
 
 	// 描画
 	GimmickObject::Render();
+	pCollider->Render();
 }
 
 /*
@@ -65,5 +81,18 @@ VECTOR Turret::GetFirePoint() const {
 
 	// 座標を返す
 	return pos;
+}
+
+void Turret::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+	/*
+	 * @author Sekino
+	 */
+	if (_pOther->GetGameObject()->GetTag() == Player) {
+		if (fireElapsedTime < fireRate) return;
+		fireElapsedTime = 0.0f;
+		EffectManager* effect = &Application::GetInstance().GetEffectManager();
+		GameObjectManager::GetInstance().CreateGameObject<Missile>("Missile",this,effect,GetTransform()->GetForward(),GetFirePoint());
+	}
+
 }
 

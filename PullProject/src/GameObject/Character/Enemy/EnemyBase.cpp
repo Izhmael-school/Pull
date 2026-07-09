@@ -26,10 +26,9 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, wantUnuse(false)
 	, endAttack(true)
 	, canAttack(true)
-	, standbyElapsedTime(0.0f) 
+	, standbyElapsedTime(0.0f)
 	, thrownDir(VZero)
-	, footPos(0.0f)
-{
+	, footPos(0.0f) {
 }
 
 EnemyBase::~EnemyBase() {}
@@ -45,11 +44,11 @@ void EnemyBase::Start() {
 	std::vector<VECTOR> maxs;
 	for (int i = 0;i < num;i++) {
 		// 各メッシュの最大点と最小点を保持
-		maxs.push_back(VScale(MV1GetMeshMaxPosition(modelHandle, i),50));
-		mins.push_back(VScale(MV1GetMeshMinPosition(modelHandle, i),50));
+		maxs.push_back(VScale(MV1GetMeshMaxPosition(modelHandle, i), 50));
+		mins.push_back(VScale(MV1GetMeshMinPosition(modelHandle, i), 50));
 	}
 
-	VECTOR min = VGet(INT_MAX,INT_MAX,INT_MAX);
+	VECTOR min = VGet(INT_MAX, INT_MAX, INT_MAX);
 	VECTOR max = VGet(-INT_MAX, -INT_MAX, -INT_MAX);
 
 	for (int i = 0;i < num;i++) {
@@ -78,7 +77,7 @@ void EnemyBase::Start() {
 	pCollider->SetResolve(true);
 
 	// 接地判定用当たり判定
-	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp,footPos.y), 10);
+	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, footPos.y), 10);
 }
 
 void EnemyBase::Update() {
@@ -401,14 +400,18 @@ void EnemyBase::SetAnimEvent(std::string _animName, int _frameCount, std::functi
 }
 
 void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
-	Character::OnTriggerEnter(_pSelf,_pOther);
+	Character::OnTriggerEnter(_pSelf, _pOther);
 
-	if (GetCurrentCaughtState() != CaughtState::Throwing) return;
-	// 何かしらに当たったら
-	HitObject();
+	if(_pOther->GetLayer() == ColliderLayer::Stage)
+
+	if (GetCurrentCaughtState() == CaughtState::Throwing) {
+		// 何かしらに当たったら
+		HitObject();
+	}
 }
 
 void EnemyBase::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+	Character::OnTriggerStay(_pSelf, _pOther);
 	Tag tag = _pOther->GetGameObject()->GetTag();
 	if (tag == Player) {
 		if (rayAnswer)
@@ -416,11 +419,21 @@ void EnemyBase::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	}
 }
 
-void EnemyBase::CaughtAction() {
+void EnemyBase::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
+	Character::OnTriggerExit(_pSelf, _pOther);
+
+
+}
+
+void EnemyBase::CaughtAction(VECTOR _rot, VECTOR _pos) {
 	// 行動不能状態にする
 	ChangeNextState(OutofControl);
 	// 捕まった状態にする
 	ChangeCaughtState(Catch);
+
+	// プレイヤーの手の子になるため、座標と回転を手に合わせる
+	GetTransform()->SetPosition(_pos);
+	GetTransform()->SetRotation(_rot);
 }
 
 void EnemyBase::ThrownAction(VECTOR _dir) {
@@ -445,6 +458,8 @@ void EnemyBase::Catching() {
 void EnemyBase::ThrowStart() {
 	CaughtObject::ThrowStart();
 	ChangeNextState(OutofControl);
+	AddFallSpeed(-20);
+	hitGroundingFrag = false;
 }
 
 void EnemyBase::Throwing() {

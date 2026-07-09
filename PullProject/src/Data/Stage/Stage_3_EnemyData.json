@@ -10,11 +10,11 @@
         },
         {
             "frameName": "Enemy_SP2",
-            "enemyType": 0
+            "enemyType": 1
         },
         {
             "frameName": "Enemy_SP3",
-            "enemyType": 0
+            "enemyType": 1
         },
         {
             "frameName": "Enemy_SP4",
