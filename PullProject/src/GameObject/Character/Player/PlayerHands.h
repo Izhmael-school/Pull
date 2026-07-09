@@ -20,19 +20,19 @@ class PlayerHands : public Character {
 private:
 	enum class HandsState {
 		Invalid = -1,
-		Idle,
-		ArmsExtending,
-		ArmsReturning,
-		Catch,
+		Idle,			// 待機
+		ArmsExtending,	// ウデ伸ばし
+		ArmsReturning,  // ウデ戻し
+		Catch,			// 掴み
 
 		Max,
 	};
 	enum class CatchState {
 		Invalid = -1,
-		None,
-		LeverCatch,
-		EnemyCatch,
-		PillerCatch,
+		None,			// 何も掴んでいない
+		LeverCatch,		// レバーを掴んでいる
+		EnemyCatch,		// 敵を掴んでいる
+		PillerCatch,	// 柱を掴んでいる
 
 		Max,
 	};

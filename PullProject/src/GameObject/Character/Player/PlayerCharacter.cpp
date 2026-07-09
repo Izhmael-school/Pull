@@ -22,6 +22,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, speed(10.0f)
 	, pullValue(0.0f)
 	, returnColor(false)
+	, lurchBackwardPos(VZero)
 
 	, PULL_VALUE_MAX(100.0f)
 	, PULL_CAMERA_SHAKE_POWER(20.0f)
@@ -30,6 +31,9 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, RETURN_COLOR_RATIO(0.95f)
 	, RETURN_PULL_VALUE_RATIO(0.95f)
 	, TURN_RATIO(0.3f)
+	, LURCH_BACKWARD_LENGTH(200.0f)
+	, LURCH_BACKWARD_RATIO(0.95f)
+	, LURCH_BACKWARD_THRESHOLD(30.0f)
 {}
 
 void PlayerCharacter::Start() {
@@ -61,6 +65,10 @@ void PlayerCharacter::Start() {
 
 void PlayerCharacter::Update() {
 	Character::Update();
+
+	ImGui::Begin("PlayerPosition");
+	ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
+	ImGui::End();
 	
 	// 入力アクションの更新
 	action = InputSystemManager::GetInstance().GetInputState(ActionMap::PlayerAction);
@@ -70,14 +78,19 @@ void PlayerCharacter::Update() {
 		pAnimator->Play("Land", 1.0f);
 		pHands->GetAnimator()->Play("Land", 1.0f);
 	}
-	// 地面についているなら待機状態へ
-	else if (hitGroundingFrag) {
+	// 地面についているなら待機状態へ(のけぞり中はNG)
+	else if (hitGroundingFrag && playerState != PlayerState::LurchBackward) {
 		playerState = PlayerState::Idle;
 	}
 
+	// のけぞり
+	if (playerState == PlayerState::LurchBackward) {
+		LurchBackward();
+	}
 	// 移動
-	if (!pHands->IsArmExtended() && !pHands->IsCatch())
+	else if (!pHands->IsArmExtended() && !pHands->IsCatch()) {
 		Move();
+	}
 
 	// 待機アニメーション
 	if (playerState == PlayerState::Idle) {
@@ -94,10 +107,6 @@ void PlayerCharacter::Update() {
 	if (returnColor) {
 		ReturnColor();
 	}
-	auto c = MV1GetDifColorScale(modelHandle);
-	ImGui::Begin("PlayerColor");
-	ImGui::Text("%f, %f, %f", c.r, c.g, c.b);
-	ImGui::End();
 }
 
 void PlayerCharacter::Render() {
@@ -128,7 +137,7 @@ void PlayerCharacter::Move() {
 		pAnimator->Play("Jump", 10.0f);
 		pHands->GetAnimator()->Play("Jump", 10.0f);
 	}
-
+	
 	auto camera = CameraManager::GetInstance().GetCamera();
 	if (!camera) return;
 
@@ -168,8 +177,12 @@ void PlayerCharacter::Move() {
 			diff -= 360;
 		while (diff < -180)
 			diff += 360;
-		// 徐々に振り向くように調整
 		float nextY = currentY + diff * TURN_RATIO;
+		// 角度が180～-180に収まるように正規化
+		while (nextY > 180)
+			nextY -= 360;
+		while (nextY < -180)
+			nextY += 360;
 		// 角度適応
 		pTransform->SetRotation(VGet(0, nextY, 0));
 		
@@ -204,6 +217,27 @@ void PlayerCharacter::ReturnColor() {
 	MV1SetDifColorScale(modelHandle, color);
 	MV1SetDifColorScale(pHands->GetModelHandle(), color);
 }
+
+/*
+ *  のけぞり
+ */
+void PlayerCharacter::LurchBackward() {
+	VECTOR dist = VSub(GetPosition(), lurchBackwardPos);
+	// のけぞり位置までの距離の2乗
+	float distSq = VDot(dist, dist);
+	// のけぞり
+	if (distSq > LURCH_BACKWARD_THRESHOLD * LURCH_BACKWARD_THRESHOLD) {
+		pTransform->SetPosition(MyMath::Lerp(lurchBackwardPos, GetPosition(), LURCH_BACKWARD_RATIO));
+	}
+	else {
+		playerState = PlayerState::Idle;
+	}
+
+	ImGui::Begin("LurchBackwardPosition");
+	ImGui::Text("%f, %f, %f", lurchBackwardPos.x, lurchBackwardPos.y, lurchBackwardPos.z);
+	ImGui::End();
+}
+
 /*
  *	引っこ抜き
  */
@@ -233,9 +267,16 @@ bool PlayerCharacter::Pull() {
 	if (pullValue >= PULL_VALUE_MAX) {
 		// カメラシェイク
 		CameraManager::GetInstance().CameraShake(PULL_CAMERA_SHAKE_POWER, PULL_CAMERA_SHAKE_TIME);
+		// 振動
+		StartJoypadVibration(DX_INPUT_PAD1, 1000, 180, -1);
+		// のけぞり
+		playerState = PlayerState::LurchBackward;
+		lurchBackwardPos = VAdd(GetPosition(), VScale(pTransform->GetForward(), LURCH_BACKWARD_LENGTH));
+		pAnimator->Play("Jump", 10.0f);
+		pHands->GetAnimator()->Play("Jump", 10.0f);
+
 		// 解除時処理を呼ぶ
 		PullReset();
-		StartJoypadVibration(DX_INPUT_PAD1, 1000, 180, -1);
 		
 		return true;
 	}

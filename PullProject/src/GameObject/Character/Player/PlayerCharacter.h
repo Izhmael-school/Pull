@@ -22,10 +22,10 @@ class PlayerCharacter : public Character {
 private:
 	enum class PlayerState {
 		Invalid = -1,
-		Idle,
-		Move,
-		Jump,
-		ArmExtended,
+		Idle,			// 待機
+		Move,			// 移動
+		Jump,			// ジャンプ
+		LurchBackward,	// のけぞり
 		
 		Max
 	};
@@ -34,6 +34,7 @@ private:
 	float speed;				// 移動速度
 	float pullValue;			// 引っ張り値
 	bool returnColor;			// 色戻しフラグ
+	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
 
 	// 引っこ抜きライン
@@ -50,6 +51,13 @@ private:
 	const float RETURN_PULL_VALUE_RATIO;
 	// プレイヤーの振り向き割合
 	const float TURN_RATIO;
+	// のけぞり距離
+	const float LURCH_BACKWARD_LENGTH;
+	// のけぞり割合
+	const float LURCH_BACKWARD_RATIO;
+	// のけぞり切ったとみなす閾値
+	const float LURCH_BACKWARD_THRESHOLD;
+
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
@@ -78,6 +86,10 @@ private:
 	 *	色を戻す
 	 */
 	void ReturnColor();
+	/*
+	 *  のけぞり
+	 */
+	void LurchBackward();
 
 public:
 	/*
