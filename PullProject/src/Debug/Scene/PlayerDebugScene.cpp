@@ -20,7 +20,13 @@
 #include "../../Manager/InputSystemManager.h"
 
 
-PlayerDebugScene::PlayerDebugScene() { Start(); }
+PlayerDebugScene::PlayerDebugScene()
+	:effectManager(effectResourceManager)
+	, effectResourceManager()
+	, audioManager(audioResourceManager)
+	, audioResourceManager()
+	, enemyManager({ effectManager ,audioManager }) 
+{ Start(); }
 
 void PlayerDebugScene::Start() {
 }
@@ -37,13 +43,15 @@ void PlayerDebugScene::Setup() {
 	CameraManager::GetInstance().CreateCamera();
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer(pos);
+
 	// 敵生成
-	// シングルトンをやめたためコメントアウト
-	//EnemyManager::GetInstance().UseEnemy(Walker, VGet(0, 400, 0));
+	enemyManager.SpawnStageFramePoint(3, StageManager::GetInstance());
+	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
+	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
+	audioManager.Play("test", 100.0f, true);
 
 	// ===== ギミックの更新 ====
 	GimmickObjectManager::GetInstance().Update();
-	StageCollisionGenerator generator;
 	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
 	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }
@@ -58,8 +66,9 @@ void PlayerDebugScene::Update() {
 	player->Update();	
 	player->GetHands()->Update();
 	// 敵の更新
-	// シングルトンをやめたためコメントアウト
-	//EnemyManager::GetInstance().Update();
+	enemyManager.Update();
+	effectManager.Update();
+	audioManager.Update();
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
 	// ===== 当たり判定 =====
@@ -135,5 +144,6 @@ void PlayerDebugScene::Render(){
 	CollisionManager::GetInstance().Render();
 	ColliderObjectManager::GetInstance().Render();
 
-	
+	effectManager.Render();
+	enemyManager.Render();
 }

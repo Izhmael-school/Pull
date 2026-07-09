@@ -129,7 +129,8 @@ void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
  */
 void PlayerCharacter::Move() {
 	// ジャンプ
-	if (action.buttonDown[static_cast<int>(PlayerAction::Jump)]) {
+	if (action.buttonDown[static_cast<int>(PlayerAction::Jump)] &&
+		hitGroundingFrag) {
 		AddFallSpeed(-JUMP_POWER);
 		hitGroundingFrag = false;
 		playerState = PlayerState::Jump;

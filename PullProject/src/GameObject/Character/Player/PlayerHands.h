@@ -36,12 +36,13 @@ private:
 
 		Max,
 	};
-	HandsState handsState;					// 手の状態
-	CatchState catchState;					// 所持状態
-	std::shared_ptr<PlayerCharacter> pOwner;// 所有者(プレイヤー)
-	float extendSpeed;						// 伸ばすスピード
-	float returnSpeedRatio;					// 戻ってくる速度割合
-	ActionState action;						// アクション状態
+	HandsState handsState;						// 手の状態
+	CatchState catchState;						// 所持状態
+	std::shared_ptr<PlayerCharacter> pOwner;	// 所有者(プレイヤー)
+	GameObject* pCatchObject;					// 掴んだオブジェクト
+	float extendSpeed;							// 伸ばすスピード
+	float returnSpeedRatio;						// 戻ってくる速度割合
+	ActionState action;							// アクション状態
 
 	const float RETURN_THRESHOLD;			// 戻ってきたとみなす閾値
 	const float ARM_LENGTH_MAX;				// ウデ伸ばし上限
@@ -73,6 +74,10 @@ private:
 	 *	掴み移動処理
 	 */
 	void CatchMoving();
+	/*
+	 *	掴み中の更新処理
+	 */
+	void CatchUpdate();
 
 public:
 	/*
