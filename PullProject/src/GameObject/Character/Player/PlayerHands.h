@@ -78,6 +78,10 @@ private:
 	 *	掴み中の更新処理
 	 */
 	void CatchUpdate();
+	/*
+	 *	敵を掴んだ時に戻ってくる処理
+	 */
+	//void 
 
 public:
 	/*
