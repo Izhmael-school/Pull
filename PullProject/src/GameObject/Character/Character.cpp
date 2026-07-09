@@ -1,5 +1,6 @@
 #include "Character.h"
 #include "../../Component/Collider/Collider.h"
+#include "ImGui/ImGui.h"
 
 Character::Character(int _modelHandle, VECTOR _pos, Tag _tag)
 	:GameObject(_modelHandle, _pos, _tag)
@@ -89,6 +90,9 @@ void Character::GravityFall() {
 
 	// 落下速度計算
 	fallSpeed += GRAVITY_ACCELERATION * 0.01f;
+	ImGui::Begin("Gravity");
+	ImGui::Text("%f", fallSpeed);
+	ImGui::End();
 	if (fallSpeed >= FALL_SPEED_MAX)
 		fallSpeed = FALL_SPEED_MAX;
 

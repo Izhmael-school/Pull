@@ -74,6 +74,7 @@ protected:
 
 	float footPos;		// 地面に埋まらないようにする足元の座標
 
+	bool isWallHit;		// 壁に当たったか
 protected:
 	EffectEvent effectEvent;
 	AudioEvent audioEvent;
@@ -179,12 +180,13 @@ protected:
 public:
 	virtual void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 	virtual void OnTriggerStay(Collider* _pSelf, Collider* _pOther) override;
+	virtual void OnTriggerExit(Collider* _pSelf, Collider* _pOther) override;
 
 public:
 	/*
 	 * @brief 捕まった
 	 */
-	virtual void CaughtAction() override;
+	virtual void CaughtAction(VECTOR _rot,VECTOR _pos);
 
 	/*
 	 * @brief 投げられた

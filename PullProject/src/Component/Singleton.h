@@ -22,8 +22,6 @@ public:
 	Singleton(const Singleton&) = delete;
 	Singleton& operator=(const Singleton&) = delete;
 
-	// Dxlib関係のデリート関数など削除するタイミングが決まってるものがあればここに
-	virtual void DeleteData() {}
 protected:
 	Singleton() = default;
 	~Singleton() = default;
