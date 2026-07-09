@@ -36,6 +36,7 @@ MainGameScene::MainGameScene()
 }
 
 void MainGameScene::Start() {
+	effectResourceManager.LoadEffectFromExternalFile();
 }
 
 /*
