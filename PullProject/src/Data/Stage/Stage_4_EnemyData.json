@@ -1,0 +1,12 @@
+{
+    "data": [
+        {
+            "frameName": "Enemy_SP0",
+            "enemyType": 0
+        },
+        {
+            "frameName": "Enemy_SP1",
+            "enemyType": 0
+        }
+    ]
+}
