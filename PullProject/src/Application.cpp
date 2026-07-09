@@ -128,10 +128,6 @@ bool Application::Update() {
 void Application::Render() {
 	// シーンの描画
 	SceneManager::GetInstance().Render();
-	// 裏画面と表画面を切り替える
-	ScreenFlip();
-	// Debugログクリア
-	clsDx();
 }
 
 void Application::ResourceDelete() {
@@ -175,10 +171,15 @@ void Application::Run() {
 		imgui.BeginFrame();
 		// 更新
 		isGameEnd = Update();
-		// ImGuiのフレーム終わりに呼ぶ処理
-		imgui.EndFrame();
 		// 描画
 		Render();
+		// ImGuiのフレーム終わりに呼ぶ処理
+		imgui.EndFrame();
+		// 裏画面と表画面を切り替える
+		ScreenFlip();
+		// Debugログクリア
+		clsDx();
+
 		// 処理にかかった時間を計算
 		int elapsed = GetNowCount() - frameStart;
 		int update = int(FRAME_TIME * 1000.0f);
