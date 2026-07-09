@@ -44,6 +44,17 @@ void ExitArea::Render() {
 }
 
 /*
+ *	片付け処理
+ */
+void ExitArea::Cleanup() {
+	if (pCollider) {
+		// CollisionManagerから登録解除
+		CollisionManager::GetInstance().UnRegister(pCollider.get());
+
+	}
+}
+
+/*
  *	当たったとき
  */
 void ExitArea::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {

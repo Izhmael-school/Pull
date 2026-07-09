@@ -26,7 +26,12 @@
  /*
   *	コンストラクタ
   */
-MainGameScene::MainGameScene() {
+MainGameScene::MainGameScene()
+	:effectManager(effectResourceManager)
+	, effectResourceManager()
+	, audioManager(audioResourceManager)
+	, audioResourceManager()
+	, enemyManager({ effectManager ,audioManager }) {
 	Start();
 }
 
@@ -45,6 +50,9 @@ void MainGameScene::Setup() {
 	// ステージのロード
 	int stageID = StageManager::GetInstance().GetStageID();
 	StageManager::GetInstance().LoadStage(stageID);
+
+	// 敵のスポーン位置を取得
+	enemyManager.SpawnStageFramePoint(stageID, StageManager::GetInstance());
 	// プレイヤーの生成位置を取得
 	VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
 
@@ -53,7 +61,7 @@ void MainGameScene::Setup() {
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer(playerPos);
 
-	// ギミックの更新s
+	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
 
 	// ステージの当たり判定を作成
@@ -75,11 +83,13 @@ void MainGameScene::Update() {
 	// プレイヤーの更新
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Update();
+	// プレイヤーの腕の更新
 	player->GetHands()->Update();
-
 
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
+	// 敵の更新
+	enemyManager.Update();
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
@@ -143,6 +153,9 @@ void MainGameScene::Render() {
 			DrawLine3D(pos1, pos2, blue);
 		}
 	}
+	// 当たり判定の描画処理
+	CollisionManager::GetInstance().Render();
+	ColliderObjectManager::GetInstance().Render();
 
 #endif
 	// ステージの描画処理
@@ -155,10 +168,9 @@ void MainGameScene::Render() {
 
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
-
-	// 当たり判定の描画処理
-	CollisionManager::GetInstance().Render();
-	ColliderObjectManager::GetInstance().Render();
+	
+	// 敵の描画処理
+	enemyManager.Render();
 
 }
 
@@ -169,4 +181,6 @@ void MainGameScene::Cleanup() {
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Clear();
 	StageManager::GetInstance().RequestStageClear(false);
+	// 使用中の敵全てを未使用化
+	enemyManager.UnuseAllEnemy();
 }

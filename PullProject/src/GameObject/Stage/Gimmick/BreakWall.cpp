@@ -94,6 +94,16 @@ void BreakWall::Reset() {
 }
 
 /*
+ *	•Ğ•t‚¯ˆ—
+ */
+void BreakWall::Cleanup() {
+	if (pCollider) {
+		// CollisionManager‚©‚ç“o˜^‰ğœ
+		CollisionManager::GetInstance().UnRegister(pCollider.get());
+	}
+}
+
+/*
  *	’Ê’m‚ğó‚¯‚½‚Ìˆ—
  */
 void BreakWall::OnTriggered() {

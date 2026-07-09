@@ -106,5 +106,12 @@ void GimmickObjectManager::Reset() {
  * 全削除
  */
 void GimmickObjectManager::Clear() {
+	// コライダーを消す
+	for (auto object : objects) {
+		if (object) {
+			object->Cleanup();
+		}
+	}
+
 	objects.clear();
 }

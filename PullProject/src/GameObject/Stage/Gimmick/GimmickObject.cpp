@@ -118,6 +118,9 @@ void GimmickObject::Execute() {
 void GimmickObject::Reset() {
 }
 
+void GimmickObject::Cleanup() {
+}
+
 /*
  *	モデルを削除
  */
