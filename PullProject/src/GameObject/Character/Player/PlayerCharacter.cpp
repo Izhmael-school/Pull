@@ -88,7 +88,7 @@ void PlayerCharacter::Update() {
 		LurchBackward();
 	}
 	// 移動
-	else if (!pHands->IsArmExtended() && !pHands->IsCatch()) {
+	else if ((!pHands->IsArmExtended() && !pHands->IsCatch()) || pHands->IsEnemyCatch()) {
 		Move();
 	}
 
