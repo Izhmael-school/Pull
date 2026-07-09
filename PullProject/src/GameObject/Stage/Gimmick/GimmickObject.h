@@ -38,6 +38,7 @@ public:
 	virtual void Setup();
 	virtual void Execute();
 	virtual void Reset();
+	virtual void Cleanup();
 	/*
 	 * @brief モデルの削除
 	 */

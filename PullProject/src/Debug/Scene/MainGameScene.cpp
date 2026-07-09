@@ -61,10 +61,6 @@ void MainGameScene::Setup() {
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer(playerPos);
 
-	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
-	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
-	audioManager.Play("test", 100.0f, true);
-
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
 
@@ -94,11 +90,6 @@ void MainGameScene::Update() {
 	GimmickObjectManager::GetInstance().Update();
 	// 敵の更新
 	enemyManager.Update();
-
-	// エフェクトの更新
-	effectManager.Update();
-	// オーディオの更新
-	audioManager.Update();
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
@@ -178,8 +169,6 @@ void MainGameScene::Render() {
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
 	
-	// エフェクトの描画処理
-	effectManager.Render();
 	// 敵の描画処理
 	enemyManager.Render();
 
@@ -192,4 +181,6 @@ void MainGameScene::Cleanup() {
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Clear();
 	StageManager::GetInstance().RequestStageClear(false);
+	// 使用中の敵全てを未使用化
+	enemyManager.UnuseAllEnemy();
 }

@@ -40,6 +40,11 @@ public:
 	void Render() override;
 
 	/*
+	 *	片付け処理
+	 */
+	void Cleanup()override;
+
+	/*
 	 *	当たったとき
 	 */
 	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther)override;
