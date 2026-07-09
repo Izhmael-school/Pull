@@ -111,7 +111,7 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		catchState = CatchState::EnemyCatch;
 		handsState = HandsState::ArmsReturning;
 		// 敵の掴まった時処理
-		enemy->CaughtAction(GetPosition(), GetRotation());
+		enemy->CaughtAction(GetRotation(), GetPosition());
 		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 		// 敵を一時的に子にする
 		enemy->GetTransform()->AttachParent(GetTransform());

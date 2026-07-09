@@ -175,10 +175,10 @@ void Application::Run() {
 		imgui.BeginFrame();
 		// 更新
 		isGameEnd = Update();
-		// 描画
-		Render();
 		// ImGuiのフレーム終わりに呼ぶ処理
 		imgui.EndFrame();
+		// 描画
+		Render();
 		// 処理にかかった時間を計算
 		int elapsed = GetNowCount() - frameStart;
 		int update = int(FRAME_TIME * 1000.0f);
