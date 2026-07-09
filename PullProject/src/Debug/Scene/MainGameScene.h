@@ -8,11 +8,23 @@
 
 #include "Scene/SceneBase.h"
 #include "GameObject/GameObject.h"
+#include "Manager/EnemyManager.h"
+#include "Manager/EffectManager.h"
+#include "Manager/EffectResourceManager.h"
+#include "Manager/AudioManager.h"
+#include "Manager/AudioResourceManager.h"
 
 #include <memory>
 
 class MainGameScene :public SceneBase {
 private:
+	EnemyManager enemyManager;						// エネミーの管理
+	EffectManager effectManager;					// エフェクト管理
+	EffectResourceManager effectResourceManager;	// エフェクトリソース管理
+	AudioManager audioManager;						// オーディオ管理
+	AudioResourceManager audioResourceManager;		// オーディオリソース管理
+
+
 	bool isStageClear = false;	// ステージクリア判定
 public:
 	MainGameScene();
