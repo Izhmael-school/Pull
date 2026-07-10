@@ -14,6 +14,7 @@
 struct AABB {
 	VECTOR min;
 	VECTOR max;
+	std::string type;
 };
 
 // 2つの浮動小数点数が近いかどうかを判定する関数
@@ -131,6 +132,8 @@ void StageCollisionGenerator::GenerateFromUnity(
 		float maxY = b["maxY"];
 		float maxZ = b["maxZ"];
 
+		std::string type = b.contains("type") ? b["type"].get<std::string>() : "";
+
 		VECTOR min = VGet(-minX, minY, -minZ);
 		VECTOR max = VGet(-maxX, maxY, -maxZ);
 
@@ -140,7 +143,7 @@ void StageCollisionGenerator::GenerateFromUnity(
 		if (min.x > max.x) std::swap(min.x, max.x);
 		if (min.z > max.z) std::swap(min.z, max.z);
 
-		boxes.push_back({ min, max });
+		boxes.push_back({ min, max, type });
 	}
 
 	// AABBの結合処理を実行
@@ -156,7 +159,12 @@ void StageCollisionGenerator::GenerateFromUnity(
 		col->SetMin(b.min);
 		col->SetMax(b.max);
 
-		col->SetLayer(ColliderLayer::Stage);
+		if (b.type == "missilewall") {
+			col->SetLayer(ColliderLayer::MissileWall);
+		}
+		else {
+			col->SetLayer(ColliderLayer::Stage);
+		}
 		colCount++;
 	}
 	// 結合後のAABBの数を表示
