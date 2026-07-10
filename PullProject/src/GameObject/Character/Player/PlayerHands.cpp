@@ -116,7 +116,7 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			catchState = CatchState::LeverCatch;
 			handsState = HandsState::Catch;
 			// 敵の掴まった時処理;
-			enemy->CaughtAction(enemy->GetRotation(), enemy->GetPosition());
+			enemy->CaughtAction();
 		}
 		else {
 			// ステート変更

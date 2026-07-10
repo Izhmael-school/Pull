@@ -224,6 +224,8 @@ void PlayerCharacter::ReturnColor() {
  */
 void PlayerCharacter::LurchBackward() {
 	VECTOR dist = VSub(GetPosition(), lurchBackwardPos);
+	// Y成分は抜く
+	dist.y = 0;
 	// のけぞり位置までの距離の2乗
 	float distSq = VDot(dist, dist);
 	// のけぞり
