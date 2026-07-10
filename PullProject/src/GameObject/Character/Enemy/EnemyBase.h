@@ -191,7 +191,7 @@ public:
 	/*
 	 * @brief 捕まった
 	 */
-	virtual void CaughtAction(VECTOR _rot, VECTOR _pos);
+	virtual void CaughtAction();
 
 	/*
 	 * @brief 投げられた
