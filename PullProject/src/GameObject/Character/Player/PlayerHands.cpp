@@ -143,6 +143,12 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		// ステート変更
 		catchState = CatchState::EnemyCatch;
 		handsState = HandsState::Catch;
+		// 敵を一時的に子にする
+		missile->GetTransform()->AttachParent(GetTransform(), false);
+		// 敵の掴まった時処理
+		VECTOR catchPos = VSub(missile->GetPosition(), GetPosition());
+		missile->GetTransform()->SetRotation(GetRotation());
+		missile->GetTransform()->SetPosition(catchPos);
 		// 敵の掴まった時処理
 		missile->CaughtAction();
 		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
@@ -292,6 +298,10 @@ void PlayerHands::CatchUpdate() {
 			missile->ThrownAction(GetTransform()->GetForward());
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
+			// 子じゃなくする
+			missile->GetTransform()->DetachParent();
+			// 位置をワールド座標へ
+			missile->GetTransform()->AddPosition(GetPosition());
 		}
 	}
 
