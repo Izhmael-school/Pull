@@ -25,7 +25,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, handsState(HandsState::Idle)
 	, catchState(CatchState::None)
 	, pOwner(_owner)
-	, pCatchObject(nullptr)
+	, pCatchCollider(nullptr)
 	, extendSpeed(20.0f)
 	, returnSpeedRatio(0.3f)
 
@@ -78,18 +78,18 @@ void PlayerHands::Update() {
 		CatchMoving();
 	}
 
-	if (!pCatchObject)
-		return;
-	if (!pCatchObject->GetTransform())
-		return;
-	ImGui::Begin("CatchObjectPosition&Rotation");
-	ImGui::Text("%f, %f, %f", pCatchObject->GetPosition().x, pCatchObject->GetPosition().y, pCatchObject->GetPosition().z);
-	ImGui::Text("%f, %f, %f", pCatchObject->GetRotation().x, pCatchObject->GetRotation().y, pCatchObject->GetRotation().z);
-	ImGui::End();
-	ImGui::Begin("HandsPosition&Rotation");
-	ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
-	ImGui::Text("%f, %f, %f", GetRotation().x, GetRotation().y, GetRotation().z);
-	ImGui::End();
+	//if (!pCatchObject)
+	//	return;
+	//if (!pCatchObject->GetTransform())
+	//	return;
+	//ImGui::Begin("CatchObjectPosition&Rotation");
+	//ImGui::Text("%f, %f, %f", pCatchObject->GetPosition().x, pCatchObject->GetPosition().y, pCatchObject->GetPosition().z);
+	//ImGui::Text("%f, %f, %f", pCatchObject->GetRotation().x, pCatchObject->GetRotation().y, pCatchObject->GetRotation().z);
+	//ImGui::End();
+	//ImGui::Begin("HandsPosition&Rotation");
+	//ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
+	//ImGui::Text("%f, %f, %f", GetRotation().x, GetRotation().y, GetRotation().z);
+	//ImGui::End();
 }
 
 void PlayerHands::Render() {
@@ -104,21 +104,23 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (handsState != HandsState::ArmsExtending)
 		return;
 
-	// 当たったオブジェクトを保存
-	pCatchObject = other;
+	// 当たったコライダーを保存
+	pCatchCollider = _pOther;
 
-	// 当たったのが敵の場合
 	auto enemy = dynamic_cast<EnemyBase*>(other);
+	// 当たったのが敵の場合
 	if (enemy) {
+		auto enemyLayer = enemy->GetCollider()->GetLayer();
 		// 尻尾の場合はレバーと同じように処理
-		if (enemy->GetCollider()->GetLayer() == ColliderLayer::Tail) {
+		if (_pOther->GetLayer() == ColliderLayer::Tail) {
 			// ステート変更
 			catchState = CatchState::LeverCatch;
 			handsState = HandsState::Catch;
 			// 敵の掴まった時処理;
 			enemy->CaughtAction();
 		}
-		else {
+		// デフォルトレイヤーは処理しない
+		else if (enemyLayer != ColliderLayer::Default) {
 			// ステート変更
 			catchState = CatchState::EnemyCatch;
 			handsState = HandsState::Catch;
@@ -238,9 +240,12 @@ void PlayerHands::CatchMoving() {
  *	掴み中の更新処理
  */
 void PlayerHands::CatchUpdate() {
-	if (!pCatchObject)
+	if (!pCatchCollider)
 		return;
-	if (pCatchObject->GetTag() == Player)
+	auto catchObject = pCatchCollider->GetGameObject();
+	if (!catchObject)
+		return;
+	if (catchObject->GetTag() == Player)
 		return;
 	// ウデを伸ばしていない状態なら無視(キャッチなら無視しない)
 	if (handsState != HandsState::ArmsExtending &&
@@ -251,10 +256,10 @@ void PlayerHands::CatchUpdate() {
 	bool release = action.buttonUp[static_cast<int>(PlayerAction::ArmExtend)];
 
 	// 掴んだのが敵の場合
-	auto enemy = dynamic_cast<EnemyBase*>(pCatchObject);
+	auto enemy = dynamic_cast<EnemyBase*>(catchObject);
 	if (enemy) {
 		// 尻尾の場合はレバーと同じように処理
-		if (enemy->GetCollider()->GetLayer() == ColliderLayer::Tail) {
+		if (pCatchCollider->GetLayer() == ColliderLayer::Tail) {
 			// 引っこ抜き
 			bool pull = pOwner->Pull();
 			// 敵を倒す
@@ -280,7 +285,7 @@ void PlayerHands::CatchUpdate() {
 	/*
 	 * @author Sekino
 	 */
-	auto missile = dynamic_cast<Missile*>(pCatchObject);
+	auto missile = dynamic_cast<Missile*>(catchObject);
 	if (missile) {
 		// ミサイルを離す
 		if (release) {
@@ -291,7 +296,7 @@ void PlayerHands::CatchUpdate() {
 	}
 
 	// 掴んだのがレバーの場合
-	auto lever = dynamic_cast<Lever*>(pCatchObject);
+	auto lever = dynamic_cast<Lever*>(catchObject);
 	if (lever) {
 		// 引っこ抜き
 		bool pull = pOwner->Pull();
@@ -304,7 +309,7 @@ void PlayerHands::CatchUpdate() {
 	}
 
 	// 掴んだのがフックの場合
-	if (pCatchObject->GetTag() == Hook) {
+	if (catchObject->GetTag() == Hook) {
 		if (release) {
 			catchState = CatchState::PillerCatch;
 			pOwner->SetIsGravity(false);

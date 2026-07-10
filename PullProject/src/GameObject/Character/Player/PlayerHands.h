@@ -39,7 +39,7 @@ private:
 	HandsState handsState;						// 手の状態
 	CatchState catchState;						// 所持状態
 	std::shared_ptr<PlayerCharacter> pOwner;	// 所有者(プレイヤー)
-	GameObject* pCatchObject;					// 掴んだオブジェクト
+	Collider* pCatchCollider;					// 掴んだオブジェクト
 	float extendSpeed;							// 伸ばすスピード
 	float returnSpeedRatio;						// 戻ってくる速度割合
 	ActionState action;							// アクション状態
