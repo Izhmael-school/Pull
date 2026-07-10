@@ -162,6 +162,12 @@ void StageCollisionGenerator::GenerateFromUnity(
 		if (b.type == "missilewall") {
 			col->SetLayer(ColliderLayer::MissileWall);
 		}
+		else if (b.type == "wall") {
+			col->SetLayer(ColliderLayer::Wall);
+		}
+		else if (b.type == "ground") {
+			col->SetLayer(ColliderLayer::Ground);
+		}
 		else {
 			col->SetLayer(ColliderLayer::Stage);
 		}

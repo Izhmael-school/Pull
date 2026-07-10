@@ -24,6 +24,8 @@ enum class ColliderLayer {
 	Tail,
 	Missile,
 	MissileWall,
+	Wall,
+	Ground
 };
 
 class Collider {
