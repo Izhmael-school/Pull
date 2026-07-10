@@ -427,15 +427,11 @@ void EnemyBase::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 
 }
 
-void EnemyBase::CaughtAction(VECTOR _rot, VECTOR _pos) {
+void EnemyBase::CaughtAction() {
 	// 行動不能状態にする
 	ChangeNextState(OutofControl);
 	// 捕まった状態にする
 	ChangeCaughtState(Catch);
-
-	// プレイヤーの手の子になるため、座標と回転を手に合わせる
-	GetTransform()->SetPosition(_pos);
-	GetTransform()->SetRotation(_rot);
 }
 
 void EnemyBase::ThrownAction(VECTOR _dir) {

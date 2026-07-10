@@ -25,7 +25,7 @@ namespace {
  */
 Turret::Turret(int modelHandle, VECTOR pos, VECTOR rota, Tag tag)
 	:GimmickObject(modelHandle, pos, rota, tag) 
-	,fireRate(1.0f)
+	,fireRate(1.5f)
 	,fireElapsedTime(fireRate)
 {
 }
@@ -37,7 +37,7 @@ void Turret::Setup() {
 	GimmickObject::Setup();
 	// コライダー付与
 	// コライダーを付与
-	pCollider = std::make_unique<RayCollider>(this,VZero,VScale(GetTransform()->GetForward(),-1),1000,20,30,50);
+	pCollider = std::make_unique<RayCollider>(this,VZero,VScale(GetTransform()->GetForward(),-1),5000,20,30,50);
 	// レイヤーを設定
 	pCollider->SetLayer(ColliderLayer::Stage);
 }
