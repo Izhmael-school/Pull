@@ -21,6 +21,8 @@ void GameObjectManager::Update(){
 		// 有効でなければ
 		if (obj->IsActive()) return false;
 		// 消す
+		obj->~GameObject();
+		obj.release();
 		obj.reset();
 		return true;
 		});

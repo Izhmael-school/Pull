@@ -119,6 +119,10 @@ void CollisionManager::Update() {
 
 			if (!a->IsEnable() || !b->IsEnable()) continue;
 
+			if (a->GetLayer() == ColliderLayer::MissileWall && b->GetLayer() == ColliderLayer::Missile || b->GetLayer() == ColliderLayer::MissileWall && a->GetLayer() == ColliderLayer::Missile) {
+				continue;
+			}
+
 			auto goA = a->GetGameObject();
 			auto goB = b->GetGameObject();
 
@@ -730,10 +734,6 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	}
 
 	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::Ground || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::Ground) {
-		return;
-	}
-
-	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::Missile || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::Missile) {
 		return;
 	}
 

@@ -37,6 +37,7 @@ void TailEnemy::Start() {
 	// 当たり判定
 	pCollider = std::make_unique<AABBCollider>(this, min, max);
 	pCollider->SetResolve(false);
+	pCollider->SetLayer(ColliderLayer::Default);
 
 	tailFrameIndex = MV1SearchFrame(modelHandle, "TailPoint");
 	VECTOR tailPos = MV1GetFramePosition(modelHandle, tailFrameIndex);
