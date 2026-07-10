@@ -438,6 +438,13 @@ void EnemyBase::CaughtAction(VECTOR _rot, VECTOR _pos) {
 	GetTransform()->SetRotation(_rot);
 }
 
+void EnemyBase::CaughtAction() {
+	// 行動不能状態にする
+	ChangeNextState(OutofControl);
+	// 捕まった状態にする
+	ChangeCaughtState(Catch);
+}
+
 void EnemyBase::ThrownAction(VECTOR _dir) {
 	// 投げられた状態にする
 	ChangeCaughtState(Throw);

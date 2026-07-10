@@ -17,7 +17,7 @@
             "Type": "BomBreakWall",
             "LeverID": -1,
             "Position": "BomBreakWall_SP1",
-            "Rotation": 0.0
+            "Rotation": 90.0
         },
         {
             "Type": "BomBreakWall",
