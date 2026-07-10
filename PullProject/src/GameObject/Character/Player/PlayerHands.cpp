@@ -31,6 +31,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 
 	, RETURN_THRESHOLD(1.0f)
 	, ARM_LENGTH_MAX(1500.0f)
+	, ENEMY_CATCH_RETURN_THRESHOLD(100.0f)
 {}
 
 void PlayerHands::Start() {
@@ -79,14 +80,16 @@ void PlayerHands::Update() {
 
 	if (!pCatchObject)
 		return;
-	//ImGui::Begin("CatchObjectPosition&Rotation");
-	//ImGui::Text("%f, %f, %f", pCatchObject->GetPosition().x, pCatchObject->GetPosition().y, pCatchObject->GetPosition().z);
-	//ImGui::Text("%f, %f, %f", pCatchObject->GetRotation().x, pCatchObject->GetRotation().y, pCatchObject->GetRotation().z);
-	//ImGui::End();
-	//ImGui::Begin("HandsPosition&Rotation");
-	//ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
-	//ImGui::Text("%f, %f, %f", GetRotation().x, GetRotation().y, GetRotation().z);
-	//ImGui::End();
+	if (!pCatchObject->GetTransform())
+		return;
+	ImGui::Begin("CatchObjectPosition&Rotation");
+	ImGui::Text("%f, %f, %f", pCatchObject->GetPosition().x, pCatchObject->GetPosition().y, pCatchObject->GetPosition().z);
+	ImGui::Text("%f, %f, %f", pCatchObject->GetRotation().x, pCatchObject->GetRotation().y, pCatchObject->GetRotation().z);
+	ImGui::End();
+	ImGui::Begin("HandsPosition&Rotation");
+	ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
+	ImGui::Text("%f, %f, %f", GetRotation().x, GetRotation().y, GetRotation().z);
+	ImGui::End();
 }
 
 void PlayerHands::Render() {
@@ -107,14 +110,27 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	// 当たったのが敵の場合
 	auto enemy = dynamic_cast<EnemyBase*>(other);
 	if (enemy) {
-		// ステート変更
-		catchState = CatchState::EnemyCatch;
-		handsState = HandsState::Catch;
-		// 敵を一時的に子にする
-		enemy->GetTransform()->AttachParent(GetTransform());
-		// 敵の掴まった時処理
-		enemy->CaughtAction(GetRotation(), VZero);
-		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+		// 尻尾の場合はレバーと同じように処理
+		if (enemy->GetCollider()->GetLayer() == ColliderLayer::Tail) {
+			// ステート変更
+			catchState = CatchState::LeverCatch;
+			handsState = HandsState::Catch;
+			// 敵の掴まった時処理;
+			enemy->CaughtAction();
+		}
+		else {
+			// ステート変更
+			catchState = CatchState::EnemyCatch;
+			handsState = HandsState::Catch;
+			// 敵を一時的に子にする
+			enemy->GetTransform()->AttachParent(GetTransform(), false);
+			enemy->SetIsGravity(false);
+			// 敵の掴まった時処理
+			VECTOR catchPos = VSub(enemy->GetPosition(), GetPosition());
+			enemy->CaughtAction(GetRotation(), catchPos);
+			// 振動
+			StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+		}
 	}
 
 	/*
@@ -171,21 +187,19 @@ void PlayerHands::HandsMove() {
 			// ウデ伸ばし中は当たり判定の押し出しあり
 			pCollider->SetResolve(true);
 		}
-		//else {
-		//	// 最大距離まで伸ばしたら戻る
-		//	handsState = HandsState::ArmsReturning;
-		//}
-
 	}
-	// ウデ戻し中なら戻ってくる
-	else if (handsState == HandsState::ArmsReturning){
+	// ウデ戻し中か敵掴み中なら戻ってくる
+	else if (handsState == HandsState::ArmsReturning ||
+		catchState == CatchState::EnemyCatch){
 		// 戻ってきたとみなす
 		if (distSq < RETURN_THRESHOLD * RETURN_THRESHOLD) {
 			pTransform->SetPosition(VZero);
 			handsState = HandsState::Idle;
 		}
 		// 戻ってくる
-		else {
+		// (敵掴み中の場合は閾値を超えるまで戻ってくる)
+		else if (distSq > ENEMY_CATCH_RETURN_THRESHOLD * ENEMY_CATCH_RETURN_THRESHOLD ||
+			catchState != CatchState::EnemyCatch) {
 			pTransform->SetPosition(
 				MyMath::Lerp(
 					pTransform->GetLocalPosition(), 
@@ -239,13 +253,27 @@ void PlayerHands::CatchUpdate() {
 	// 掴んだのが敵の場合
 	auto enemy = dynamic_cast<EnemyBase*>(pCatchObject);
 	if (enemy) {
+		// 尻尾の場合はレバーと同じように処理
+		if (enemy->GetCollider()->GetLayer() == ColliderLayer::Tail) {
+			// 引っこ抜き
+			bool pull = pOwner->Pull();
+			// 敵を倒す
+			if (pull) {
+				enemy->ThrownAction(GetTransform()->GetForward());
+				catchState = CatchState::None;
+				handsState = HandsState::ArmsReturning;
+			}
+		}
 		// 敵を離す
-		if (release) {
+		else if (release) {
 			enemy->ThrownAction(GetTransform()->GetForward());
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
 			// 子じゃなくする
 			enemy->GetTransform()->DetachParent();
+			enemy->SetIsGravity(true);
+			// 位置をワールド座標へ
+			enemy->GetTransform()->AddPosition(GetPosition());
 		}
 	}
 

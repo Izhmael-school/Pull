@@ -404,7 +404,8 @@ void EnemyBase::SetAnimEvent(std::string _animName, int _frameCount, std::functi
 void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	Character::OnTriggerEnter(_pSelf, _pOther);
 
-	if(_pOther->GetLayer() == ColliderLayer::Stage)
+	if (_pOther->GetLayer() == ColliderLayer::Wall)
+		wanderingGoalPos = GetPosition();
 
 	if (GetCurrentCaughtState() == CaughtState::Throwing) {
 		// 何かしらに当たったら

@@ -110,6 +110,7 @@ void DebugScene::Render() {
 	StageManager::GetInstance().Render();
 
 	//enemy->Render();
-
+#if _DEBUG
 	CollisionManager::GetInstance().Render();
+#endif
 }

@@ -166,7 +166,9 @@ void MainGameScene::Render() {
 		}
 	}
 	// 当たり判定の描画処理
+#if _DEBUG
 	CollisionManager::GetInstance().Render();
+#endif
 	ColliderObjectManager::GetInstance().Render();
 
 #endif

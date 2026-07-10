@@ -125,6 +125,8 @@ void CollisionDebugScene::Render() {
 	// ==== ギミックの描画 ====
 	GimmickObjectManager::GetInstance().Render();
 
+#if _DEBUG
 	CollisionManager::GetInstance().Render();
+#endif
 	ColliderObjectManager::GetInstance().Render();
 }

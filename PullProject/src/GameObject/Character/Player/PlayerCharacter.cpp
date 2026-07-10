@@ -88,7 +88,7 @@ void PlayerCharacter::Update() {
 		LurchBackward();
 	}
 	// 移動
-	else if (!pHands->IsArmExtended() && !pHands->IsCatch()) {
+	else if ((!pHands->IsArmExtended() && !pHands->IsCatch()) || pHands->IsEnemyCatch()) {
 		Move();
 	}
 
@@ -224,6 +224,8 @@ void PlayerCharacter::ReturnColor() {
  */
 void PlayerCharacter::LurchBackward() {
 	VECTOR dist = VSub(GetPosition(), lurchBackwardPos);
+	// Y成分は抜く
+	dist.y = 0;
 	// のけぞり位置までの距離の2乗
 	float distSq = VDot(dist, dist);
 	// のけぞり

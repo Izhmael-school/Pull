@@ -44,8 +44,12 @@ private:
 	float returnSpeedRatio;						// 戻ってくる速度割合
 	ActionState action;							// アクション状態
 
-	const float RETURN_THRESHOLD;			// 戻ってきたとみなす閾値
-	const float ARM_LENGTH_MAX;				// ウデ伸ばし上限
+	// 戻ってきたとみなす閾値
+	const float RETURN_THRESHOLD;
+	// ウデ伸ばし上限
+	const float ARM_LENGTH_MAX;
+	// 敵を掴んだ時の戻ってきたとみなす閾値
+	const float ENEMY_CATCH_RETURN_THRESHOLD;
 	
 public:
 	PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag = Player);
@@ -78,10 +82,6 @@ private:
 	 *	掴み中の更新処理
 	 */
 	void CatchUpdate();
-	/*
-	 *	敵を掴んだ時に戻ってくる処理
-	 */
-	//void 
 
 public:
 	/*
@@ -104,6 +104,12 @@ public:
 	 *	@return bool
 	 */
 	inline bool IsHandIdle() { return handsState == HandsState::Idle; }
+	/*
+	 *	敵を掴んでいるか否か
+	 *	@return bool
+	 */
+	inline bool IsEnemyCatch() { return catchState == CatchState::EnemyCatch; }
+
 };
 // 別名定義
 using PlayerHandsPtr = std::shared_ptr<PlayerHands>;
