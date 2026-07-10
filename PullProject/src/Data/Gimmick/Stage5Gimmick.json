@@ -2,12 +2,6 @@
   "Levers": [],
   "Gimmicks": [
     {
-      "Type": "Turret",
-      "LeverID": 0,
-      "Position": "Turret_SP0",
-      "Rotation": 90.0
-    },
-    {
       "Type": "HookShot",
       "LeverID": 0,
       "Position": "HookShot_SP15",
