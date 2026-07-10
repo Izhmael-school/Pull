@@ -72,6 +72,9 @@ void MainGameScene::Setup() {
 	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
 	// プレイヤーアクションマップを有効化
 	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
+
+	// スカイドームのモデルを取得
+	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
 }
 
 /*
@@ -81,7 +84,11 @@ void MainGameScene::Update() {
 
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
-
+	
+	// カメラ座標を取得
+	VECTOR CameraPos = CameraManager::GetInstance().GetCamera()->GetPosition();
+	// スカイドームをカメラ位置へ移動
+	MV1SetPosition(SkyModel, CameraPos);
 	// プレイヤーの更新
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Update();
@@ -180,6 +187,9 @@ void MainGameScene::Render() {
 	// GameObjectの描画
 	GameObjectManager::GetInstance().Render();
 
+	// スカイドームを描画
+	MV1DrawModel(SkyModel);
+	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
 }
 
 /*

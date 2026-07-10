@@ -26,6 +26,8 @@ private:
 
 
 	bool isStageClear = false;	// ステージクリア判定
+	
+	int SkyModel;
 public:
 	MainGameScene();
 	~MainGameScene() = default;
