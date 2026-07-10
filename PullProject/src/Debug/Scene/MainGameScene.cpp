@@ -75,6 +75,7 @@ void MainGameScene::Setup() {
 
 	// スカイドームのモデルを取得
 	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
+
 }
 
 /*
@@ -84,7 +85,6 @@ void MainGameScene::Update() {
 
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
-	
 	// カメラ座標を取得
 	VECTOR CameraPos = CameraManager::GetInstance().GetCamera()->GetPosition();
 	// スカイドームをカメラ位置へ移動
