@@ -37,6 +37,16 @@ public:
 	 */
 	void Render()override;
 
+	/*
+	 *	ギミック初期化処理
+	 */
+	void Reset() override;
+
+	/*
+	 *	片付け処理
+	 */
+	void Cleanup() override;
+
 public:
 
 	/*
