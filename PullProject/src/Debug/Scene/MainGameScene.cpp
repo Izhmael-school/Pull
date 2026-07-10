@@ -19,6 +19,7 @@
 #include "Generator/StageCollisionGenerator.h"
 #include "Manager/SceneManager.h"
 #include "Manager/InputSystemManager.h"
+#include "Manager/GameObjectManager.h"
 #include "../../Definition/CommonModule/ActionMapData.h"
 
 #include <DxLib.h>
@@ -91,6 +92,9 @@ void MainGameScene::Update() {
 	GimmickObjectManager::GetInstance().Update();
 	// 敵の更新
 	enemyManager.Update();
+
+	// GameObjectの更新
+	GameObjectManager::GetInstance().Update();
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
@@ -172,6 +176,9 @@ void MainGameScene::Render() {
 	
 	// 敵の描画処理
 	enemyManager.Render();
+
+	// GameObjectの描画
+	GameObjectManager::GetInstance().Render();
 
 }
 
