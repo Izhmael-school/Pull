@@ -26,6 +26,7 @@ GameObject::~GameObject() {
 	if (pCollider)
 	{
 		CollisionManager::GetInstance().UnRegister(pCollider.get());
+		pCollider.release();
 	}
 
 
