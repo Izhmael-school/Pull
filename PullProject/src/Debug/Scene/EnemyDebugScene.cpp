@@ -136,8 +136,6 @@ void EnemyDebugScene::Setup(){
 	StageManager::GetInstance().TransitionStage(0);
 	enemyManager.SpawnStageFramePoint(3,StageManager::GetInstance());
 	CameraManager::GetInstance().CreateCamera();
-	effectManager.pEffectResourceManager.LoadEffectFromExternalFile();
-	audioManager.pAudioResourceManager.LoadAudioFromExternalFile();
 	audioManager.Play("test", 100.0f, true);
 	GimmickObjectManager::GetInstance().Update();
 	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());

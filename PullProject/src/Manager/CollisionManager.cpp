@@ -657,6 +657,34 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 		return;
 	}
 
+	if (aLayer == ColliderLayer::Wall && bLayer == ColliderLayer::Wall) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::Ground && bLayer == ColliderLayer::Ground) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::Stage && bLayer == ColliderLayer::Ground || bLayer == ColliderLayer::Stage && aLayer == ColliderLayer::Ground) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::Stage && bLayer == ColliderLayer::Wall || bLayer == ColliderLayer::Stage && aLayer == ColliderLayer::Wall) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::Ground && bLayer == ColliderLayer::Wall || bLayer == ColliderLayer::Ground && aLayer == ColliderLayer::Wall) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::BreakWall && bLayer == ColliderLayer::Wall || bLayer == ColliderLayer::BreakWall && aLayer == ColliderLayer::Wall) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::BreakWall && bLayer == ColliderLayer::Ground || bLayer == ColliderLayer::BreakWall && aLayer == ColliderLayer::Ground) {
+		return;
+	}
+
 	if (a->GetLayer() == ColliderLayer::Gimmick || b->GetLayer() == ColliderLayer::Gimmick) {
 		return;
 	}
@@ -673,7 +701,43 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 		return;
 	}
 
+	if (a->GetLayer() == ColliderLayer::ExitArea && b->GetLayer() == ColliderLayer::Ground || b->GetLayer() == ColliderLayer::ExitArea && a->GetLayer() == ColliderLayer::Ground) {
+		return;
+	}
+
+	if (a->GetLayer() == ColliderLayer::ExitArea && b->GetLayer() == ColliderLayer::Wall || b->GetLayer() == ColliderLayer::ExitArea && a->GetLayer() == ColliderLayer::Wall) {
+		return;
+	}
+
 	if (aLayer == ColliderLayer::Missile && bLayer == ColliderLayer::Stage || bLayer == ColliderLayer::Missile && aLayer == ColliderLayer::Stage) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::Missile && bLayer == ColliderLayer::Wall || bLayer == ColliderLayer::Missile && aLayer == ColliderLayer::Wall) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::Missile && bLayer == ColliderLayer::Ground || bLayer == ColliderLayer::Missile && aLayer == ColliderLayer::Ground) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::Stage || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::Stage) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::Wall || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::Wall) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::Ground || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::Ground) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::Missile || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::Missile) {
+		return;
+	}
+
+	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::ExitArea || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::ExitArea) {
 		return;
 	}
 

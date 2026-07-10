@@ -189,6 +189,11 @@ public:
 	virtual void CaughtAction(VECTOR _rot,VECTOR _pos);
 
 	/*
+	 * @brief 捕まった
+	 */
+	virtual void CaughtAction();
+
+	/*
 	 * @brief 投げられた
 	 */
 	virtual void ThrownAction(VECTOR _dir) override;

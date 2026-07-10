@@ -82,6 +82,11 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		return;
 	}
 
+	auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
+	if (breakWall != nullptr) {
+		breakWall->ActivGimmick(true);
+	}
+
 	if (pOwner != _pOther->GetGameObject())
 		Explosion();
 }
