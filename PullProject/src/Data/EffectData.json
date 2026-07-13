@@ -18,6 +18,10 @@
   {
     "name": "EnemyDeath",
     "path": "EnemyDeath.efkefc"
+  },
+  {
+    "name": "BreakWallSmoke",
+    "path": "BreakWall.efkefc"
   }
 
 ]

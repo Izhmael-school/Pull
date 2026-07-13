@@ -9,6 +9,8 @@
 #include "Manager/TimeManager.h";
 #include "Manager/CollisionManager.h"
 #include <ImGui/imgui.h>
+
+
 namespace {
 	// レバーの生成位置
 	constexpr const char* _PULL_DIR = "PullDir";	// 引き出し方向指定のフレームの名前
@@ -59,10 +61,6 @@ void PullOutFloor::Update() {
 		// 床を動かす
 		Moving();
 	}
-	VECTOR posi = pTransform->GetPosition();
-	ImGui::Begin("PullOutFloor");
-	ImGui::Text("%f, %f, %f", posi.x, posi.y, posi.z);
-	ImGui::End();
 	pCollider->Update();
 }
 

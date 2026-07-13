@@ -28,6 +28,7 @@ private:
 	float opacity;	// アルファ値
 	float fadeSpeed;// フェード速度
 
+
 public:
 	/*
 	 *	コンストラクタ

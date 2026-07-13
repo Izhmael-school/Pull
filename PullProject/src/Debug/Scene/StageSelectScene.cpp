@@ -11,10 +11,10 @@
 #include <algorithm>
 #include <math.h>
 
-/*
- *	コンストラクタ
- */
-StageSelectScene::StageSelectScene() :currentScene(0){ Start(); }
+ /*
+  *	コンストラクタ
+  */
+StageSelectScene::StageSelectScene() :currentScene(0) { Start(); }
 
 /*
  *	開始処理
@@ -26,6 +26,7 @@ void StageSelectScene::Start() {
 	selectInfoArray.push_back({ "Stage4 o",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage5 o",[]() {StageManager::GetInstance().SetStageID(5);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "DebugSelect o",[]() {SceneManager::GetInstance().ChangeScene(SceneType::DebugSceneSelect);} });
+	selectInfoArray.push_back({ "Return to Title",[]() {SceneManager::GetInstance().ChangeScene(SceneType::Title);} });
 }
 
 /*

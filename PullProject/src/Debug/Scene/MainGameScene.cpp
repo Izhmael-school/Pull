@@ -112,6 +112,7 @@ void MainGameScene::Update() {
 		return;
 	}
 	ColliderObjectManager::GetInstance().Update();
+	effectManager.Update();
 }
 
 void MainGameScene::Render() {
@@ -192,6 +193,8 @@ void MainGameScene::Render() {
 	// スカイドームを描画
 	MV1DrawModel(SkyModel);
 	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
+
+	effectManager.Render();
 }
 
 /*
@@ -203,4 +206,5 @@ void MainGameScene::Cleanup() {
 	StageManager::GetInstance().RequestStageClear(false);
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
+	effectManager.Clean();
 }

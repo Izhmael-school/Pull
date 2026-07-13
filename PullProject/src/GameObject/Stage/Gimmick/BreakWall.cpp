@@ -6,6 +6,8 @@
 #include "Manager/Stage/GimmickManager.h"
 #include "../../../Component\Collider/Collider.h"
 #include "Manager/CollisionManager.h"
+#include "Manager/EffectManager.h"
+#include "Application.h"
 
 namespace {
 	// レバーの生成位置
@@ -42,6 +44,7 @@ void BreakWall::Setup() {
 	pCollider = std::make_unique<AABBCollider>(this, minPos, maxPos);
 	// レイヤーを設定
 	pCollider->SetLayer(ColliderLayer::BreakWall);
+
 }
 
 /*
@@ -55,6 +58,7 @@ void BreakWall::Update() {
 		OpacityChange();
 	};
 	pCollider->Update();
+
 }
 
 /*
@@ -81,8 +85,8 @@ void BreakWall::Render() {
 void BreakWall::Reset() {
 	// 変更がなければ行わない
 	if (!isBroken && !isFading) return;
-	
-	
+
+
 	GimmickObject::Reset();
 
 	isBroken = false;
@@ -109,9 +113,9 @@ void BreakWall::Cleanup() {
 void BreakWall::OnTriggered() {
 	// フェード中、フェード修了していたら抜ける
 	if (isFading || isBroken)return;
-
 	// エフェクト　※なんかでっかい煙とか
-
+	EffectManager* effect = &Application::GetInstance().GetEffectManager();
+	effect->Play("BreakWallSmoke", GetPosition(), 70.0f);
 	// フェード処理を開始判定にする
 	isFading = true;
 }
@@ -147,6 +151,7 @@ void BreakWall::OpacityChange() {
 		opacity = 0.0f;
 		// 当たり判定削除
 		CollisionManager::GetInstance().UnRegister(pCollider.get());
+
 		// 消えた判定にする
 		isFading = false;
 		isBroken = true;
