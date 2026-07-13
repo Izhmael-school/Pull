@@ -77,19 +77,6 @@ void PlayerHands::Update() {
 	if (catchState == CatchState::PillerCatch) {
 		CatchMoving();
 	}
-
-	//if (!pCatchObject)
-	//	return;
-	//if (!pCatchObject->GetTransform())
-	//	return;
-	//ImGui::Begin("CatchObjectPosition&Rotation");
-	//ImGui::Text("%f, %f, %f", pCatchObject->GetPosition().x, pCatchObject->GetPosition().y, pCatchObject->GetPosition().z);
-	//ImGui::Text("%f, %f, %f", pCatchObject->GetRotation().x, pCatchObject->GetRotation().y, pCatchObject->GetRotation().z);
-	//ImGui::End();
-	//ImGui::Begin("HandsPosition&Rotation");
-	//ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
-	//ImGui::Text("%f, %f, %f", GetRotation().x, GetRotation().y, GetRotation().z);
-	//ImGui::End();
 }
 
 void PlayerHands::Render() {
