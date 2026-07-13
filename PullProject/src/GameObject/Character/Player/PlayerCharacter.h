@@ -33,6 +33,7 @@ private:
 	PlayerState playerState;	// プレイヤーの状態
 	float speed;				// 移動速度
 	float pullValue;			// 引っ張り値
+	float lurchBackwardTime;	// のけぞり継続時間
 	bool returnColor;			// 色戻しフラグ
 	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
@@ -57,7 +58,8 @@ private:
 	const float LURCH_BACKWARD_RATIO;
 	// のけぞり切ったとみなす閾値
 	const float LURCH_BACKWARD_THRESHOLD;
-
+	// のけぞりの最大時間
+	const float LURCH_BACKWARD_TIME_MAX;
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);

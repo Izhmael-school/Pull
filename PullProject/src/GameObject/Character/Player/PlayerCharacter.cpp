@@ -21,6 +21,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, playerState(PlayerState::Idle)
 	, speed(10.0f)
 	, pullValue(0.0f)
+	, lurchBackwardTime(0.0f)
 	, returnColor(false)
 	, lurchBackwardPos(VZero)
 
@@ -34,6 +35,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, LURCH_BACKWARD_LENGTH(200.0f)
 	, LURCH_BACKWARD_RATIO(0.95f)
 	, LURCH_BACKWARD_THRESHOLD(30.0f)
+	, LURCH_BACKWARD_TIME_MAX(70.0f)
 {}
 
 void PlayerCharacter::Start() {
@@ -233,6 +235,12 @@ void PlayerCharacter::LurchBackward() {
 		pTransform->SetPosition(MyMath::Lerp(lurchBackwardPos, GetPosition(), LURCH_BACKWARD_RATIO));
 	}
 	else {
+		playerState = PlayerState::Idle;
+	}
+
+	// 一定時間以上続いていたら強制解除
+	lurchBackwardTime++;
+	if (lurchBackwardTime > LURCH_BACKWARD_TIME_MAX) {
 		playerState = PlayerState::Idle;
 	}
 
