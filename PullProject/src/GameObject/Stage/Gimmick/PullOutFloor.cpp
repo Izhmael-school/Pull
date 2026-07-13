@@ -9,6 +9,8 @@
 #include "Manager/TimeManager.h";
 #include "Manager/CollisionManager.h"
 #include <ImGui/imgui.h>
+#include "Manager/EffectManager.h"
+#include "Application.h"
 
 
 namespace {
@@ -60,6 +62,9 @@ void PullOutFloor::Update() {
 	if (isMoving) {
 		// 床を動かす
 		Moving();
+		//// エフェクト再生
+		//EffectManager* effect = &Application::GetInstance().GetEffectManager();
+		//effect->Play("PullOutWave", GetPullDirPos(), 70.0f);
 	}
 	pCollider->Update();
 }
