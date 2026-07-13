@@ -259,6 +259,19 @@ void EnemyBase::Dead() {
 	ChangeNextState(Die);
 }
 
+bool EnemyBase::VisionFan(VECTOR target) {
+	Character::VisionFan(target);
+
+	if (!rayAnswer) return rayAnswer;
+
+	tracingTargetPos = target;
+	// レイに入っていて攻撃中じゃない時に追跡行動に移る
+	if (rayAnswer && nextState != Attack)
+		ChangeNextState(Tracing);
+
+	return rayAnswer;
+}
+
 void EnemyBase::Death() {
 	wantUnuse = true;
 	effectEvent("EnemyDeath", GetPosition(), 50.0f, VZero);
