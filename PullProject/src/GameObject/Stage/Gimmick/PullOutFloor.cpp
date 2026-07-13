@@ -10,6 +10,7 @@
 #include "Manager/CollisionManager.h"
 #include <ImGui/imgui.h>
 #include "Manager/EffectManager.h"
+#include "Manager/AudioManager.h"
 #include "Application.h"
 
 
@@ -155,6 +156,8 @@ void PullOutFloor::Moving() {
 		// エフェクト再生
 		EffectManager* effect = &Application::GetInstance().GetEffectManager();
 		effect->Play("PullOutWave", GetPullDirPos(), 70.0f);
+		AudioManager* audio = &Application::GetInstance().GetAudioManager();
+		audio->Play("PullOutFloor_EndSe");
 		isMoving = false;
 		isActiv = true;
 	}
