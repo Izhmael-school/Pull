@@ -3,5 +3,10 @@
     "name": "test",
     "path": "BGM/test.mp3",
     "is3D": false
+  },
+  {
+    "name": "Stage1BGM",
+    "path": "BGM/iwashiro_hajimari_no_michi.mp3",
+    "is3D": false
   }
 ]
