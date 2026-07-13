@@ -48,10 +48,6 @@ void Transform::Update() {
 void Transform::DetachParent() {
 	if (!parent) return;
 
-	SetMatrix(MMult(parent->GetMatrix(), matrix));
-
-	//CalcTransform();
-
 	// 親の子リストから自分を探して削除
 	auto& siblings = parent->children;
 	siblings.erase(std::remove(siblings.begin(), siblings.end(), this), siblings.end());
@@ -123,7 +119,7 @@ MATRIX Transform::CalcMatrix() {
 		return matrix;
 	}
 	// 親の行列を先に適用する (親->ローカル の順で合成)
-	matrix = MMult(parent->matrix, local);
+	matrix = MMult(local, parent->matrix);
 
 	return matrix;
 }
