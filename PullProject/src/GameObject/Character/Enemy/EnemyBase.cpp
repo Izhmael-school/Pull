@@ -16,8 +16,6 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, currentState(NoneAction)
 	, nextState(NoneAction)
 	, isAttacking(false)
-	, point()
-	, rayAnswer(false)
 	, spawnPoint()
 	, standbyTime(1.0f)
 	, wanderingGoalPos(VGet(static_cast<float>(INT_MAX), 0, 0))
@@ -259,103 +257,6 @@ void EnemyBase::Dead() {
 	pAnimator->Play("Die");
 
 	ChangeNextState(Die);
-}
-
-bool EnemyBase::VisionFan(VECTOR target) {
-	point.position = target;
-
-	Fan fan = {};
-	fan.position = GetPosition();
-	fan.directionDegree = GetRotation().y;
-	fan.length = vision.rayLenght;
-	fan.rangeDegree = vision.rayAngle;
-
-	// 点と扇のベクトル
-	VECTOR vecFanToPoint = {
-		point.position.x - fan.position.x,
-		0,
-		point.position.z - fan.position.z,
-	};
-
-	// ベクトルの長さを算出
-	float vecLength = sqrtf(powf(vecFanToPoint.x, 2.0f) + powf(vecFanToPoint.z, 2.0f));
-
-	// ほぼほぼ重なっていたら当たってる判定にする
-	if (vecLength <= 0.0001f)
-		return rayAnswer = true;
-
-	// ベクトルと扇の長さの比較
-	if (fan.length < vecLength) return rayAnswer = false; // 当たってない
-
-	// 扇を２等分する線のベクトルを求める
-	float dirRad = MyMath::Deg2Rad(fan.directionDegree);
-	VECTOR fanDir = VGet(sinf(dirRad), 0, cosf(dirRad));
-
-	// 扇と点のベクトルを単位ベクトルにする
-	VECTOR normalFanToPoint = {
-		vecFanToPoint.x / vecLength,
-		0,
-		vecFanToPoint.z / vecLength
-	};
-
-	// 内積計算
-	float dot = normalFanToPoint.x * fanDir.x + normalFanToPoint.z * fanDir.z;
-
-	// 扇の範囲をcosにする
-	float fanCos = cosf(MyMath::Deg2Rad(fan.rangeDegree / 2));
-
-	// 点が扇の範囲内にあるか比較
-	if (fanCos > dot)
-		return rayAnswer = false; // 当たってない
-
-	tracingTargetPos = target;
-	// レイに入っていて攻撃中じゃない時に追跡行動に移る
-	if (rayAnswer && nextState != Attack)
-		ChangeNextState(Tracing);
-
-	return rayAnswer = true;
-}
-
-void EnemyBase::DrawVisionFanDebug() {
-	float halfAngle = MyMath::Deg2Rad(vision.rayAngle / 2.0f);
-	float dirRad = MyMath::Deg2Rad(GetRotation().y);
-
-	// 中心方向ベクトル
-	VECTOR dir = VGet(sinf(dirRad), 0, cosf(dirRad));
-
-	// 左右の端方向ベクトル
-	VECTOR leftDir = VGet(sinf(dirRad - halfAngle), 0, cosf(dirRad - halfAngle));
-	VECTOR rightDir = VGet(sinf(dirRad + halfAngle), 0, cosf(dirRad + halfAngle));
-
-	// 先端座標
-	VECTOR centerEnd = VAdd(GetPosition(), VScale(dir, vision.rayLenght));
-	VECTOR leftEnd = VAdd(GetPosition(), VScale(leftDir, vision.rayLenght));
-	VECTOR rightEnd = VAdd(GetPosition(), VScale(rightDir, vision.rayLenght));
-
-	// 色
-	unsigned int col = GetColor(255, 255, 0); // 黄色
-
-	// 中心線
-	DrawLine3D(GetPosition(), centerEnd, col);
-
-	// 左右の扇端
-	DrawLine3D(GetPosition(), leftEnd, col);
-	DrawLine3D(GetPosition(), rightEnd, col);
-
-	// 扇の外周（円弧）を描画
-	const int div = 20; // 円弧の分割数
-	for (int i = 0; i < div; i++) {
-		float a1 = (float)i / div;
-		float a2 = (float)(i + 1) / div;
-
-		float rad01 = dirRad - halfAngle + vision.rayAngle * a1 * DX_PI_F / 180.0f;
-		float rad02 = dirRad - halfAngle + vision.rayAngle * a2 * DX_PI_F / 180.0f;
-
-		VECTOR p1 = VAdd(GetPosition(), VScale(VGet(sinf(rad01), 0, cosf(rad01)), vision.rayLenght));
-		VECTOR p2 = VAdd(GetPosition(), VScale(VGet(sinf(rad02), 0, cosf(rad02)), vision.rayLenght));
-
-		DrawLine3D(p1, p2, col);
-	}
 }
 
 void EnemyBase::Death() {
