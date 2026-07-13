@@ -1,5 +1,6 @@
 #include "TimeManager.h"
 #include "DxLib.h"
+#include <ImGui/imgui.h>
 
 TimeManager::TimeManager() 
 	:prevTime(-1)
@@ -23,4 +24,11 @@ void TimeManager::Update() {
 	deltaTime /= 1000.0f;
 
 	prevTime = currentTime;
+
+#if _DEBUG
+	ImGui::SetNextWindowPos(ImVec2(1600, 200));
+	ImGui::Begin("FPS");
+	ImGui::Text("FPS: %.1f", GetFPS());
+	ImGui::End();
+#endif
 }
