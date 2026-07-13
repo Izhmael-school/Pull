@@ -128,13 +128,11 @@ MATRIX Transform::CalcMatrix() {
 	return matrix;
 }
 
-VECTOR Transform::CalcTransform() {
+void Transform::CalcTransform() {
 
 	SetPosition(GetPosition());
 	SetRotation(GetRotation());
 	SetScale(GetScale());
-
-	return VECTOR();
 }
 
 void Transform::LookAtY(VECTOR targetPos){

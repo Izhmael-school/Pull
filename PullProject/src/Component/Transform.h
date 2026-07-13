@@ -40,13 +40,14 @@ public:
 	inline void AddPosition(VECTOR _dir, float _add) { position = VAdd(position, VScale(_dir, _add)); CalcMatrix();}
 
 	// 回転関連
+	VECTOR GetRotation();
 	inline VECTOR GetLocalRotation() const { return rotation; }
 	inline void SetRotation(VECTOR _rot) { rotation = _rot;CalcMatrix();}
 	inline void AddRotation(VECTOR _add) { rotation = VAdd(rotation, _add); CalcMatrix();}
 	inline void AddRotation(VECTOR _dir, float _add) { rotation = VAdd(rotation, VScale(_dir, _add));CalcMatrix();}
 
 	// 拡縮関連
-	VECTOR GetScale();
+	VECTOR GetScale() const;
 	inline VECTOR GetLocalScale() const { return scale; }
 	inline void SetScale(VECTOR _sca) { scale = _sca; CalcMatrix(); }
 	inline void SetScale(float _sca) { scale = VGet(_sca, _sca, _sca); CalcMatrix(); }
@@ -57,6 +58,7 @@ public:
 	inline MATRIX GetMatrix() const { return matrix; }
 	inline void SetMatrix(MATRIX _mat) { matrix = _mat; }
 	MATRIX CalcMatrix();
+	void CalcTransform();
 
 	// ベクトル関連
 	inline VECTOR GetForward() { 

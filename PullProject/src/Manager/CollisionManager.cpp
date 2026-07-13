@@ -130,6 +130,8 @@ void CollisionManager::Update() {
 			if (!goA->IsActive() || !goB->IsActive()) continue;
 
 			bool hit = CheckHit(a, b);
+
+			if ((currents.empty() || currents[i].empty()) || (currents.size() <= i || currents[i].size() <= j)) continue;
 			currents[i][j] = hit;
 
 			if (hit) {

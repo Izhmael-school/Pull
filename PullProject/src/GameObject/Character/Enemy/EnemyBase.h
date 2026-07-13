@@ -112,6 +112,12 @@ protected:	// 行動
 	 */
 	void EndAttack();
 
+public:
+	/*
+	 * @brief 視界
+	 */
+	bool VisionFan(VECTOR target) override;
+
 private:
 	void Death();
 
