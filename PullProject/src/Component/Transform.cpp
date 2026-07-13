@@ -1,4 +1,4 @@
-#include "Transform.h"
+ï»¿#include "Transform.h"
 #include "../Definition/Const/VECTORConst.h"
 #include "../Definition/CommonModule/MyMath.h"
 #include "Manager/TimeManager.h"
@@ -24,10 +24,10 @@ Transform::Transform()
 
 Transform::~Transform() {
 
-	// e‚©‚çØ‚è—£‚·
+	// è¦ªã‹ã‚‰åˆ‡ã‚Šé›¢ã™
 	DetachParent();
 
-	// qƒIƒuƒWƒFƒNƒg‚Ìe‚ğ‰ğœ‚·‚é
+	// å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ªã‚’è§£é™¤ã™ã‚‹
 	for (auto c : children) {
 		c->parent = nullptr;
 	}
@@ -39,7 +39,7 @@ void Transform::Update() {
 
 	CalcMatrix();
 
-	// qƒIƒuƒWƒFƒNƒg‚Ìs—ñ‚àXV‚·‚é
+	// å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¡Œåˆ—ã‚‚æ›´æ–°ã™ã‚‹
 	for (auto* c : children) {
 		c->Update();
 	}
@@ -50,7 +50,9 @@ void Transform::DetachParent() {
 
 	SetMatrix(MMult(parent->GetMatrix(), matrix));
 
-	// e‚ÌqƒŠƒXƒg‚©‚ç©•ª‚ğ’T‚µ‚Äíœ
+	//CalcTransform();
+
+	// è¦ªã®å­ãƒªã‚¹ãƒˆã‹ã‚‰è‡ªåˆ†ã‚’æ¢ã—ã¦å‰Šé™¤
 	auto& siblings = parent->children;
 	siblings.erase(std::remove(siblings.begin(), siblings.end(), this), siblings.end());
 	parent = nullptr;
@@ -68,7 +70,29 @@ int Transform::GetChildID() {
 	return -1;
 }
 
-VECTOR Transform::GetScale() {
+VECTOR Transform::GetRotation() {
+	MATRIX m = matrix;
+	// è¡Œåˆ—ã‹ã‚‰æŠœãå‡ºã™
+	VECTOR rx = VGet(m.m[0][0], m.m[0][1], m.m[0][2]);
+	VECTOR ry = VGet(m.m[1][0], m.m[1][1], m.m[1][2]);
+	VECTOR rz = VGet(m.m[2][0], m.m[2][1], m.m[2][2]);
+
+	VECTOR scale = GetScale();
+	// ã‚¹ã‚±ãƒ¼ãƒ«ã‚’æŠœã
+	rx = VScale(rx, 1.0f / scale.x);
+	ry = VScale(ry, 1.0f / scale.y);
+	rz = VScale(rz, 1.0f / scale.z);
+
+	VECTOR rot = VZero;
+
+	rot.x = MyMath::Rad2Deg(asinf(-rz.y));
+	rot.y = MyMath::Rad2Deg(atan2f(rz.x, rz.z));
+	rot.z = MyMath::Rad2Deg(atan2f(rx.y, ry.y));
+
+	return rot;
+}
+
+VECTOR Transform::GetScale() const {
 	MATRIX m = matrix;
 	return VGet(VSize(VGet(m.m[0][0], m.m[0][1], m.m[0][2])),
 		VSize(VGet(m.m[1][0], m.m[1][1], m.m[1][2])),
@@ -76,40 +100,49 @@ VECTOR Transform::GetScale() {
 }
 
 MATRIX Transform::CalcMatrix() {
-	// À•WA‰ñ“]AŠgk‚©‚çs—ñ‚ğ‹‚ß‚é
+	// åº§æ¨™ã€å›è»¢ã€æ‹¡ç¸®ã‹ã‚‰è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 	MATRIX mRotX = MGetRotX(MyMath::Deg2Rad(rotation.x));
 	MATRIX mRotY = MGetRotY(MyMath::Deg2Rad(rotation.y));
 	MATRIX mRotZ = MGetRotZ(MyMath::Deg2Rad(rotation.z));
 
-	// ‰ñ“]s—ñ‚Ìì¬
+	// å›è»¢è¡Œåˆ—ã®ä½œæˆ
 	MATRIX mRotXYZ = MMult(MMult(mRotZ, mRotX), mRotY);
 
-	// Šgks—ñ‚Ìì¬
+	// æ‹¡ç¸®è¡Œåˆ—ã®ä½œæˆ
 	MATRIX mScale = MGetScale(scale);
 
-	// •½sˆÚ“®s—ñ‚ğæ“¾‚·‚é
+	// å¹³è¡Œç§»å‹•è¡Œåˆ—ã‚’å–å¾—ã™ã‚‹
 	MATRIX mTranslate = MGetTranslate(position);
 
-	// ‰ñ“]¨Šgk¨•½sˆÚ“®‚Ì‡‚ÅŠ|‚¯‚é
+	// å›è»¢â†’æ‹¡ç¸®â†’å¹³è¡Œç§»å‹•ã®é †ã§æ›ã‘ã‚‹
 	MATRIX local = MMult(MMult(mScale, mRotXYZ), mTranslate);
 
-	// e‚ª‚¢‚È‚¢‚È‚ç‹A‚é
+	// è¦ªãŒã„ãªã„ãªã‚‰å¸°ã‚‹
 	if (!parent) {
 		matrix = local;
 		return matrix;
 	}
-	// e‚Ìs—ñ‚ğæ‚É“K—p‚·‚é (e->ƒ[ƒJƒ‹ ‚Ì‡‚Å‡¬)
+	// è¦ªã®è¡Œåˆ—ã‚’å…ˆã«é©ç”¨ã™ã‚‹ (è¦ª->ãƒ­ãƒ¼ã‚«ãƒ« ã®é †ã§åˆæˆ)
 	matrix = MMult(parent->matrix, local);
 
 	return matrix;
 }
 
+VECTOR Transform::CalcTransform() {
+
+	SetPosition(GetPosition());
+	SetRotation(GetRotation());
+	SetScale(GetScale());
+
+	return VECTOR();
+}
+
 void Transform::LookAtY(VECTOR targetPos){
 	VECTOR dir = VSub(targetPos, GetPosition());
-	// y‚Íg‚í‚È‚¢
+	// yã¯ä½¿ã‚ãªã„
 	dir.y = 0.0f;
 
-	// d‚È‚Á‚Ä‚»‚¤‚È‚ç–ß‚é
+	// é‡ãªã£ã¦ãã†ãªã‚‰æˆ»ã‚‹
 	if (VSize(dir) <= 0.001f) return;
 
 	dir = VNorm(dir);
@@ -118,7 +151,7 @@ void Transform::LookAtY(VECTOR targetPos){
 }
 
 void Transform::LookAtDir(VECTOR dir){
-	// d‚È‚Á‚Ä‚»‚¤‚È‚ç–ß‚é
+	// é‡ãªã£ã¦ãã†ãªã‚‰æˆ»ã‚‹
 	if (VSize(dir) <= 0.001f) return;
 
 	dir = VNorm(dir);
@@ -127,35 +160,35 @@ void Transform::LookAtDir(VECTOR dir){
 }
 
 void Transform::LookAt(VECTOR targetPos) {
-	// ƒ^[ƒQƒbƒg‚Ö‚Ì•ûŒüƒxƒNƒgƒ‹
+	// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¸ã®æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	VECTOR dir = VSub(targetPos, GetPosition());
-	// d‚È‚Á‚Ä‚»‚¤‚È‚ç–ß‚é
+	// é‡ãªã£ã¦ãã†ãªã‚‰æˆ»ã‚‹
 	if (VSize(dir) <= 0.001f) return;
-	// ’PˆÊƒxƒNƒgƒ‹‚Ö•ÏŠ·
+	// å˜ä½ãƒ™ã‚¯ãƒˆãƒ«ã¸å¤‰æ›
 	dir = VNorm(dir);
-	// XZ•½–Êã‚Ì•ûŒü‚©‚çƒˆ[‚ğZo
+	// XZå¹³é¢ä¸Šã®æ–¹å‘ã‹ã‚‰ãƒ¨ãƒ¼ã‚’ç®—å‡º
 	rotation.y = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
-	// XZ•½–Ê‚É“Š‰e‚µ‚½’·‚³(…•½‹——£)
+	// XZå¹³é¢ã«æŠ•å½±ã—ãŸé•·ã•(æ°´å¹³è·é›¢)
 	float horizontal = sqrtf(dir.x * dir.x + dir.z * dir.z);
-	// ‚‚³‚Æ…•½‹——£‚©‚çƒsƒbƒ`‚ğZo
+	// é«˜ã•ã¨æ°´å¹³è·é›¢ã‹ã‚‰ãƒ”ãƒƒãƒã‚’ç®—å‡º
 	rotation.x = MyMath::Rad2Deg(-atan2f(dir.y, horizontal));
 }
 
 void Transform::AttachParent(Transform* _parent, bool isHoldWorld) {
 	if (!_parent) {
 #if _DEBUG
-		assert(true && "ˆø”‚ªNULL‚Å‚·");
+		assert(true && "å¼•æ•°ãŒNULLã§ã™");
 #endif
 		return;
 	}
 	if (parent == _parent || _parent == this) return;
 
-	// _parent‚Ìe‚É©•ª‚ª‚¢‚È‚¢‚©
+	// _parentã®è¦ªã«è‡ªåˆ†ãŒã„ãªã„ã‹
 	Transform* check = _parent;
 	do {
 		if (check->parent == this) {
 #if _DEBUG
-			assert(true && "zŠÂQÆ‚ª”­¶");
+			assert(true && "å¾ªç’°å‚ç…§ãŒç™ºç”Ÿ");
 #endif
 			return;
 		}
@@ -164,21 +197,21 @@ void Transform::AttachParent(Transform* _parent, bool isHoldWorld) {
 		}
 	} while (check != nullptr);
 
-	// ƒ[ƒ‹ƒhÀ•W‚ğˆÛ
+	// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’ç¶­æŒ
 	VECTOR worldPos = GetPosition();
 	VECTOR worldRot = GetLocalRotation();
 	VECTOR worldScale = GetScale();
 
-	// ‚·‚Å‚Ée‚ª‚¢‚éê‡‚Í‘O‚Ìe‚ğØ‚è—£‚·
+	// ã™ã§ã«è¦ªãŒã„ã‚‹å ´åˆã¯å‰ã®è¦ªã‚’åˆ‡ã‚Šé›¢ã™
 	if (parent)
 		DetachParent();
 
-	// e‚ğ“o˜^
+	// è¦ªã‚’ç™»éŒ²
 	parent = _parent;
-	// e‚É©•ª‚ğ“o˜^
+	// è¦ªã«è‡ªåˆ†ã‚’ç™»éŒ²
 	parent->children.push_back(this);
 
-	// •Û‚·‚é‚È‚çÀ•W‚ğ“ü‚ê‚é
+	// ä¿æŒã™ã‚‹ãªã‚‰åº§æ¨™ã‚’å…¥ã‚Œã‚‹
 	if (isHoldWorld) {
 		SetPosition(worldPos);
 		SetRotation(worldRot);

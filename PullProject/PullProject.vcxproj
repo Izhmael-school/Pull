@@ -228,6 +228,7 @@
     <ClCompile Include="src\Scene\SceneBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\Component\Animator.h" />
     <ClInclude Include="src\Component\CaughtObject.h" />
@@ -246,16 +247,19 @@
     <ClInclude Include="src\Debug\Scene\StageDebugScene.h" />
     <ClInclude Include="src\Debug\Scene\StageSelectScene.h" />
     <ClInclude Include="src\Debug\Scene\TitleScene.h" />
+    <ClInclude Include="src\Definition\CommonModule\ActionMapData.h" />
     <ClInclude Include="src\Definition\CommonModule\MyJson.h" />
     <ClInclude Include="src\Definition\CommonModule\MyMath.h" />
     <ClInclude Include="src\Definition\CommonModule\MyString.h" />
     <ClInclude Include="src\Definition\Const\ColorConst.h" />
+    <ClInclude Include="src\Definition\Const\EnemyConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
     <ClInclude Include="src\Definition\Enum\CaughtState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyType.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
+    <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
@@ -333,11 +337,29 @@
   <ItemGroup>
     <None Include="src\Data\AudioData.json" />
     <None Include="src\Data\collision_rules.json" />
+    <None Include="src\Data\DebugStage.json" />
     <None Include="src\Data\EffectData.json" />
     <None Include="src\Data\EnemyData.json" />
     <None Include="src\Data\EventCamera.json" />
     <None Include="src\Data\GameObjectModelData.json" />
+    <None Include="src\Data\Gimmick\DebugStageGimmick.json" />
+    <None Include="src\Data\Gimmick\Stage1Gimmick.json" />
+    <None Include="src\Data\Gimmick\Stage2Gimmick.json" />
+    <None Include="src\Data\Gimmick\Stage3Gimmick.json" />
+    <None Include="src\Data\Gimmick\Stage4Gimmick.json" />
+    <None Include="src\Data\Gimmick\Stage5Gimmick.json" />
+    <None Include="src\Data\Stage\Stage_1_EnemyData.json" />
+    <None Include="src\Data\Stage\Stage_2_EnemyData.json" />
+    <None Include="src\Data\Stage\Stage_3_EnemyData.json" />
+    <None Include="src\Data\Stage\Stage_4_EnemyData.json" />
+    <None Include="src\Data\Stage_1.json" />
+    <None Include="src\Data\Stage_2.json" />
+    <None Include="src\Data\Stage_3.json" />
     <None Include="src\Data\Stage_4.json" />
+    <None Include="src\Data\Stage_5.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PullProject.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

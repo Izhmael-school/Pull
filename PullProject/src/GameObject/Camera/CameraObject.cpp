@@ -232,6 +232,10 @@ void CameraObject::PlayerUpdate() {
 		TargetMoveXZ();
 	if (isChaseY)
 		TargetMoveY();
+
+	// ターゲットの移動に合わせてカメラも移動
+	pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
+
 }
 
 void CameraObject::PullUpdate() {
@@ -308,8 +312,6 @@ void CameraObject::TargetMoveXZ() {
 	float distSq = VDot(dist, dist);
 	if (distSq > TARGET_THRESHOLD) {
 		target = MyMath::Lerp(target, playerPos, TARGET_MOVE_RATIO);
-		// ターゲットの移動に合わせてカメラも移動
-		pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
 	}
 	else {
 		isChaseXZ = false;
@@ -328,12 +330,17 @@ void CameraObject::TargetMoveY() {
 	float distSq = VDot(dist, dist);
 	if (distSq > TARGET_THRESHOLD) {
 		target = MyMath::Lerp(target, newTargetPos, TARGET_MOVE_RATIO);
-		// ターゲットの移動に合わせてカメラも移動
-		pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
 	}
 	else {
 		isChaseY = false;
 	}
+}
+
+/*
+ *	ロックオン
+ */
+void CameraObject::LockOn() {
+
 }
 
 /*

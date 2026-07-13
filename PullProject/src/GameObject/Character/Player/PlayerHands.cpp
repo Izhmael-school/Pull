@@ -77,19 +77,6 @@ void PlayerHands::Update() {
 	if (catchState == CatchState::PillerCatch) {
 		CatchMoving();
 	}
-
-	//if (!pCatchObject)
-	//	return;
-	//if (!pCatchObject->GetTransform())
-	//	return;
-	//ImGui::Begin("CatchObjectPosition&Rotation");
-	//ImGui::Text("%f, %f, %f", pCatchObject->GetPosition().x, pCatchObject->GetPosition().y, pCatchObject->GetPosition().z);
-	//ImGui::Text("%f, %f, %f", pCatchObject->GetRotation().x, pCatchObject->GetRotation().y, pCatchObject->GetRotation().z);
-	//ImGui::End();
-	//ImGui::Begin("HandsPosition&Rotation");
-	//ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
-	//ImGui::Text("%f, %f, %f", GetRotation().x, GetRotation().y, GetRotation().z);
-	//ImGui::End();
 }
 
 void PlayerHands::Render() {
@@ -143,6 +130,12 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		// ステート変更
 		catchState = CatchState::EnemyCatch;
 		handsState = HandsState::Catch;
+		// 敵を一時的に子にする
+		missile->GetTransform()->AttachParent(GetTransform(), false);
+		// 敵の掴まった時処理
+		VECTOR catchPos = VSub(missile->GetPosition(), GetPosition());
+		missile->GetTransform()->SetRotation(GetRotation());
+		missile->GetTransform()->SetPosition(catchPos);
 		// 敵の掴まった時処理
 		missile->CaughtAction();
 		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
@@ -292,6 +285,10 @@ void PlayerHands::CatchUpdate() {
 			missile->ThrownAction(GetTransform()->GetForward());
 			catchState = CatchState::None;
 			handsState = HandsState::ArmsReturning;
+			// 子じゃなくする
+			missile->GetTransform()->DetachParent();
+			// 位置をワールド座標へ
+			missile->GetTransform()->AddPosition(GetPosition());
 		}
 	}
 
