@@ -115,7 +115,7 @@ void BreakWall::OnTriggered() {
 	if (isFading || isBroken)return;
 	// エフェクト　※なんかでっかい煙とか
 	EffectManager* effect = &Application::GetInstance().GetEffectManager();
-	effect->Play("BreakWallSmoke", GetPosition(), 70.0f);
+	effect->Play("BreakWallSmoke", this->GetPosition(), 70.0f);
 	// フェード処理を開始判定にする
 	isFading = true;
 }

@@ -62,9 +62,7 @@ void PullOutFloor::Update() {
 	if (isMoving) {
 		// 床を動かす
 		Moving();
-		//// エフェクト再生
-		//EffectManager* effect = &Application::GetInstance().GetEffectManager();
-		//effect->Play("PullOutWave", GetPullDirPos(), 70.0f);
+		
 	}
 	pCollider->Update();
 }
@@ -154,6 +152,9 @@ void PullOutFloor::Moving() {
 
 	// 移動が終了していればフラグを切り替える
 	if (moveTime >= 1.0f) {
+		// エフェクト再生
+		EffectManager* effect = &Application::GetInstance().GetEffectManager();
+		effect->Play("PullOutWave", GetPullDirPos(), 70.0f);
 		isMoving = false;
 		isActiv = true;
 	}
