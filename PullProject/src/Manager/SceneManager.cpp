@@ -31,6 +31,10 @@ void SceneManager::Start(){
 	scene[static_cast<int>(SceneType::Title)] = std::make_unique<TitleScene>();
 	scene[static_cast<int>(SceneType::StageSelect)] = std::make_unique<StageSelectScene>();
 	scene[static_cast<int>(SceneType::Game)] = std::make_unique<MainGameScene>();
+
+
+	// 初期シーンの準備
+	scene[static_cast<int>(currentSceneType)]->Setup();
 }
 
 void SceneManager::Update(){

@@ -7,6 +7,12 @@
 #define _TITLE_SCENE_H_
 
 #include "Scene/SceneBase.h"
+#include "Manager/EnemyManager.h"
+#include "Manager/EffectManager.h"
+#include "Manager/EffectResourceManager.h"
+#include "Manager/AudioManager.h"
+#include "Manager/AudioResourceManager.h"
+#include "GameObject/GameObject.h"
 #include <string>
 #include <functional>
 #include <vector>
@@ -18,7 +24,13 @@
 class TitleScene : public SceneBase {
 private:
 	int currentScene;	// 現在のシーン
+	int SkyModel;
 
+	EnemyManager enemyManager;						// エネミーの管理
+	EffectManager effectManager;					// エフェクト管理
+	EffectResourceManager effectResourceManager;	// エフェクトリソース管理
+	AudioManager audioManager;						// オーディオ管理
+	AudioResourceManager audioResourceManager;
 public:
 	/*
 	 *	コンストラクタ
@@ -39,6 +51,7 @@ public:
 
 	void Setup() override;
 
+	void Cleanup() override;
 };
 
 

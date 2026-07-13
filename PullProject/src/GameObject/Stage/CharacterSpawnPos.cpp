@@ -73,3 +73,23 @@ const VECTOR& CharacterSpawnPos::GetPlayerPositions() const {
 	return playerPosition;
 }
 
+/*
+ *	カメラの生成位置を探す
+ */
+void CharacterSpawnPos::LoadCameraPosition(int modelHandle) {
+	// 生成位置のフレームを探す
+	int frameIndex = MV1SearchFrame(modelHandle, "CameraPos");
+
+	// あれば
+	if (frameIndex != -1) {
+		// 座標を設定
+		playerPosition = MV1GetFramePosition(modelHandle, frameIndex);
+	}
+}
+
+/*
+ *	カメラの生成位置を取得
+ */
+const VECTOR& CharacterSpawnPos::GetCameraPositions() const{
+	return cameraPosition;
+}

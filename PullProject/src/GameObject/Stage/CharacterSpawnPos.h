@@ -19,7 +19,8 @@ private:
 	std::vector<VECTOR> enemyPositions;
 	// プレイヤー生成位置
 	VECTOR playerPosition;
-	
+	// カメラの生成位置
+	VECTOR cameraPosition;
 public:
 
 	/*
@@ -46,6 +47,16 @@ public:
 	 *	プレイヤーの生成位置を取得
 	 */
 	const VECTOR& GetPlayerPositions()const;
+
+	/*
+	 *	プレイヤーの生成位置を探す
+	 */
+	void LoadCameraPosition(int modelHandle);
+
+	/*
+	 *	プレイヤーの生成位置を取得
+	 */
+	const VECTOR& GetCameraPositions()const;
 
 
 };
