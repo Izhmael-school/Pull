@@ -191,10 +191,7 @@ bool Character::VisionFan(VECTOR target) {
 	if (fanCos > dot)
 		return rayAnswer = false; // 当たってない
 
-	//tracingTargetPos = target;
-	//// レイに入っていて攻撃中じゃない時に追跡行動に移る
-	//if (rayAnswer && nextState != Attack)
-	//	ChangeNextState(Tracing);
+
 
 	return rayAnswer = true;
 }
