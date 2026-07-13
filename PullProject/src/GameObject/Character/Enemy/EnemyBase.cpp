@@ -151,8 +151,17 @@ void EnemyBase::Setup() {
 		aabb->SetMin(VGet(min.x, min.y + footPos, min.z));
 	}
 
+	prevState = NoneAction;
+	currentState = NoneAction;
+	nextState = Wandering;
 
+	pAnimator->Play("Idle");
+
+	endAttack = true;
+	canAttack = true;
+	isAttacking = false;
 	wantUnuse = false;
+	hitGroundingFrag = true;
 }
 
 void EnemyBase::Cleanup() {
