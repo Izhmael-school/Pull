@@ -713,6 +713,10 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 		return;
 	}
 
+	if (a->GetLayer() == ColliderLayer::ExitArea && b->GetLayer() == ColliderLayer::Enemy || b->GetLayer() == ColliderLayer::ExitArea && a->GetLayer() == ColliderLayer::Enemy) {
+		return;
+	}
+
 	if (aLayer == ColliderLayer::Missile && bLayer == ColliderLayer::Stage || bLayer == ColliderLayer::Missile && aLayer == ColliderLayer::Stage) {
 		return;
 	}
@@ -740,6 +744,7 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::ExitArea || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::ExitArea) {
 		return;
 	}
+	
 
 	VECTOR aMin = a->GetMin();
 	VECTOR aMax = a->GetMax();

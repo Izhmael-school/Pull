@@ -40,15 +40,6 @@
     <Filter Include="ソース ファイル\Definition\CommonModule">
       <UniqueIdentifier>{fbc197d1-e582-4885-bcf0-e9ec42afc492}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\GameObject">
-      <UniqueIdentifier>{019e0b53-fb3a-41e7-94b1-45eed76ca028}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Character">
-      <UniqueIdentifier>{118ccff9-128d-4dcb-bf1f-dc368e12cd1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Character\Enemy">
-      <UniqueIdentifier>{0ce27087-2254-4f99-9b13-1560583eff7f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Debug\Scene">
       <UniqueIdentifier>{919da8bb-3abb-4cce-a3e5-be86ca300b66}</UniqueIdentifier>
     </Filter>
@@ -57,21 +48,6 @@
     </Filter>
     <Filter Include="ソース ファイル\Data">
       <UniqueIdentifier>{38b37b5c-9bdf-4412-aa89-988ef086aff2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Collider">
-      <UniqueIdentifier>{66015201-eedd-4d89-89f5-7a31c29028ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Character\Enemy\Bomber">
-      <UniqueIdentifier>{690d5275-e592-463a-8347-4f36ccbe1234}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Missile">
-      <UniqueIdentifier>{63c73e2c-05af-4828-bdd9-42012cfd4700}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Character\Enemy\Shooter">
-      <UniqueIdentifier>{65ade2ba-8622-468e-bd5f-6e44b2aaf21a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\GameObject\Character\Enemy\Walker">
-      <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Resource">
       <UniqueIdentifier>{94b63324-4cc0-4abe-97da-07a00d9cb7d3}</UniqueIdentifier>
@@ -88,6 +64,72 @@
     <Filter Include="ソース ファイル\Instance\Effect">
       <UniqueIdentifier>{32c3591e-ad49-474c-bda2-ff0bb74fb849}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Component\Collider">
+      <UniqueIdentifier>{456fc019-9325-4f71-8b6f-dfdefa7d6747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Data\Stage">
+      <UniqueIdentifier>{a708f78c-ebd5-438f-8dcf-16dd5922d655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Data\gimmick">
+      <UniqueIdentifier>{6058bd81-626e-4a89-975f-94a530834e56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject">
+      <UniqueIdentifier>{019e0b53-fb3a-41e7-94b1-45eed76ca028}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character">
+      <UniqueIdentifier>{118ccff9-128d-4dcb-bf1f-dc368e12cd1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy">
+      <UniqueIdentifier>{0ce27087-2254-4f99-9b13-1560583eff7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\BomberEnemy">
+      <UniqueIdentifier>{690d5275-e592-463a-8347-4f36ccbe1234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\ShooterEnemy">
+      <UniqueIdentifier>{65ade2ba-8622-468e-bd5f-6e44b2aaf21a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\WalkerEnemy">
+      <UniqueIdentifier>{73079f10-e720-42aa-ba6f-d5f87ac4e283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Enemy\TailEnemy">
+      <UniqueIdentifier>{28047201-e243-4f17-852f-d76b91161566}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Character\Player">
+      <UniqueIdentifier>{82e96231-6070-4f67-a3be-38ebfa248270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Collider">
+      <UniqueIdentifier>{66015201-eedd-4d89-89f5-7a31c29028ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Missile">
+      <UniqueIdentifier>{63c73e2c-05af-4828-bdd9-42012cfd4700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Stage">
+      <UniqueIdentifier>{c5256601-ee29-4940-8175-4fdee471c7e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Stage\Gimmick">
+      <UniqueIdentifier>{e8c62925-9e07-4eac-aba7-e0188e324666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GameObject\Camera">
+      <UniqueIdentifier>{8a67e011-c334-46c2-9cc6-bcb22c317259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ImGui">
+      <UniqueIdentifier>{4642eae0-0e4e-45c5-a5fa-0361afce6452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ImGui\backends">
+      <UniqueIdentifier>{21018ff6-0780-46d1-8b49-3cd14ca1ee26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Input">
+      <UniqueIdentifier>{dea78ce7-2748-4591-9929-ed34899c6072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Instance\Audio">
+      <UniqueIdentifier>{7a90acaa-036c-4646-b084-4a0103939a68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Manager\Stage">
+      <UniqueIdentifier>{ff26d93b-ea5a-4ee9-bb6a-ae263562091e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Resource\Audio">
+      <UniqueIdentifier>{82545ec0-7c1c-4385-8ede-d62d73050dbc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -99,9 +141,6 @@
     <ClCompile Include="src\Manager\ManagerBase.cpp">
       <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manager\SceneManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="src\Pad\DirectInputPad.cpp">
       <Filter>ソース ファイル\Pad</Filter>
     </ClCompile>
@@ -110,9 +149,6 @@
     </ClCompile>
     <ClCompile Include="src\Pad\XInputPad.cpp">
       <Filter>ソース ファイル\Pad</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\InputManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
     <ClCompile Include="src\Component\Transform.cpp">
       <Filter>ソース ファイル\Component</Filter>
@@ -132,23 +168,8 @@
     <ClCompile Include="src\GameObject\Character\Enemy\EnemyBase.cpp">
       <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="src\Component\Collider\Collider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Camera\CameraObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="src\Component\Animator.cpp">
       <Filter>ソース ファイル\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\CollisionManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
     <ClCompile Include="src\Debug\Scene\CollisionDebugScene.cpp">
       <Filter>ソース ファイル\Debug\Scene</Filter>
@@ -171,62 +192,17 @@
     <ClCompile Include="src\Generator\EnemyGenerator.cpp">
       <Filter>ソース ファイル\Generator</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manager\EnemyManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="src\Definition\CommonModule\MyJson.cpp">
       <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClCompile>
     <ClCompile Include="src\Definition\CommonModule\MyString.cpp">
       <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manager\CameraManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\Stage\StageManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\PlayerManager.cpp">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\Walker</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\Stage\GimmickManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\TimeManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\WalkerEnemy</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp">
       <Filter>ソース ファイル\GameObject\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Data\Gimmick\StageLoader.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Generator\StageCollisionGenerator.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\ColliderObjectManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\ModelManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\Stage\GimmickObjectManager.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Missile\Missile.cpp">
       <Filter>ソース ファイル\GameObject\Missile</Filter>
@@ -235,34 +211,10 @@
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.cpp">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\Bomber</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\GameObjectManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Generator\GameObjectGenerator.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\BomberEnemy</Filter>
     </ClCompile>
     <ClCompile Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.cpp">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\BomBreakWall.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Camera\EventCameraMovement.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\HookShot.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\ShooterEnemy</Filter>
     </ClCompile>
     <ClCompile Include="src\Resource\ResourceBase.cpp">
       <Filter>ソース ファイル\Resource</Filter>
@@ -276,80 +228,170 @@
     <ClCompile Include="src\Resource\Effect\EffectResource.cpp">
       <Filter>ソース ファイル\Resource\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manager\EffectResourceManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\EffectManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="src\Instance\Effect\EffectInstance.cpp">
       <Filter>ソース ファイル\Instance\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\CharacterSpawnPos.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\backends\imgui_impl_dx11.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\backends\imgui_impl_win32.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\imgui.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\ImGuiManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_demo.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_draw.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_tables.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ImGui\imgui_widgets.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Instance\Audio\AudioInstance.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\AudioManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\AudioResourceManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Resource\Audio\AudioResource.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\ExitArea.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Debug\Scene\TitleScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Debug\Scene\StageSelectScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Debug\Scene\MainGameScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameObject\Stage\Gimmick\Turret.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Input\ActionMapBase.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Input\PlayerActionMap.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manager\InputSystemManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="src\Application.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Collider\Collider.cpp">
+      <Filter>ソース ファイル\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Data\Gimmick\StageLoader.cpp">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\MainGameScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debug\Scene\StageSelectScene.cpp">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Camera\EventCameraMovement.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Camera\CameraObject.cpp">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.cpp">
+      <Filter>ソース ファイル\GameObject\Character\Enemy\TailEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp">
+      <Filter>ソース ファイル\GameObject\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp">
+      <Filter>ソース ファイル\GameObject\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\CharacterSpawnPos.cpp">
+      <Filter>ソース ファイル\GameObject\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Stage.cpp">
+      <Filter>ソース ファイル\GameObject\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\BomBreakWall.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\BreakWall.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\ExitArea.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickFactory.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\GimmickObject.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\HookShot.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Gimmick\Turret.cpp">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generator\GameObjectGenerator.cpp">
+      <Filter>ソース ファイル\Generator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generator\StageCollisionGenerator.cpp">
+      <Filter>ソース ファイル\Generator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui.cpp">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_demo.cpp">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_draw.cpp">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_widgets.cpp">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\imgui_tables.cpp">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\ImGuiManager.cpp">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\backends\imgui_impl_dx11.cpp">
+      <Filter>ソース ファイル\ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImGui\backends\imgui_impl_win32.cpp">
+      <Filter>ソース ファイル\ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\ActionMapBase.cpp">
+      <Filter>ソース ファイル\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\PlayerActionMap.cpp">
+      <Filter>ソース ファイル\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Instance\Audio\AudioInstance.cpp">
+      <Filter>ソース ファイル\Instance\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\Stage\GimmickManager.cpp">
+      <Filter>ソース ファイル\Manager\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\Stage\GimmickObjectManager.cpp">
+      <Filter>ソース ファイル\Manager\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\Stage\StageManager.cpp">
+      <Filter>ソース ファイル\Manager\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\CameraManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\CollisionManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\EnemyManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\InputManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\PlayerManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\SceneManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\TimeManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\ModelManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\InputSystemManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\GameObjectManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\EffectResourceManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\ColliderObjectManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\EffectManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\AudioResourceManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\AudioManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Resource\Audio\AudioResource.cpp">
+      <Filter>ソース ファイル\Resource\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -359,9 +401,6 @@
     <ClInclude Include="src\Scene\SceneBase.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\Manager\SceneManager.h">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="src\Pad\DirectInputPad.h">
       <Filter>ソース ファイル\Pad</Filter>
     </ClInclude>
@@ -370,9 +409,6 @@
     </ClInclude>
     <ClInclude Include="src\Pad\XInputPad.h">
       <Filter>ソース ファイル\Pad</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\InputManager.h">
-      <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
     <ClInclude Include="src\Component\Transform.h">
       <Filter>ソース ファイル\Component</Filter>
@@ -407,29 +443,8 @@
     <ClInclude Include="src\GameObject\Character\Character.h">
       <Filter>ソース ファイル\GameObject\Character</Filter>
     </ClInclude>
-    <ClInclude Include="src\Component\Collider\Collider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\StageBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Stage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\StageState.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Camera\CameraObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="src\Component\Animator.h">
       <Filter>ソース ファイル\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\CollisionManager.h">
-      <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
     <ClInclude Include="src\Debug\Scene\PlayerDebugScene.h">
       <Filter>ソース ファイル\Debug\Scene</Filter>
@@ -464,9 +479,6 @@
     <ClInclude Include="src\Data\json.hpp">
       <Filter>ソース ファイル\Data</Filter>
     </ClInclude>
-    <ClInclude Include="src\Manager\EnemyManager.h">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h">
       <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
     </ClInclude>
@@ -476,56 +488,11 @@
     <ClInclude Include="src\Definition\CommonModule\MyString.h">
       <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClInclude>
-    <ClInclude Include="src\Manager\PlayerManager.h">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\CameraManager.h">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\Stage\StageManager.h">
-      <Filter>ソース ファイル\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\Walker</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\Lever.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\TriggerInterface.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\Stage\GimmickManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\TimeManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\WalkerEnemy</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h">
       <Filter>ソース ファイル\GameObject\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data\Gimmick\StageLoader.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Generator\StageCollisionGenerator.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\ColliderObjectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\ModelManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\Stage\GimmickObjectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="src\Definition\Enum\CaughtState.h">
       <Filter>ソース ファイル\Definition\Enum</Filter>
@@ -537,34 +504,10 @@
       <Filter>ソース ファイル\Component</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\BomberEnemy\BomberEnemy.h">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\Bomber</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\GameObjectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Generator\GameObjectGenerator.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\BomberEnemy</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\ShooterEnemy\ShooterEnemy.h">
-      <Filter>ソース ファイル\GameObject\Character\Enemy\Shooter</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\BomBreakWall.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\HookShot.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\GameObject\Character\Enemy\ShooterEnemy</Filter>
     </ClInclude>
     <ClInclude Include="src\Resource\ResourceBase.h">
       <Filter>ソース ファイル\Resource</Filter>
@@ -578,98 +521,267 @@
     <ClInclude Include="src\Resource\Effect\EffectResource.h">
       <Filter>ソース ファイル\Resource\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="src\Manager\EffectResourceManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\EffectManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="src\Instance\Effect\EffectInstance.h">
       <Filter>ソース ファイル\Instance\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\CharacterSpawnPos.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\backends\imgui_impl_dx11.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\backends\imgui_impl_win32.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\imconfig.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\imgui.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\ImGuiManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\imgui_internal.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\imstb_rectpack.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\imstb_textedit.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ImGui\imstb_truetype.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Instance\Audio\AudioInstance.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\AudioManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\AudioResourceManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Resource\Audio\AudioResource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\ExitArea.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Debug\Scene\TitleScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Debug\Scene\StageSelectScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Debug\Scene\MainGameScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameObject\Stage\Gimmick\Turret.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Input\ActionMapBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Input\PlayerActionMap.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manager\InputSystemManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="src\Application.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Collider\Collider.h">
+      <Filter>ソース ファイル\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Data\Gimmick\StageLoader.h">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\TitleScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\MainGameScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Scene\StageSelectScene.h">
+      <Filter>ソース ファイル\Debug\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\CommonModule\ActionMapData.h">
+      <Filter>ソース ファイル\Definition\CommonModule</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Const\EnemyConst.h">
+      <Filter>ソース ファイル\Definition\Const</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h">
+      <Filter>ソース ファイル\Definition\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Camera\CameraObject.h">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h">
+      <Filter>ソース ファイル\GameObject\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Enemy\TailEnemy\TailEnemy.h">
+      <Filter>ソース ファイル\GameObject\Character\Enemy\TailEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h">
+      <Filter>ソース ファイル\GameObject\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h">
+      <Filter>ソース ファイル\GameObject\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\CharacterSpawnPos.h">
+      <Filter>ソース ファイル\GameObject\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Stage.h">
+      <Filter>ソース ファイル\GameObject\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\StageBase.h">
+      <Filter>ソース ファイル\GameObject\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\StageState.h">
+      <Filter>ソース ファイル\GameObject\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\BomBreakWall.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\BreakWall.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\ExitArea.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickFactory.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\GimmickObject.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\HookShot.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\Lever.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\TriggerInterface.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Gimmick\Turret.h">
+      <Filter>ソース ファイル\GameObject\Stage\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generator\StageCollisionGenerator.h">
+      <Filter>ソース ファイル\Generator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Generator\GameObjectGenerator.h">
+      <Filter>ソース ファイル\Generator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imconfig.h">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imgui.h">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imgui_internal.h">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\ImGuiManager.h">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imstb_rectpack.h">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imstb_textedit.h">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\imstb_truetype.h">
+      <Filter>ソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\backends\imgui_impl_dx11.h">
+      <Filter>ソース ファイル\ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImGui\backends\imgui_impl_win32.h">
+      <Filter>ソース ファイル\ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\ActionMapBase.h">
+      <Filter>ソース ファイル\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\PlayerActionMap.h">
+      <Filter>ソース ファイル\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Instance\Audio\AudioInstance.h">
+      <Filter>ソース ファイル\Instance\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\Stage\StageManager.h">
+      <Filter>ソース ファイル\Manager\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\Stage\GimmickManager.h">
+      <Filter>ソース ファイル\Manager\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\Stage\GimmickObjectManager.h">
+      <Filter>ソース ファイル\Manager\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\CameraManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\CollisionManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\EnemyManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\InputManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\PlayerManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\SceneManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\EffectResourceManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\AudioResourceManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\ColliderObjectManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\GameObjectManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\InputSystemManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\ModelManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\TimeManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Resource\Audio\AudioResource.h">
+      <Filter>ソース ファイル\Resource\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\AudioManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manager\EffectManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>リソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
-    <None Include="src\Data\Stage_4.json" />
     <None Include="src\Data\GameObjectModelData.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
-    <None Include="src\Data\collision_rules.json" />
-    <None Include="src\Data\EventCamera.json" />
     <None Include="src\Data\EffectData.json">
       <Filter>ソース ファイル\Data</Filter>
     </None>
-    <None Include="src\Data\AudioData.json" />
+    <None Include="src\Data\AudioData.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\Stage_4.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\EventCamera.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\collision_rules.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\DebugStage.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\Stage_2.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\Stage_3.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\Stage_5.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\Stage_1.json">
+      <Filter>ソース ファイル\Data</Filter>
+    </None>
+    <None Include="src\Data\Stage\Stage_1_EnemyData.json">
+      <Filter>ソース ファイル\Data\Stage</Filter>
+    </None>
+    <None Include="src\Data\Stage\Stage_2_EnemyData.json">
+      <Filter>ソース ファイル\Data\Stage</Filter>
+    </None>
+    <None Include="src\Data\Stage\Stage_3_EnemyData.json">
+      <Filter>ソース ファイル\Data\Stage</Filter>
+    </None>
+    <None Include="src\Data\Stage\Stage_4_EnemyData.json">
+      <Filter>ソース ファイル\Data\Stage</Filter>
+    </None>
+    <None Include="src\Data\Gimmick\Stage1Gimmick.json">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </None>
+    <None Include="src\Data\Gimmick\Stage2Gimmick.json">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </None>
+    <None Include="src\Data\Gimmick\Stage3Gimmick.json">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </None>
+    <None Include="src\Data\Gimmick\Stage4Gimmick.json">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </None>
+    <None Include="src\Data\Gimmick\Stage5Gimmick.json">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </None>
+    <None Include="src\Data\Gimmick\DebugStageGimmick.json">
+      <Filter>ソース ファイル\Data\gimmick</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PullProject.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
