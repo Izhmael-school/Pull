@@ -7,6 +7,7 @@
 #include "../../../Component\Collider/Collider.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/EffectManager.h"
+#include "Manager/AudioManager.h"
 #include "Application.h"
 
 namespace {
@@ -113,9 +114,13 @@ void BreakWall::Cleanup() {
 void BreakWall::OnTriggered() {
 	// フェード中、フェード修了していたら抜ける
 	if (isFading || isBroken)return;
-	// エフェクト　※なんかでっかい煙とか
+	// エフェクト
 	EffectManager* effect = &Application::GetInstance().GetEffectManager();
 	effect->Play("BreakWallSmoke", this->GetPosition(), 70.0f);
+	
+	// 音
+	AudioManager* audio = &Application::GetInstance().GetAudioManager();
+	audio->Play("BreakWall_BreakSE");
 	// フェード処理を開始判定にする
 	isFading = true;
 }

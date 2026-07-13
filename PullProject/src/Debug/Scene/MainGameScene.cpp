@@ -208,6 +208,9 @@ void MainGameScene::Cleanup() {
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Clear();
 	StageManager::GetInstance().RequestStageClear(false);
+	// 音
+	AudioManager* audio = &Application::GetInstance().GetAudioManager();
+	audio->Clean();
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	effectManager.Clean();
