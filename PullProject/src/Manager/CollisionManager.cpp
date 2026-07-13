@@ -1,6 +1,7 @@
 #include "CollisionManager.h"
 #include "Definition/CommonModule/MyJson.h"
 #include <map>
+#include <ImGui/imgui.h>
 
 // 当たり判定関数のマップ
 static const std::unordered_map<std::string, HitFunc> funcMap = {
@@ -74,7 +75,7 @@ void CollisionManager::UnRegisterAll() {
 void CollisionManager::Update() {
 
 
-	int stage = 0, player = 0, enemy = 0, other = 0;
+	int stage = 0, player = 0, enemy = 0, other = 0, ground = 0, wall = 0, arm = 0, gimmick = 0;
 
 	// レイヤーごとのコライダー数をカウント
 	for (auto c : pColliderArray) {
@@ -82,12 +83,26 @@ void CollisionManager::Update() {
 		case ColliderLayer::Stage: stage++; break;
 		case ColliderLayer::Player: player++; break;
 		case ColliderLayer::Enemy: enemy++; break;
+		case ColliderLayer::Ground: ground++; break;
+		case ColliderLayer::Wall: wall++; break;
+		case ColliderLayer::PlayerArm: arm++; break;
+		case ColliderLayer::Gimmick: gimmick++; break;
 		default: other++; break;
 		}
 	}
 
-	//printfDx("Stage:%d Player:%d Enemy:%d Other:%d\n", stage, player, enemy, other);
-
+#if _DEBUG
+	ImGui::Begin("Collider Count");
+	ImGui::Text("Stage: %d", stage);
+	ImGui::Text("Player: %d", player);
+	ImGui::Text("Enemy: %d", enemy);
+	ImGui::Text("Ground: %d", ground);
+	ImGui::Text("Wall: %d", wall);
+	ImGui::Text("Arm: %d", arm);
+	ImGui::Text("Gimmick: %d", gimmick);
+	ImGui::Text("Other: %d", other);
+	ImGui::End();
+#endif
 	// コライダーの更新
 	for (auto col : pColliderArray) {
 		if (col && col->IsEnable()) {
@@ -100,13 +115,13 @@ void CollisionManager::Update() {
 
 	static int prevSize = -1;
 
-	//	前回のサイズと異なる場合は、prevsとcurrentsをリサイズ
-	if (prevSize != n) {
+	//	前回のサイズと異なる場合は、prevsとcurrentsをリサイズ	
+	if (currents.size() != n ||
+		prevs.size() != n) {
 		prevs.assign(n, std::vector<bool>(n, false));
 		currents.assign(n, std::vector<bool>(n, false));
-
-		prevSize = n;
 	}
+
 
 	//	当たり判定の処理
 	for (int i = 0; i < n; i++) {
@@ -131,8 +146,7 @@ void CollisionManager::Update() {
 
 			bool hit = CheckHit(a, b);
 
-			if ((currents.empty() || currents[i].empty()) || (currents.size() <= i || currents[i].size() <= j)) continue;
-			currents[i][j] = hit;
+			//currents[i][j] = hit;
 
 			if (hit) {
 
@@ -746,7 +760,7 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::ExitArea || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::ExitArea) {
 		return;
 	}
-	
+
 
 	VECTOR aMin = a->GetMin();
 	VECTOR aMax = a->GetMax();
