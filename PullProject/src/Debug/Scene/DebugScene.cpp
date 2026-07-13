@@ -49,8 +49,6 @@ void DebugScene::Setup() {
 	StageManager::GetInstance().Initialize();
 	// モデルハンドルを複製してStageの実体にハンドルを渡す
 	StageManager::GetInstance().LoadStage(4);
-	generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
-	//generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }
 
 void DebugScene::Render() {
