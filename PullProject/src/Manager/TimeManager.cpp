@@ -26,7 +26,6 @@ void TimeManager::Update() {
 	prevTime = currentTime;
 
 #if _DEBUG
-	ImGui::SetNextWindowPos(ImVec2(1600, 200));
 	ImGui::Begin("FPS");
 	ImGui::Text("FPS: %.1f", GetFPS());
 	ImGui::End();
