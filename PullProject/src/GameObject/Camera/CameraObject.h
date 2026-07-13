@@ -96,6 +96,10 @@ private:
 	 *	ターゲットのY軸移動
 	 */
 	void TargetMoveY();
+	/*
+	 *	ロックオン
+	 */
+	void LockOn();
 
 public:
 	/*

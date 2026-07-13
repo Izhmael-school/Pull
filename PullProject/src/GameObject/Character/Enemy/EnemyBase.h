@@ -24,34 +24,6 @@ using AABBEvent = std::function<void(VECTOR _pos, VECTOR _min, VECTOR _max)>;
 
 class EnemyBase : public Character, public CaughtObject {
 protected:
-
-	struct Ray_Fan {
-		float rayLenght = 1000.0f;	// レイの長さ
-		float rayAngle = 100.0f;		// レイの角度
-		int rayCount = 30;			// レイの数
-		float raySpan = 0.1f;		// レイが更新される間隔
-		float rayTime = raySpan;	// レイが更新される時間
-	};
-protected:
-	struct Point {
-		VECTOR position;
-	};
-
-	Point point;
-
-	struct Fan {
-		VECTOR position;		// 中心
-		float rangeDegree;		// 範囲
-		float length;			// 長さ
-		float directionDegree;	// 方向
-	};
-	// 視界
-	Ray_Fan vision;
-
-protected:
-	bool rayAnswer;	// 視界内にいるか
-
-protected:
 	VECTOR spawnPoint;
 	VECTOR wanderingGoalPos;
 	VECTOR tracingTargetPos;
@@ -139,17 +111,6 @@ protected:	// 行動
 	 * @brief 攻撃終了時処理
 	 */
 	void EndAttack();
-public:
-	/*
-	 * @brief 扇状の視界
-	 */
-	virtual bool VisionFan(VECTOR target);
-private:
-	/*
-	 * @brief VisionFanのデバッグ表示
-	 */
-	void DrawVisionFanDebug();
-
 
 private:
 	void Death();
