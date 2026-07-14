@@ -107,6 +107,7 @@ protected:	// 行動
 	 * @brief 死亡
 	 */
 	void Dead();
+
 	/*
 	 * @brief 攻撃終了時処理
 	 */
@@ -140,7 +141,7 @@ public:
 protected:
 	/*
 	 * @brief アニメーションイベントのセット
-	 * @param _frameCount 0以下ならアニメーションの最後のフレームにセット
+	 * @param _frameCount 0未満ならアニメーションの最後のフレームにセット
 	 */
 	void SetAnimEvent(std::string _animName, int _frameCount, std::function<void()> _animEvent);
 

@@ -12,30 +12,13 @@ TailEnemy::TailEnemy(int _modelHandle, VECTOR _pos)
 }
 
 void TailEnemy::Start() {
-	Character::Start();
-
-	isGravity = false;
-
-	// モデルの最小点と最大点を取得
-	VECTOR maxBodyPos = VScale(MV1GetMeshMaxPosition(modelHandle, 1), 10);
-	VECTOR minBodyPos = VScale(MV1GetMeshMinPosition(modelHandle, 1), 10);
-	VECTOR maxLeg1 = VScale(MV1GetMeshMaxPosition(modelHandle, 3), 10);
-	VECTOR minLeg1 = VScale(MV1GetMeshMinPosition(modelHandle, 3), 10);
-	VECTOR maxLeg2 = VScale(MV1GetMeshMaxPosition(modelHandle, 4), 10);
-	VECTOR minLeg2 = VScale(MV1GetMeshMinPosition(modelHandle, 4), 10);
-
-	VECTOR min;
-	min.x = std::min(minBodyPos.x, std::min(minLeg1.x, minLeg2.x));
-	min.y = std::min(minBodyPos.y, std::min(minLeg1.y, minLeg2.y));
-	min.z = std::min(minBodyPos.z, std::min(minLeg1.z, minLeg2.z));
-
-	VECTOR max;
-	max.x = std::max(maxBodyPos.x, std::max(maxLeg1.x, maxLeg2.x));
-	max.y = std::max(maxBodyPos.y, std::max(maxLeg1.y, maxLeg2.y));
-	max.z = std::max(maxBodyPos.z, std::max(maxLeg1.z, maxLeg2.z));
+	EnemyBase::Start();
 
 	// 当たり判定
-	pCollider = std::make_unique<AABBCollider>(this, min, max);
+	auto sphere = dynamic_cast<SphereCollider*>(pCollider.get());
+	if (sphere)
+		sphere->SetRadius(sphere->GetRadius() / 2);
+
 	pCollider->SetResolve(false);
 	pCollider->SetLayer(ColliderLayer::Default);
 
@@ -45,11 +28,11 @@ void TailEnemy::Start() {
 	shotFrameIndex = MV1SearchFrame(modelHandle, "ShotPoint");
 
 	pTailCollider = std::make_unique<ColliderObject>(tailPos, 50, Enemy, 0.0f);
-	auto sphere = static_cast<SphereCollider*>(pTailCollider->GetCollider());
-	sphere->SetResolve(false);
-	sphere->SetGameObject(this);
-	sphere->SetLocalCenter(VSub(GetPosition(), MV1GetFramePosition(modelHandle, tailFrameIndex)));
-	sphere->SetLayer(ColliderLayer::Tail);
+	auto tail = static_cast<SphereCollider*>(pTailCollider->GetCollider());
+	tail->SetResolve(false);
+	tail->SetGameObject(this);
+	tail->SetLocalCenter(VSub(GetPosition(), MV1GetFramePosition(modelHandle, tailFrameIndex)));
+	tail->SetLayer(ColliderLayer::Tail);
 	type = Tail;
 }
 
@@ -76,17 +59,16 @@ void TailEnemy::Render() {
 void TailEnemy::Setup() {
 	EnemyBase::Setup();
 
-	if (pCollider)
-		pCollider->SetEnable(false);
-
 	// 攻撃終了時処理を持たせる
-	SetAnimEvent("Taunt", -1,[this]() {EndAttack();});
+	SetAnimEvent("Taunt", -1, [this]() {audioEvent("Taunt",255.0f,false,GetPosition(),1000.0f);EndAttack();});
 	SetAnimEvent("BigShot", -1,[this]() {EndAttack();});
 
 	// アニメーションに合わせてミサイルを出す
-	SetAnimEvent("BigShot", 20, [this]() {createEvent("BossMissile",this,GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
-	SetAnimEvent("BigShot", 30, [this]() {createEvent("BossMissile",this,GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
-	SetAnimEvent("BigShot", 40, [this]() {createEvent("BossMissile",this,GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));});
+	SetAnimEvent("BigShot", 20, [this]() {CreateMissile();});
+	SetAnimEvent("BigShot", 30, [this]() {CreateMissile();});
+	SetAnimEvent("BigShot", 40, [this]() {CreateMissile();});
+
+	SetAnimEvent("Taunt", 0, [this]() {audioEvent("Tail_Jump", 255.0f, false, GetPosition(), 1000.0f);});
 
 	SetAnimEvent("Taunt", 40, [this]() {
 		VECTOR min = VScale(VAdd(VLeft, VBack), 500);
@@ -94,7 +76,10 @@ void TailEnemy::Setup() {
 		VECTOR pos = GetPosition();
 		aabbEvent(pos,min , max);
 		effectEvent("Earthquake", pos, 0.7f, VZero);
+		audioEvent("Taunt", 255.0f, false, pos, 1000.0f);
 		});
+
+	SetAnimEvent("Die", 0, [this]() {audioEvent("Tail_Down", 255.0f, false, GetPosition(), 1000.0f);});
 }
 
 void TailEnemy::AttackAction() {
@@ -135,4 +120,9 @@ void TailEnemy::Catching() {
 	pAnimator->Play("Shot", 2.0f);
 	auto sphere = static_cast<SphereCollider*>(pTailCollider->GetCollider());
 	sphere->SetRadius(100);
+}
+
+void TailEnemy::CreateMissile() {
+	// 作る
+	createEvent("BossMissile", this, GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, shotFrameIndex));
 }

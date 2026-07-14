@@ -107,7 +107,7 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			enemy->CaughtAction();
 		}
 		// デフォルトレイヤーは処理しない
-		else if (enemyLayer != ColliderLayer::Default) {
+		else if (enemyLayer == ColliderLayer::Enemy) {
 			// ステート変更
 			catchState = CatchState::EnemyCatch;
 			handsState = HandsState::Catch;
