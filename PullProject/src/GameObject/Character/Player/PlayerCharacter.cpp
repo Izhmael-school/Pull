@@ -23,6 +23,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, pullValue(0.0f)
 	, lurchBackwardTime(0.0f)
 	, returnColor(false)
+	, throwAnimation(false)
 	, lurchBackwardPos(VZero)
 
 	, PULL_VALUE_MAX(100.0f)
@@ -63,6 +64,46 @@ void PlayerCharacter::Start() {
 	landAnim->SetEvent([this]() {
 		playerState = PlayerState::Idle;
 		}, pAnimator->GetTotalTime("Land"));
+
+	// 持ち上げアニメーションにイベントを仕込む
+	auto carryAnim = pAnimator->GetAnimation("Carry");
+	float carryAnimTime = pAnimator->GetTotalTime("Carry");
+	// ループしないように停止
+	carryAnim->SetEvent([this]() {
+		pAnimator->ChangeSpeed("Carry", 0.0f);
+		pHands->GetAnimator()->ChangeSpeed("Carry", 0.0f);
+		}, carryAnimTime);
+
+	// ウデ伸ばしアニメーションにイベントを仕込む
+	auto stanceAnim = pAnimator->GetAnimation("Stance");
+	float stanceAnimTime = pAnimator->GetTotalTime("Stance");
+	// ループしないように停止
+	// (なぜか再生終了時間で0にするとバグるので-0.2fしている)
+	stanceAnim->SetEvent([this]() {
+		pAnimator->ChangeSpeed("Stance", 0.0f);
+		pHands->GetAnimator()->ChangeSpeed("Stance", 0.0f);
+		}, stanceAnimTime - 0.2f);
+	// ウデ戻しアニメーションにイベントを仕込む
+	// (なぜか再生終了時間で0にするとバグるので-0.2fしている)
+	auto stanceCancelAnim = pAnimator->GetAnimation("StanceCancel");
+	float stanceCancelAnimTime = pAnimator->GetTotalTime("StanceCancel");
+	// ループしないように停止
+	stanceCancelAnim->SetEvent([this]() {
+		pAnimator->ChangeSpeed("StanceCancel", 0.0f);
+		pHands->GetAnimator()->ChangeSpeed("StanceCancel", 0.0f);
+		}, stanceCancelAnimTime - 0.2f);
+
+	// 投げアニメーションにイベントを仕込む
+	auto throwAnim = pAnimator->GetAnimation("Throw");
+	float throwAnimTime = pAnimator->GetTotalTime("Throw");
+	// 再生中フラグ変更
+	throwAnim->SetEvent([this]() {
+		throwAnimation = true;
+		}, 0.0f);
+	// 再生中フラグ変更
+	throwAnim->SetEvent([this]() {
+		throwAnimation = false;
+		}, throwAnimTime);
 }
 
 void PlayerCharacter::Update() {
@@ -80,8 +121,10 @@ void PlayerCharacter::Update() {
 		pAnimator->Play("Land", 1.0f);
 		pHands->GetAnimator()->Play("Land", 1.0f);
 	}
-	// 地面についているなら待機状態へ(のけぞり中はNG)
-	else if (hitGroundingFrag && playerState != PlayerState::LurchBackward) {
+	// 地面についているなら待機状態へ
+	// のけぞり中はNG
+	else if (hitGroundingFrag && 
+		playerState != PlayerState::LurchBackward) {
 		playerState = PlayerState::Idle;
 	}
 
@@ -90,14 +133,25 @@ void PlayerCharacter::Update() {
 		LurchBackward();
 	}
 	// 移動
-	else if ((!pHands->IsArmExtended() && !pHands->IsCatch()) || pHands->IsEnemyCatch()) {
+	else if ((!pHands->IsArmExtending() && !pHands->IsCatch()) || pHands->IsEnemyCatch()) {
 		Move();
 	}
 
-	// 待機アニメーション
-	if (playerState == PlayerState::Idle) {
-		pAnimator->Play("Idle");
-		pHands->GetAnimator()->Play("Idle");
+	// 待機アニメーション(投げアニメーション中じゃなければ)
+	if (playerState == PlayerState::Idle &&
+		!throwAnimation) {
+		if (!pHands->IsArmExtending() &&
+			!pHands->IsCatch() &&
+			!pHands->IsArmReturning()) {
+			// ウデ使用中でなければ待機アニメーション
+			pAnimator->Play("Idle");
+			pHands->GetAnimator()->Play("Idle");
+		}
+		else if (pHands->IsEnemyCatch()){
+			// 敵を掴んでるならそれ用の待機アニメーション
+			pAnimator->Play("CarryIdle");
+			pHands->GetAnimator()->Play("CarryIdle");
+		}
 	}
 
 	// 落下速度に応じて微振動
@@ -109,6 +163,12 @@ void PlayerCharacter::Update() {
 	if (returnColor) {
 		ReturnColor();
 	}
+
+	
+	ImGui::Begin("PlayerAnimation");
+	ImGui::Text("%d", pAnimator->GetCurrentAnimation());
+	ImGui::Text("%d", pHands->GetAnimator()->GetCurrentAnimation());
+	ImGui::End();
 }
 
 void PlayerCharacter::Render() {
@@ -130,6 +190,10 @@ void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
  *	移動
  */
 void PlayerCharacter::Move() {
+	// 投げアニメーションは動けない
+	if (throwAnimation)
+		return;
+
 	// ジャンプ
 	if (action.buttonDown[static_cast<int>(PlayerAction::Jump)] &&
 		hitGroundingFrag) {
@@ -192,8 +256,14 @@ void PlayerCharacter::Move() {
 		if (playerState != PlayerState::Jump) {
 			playerState = PlayerState::Move;
 			// アニメーション再生
-			pAnimator->Play("Run", 0.5f);
-			pHands->GetAnimator()->Play("Run", 0.5f);
+			if (pHands->IsEnemyCatch()) {
+				pAnimator->Play("CarryRun", 0.5f);
+				pHands->GetAnimator()->Play("CarryRun", 0.5f);
+			}
+			else {
+				pAnimator->Play("Run", 0.5f);
+				pHands->GetAnimator()->Play("Run", 0.5f);
+			}
 		}
 	}
 	ImGui::Begin("PlayerRotation");
@@ -283,6 +353,7 @@ bool PlayerCharacter::Pull() {
 		// のけぞり
 		playerState = PlayerState::LurchBackward;
 		lurchBackwardPos = VAdd(GetPosition(), VScale(pTransform->GetForward(), LURCH_BACKWARD_LENGTH));
+		// ジャンプアニメーションで代用
 		pAnimator->Play("Jump", 10.0f);
 		pHands->GetAnimator()->Play("Jump", 10.0f);
 

@@ -61,13 +61,20 @@ void PlayerHands::Update() {
 	}
 	// 何も掴んでいなければ(かつ地に足ついていれば)
 	else if (pOwner->GetHitGroundingFrag()) {
-		// ウデ伸ばし(ウデ戻し中じゃなければ)
+		// ウデ伸ばし(ウデ戻し中&&投げアニメーション中じゃなければ)
 		if (action.button[static_cast<int>(PlayerAction::ArmExtend)] &&
-			handsState != HandsState::ArmsReturning)
+			handsState != HandsState::ArmsReturning && 
+			!pOwner->IsThrowAnimation()) {
 			handsState = HandsState::ArmsExtending;
+			pAnimator->Play("Stance", 0.5f);
+			pOwner->GetAnimator()->Play("Stance", 0.5f);
+		}
 		// ウデ戻し
-		if (action.buttonUp[static_cast<int>(PlayerAction::ArmExtend)])
+		if (action.buttonUp[static_cast<int>(PlayerAction::ArmExtend)]) {
 			handsState = HandsState::ArmsReturning;
+			pAnimator->Play("StanceCancel", 0.5f);
+			pOwner->GetAnimator()->Play("StanceCancel", 0.5f);
+		}
 	}
 
 	// 手の移動
@@ -119,6 +126,9 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			enemy->CaughtAction(GetRotation(), catchPos);
 			// 振動
 			StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+			// アニメーション
+			pAnimator->Play("Carry");
+			pOwner->GetAnimator()->Play("Carry");
 		}
 	}
 
@@ -272,6 +282,9 @@ void PlayerHands::CatchUpdate() {
 			enemy->SetIsGravity(true);
 			// 位置をワールド座標へ
 			enemy->GetTransform()->AddPosition(GetPosition());
+			// アニメーション再生
+			pAnimator->Play("Throw", 1.0f);
+			pOwner->GetAnimator()->Play("Throw", 1.0f);
 		}
 	}
 
@@ -289,6 +302,9 @@ void PlayerHands::CatchUpdate() {
 			missile->GetTransform()->DetachParent();
 			// 位置をワールド座標へ
 			missile->GetTransform()->AddPosition(GetPosition());
+			// アニメーション再生
+			pAnimator->Play("Throw");
+			pOwner->GetAnimator()->Play("Throw");
 		}
 	}
 

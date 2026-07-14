@@ -43,7 +43,7 @@ private:
 	float extendSpeed;							// 伸ばすスピード
 	float returnSpeedRatio;						// 戻ってくる速度割合
 	ActionState action;							// アクション状態
-
+	
 	// 戻ってきたとみなす閾値
 	const float RETURN_THRESHOLD;
 	// ウデ伸ばし上限
@@ -98,7 +98,12 @@ public:
 	 *	ウデ伸ばし中か否か
 	 *	@return bool
 	 */
-	inline bool IsArmExtended() { return handsState == HandsState::ArmsExtending; }
+	inline bool IsArmExtending() { return handsState == HandsState::ArmsExtending; }
+	/*
+	 *	ウデ戻し中か否か
+	 *	@return bool
+	 */
+	inline bool IsArmReturning() { return handsState == HandsState::ArmsReturning; }
 	/*
 	 *	手は待機状態か否か
 	 *	@return bool

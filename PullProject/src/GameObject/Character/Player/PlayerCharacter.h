@@ -35,8 +35,10 @@ private:
 	float pullValue;			// 引っ張り値
 	float lurchBackwardTime;	// のけぞり継続時間
 	bool returnColor;			// 色戻しフラグ
+	bool throwAnimation;		// 投げアニメーション中
 	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
+
 
 	// 引っこ抜きライン
 	const float PULL_VALUE_MAX;
@@ -137,6 +139,10 @@ public:
 	 *	入力アクション状態取得
 	 */
 	inline ActionState GetInputAction() { return action; }
+	/*
+	 *	投げアニメーション中かどうか
+	 */
+	inline bool IsThrowAnimation() { return throwAnimation; }
 };
 // 別名定義
 using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;
