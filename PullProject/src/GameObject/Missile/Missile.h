@@ -15,6 +15,7 @@ constexpr int EXPLOSION_LEVEL = 3;		// 爆発の段階
 constexpr float COLOR_CHANGE_INTERVAL[EXPLOSION_LEVEL] = { 0.5f,0.25f,0.1f };
 
 class EffectManager;
+class AudioManager;
 
 class Missile : public GameObject, public CaughtObject {
 private:
@@ -24,6 +25,7 @@ private:
 
 	EffectManager& pEffectManager;
 	EffectPtr pEffect;
+	AudioManager& pAudioManager;
 
 	GameObject* pOwner;
 

@@ -1,4 +1,12 @@
+/*
+ * @brief 尻尾を掴んで倒す敵
+ * @author Sekino
+ */
+
 #pragma once
+#ifndef _TAILENEMY_H_
+#define _TAILENEMY_H_
+
 #include "../EnemyBase.h"
 
 class ColliderObject;
@@ -31,5 +39,9 @@ public:
 	void ThrownAction(VECTOR _dir) override;
 
 	void Catching() override;
-};
 
+private:
+	void CreateMissile();
+
+};
+#endif // !_TAILENEMY_H_

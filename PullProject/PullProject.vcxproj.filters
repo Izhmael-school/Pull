@@ -780,7 +780,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="PullProject.rc">
+    <ResourceCompile Include="resource.rc">
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
   </ItemGroup>

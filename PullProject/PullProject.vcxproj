@@ -359,7 +359,7 @@
     <None Include="src\Data\Stage_5.json" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="PullProject.rc" />
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

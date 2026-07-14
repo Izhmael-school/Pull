@@ -21,6 +21,7 @@ void WalkEnemy::Setup(){
 		VECTOR pos = VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 300));
 		sphereEvent(pos, 200.0f);
 		effectEvent("EnemyAttack", pos,100.0f,GetTransform()->GetForward());
+		audioEvent("Tackle", 255.0f, false, GetPosition(), 1000.0f);
 		});
 }
 

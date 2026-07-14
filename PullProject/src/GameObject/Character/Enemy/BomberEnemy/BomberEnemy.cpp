@@ -44,6 +44,7 @@ void BomberEnemy::Explosion() {
 	// 爆発を作る
 	sphereEvent(GetPosition(), 1000);
 	effectEvent("Explosion", GetPosition(), 200.0f, VZero);
+	audioEvent("Explosion", 255.0f, false, GetPosition(), 1000.0f);
 	// 自分を消すように要請する
 	wantUnuse = true;
 }

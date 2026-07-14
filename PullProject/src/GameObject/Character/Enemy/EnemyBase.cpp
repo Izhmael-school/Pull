@@ -38,6 +38,7 @@ void EnemyBase::Start() {
 
 	int num = MV1GetMeshNum(modelHandle);
 
+#if false 
 	std::vector<VECTOR> mins;
 	std::vector<VECTOR> maxs;
 	for (int i = 0;i < num;i++) {
@@ -60,8 +61,40 @@ void EnemyBase::Start() {
 		max.z = std::max(max.z, maxs[i].z);
 	}
 
+	// 当たり判定
+	pCollider = std::make_unique<AABBCollider>(this, min, max);
+
+#else
+	std::vector<VECTOR> mins;
+	std::vector<VECTOR> maxs;
+	for (int i = 0;i < num;i++) {
+		// 各メッシュの最大点と最小点を保持
+		maxs.push_back(VScale(MV1GetMeshMaxPosition(modelHandle, i), 50));
+		mins.push_back(VScale(MV1GetMeshMinPosition(modelHandle, i), 50));
+	}
+
+	VECTOR min = VGet(INT_MAX, INT_MAX, INT_MAX);
+	VECTOR max = VGet(-INT_MAX, -INT_MAX, -INT_MAX);
+
+	for (int i = 0;i < num;i++) {
+		// 最小点配列の中のさらに最小を保持
+		min.x = std::min(min.x, mins[i].x);
+		min.y = std::min(min.y, mins[i].y);
+		min.z = std::min(min.z, mins[i].z);
+		// 最大点配列の中のさらに最大を保持
+		max.x = std::max(max.x, maxs[i].x);
+		max.y = std::max(max.y, maxs[i].y);
+		max.z = std::max(max.z, maxs[i].z);
+	}
+	float radius = VSize(VSub(max, min)) / 4;
+
+	// 当たり判定
+	pCollider = std::make_unique<SphereCollider>(this,VZero,radius);
+#endif
+
+
 	// 地面に埋まらないように現在の座標を変える
-// footPoint取得
+	// footPoint取得
 	int footFrame = MV1SearchFrame(modelHandle, "FootPoint");
 	// footPointとスポーン位置の差だけ上昇させる
 	VECTOR footPos = MV1GetFramePosition(modelHandle, footFrame);
@@ -70,14 +103,10 @@ void EnemyBase::Start() {
 	// 上げる
 	GetTransform()->SetPosition(VGet(enemyPos.x, up, enemyPos.z));
 
-	// 当たり判定
-	pCollider = std::make_unique<AABBCollider>(this, min, max);
-	pCollider->SetResolve(true);
-
-	pCollider->SetLayer(ColliderLayer::Enemy);
 
 	// 接地判定用当たり判定
 	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, footPos.y), 10);
+	pGroundingCollider->SetResolve(false);
 }
 
 void EnemyBase::Update() {
@@ -138,23 +167,30 @@ void EnemyBase::Setup() {
 	}
 
 	// 再度更新できるように
-	if (pCollider)
+	if (pCollider) {
 		pCollider->SetEnable(true);
+		pCollider->SetResolve(true);
+		pCollider->SetLayer(ColliderLayer::Enemy);
+	}
 
 	if (pGroundingCollider)
 		pGroundingCollider->SetEnable(true);
 
 	// 足元まで当たり判定を伸ばす
-	auto aabb = dynamic_cast<AABBCollider*>(pCollider.get());
-	if (aabb) {
-		VECTOR min = aabb->GetMin();
-		aabb->SetMin(VGet(min.x, min.y + footPos, min.z));
-	}
+	//auto aabb = dynamic_cast<AABBCollider*>(pCollider.get());
+	//if (aabb) {
+	//	VECTOR min = aabb->GetMin();
+	//	aabb->SetMin(VGet(min.x, min.y + footPos, min.z));
+	//}
 
+	// アクションの初期化
 	prevState = NoneAction;
 	currentState = NoneAction;
 	nextState = Wandering;
+	// 投げ状態の解除
+	ChangeCaughtState(CaughtState::NoneCaughtState);
 
+	// とりあえず待機モーションに
 	pAnimator->Play("Idle");
 
 	endAttack = true;
@@ -162,6 +198,7 @@ void EnemyBase::Setup() {
 	isAttacking = false;
 	wantUnuse = false;
 	hitGroundingFrag = true;
+	isGravity = true;
 }
 
 void EnemyBase::Cleanup() {
@@ -381,6 +418,8 @@ void EnemyBase::CatchStart() {
 	CaughtObject::CatchStart();
 
 	ChangeNextState(OutofControl);
+
+	pCollider->SetResolve(false);
 }
 
 void EnemyBase::Catching() {
@@ -393,6 +432,7 @@ void EnemyBase::ThrowStart() {
 	ChangeNextState(OutofControl);
 	AddFallSpeed(-20);
 	hitGroundingFrag = false;
+	pCollider->SetResolve(true);
 }
 
 void EnemyBase::Throwing() {
@@ -403,4 +443,6 @@ void EnemyBase::Throwing() {
 
 void EnemyBase::HitObject() {
 	ChangeNextState(Die);
+
+	audioEvent("Enemy_ThrowHit", 255.0f, false, GetPosition(), 1000.0f);
 }

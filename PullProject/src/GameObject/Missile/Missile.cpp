@@ -5,6 +5,7 @@
 #include "Component/Collider/Collider.h"
 #include "GameObject/Character/Player/PlayerHands.h"
 #include "GameObject/Stage/Gimmick/BomBreakWall.h"
+#include "Application.h"
 
 Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, VECTOR _dir, VECTOR _pos)
 	:GameObject(_modelHandle, _pos)
@@ -12,6 +13,7 @@ Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, V
 	, lifeLimitTime(5.0f)
 	, lifeElapsedTime(0.0f)
 	, pEffectManager(*_effect)
+	, pAudioManager(Application::GetInstance().GetAudioManager())
 	, pOwner(_owner) 
 	, explosionElapsedTime(0.0f)
 	, explosionTime(2.0f * EXPLOSION_LEVEL)
@@ -35,6 +37,7 @@ void Missile::Start() {
 
 	pCollider = std::make_unique<AABBCollider>(this, VScale(min, 100.0f), VScale(max, 100.0f));
 	pCollider->SetLayer(ColliderLayer::Missile);
+	pAudioManager.Play("Missile_Shoot", 255.0f, false, GetPosition(), 1000.0f);
 }
 
 void Missile::Update() {
@@ -68,6 +71,7 @@ void Missile::Explosion() {
 	pEffectManager.Play("Explosion", GetPosition(), 50.0f, VZero);
 	lifeElapsedTime = 0;
 	pEffect->Stop();
+	pAudioManager.Play("Explosion", 255.0f, false, GetPosition(), 1000.0f);
 }
 
 VECTOR Missile::GetBoostEffectPoint() {
