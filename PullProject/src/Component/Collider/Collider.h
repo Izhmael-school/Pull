@@ -9,7 +9,7 @@
  * @author Tanaka
  */
 
-//	レイヤー
+ //	レイヤー
 enum class ColliderLayer {
 	Default,
 	Player,
@@ -25,7 +25,8 @@ enum class ColliderLayer {
 	Missile,
 	MissileWall,
 	Wall,
-	Ground
+	Ground,
+	PlayerRay,
 };
 
 class Collider {
@@ -158,7 +159,7 @@ private:
 	VECTOR worldEnd;
 
 	bool hasErrorShown = false;
-	
+
 	float radius;
 
 public:
@@ -189,6 +190,10 @@ private:
 	VECTOR worldOrigin;
 	VECTOR worldDirection;
 
+	std::vector<Collider*> hitColliders;
+	std::vector<GameObject*> hitObjects;
+
+
 public:
 	RayCollider(GameObject* owner, VECTOR ori, VECTOR dir, float len, float h, float angDeg, float _bottomOffset);
 
@@ -196,7 +201,10 @@ public:
 	void Render() override;
 
 	bool CheckHitPoint(VECTOR target);
-	
+
+	bool CheckHitLine(VECTOR start, VECTOR end);
+	bool CheckHitAABB(const VECTOR& min, const VECTOR& max);
+
 	const char* GetTypeName() const override { return "Ray"; }
 
 	VECTOR GetOriginWorld() const {
@@ -213,6 +221,82 @@ public:
 
 	VECTOR GetWorldOrigin() const { return worldOrigin; }
 	VECTOR GetWorldDirection() const { return worldDirection; }
+	float GetBottomOffset() const { return bottomOffset; }
+
+	void ClearHitColliders() {
+		hitColliders.clear();
+		hitObjects.clear();
+	}
+
+	void AddHitColliders(Collider* col) {
+		auto it =
+			std::find(
+				hitColliders.begin(),
+				hitColliders.end(),
+				col);
+
+		if (it != hitColliders.end()) {
+			return;
+		}
+
+		hitColliders.push_back(col);
+
+		GameObject* obj = col->GetGameObject();
+
+		if (obj) {
+			auto objIt =
+				std::find(
+					hitObjects.begin(),
+					hitObjects.end(),
+					obj);
+
+			if (objIt == hitObjects.end()) {
+				hitObjects.push_back(obj);
+			}
+		}
+	}
+
+
+	const std::vector<Collider*>& GetHitColliders() const {
+		return hitColliders;
+	}
+
+	const std::vector<GameObject*>& GetHitObjects() const {
+		return hitObjects;
+	}
+
+
+	static float Cross2D(VECTOR a, VECTOR b) {
+		return a.x * b.z - a.z * b.x;
+	}
+
+	static bool SegmentIntersect2D(
+		VECTOR a1,
+		VECTOR a2,
+		VECTOR b1,
+		VECTOR b2) {
+		VECTOR da = VSub(a2, a1);
+		VECTOR db = VSub(b2, b1);
+
+		float c1 = Cross2D(
+			da,
+			VSub(b1, a1));
+
+		float c2 = Cross2D(
+			da,
+			VSub(b2, a1));
+
+		float c3 = Cross2D(
+			db,
+			VSub(a1, b1));
+
+		float c4 = Cross2D(
+			db,
+			VSub(a2, b1));
+
+		return c1 * c2 <= 0 &&
+			c3 * c4 <= 0;
+	}
 
 };
 

@@ -11,6 +11,8 @@
  *  Tanaka
  */
 
+
+
  // 判定関数の型定義
 using HitFunc = bool(*)(Collider*, Collider*);
 // 押し出し関数の型定義
@@ -79,6 +81,28 @@ public:
     static void ResolveSphereAABB(Collider* s, Collider* box);
     static void ResolveCapsuleAABB(Collider* cap, Collider* box);
     static void ResolveAABBVsAABB(Collider* aCol, Collider* bCol);
+
+
+    const char* LayerToString(ColliderLayer layer) {
+        switch (layer) {
+        case ColliderLayer::Default: return "Default";
+        case ColliderLayer::Player: return "Player";
+        case ColliderLayer::PlayerArm: return "PlayerArm";
+        case ColliderLayer::Enemy: return "Enemy";
+        case ColliderLayer::Stage: return "Stage";
+        case ColliderLayer::Gimmick: return "Gimmick";
+        case ColliderLayer::BreakWall: return "BreakWall";
+        case ColliderLayer::ExitArea: return "ExitArea";
+        case ColliderLayer::BomBreakWall: return "BomBreakWall";
+        case ColliderLayer::Camera: return "Camera";
+        case ColliderLayer::Tail: return "Tail";
+        case ColliderLayer::Missile: return "Missile";
+        case ColliderLayer::MissileWall: return "MissileWall";
+        case ColliderLayer::Wall: return "Wall";
+        case ColliderLayer::Ground: return "Ground";
+        default: return "Unknown";
+        }
+    }
 };
 
 #endif
