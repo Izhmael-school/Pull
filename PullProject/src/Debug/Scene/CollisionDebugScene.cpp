@@ -58,9 +58,6 @@ void CollisionDebugScene::Setup() {
 
 	// ===== ギミックの更新 ====
 	GimmickObjectManager::GetInstance().Update();
-	StageCollisionGenerator generator;
-	generator.GenerateFromUnity("src/Data/HookShotStage 1.json", CollisionManager::GetInstance());
-	//generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 }
 
 void CollisionDebugScene::Render() {
