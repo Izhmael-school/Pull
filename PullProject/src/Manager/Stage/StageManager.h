@@ -34,7 +34,7 @@ private:
 	StageCollisionGenerator generator;		// ステージの当たり判定生成器
 
 	std::string stageFile;
-	
+
 	int stageModel;
 	int stageID = 1;		// ステージのID
 
@@ -122,6 +122,11 @@ public:
 	 *	プレイヤーの生成位置の取得
 	 */
 	const VECTOR& GetPlayerSpawnPosition() const { return characterSpawnPos.GetPlayerPositions(); }
+
+	/*
+	 *	カメラの生成位置の取得
+	 */
+	const VECTOR& GetCameraSpawnPosition() const { return characterSpawnPos.GetCameraPositions(); }
 
 	void SetStageID(int id) { stageID = id; }
 	int GetStageID() const { return stageID; }

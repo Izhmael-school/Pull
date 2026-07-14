@@ -47,7 +47,6 @@ void BomBreakWall::Update() {
 		OpacityChange();
 	}
 	pCollider->Update();
-	float y = this->GetPosition().y;
 
 }
 

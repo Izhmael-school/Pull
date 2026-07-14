@@ -1,6 +1,27 @@
 #include "CollisionManager.h"
 #include "Definition/CommonModule/MyJson.h"
 #include <map>
+#include <ImGui/imgui.h>
+
+struct CollisionStats {
+	int sphereSphere = 0;
+	int sphereAABB = 0;
+	int aabbAABB = 0;
+	int capsuleSphere = 0;
+	int capsuleAABB = 0;
+	int capsuleCapsule = 0;
+	int raySphere = 0;
+	int rayAABB = 0;
+	int rayCapsule = 0;
+};
+
+CollisionStats m_stats;
+
+struct RayHitInfo {
+	GameObject* object;
+	float distance;
+};
+
 
 // 当たり判定関数のマップ
 static const std::unordered_map<std::string, HitFunc> funcMap = {
@@ -73,8 +94,19 @@ void CollisionManager::UnRegisterAll() {
 //	更新
 void CollisionManager::Update() {
 
+	for (auto col : pColliderArray) {
+		if (auto ray = dynamic_cast<RayCollider*>(col)) {
+			ray->ClearHitColliders();
+		}
+	}
 
-	int stage = 0, player = 0, enemy = 0, other = 0;
+	int collisionCheckCount = 0;
+	int hitCount = 0;
+	int resolveCount = 0;
+
+	m_stats = {};
+
+	int stage = 0, player = 0, enemy = 0, other = 0, ground = 0, wall = 0, arm = 0, gimmick = 0;
 
 	// レイヤーごとのコライダー数をカウント
 	for (auto c : pColliderArray) {
@@ -82,12 +114,26 @@ void CollisionManager::Update() {
 		case ColliderLayer::Stage: stage++; break;
 		case ColliderLayer::Player: player++; break;
 		case ColliderLayer::Enemy: enemy++; break;
+		case ColliderLayer::Ground: ground++; break;
+		case ColliderLayer::Wall: wall++; break;
+		case ColliderLayer::PlayerArm: arm++; break;
+		case ColliderLayer::Gimmick: gimmick++; break;
 		default: other++; break;
 		}
 	}
 
-	//printfDx("Stage:%d Player:%d Enemy:%d Other:%d\n", stage, player, enemy, other);
-
+#if _DEBUG
+	ImGui::Begin("Collider Count");
+	ImGui::Text("Stage: %d", stage);
+	ImGui::Text("Player: %d", player);
+	ImGui::Text("Enemy: %d", enemy);
+	ImGui::Text("Ground: %d", ground);
+	ImGui::Text("Wall: %d", wall);
+	ImGui::Text("Arm: %d", arm);
+	ImGui::Text("Gimmick: %d", gimmick);
+	ImGui::Text("Other: %d", other);
+	ImGui::End();
+#endif
 	// コライダーの更新
 	for (auto col : pColliderArray) {
 		if (col && col->IsEnable()) {
@@ -98,15 +144,13 @@ void CollisionManager::Update() {
 	//	当たり判定の処理
 	int n = pColliderArray.size();
 
-	static int prevSize = -1;
-
-	//	前回のサイズと異なる場合は、prevsとcurrentsをリサイズ
-	if (prevSize != n) {
+	//	前回のサイズと異なる場合は、prevsとcurrentsをリサイズ	
+	if (currents.size() != n ||
+		prevs.size() != n) {
 		prevs.assign(n, std::vector<bool>(n, false));
 		currents.assign(n, std::vector<bool>(n, false));
-
-		prevSize = n;
 	}
+
 
 	//	当たり判定の処理
 	for (int i = 0; i < n; i++) {
@@ -129,14 +173,13 @@ void CollisionManager::Update() {
 			if (!goA || !goB) continue;
 			if (!goA->IsActive() || !goB->IsActive()) continue;
 
+			collisionCheckCount++;
 			bool hit = CheckHit(a, b);
 
-			if ((currents.empty() || currents[i].empty()) || (currents.size() <= i || currents[i].size() <= j)) continue;
-			currents[i][j] = hit;
-
 			if (hit) {
-
+				hitCount++;
 				if (a->IsResolve() && b->IsResolve()) {
+					resolveCount++;
 					Resolve(a, b);
 				}
 			}
@@ -161,6 +204,49 @@ void CollisionManager::Update() {
 
 		}
 	}
+
+#if _DEBUG
+	ImGui::Begin("Collision Debug");
+	ImGui::Text("Collision Checks : %d", collisionCheckCount);
+	ImGui::Text("SphereSphere   : %d", m_stats.sphereSphere);
+	ImGui::Text("SphereAABB     : %d", m_stats.sphereAABB);
+	ImGui::Text("AABBvsAABB     : %d", m_stats.aabbAABB);
+	ImGui::Text("CapsuleSphere  : %d", m_stats.capsuleSphere);
+	ImGui::Text("CapsuleAABB    : %d", m_stats.capsuleAABB);
+	ImGui::Text("CapsuleCapsule : %d", m_stats.capsuleCapsule);
+	ImGui::Text("RaySphere      : %d", m_stats.raySphere);
+	ImGui::Text("RayAABB        : %d", m_stats.rayAABB);
+	ImGui::Text("RayCapsule     : %d", m_stats.rayCapsule);
+	ImGui::Text("Hit Count : %d", hitCount);
+	ImGui::Text("Resolve Count : %d", resolveCount);
+	ImGui::End();
+#endif
+#if _DEBUG
+	ImGui::Begin("Ray Hit Debug");
+
+	for (auto col : pColliderArray) {
+		auto ray = dynamic_cast<RayCollider*>(col);
+		if (!ray) continue;
+
+		const auto& hits = ray->GetHitColliders();
+
+		ImGui::Text("Hit Count : %d", (int)hits.size());
+
+		for (auto hitCol : hits) {
+			ImGui::BulletText(
+				"Layer=%s  Col=%p  Obj=%p",
+				LayerToString(hitCol->GetLayer()),
+				hitCol,
+				hitCol->GetGameObject()
+			);
+		}
+
+		ImGui::Separator();
+	}
+
+	ImGui::End();
+#endif
+
 }
 
 #pragma endregion
@@ -254,6 +340,7 @@ void CollisionManager::LoadCollisionRules(const std::string& path) {
 
 #pragma region 判定処理
 bool CollisionManager::SphereVsSphere(Collider* a, Collider* b) {
+	m_stats.sphereSphere++;
 	auto sa = static_cast<SphereCollider*>(a);
 	auto sb = static_cast<SphereCollider*>(b);
 	VECTOR diff = VSub(sa->GetWorldCenter(), sb->GetWorldCenter());
@@ -263,6 +350,7 @@ bool CollisionManager::SphereVsSphere(Collider* a, Collider* b) {
 }
 
 bool CollisionManager::SphereVsAABB(Collider* a, Collider* b) {
+	m_stats.sphereAABB++;
 	auto s = static_cast<SphereCollider*>(a);
 	auto box = static_cast<AABBCollider*>(b);
 	VECTOR center = s->GetWorldCenter();
@@ -281,6 +369,7 @@ bool CollisionManager::SphereVsAABB(Collider* a, Collider* b) {
 }
 
 bool CollisionManager::AABBvsAABB(Collider* a, Collider* b) {
+	m_stats.aabbAABB++;
 	auto boxA = static_cast<AABBCollider*>(a);
 	auto boxB = static_cast<AABBCollider*>(b);
 
@@ -296,6 +385,7 @@ bool CollisionManager::AABBvsAABB(Collider* a, Collider* b) {
 }
 
 bool CollisionManager::CapsuleVsSphere(Collider* a, Collider* b) {
+	m_stats.capsuleSphere++;
 	auto cap = static_cast<CapsuleCollider*>(a);
 	auto sph = static_cast<SphereCollider*>(b);
 
@@ -319,6 +409,7 @@ bool CollisionManager::CapsuleVsSphere(Collider* a, Collider* b) {
 }
 
 bool CollisionManager::CapsuleVsAABB(Collider* a, Collider* b) {
+	m_stats.capsuleAABB++;
 	auto cap = static_cast<CapsuleCollider*>(a);
 	auto box = static_cast<AABBCollider*>(b);
 
@@ -353,6 +444,7 @@ bool CollisionManager::CapsuleVsAABB(Collider* a, Collider* b) {
 }
 
 bool CollisionManager::CapsuleVsCapsule(Collider* a, Collider* b) {
+	m_stats.capsuleCapsule++;
 	auto capA = static_cast<CapsuleCollider*>(a);
 	auto capB = static_cast<CapsuleCollider*>(b);
 
@@ -365,51 +457,60 @@ bool CollisionManager::CapsuleVsCapsule(Collider* a, Collider* b) {
 }
 
 bool CollisionManager::RayVsSphere(Collider* a, Collider* b) {
+	m_stats.raySphere++;
 	RayCollider* ray = (RayCollider*)a;
 	SphereCollider* sphere = (SphereCollider*)b;
 
 	VECTOR center = sphere->GetWorldCenter();
-	float radius = sphere->GetRadius();
 
-	// 中心点が当たっているなら true
-	if (ray->CheckHitPoint(center))
+	if (ray->CheckHitPoint(center)) {
+		ray->AddHitColliders(sphere);
 		return true;
+	}
 
-	// 半径分だけ内側に寄せた点をチェック
-	VECTOR dir = VNorm(VSub(center, ray->GetWorldOrigin()));
-	VECTOR nearPoint = VSub(center, VScale(dir, radius));
+	VECTOR dir = VNorm(
+		VSub(center, ray->GetWorldOrigin())
+	);
 
-	return ray->CheckHitPoint(nearPoint);
-}
+	VECTOR nearPoint =
+		VSub(center, VScale(dir, sphere->GetRadius()));
 
-
-bool CollisionManager::RayVsAABB(Collider* a, Collider* b) {
-	RayCollider* ray = (RayCollider*)a;
-	AABBCollider* box = (AABBCollider*)b;
-
-	VECTOR min = box->GetMin();
-	VECTOR max = box->GetMax();
-
-	VECTOR points[8] = {
-		VGet(min.x, min.y, min.z),
-		VGet(max.x, min.y, min.z),
-		VGet(min.x, max.y, min.z),
-		VGet(max.x, max.y, min.z),
-		VGet(min.x, min.y, max.z),
-		VGet(max.x, min.y, max.z),
-		VGet(min.x, max.y, max.z),
-		VGet(max.x, max.y, max.z),
-	};
-
-	for (int i = 0; i < 8; i++) {
-		if (ray->CheckHitPoint(points[i]))
-			return true;
+	if (ray->CheckHitPoint(nearPoint)) {
+		ray->AddHitColliders(sphere);
+		return true;
 	}
 
 	return false;
 }
 
+
+bool CollisionManager::RayVsAABB(
+	Collider* a,
+	Collider* b) {
+	m_stats.rayAABB++;
+
+	auto ray =
+		static_cast<RayCollider*>(a);
+
+	auto box =
+		static_cast<AABBCollider*>(b);
+
+	bool hit =
+		ray->CheckHitAABB(
+			box->GetMin(),
+			box->GetMax());
+
+	if (!hit) {
+		return false;
+	}
+
+	ray->AddHitColliders(box);
+
+	return true;
+}
+
 bool CollisionManager::RayVsCapsule(Collider* a, Collider* b) {
+	m_stats.rayCapsule++;
 	RayCollider* ray = (RayCollider*)a;
 	CapsuleCollider* cap = (CapsuleCollider*)b;
 
@@ -424,15 +525,21 @@ bool CollisionManager::RayVsCapsule(Collider* a, Collider* b) {
 		VECTOR p = VAdd(aPos, VScale(VSub(bPos, aPos), t));
 
 		// 中心線の点
-		if (ray->CheckHitPoint(p))
+
+		if (ray->CheckHitPoint(p)) {
+			ray->AddHitColliders(cap);
 			return true;
+		}
 
 		// 半径分だけ内側に寄せた点
 		VECTOR dir = VNorm(VSub(p, ray->GetWorldOrigin()));
 		VECTOR nearP = VSub(p, VScale(dir, radius));
 
-		if (ray->CheckHitPoint(nearP))
+
+		if (ray->CheckHitPoint(nearP)) {
+			ray->AddHitColliders(cap);
 			return true;
+		}
 	}
 
 	return false;
@@ -746,7 +853,7 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	if (aLayer == ColliderLayer::MissileWall && bLayer == ColliderLayer::ExitArea || bLayer == ColliderLayer::MissileWall && aLayer == ColliderLayer::ExitArea) {
 		return;
 	}
-	
+
 
 	VECTOR aMin = a->GetMin();
 	VECTOR aMax = a->GetMax();

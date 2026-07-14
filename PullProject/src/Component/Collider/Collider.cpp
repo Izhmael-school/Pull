@@ -229,17 +229,17 @@ RayCollider::RayCollider(GameObject* owner, VECTOR ori, VECTOR dir, float len, f
 }
 
 void RayCollider::Update() {
-	VECTOR pos = GetGameObject()->GetTransform()->GetPosition();
-	worldOrigin = VAdd(pos, origin);
+	auto trans = GetGameObject()->GetTransform();
 
-	MATRIX mat = GetGameObject()->GetTransform()->GetMatrix();
-	worldDirection = VGet(mat.m[2][0], mat.m[2][1], mat.m[2][2]);
+	worldOrigin = VAdd(
+		trans->GetPosition(),
+		origin
+	);
 
-	if (VSize(worldDirection) < 0.0001f) {
-		worldDirection = VGet(0, 0, 1); // デフォルト方向
-	}
-	else {
-		worldDirection = VNorm(worldDirection);
+	worldDirection = VNorm(trans->GetForward());
+
+	if (GetLayer() == ColliderLayer::PlayerRay) {
+		worldDirection = VScale(worldDirection, -1.0f);
 	}
 }
 
@@ -343,3 +343,120 @@ bool RayCollider::CheckHitPoint(VECTOR target) {
 	return true;
 }
 
+bool RayCollider::CheckHitLine(
+	VECTOR start,
+	VECTOR end) {
+	if (CheckHitPoint(start))
+		return true;
+
+	if (CheckHitPoint(end))
+		return true;
+
+	float halfRad =
+		angle * 0.5f *
+		DX_PI_F / 180.0f;
+
+	float baseRad =
+		atan2f(
+			worldDirection.x,
+			worldDirection.z);
+
+	VECTOR leftDir =
+		VGet(
+			sinf(baseRad - halfRad),
+			0,
+			cosf(baseRad - halfRad));
+
+	VECTOR rightDir =
+		VGet(
+			sinf(baseRad + halfRad),
+			0,
+			cosf(baseRad + halfRad));
+
+	VECTOR leftEnd =
+		VAdd(
+			worldOrigin,
+			VScale(leftDir, length));
+
+	VECTOR rightEnd =
+		VAdd(
+			worldOrigin,
+			VScale(rightDir, length));
+
+	// 左境界
+	if (SegmentIntersect2D(
+		worldOrigin,
+		leftEnd,
+		start,
+		end)) {
+		return true;
+	}
+
+	// 右境界
+	if (SegmentIntersect2D(
+		worldOrigin,
+		rightEnd,
+		start,
+		end)) {
+		return true;
+	}
+
+	return false;
+}
+
+bool RayCollider::CheckHitAABB(
+	const VECTOR& min,
+	const VECTOR& max) {
+	// 8頂点
+	VECTOR v[8] =
+	{
+		VGet(min.x, min.y, min.z),
+		VGet(max.x, min.y, min.z),
+		VGet(max.x, min.y, max.z),
+		VGet(min.x, min.y, max.z),
+
+		VGet(min.x, max.y, min.z),
+		VGet(max.x, max.y, min.z),
+		VGet(max.x, max.y, max.z),
+		VGet(min.x, max.y, max.z)
+	};
+
+	// 頂点が扇形柱内
+	for (int i = 0; i < 8; i++) {
+		if (CheckHitPoint(v[i])) {
+			return true;
+		}
+	}
+
+	// 原点がAABB内
+	if (
+		worldOrigin.x >= min.x &&
+		worldOrigin.x <= max.x &&
+		worldOrigin.y >= min.y &&
+		worldOrigin.y <= max.y &&
+		worldOrigin.z >= min.z &&
+		worldOrigin.z <= max.z
+	) {
+		return true;
+	}
+
+	// AABBの12辺
+	const int edges[12][2] =
+	{
+		{0,1},{1,2},{2,3},{3,0}, // 下
+
+		{4,5},{5,6},{6,7},{7,4}, // 上
+
+		{0,4},{1,5},{2,6},{3,7}  // 縦
+	};
+
+	for (int i = 0; i < 12; i++) {
+		if (CheckHitLine(
+			v[edges[i][0]],
+			v[edges[i][1]])) {
+			return true;
+		}
+	}
+
+	return false;
+}

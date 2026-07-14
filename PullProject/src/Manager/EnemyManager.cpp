@@ -34,8 +34,9 @@ void EnemyManager::Update() {
 	for (auto& enemy : useEnemyArray) {
 		enemy->VisionFan(playerPos);
 		enemy->Update();
-		ImGui::Begin("Enemy");
-		ImGui::Text("%d", enemy ? 1 : 0);
+		ImGui::Begin("EnemyPos");
+		VECTOR p = enemy->GetPosition();
+		ImGui::Text("%f,%f,%f", p.x,p.y,p.z);
 		ImGui::End();
 	}
 

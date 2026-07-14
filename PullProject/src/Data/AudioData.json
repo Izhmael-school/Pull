@@ -3,5 +3,20 @@
     "name": "test",
     "path": "BGM/test.mp3",
     "is3D": false
+  },
+  {
+    "name": "Stage1BGM",
+    "path": "BGM/iwashiro_hajimari_no_michi.mp3",
+    "is3D": false
+  },
+  {
+    "name": "BreakWall_BreakSE",
+    "path": "SE/se_syun.mp3",
+    "is3D": false
+  },
+  {
+    "name": "PullOutFloor_EndSe",
+    "path": "SE/se_wall_2.mp3",
+    "is3D": false
   }
 ]

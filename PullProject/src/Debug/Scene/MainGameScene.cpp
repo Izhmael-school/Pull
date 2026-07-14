@@ -21,6 +21,7 @@
 #include "Manager/InputSystemManager.h"
 #include "Manager/GameObjectManager.h"
 #include "../../Definition/CommonModule/ActionMapData.h"
+#include "Application.h"
 
 #include <DxLib.h>
 #include <format>
@@ -76,6 +77,9 @@ void MainGameScene::Setup() {
 	// スカイドームのモデルを取得
 	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
 
+	// BGMを再生
+	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
+	pAudioManager->Play("Stage1BGM", 100.0f, true);
 }
 
 /*
@@ -204,6 +208,9 @@ void MainGameScene::Cleanup() {
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Clear();
 	StageManager::GetInstance().RequestStageClear(false);
+	// 音
+	AudioManager* audio = &Application::GetInstance().GetAudioManager();
+	audio->Clean();
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	effectManager.Clean();
