@@ -36,7 +36,7 @@ int Application::Init() {
 int Application::DxLibInit() {
 #pragma region // DxLibの初期化処理　触るべからず
 	// タイトルの変更
-	SetWindowText("Pull");
+	SetWindowText("ExHand");
 	// XInput対応ゲームパッド設定
 	SetUseXInputFlag(true);
 	// ウィンドウのサイズを変更する
@@ -44,7 +44,7 @@ int Application::DxLibInit() {
 	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_NATIVE);
 	SetFullSceneAntiAliasingMode(4, 2);
 	// ゲームアイコン
-	SetWindowIconID(001);
+	SetWindowIconID(101);
 
 	// ログファイルを残さない
 #if _DEBUG
@@ -117,6 +117,7 @@ bool Application::Update() {
 	InputManager::GetInstance().Update();
 	InputSystemManager::GetInstance().Update();
 	SceneManager::GetInstance().Update();
+	audioManager.Update();
 
 	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_ESCAPE)) {
 		return true;

@@ -29,16 +29,12 @@
   *	コンストラクタ
   */
 MainGameScene::MainGameScene()
-	:effectManager(effectResourceManager)
-	, effectResourceManager()
-	, audioManager(audioResourceManager)
-	, audioResourceManager()
-	, enemyManager({ effectManager ,audioManager }) {
+	: enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager()}) {
 	Start();
 }
 
 void MainGameScene::Start() {
-	effectResourceManager.LoadEffectFromExternalFile();
+
 }
 
 /*
@@ -116,7 +112,7 @@ void MainGameScene::Update() {
 		return;
 	}
 	ColliderObjectManager::GetInstance().Update();
-	effectManager.Update();
+	Application::GetInstance().GetEffectManager().Update();
 }
 
 void MainGameScene::Render() {
@@ -198,7 +194,7 @@ void MainGameScene::Render() {
 	MV1DrawModel(SkyModel);
 	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
 
-	effectManager.Render();
+	Application::GetInstance().GetEffectManager().Render();
 }
 
 /*
@@ -213,5 +209,5 @@ void MainGameScene::Cleanup() {
 	audio->Clean();
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
-	effectManager.Clean();
+	Application::GetInstance().GetEffectManager().Clean();
 }

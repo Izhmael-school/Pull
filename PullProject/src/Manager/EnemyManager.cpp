@@ -45,6 +45,7 @@ void EnemyManager::Update() {
 		if (!enemy) return false;
 		// 未使用化を希望してなければ次
 		if (!enemy->IsWantUnuse()) return false;
+		CollisionManager::GetInstance().UnRegister(enemy->GetCollider());
 		// 未使用配列に移す
 		UnuseEnemy(enemy);
 		return true;
@@ -77,6 +78,7 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
 
 	enemy->GetTransform()->SetPosition(_pos);
 
+	CollisionManager::GetInstance().Register(enemy->GetCollider());
 
 	// 使用準備
 	enemy->Setup();

@@ -18,5 +18,40 @@
     "name": "PullOutFloor_EndSe",
     "path": "SE/se_wall_2.mp3",
     "is3D": false
+  },
+  {
+    "name": "Taunt",
+    "path": "SE/Taunt.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Tail_Down",
+    "path": "SE/Tail_Down.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Tail_Jump",
+    "path": "SE/Tail_Jump.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Enemy_ThrowHit",
+    "path": "SE/Enemy_ThrowHit.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Explosion",
+    "path": "SE/Explosion.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Missile_Shoot",
+    "path": "SE/Missile_Shoot.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Tackle",
+    "path": "SE/Tackle.mp3",
+    "is3D": true
   }
 ]

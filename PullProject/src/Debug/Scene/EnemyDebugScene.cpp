@@ -20,13 +20,14 @@
 #include "Generator/StageCollisionGenerator.h"
 #include "../../Manager/InputSystemManager.h"
 #include <ImGui/imgui.h>
+#include "Application.h"
 
 EnemyDebugScene::EnemyDebugScene() 
 	:effectManager(effectResourceManager)
 	,effectResourceManager()
 	, audioManager(audioResourceManager)
 	,audioResourceManager()
-	, enemyManager({ effectManager ,audioManager})
+	, enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager() })
 { Start(); }
 
 void EnemyDebugScene::Start()
@@ -132,14 +133,14 @@ void EnemyDebugScene::Render(){
 
 void EnemyDebugScene::Setup(){
 	StageManager::GetInstance().Initialize();
-	StageManager::GetInstance().LoadStage(3);
+	StageManager::GetInstance().LoadStage(111);
 	StageManager::GetInstance().TransitionStage(0);
-	enemyManager.SpawnStageFramePoint(3,StageManager::GetInstance());
+	enemyManager.SpawnStageFramePoint(111,StageManager::GetInstance());
 	CameraManager::GetInstance().CreateCamera();
 	audioManager.Play("test", 100.0f, true);
 	GimmickObjectManager::GetInstance().Update();
 	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
-	generator.GenerateFromUnity("src/Data/Stage_3.json", CollisionManager::GetInstance());
+	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
 
 	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
 	PlayerManager::GetInstance().CreatePlayer(pos);
