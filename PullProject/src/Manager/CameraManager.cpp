@@ -7,8 +7,8 @@ CameraManager::CameraManager()
 /*
  *	カメラ生成
  */
-void CameraManager::CreateCamera(VECTOR position) {
-	camera = std::make_shared<CameraObject>(position);
+void CameraManager::CreateCamera(VECTOR position, VECTOR rotation = VZero) {
+	camera = std::make_shared<CameraObject>(position, rotation);
 	camera->Start();
 }
 

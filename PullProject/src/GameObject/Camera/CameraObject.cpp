@@ -20,7 +20,7 @@
 #include "EffekseerForDXLib.h"
 #include "EventCameraMovement.h"
 
-CameraObject::CameraObject(VECTOR position)
+CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	: GameObject(-1, position)
 	, mode(CameraMode::Event)
 	, target(VZero)
@@ -42,8 +42,9 @@ CameraObject::CameraObject(VECTOR position)
 	, TARGET_DISTANCE_MAX(30.0f)
 	, TARGET_THRESHOLD(0.5f)
 	, POSITION_Y_LIMIT_UP(-900.0f)
-	, POSITION_Y_LIMIT_DOWN(0.0f)
-{}
+	, POSITION_Y_LIMIT_DOWN(0.0f) {
+	pTransform->SetRotation(rotation);
+}
 
 void CameraObject::Start() {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);

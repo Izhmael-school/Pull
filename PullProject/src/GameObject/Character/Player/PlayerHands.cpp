@@ -188,7 +188,7 @@ void PlayerHands::HandsMove() {
 		// ウデ伸ばしの距離制限
 		if (distSq < ARM_LENGTH_MAX * ARM_LENGTH_MAX) {
 			// 移動
-			pTransform->AddPosition(pTransform->GetForward(), -extendSpeed);
+			pTransform->AddPosition(VForward, -extendSpeed);
 			// ウデ伸ばし中は当たり判定の押し出しあり
 			pCollider->SetResolve(true);
 		}
@@ -235,7 +235,7 @@ void PlayerHands::CatchMoving() {
 	// プレイヤーが手の位置に戻るまで移動
 	else {
 		pOwner->CatchMovingMove(extendSpeed);
-		pTransform->AddPosition(pTransform->GetForward(), extendSpeed);
+		pTransform->AddPosition(VForward, extendSpeed);
 	}
 }
 

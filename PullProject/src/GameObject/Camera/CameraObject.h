@@ -55,7 +55,7 @@ private:
 	const float TARGET_THRESHOLD;
 
 public:
-	CameraObject(VECTOR position);
+	CameraObject(VECTOR position, VECTOR rotation);
 	~CameraObject() = default;
 
 public:

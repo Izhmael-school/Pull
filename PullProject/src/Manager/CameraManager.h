@@ -29,8 +29,9 @@ public:
 	/*
 	 *	カメラ生成
 	 *	@param VECTOR position	生成位置
+	 *	@param VECTOR rotation	生成角度
 	 */
-	void CreateCamera(VECTOR position = VZero);
+	void CreateCamera(VECTOR position = VZero, VECTOR rotation = VZero);
 	/*
 	 *	カメラのシェイク
 	 *	@param	float setShakePowar	シェイクの大さ
