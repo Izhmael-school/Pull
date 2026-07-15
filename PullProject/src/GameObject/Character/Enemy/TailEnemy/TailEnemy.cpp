@@ -7,7 +7,8 @@
 #include "GameObject/Missile/Missile.h"
 
 TailEnemy::TailEnemy(int _modelHandle, VECTOR _pos)
-	:EnemyBase(_modelHandle, _pos) {
+	:EnemyBase(_modelHandle, _pos)
+	, tailRadius(50) {
 	Start();
 }
 
@@ -19,7 +20,7 @@ void TailEnemy::Start() {
 	if (sphere)
 		sphere->SetRadius(sphere->GetRadius() / 2);
 
-	pCollider->SetResolve(false);
+	pCollider->SetResolve(true);
 	pCollider->SetLayer(ColliderLayer::Default);
 
 	tailFrameIndex = MV1SearchFrame(modelHandle, "TailPoint");
@@ -27,22 +28,24 @@ void TailEnemy::Start() {
 
 	shotFrameIndex = MV1SearchFrame(modelHandle, "ShotPoint");
 
-	pTailCollider = std::make_unique<ColliderObject>(tailPos, 50, Enemy, 0.0f);
+	pTailCollider = std::make_unique<ColliderObject>(tailPos, tailRadius, Enemy, 0.0f);
 	auto tail = static_cast<SphereCollider*>(pTailCollider->GetCollider());
 	tail->SetResolve(false);
 	tail->SetGameObject(this);
 	tail->SetLocalCenter(VSub(GetPosition(), MV1GetFramePosition(modelHandle, tailFrameIndex)));
 	tail->SetLayer(ColliderLayer::Tail);
 	type = Tail;
+	tag = Tag::TailEnemy;
+	addScore = 5000;
 }
 
 void TailEnemy::Update() {
 	EnemyBase::Update();
-	
+
 	if (pTailCollider) {
 		// 尻尾の位置に当たり判定を移動させる
 		VECTOR pos = MV1GetFramePosition(modelHandle, tailFrameIndex);
-		DrawSphere3D(pos, 16, 16, 0xff0000, 0xff0000,true);
+		DrawSphere3D(pos, 16, 16, 0xff0000, 0xff0000, true);
 		auto sphere = static_cast<SphereCollider*>(pTailCollider->GetCollider());
 		sphere->SetLocalCenter(VSub(pos, GetPosition()));
 		pTailCollider->Update();
@@ -60,8 +63,8 @@ void TailEnemy::Setup() {
 	EnemyBase::Setup();
 
 	// 攻撃終了時処理を持たせる
-	SetAnimEvent("Taunt", -1, [this]() {audioEvent("Taunt",255.0f,false,GetPosition(),1000.0f);EndAttack();});
-	SetAnimEvent("BigShot", -1,[this]() {EndAttack();});
+	SetAnimEvent("Taunt", -1, [this]() {audioEvent("Taunt", 255.0f, false, GetPosition(), 1000.0f);EndAttack();});
+	SetAnimEvent("BigShot", -1, [this]() {EndAttack();});
 
 	// アニメーションに合わせてミサイルを出す
 	SetAnimEvent("BigShot", 20, [this]() {CreateMissile();});
@@ -74,12 +77,19 @@ void TailEnemy::Setup() {
 		VECTOR min = VScale(VAdd(VLeft, VBack), 500);
 		VECTOR max = VAdd(VScale(VAdd(VRight, VForward), 500), VScale(VUp, 100));
 		VECTOR pos = GetPosition();
-		aabbEvent(pos,min , max);
+		aabbEvent(pos, min, max);
 		effectEvent("Earthquake", pos, 0.7f, VZero);
 		audioEvent("Taunt", 255.0f, false, pos, 1000.0f);
 		});
 
 	SetAnimEvent("Die", 0, [this]() {audioEvent("Tail_Down", 255.0f, false, GetPosition(), 1000.0f);});
+
+	auto col = pTailCollider->GetCollider();
+	if (col) {
+		col->SetEnable(true);
+		auto sphere = dynamic_cast<SphereCollider*>(col);
+		sphere->SetRadius(tailRadius);
+	}
 }
 
 void TailEnemy::AttackAction() {
@@ -118,8 +128,18 @@ void TailEnemy::Catching() {
 	EnemyBase::Catching();
 
 	pAnimator->Play("Shot", 2.0f);
-	auto sphere = static_cast<SphereCollider*>(pTailCollider->GetCollider());
-	sphere->SetRadius(100);
+	auto col = static_cast<SphereCollider*>(pTailCollider->GetCollider());
+	col->SetRadius(tailRadius * 2);
+}
+
+void TailEnemy::Dead() {
+	EnemyBase::Dead();
+
+	// 尻尾消す
+	auto col = pTailCollider->GetCollider();
+	if (col) {
+		col->SetEnable(false);
+	}
 }
 
 void TailEnemy::CreateMissile() {

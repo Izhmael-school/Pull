@@ -9,6 +9,7 @@
 #include "Manager/TimeManager.h"
 #include "Manager/CollisionManager.h"
 #include "Manager/InputSystemManager.h"
+#include "Manager/FadeManager.h"
 
 Application::Application()
 	:audioManager(audioResourceManager)
@@ -116,6 +117,7 @@ bool Application::Update() {
 	TimeManager::GetInstance().Update();
 	InputManager::GetInstance().Update();
 	InputSystemManager::GetInstance().Update();
+	FadeManager::GetInstance().Update();
 	SceneManager::GetInstance().Update();
 	audioManager.Update();
 
@@ -129,6 +131,7 @@ bool Application::Update() {
 void Application::Render() {
 	// シーンの描画
 	SceneManager::GetInstance().Render();
+	FadeManager::GetInstance().Render();
 }
 
 void Application::ResourceDelete() {

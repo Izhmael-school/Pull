@@ -9,6 +9,8 @@
 #include "Manager/EffectManager.h"
 #include "Component/Collider/Collider.h"
 #include <vector>
+#include "Game/GameData.h"
+#include "ImGui/ImGui.h"
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	:Character(_modelHandle, _pos, Enemy)
@@ -90,6 +92,7 @@ void EnemyBase::Start() {
 
 	// 当たり判定
 	pCollider = std::make_unique<SphereCollider>(this,VZero,radius);
+	pCollider->SetLayer(ColliderLayer::Enemy);
 #endif
 
 
@@ -170,7 +173,6 @@ void EnemyBase::Setup() {
 	if (pCollider) {
 		pCollider->SetEnable(true);
 		pCollider->SetResolve(true);
-		pCollider->SetLayer(ColliderLayer::Enemy);
 	}
 
 	if (pGroundingCollider)
@@ -314,12 +316,13 @@ bool EnemyBase::VisionFan(VECTOR target) {
 	// レイに入っていて攻撃中じゃない時に追跡行動に移る
 	if (rayAnswer && nextState != Attack)
 		ChangeNextState(Tracing);
-
+	
 	return rayAnswer;
 }
 
 void EnemyBase::Death() {
 	wantUnuse = true;
+	GameData::AddScore(addScore);
 	effectEvent("EnemyDeath", GetPosition(), 50.0f, VZero);
 }
 
@@ -364,9 +367,29 @@ void EnemyBase::SetAnimEvent(std::string _animName, int _frameCount, std::functi
 void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	Character::OnTriggerEnter(_pSelf, _pOther);
 
-	if (_pOther->GetLayer() == ColliderLayer::Wall)
+	// 壁に当たったらゴールとする
+	ColliderLayer layer = _pOther->GetLayer();
+	if (layer == ColliderLayer::Stage || layer == ColliderLayer::Wall || layer == ColliderLayer::BomBreakWall || layer == ColliderLayer::BreakWall || layer == ColliderLayer::ExitArea || layer == ColliderLayer::MissileWall)
 		wanderingGoalPos = GetPosition();
 
+	// 当たった敵が投げられた敵なら
+	auto enemy = dynamic_cast<EnemyBase*>(_pOther->GetGameObject());
+	if (enemy) {
+		// 尻尾の敵にはしない
+		if (tag == Tag::TailEnemy)
+			return;
+		if (enemy->GetCurrentCaughtState() == CaughtState::Throwing)
+			HitObject();
+	}
+
+	// 当たったのが爆発なら
+	if (_pOther->GetGameObject()->GetTag() == Tag::Explosion) {
+		// 尻尾の敵にはしない
+		if (tag == Tag::TailEnemy) return;
+		HitObject();
+	}
+
+	// 投げられた後に何かに当たったら
 	if (GetCurrentCaughtState() == CaughtState::Throwing) {
 		// 何かしらに当たったら
 		HitObject();
@@ -419,12 +442,18 @@ void EnemyBase::CatchStart() {
 
 	ChangeNextState(OutofControl);
 
+	GetTransform()->SetRotation(VScale(VRight, 180.0f));
+
 	pCollider->SetResolve(false);
 }
 
 void EnemyBase::Catching() {
-	pAnimator->Play("Walk", 2.0f);
 	ChangeNextState(OutofControl);
+	pAnimator->Play("Walk", 2.0f);
+	ImGui::Begin("EnemyCatching");
+
+	pAnimator->ChangeSpeed("Walk", 2.0f);
+	ImGui::End();
 }
 
 void EnemyBase::ThrowStart() {
@@ -433,6 +462,7 @@ void EnemyBase::ThrowStart() {
 	AddFallSpeed(-20);
 	hitGroundingFrag = false;
 	pCollider->SetResolve(true);
+	GetTransform()->SetRotation(VScale(VRight, 0.0f));
 }
 
 void EnemyBase::Throwing() {

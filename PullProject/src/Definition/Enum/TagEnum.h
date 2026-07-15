@@ -12,5 +12,7 @@ enum Tag {
 	Ground,
 	Hook,
 	Turrets,
-	LeverTag
+	LeverTag,
+	TailEnemy,
+	Explosion
 };

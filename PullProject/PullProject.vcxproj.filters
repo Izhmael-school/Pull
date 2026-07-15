@@ -130,6 +130,15 @@
     <Filter Include="ソース ファイル\Resource\Audio">
       <UniqueIdentifier>{82545ec0-7c1c-4385-8ede-d62d73050dbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\Coin">
+      <UniqueIdentifier>{12b796b4-9614-4e9c-af9a-fb4ff6211a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game">
+      <UniqueIdentifier>{88d91c25-7617-43bb-90d4-374ddd259f6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Fade">
+      <UniqueIdentifier>{71266ae1-047e-491c-bea6-70b0d26e0b04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -393,17 +402,20 @@
     <ClCompile Include="src\Resource\Audio\AudioResource.cpp">
       <Filter>ソース ファイル\Resource\Audio</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\UIScreen.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="src\GameObject\Coin\Coin.cpp">
+      <Filter>ソース ファイル\GameObject\Coin</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\UIObject.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="src\Game\GameData.cpp">
+      <Filter>ソース ファイル\Game</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\UIManager.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="src\Generator\CoinGenerator.cpp">
+      <Filter>ソース ファイル\Generator</Filter>
     </ClCompile>
-    <ClCompile Include="src\UI\Image\UIImage.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="src\Fade\FadeBase.cpp">
+      <Filter>ソース ファイル\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manager\FadeManager.cpp">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -722,25 +734,22 @@
     <ClInclude Include="resource.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\UIManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="src\GameObject\Coin\Coin.h">
+      <Filter>ソース ファイル\GameObject\Coin</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\UIScreen.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="src\Game\GameData.h">
+      <Filter>ソース ファイル\Game</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\UIInput.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="src\Generator\CoinGenerator.h">
+      <Filter>ソース ファイル\Generator</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\UICommand.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="src\Fade\FadeBase.h">
+      <Filter>ソース ファイル\Fade</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\UIObject.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="src\Manager\FadeManager.h">
+      <Filter>ソース ファイル\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="src\UI\UIGroup.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="src\UI\Image\UIImage.h">
+    <ClInclude Include="src\Definition\Enum\FadeEnum.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

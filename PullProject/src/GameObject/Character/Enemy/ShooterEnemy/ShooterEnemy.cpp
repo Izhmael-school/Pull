@@ -16,14 +16,15 @@ void ShooterEnemy::Start() {
 	// モデルの正面が反対だから180度追加
 	MV1SetRotationXYZ(modelHandle, VScale(VUp, 180));
 	type = Shooter;
+
+	addScore = 1000;
 }
 
 void ShooterEnemy::Setup() {
 	EnemyBase::Setup();
 	// アニメーションに合わせてミサイルを出させる
 	int frameCount = MV1SearchFrame(modelHandle, "ShotPoint");
-	VECTOR shotPoint = MV1GetFramePosition(modelHandle, frameCount);
-	SetAnimEvent("Attack",13,[this, shotPoint]() {createEvent("Missile",this,GetTransform()->GetForward(), VAdd(shotPoint, GetPosition()));});
+	SetAnimEvent("Attack",13,[this,frameCount]() {createEvent("Missile",this,GetTransform()->GetForward(), MV1GetFramePosition(modelHandle, frameCount));});
 }
 
 void ShooterEnemy::WanderingAction() {
