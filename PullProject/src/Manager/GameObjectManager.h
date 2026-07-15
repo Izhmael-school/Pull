@@ -37,14 +37,14 @@ public:
 	 * @param args:派生クラスの引数
 	 */
 	template<typename T , typename... Args>
-	GameObject* CreateGameObject(std::string _modelName, Args&&... args);
+	T* CreateGameObject(std::string _modelName, Args&&... args);
 };
 
 template<typename T, typename ...Args>
-inline GameObject* GameObjectManager::CreateGameObject(std::string _modelName, Args&&... args) {
+inline T* GameObjectManager::CreateGameObject(std::string _modelName, Args&&... args) {
 	std::unique_ptr<GameObject> gameObject = generator->CreateGameObject<T>(_modelName, std::forward<Args>(args)...);
 	if (gameObject == nullptr) return nullptr;
 	useObjectArray.push_back(std::move(gameObject));
-	return useObjectArray.back().get();
+	return dynamic_cast<T*>(useObjectArray.back().get());
 }
 #endif // !_GAMEOBJECTMANAGER_H_

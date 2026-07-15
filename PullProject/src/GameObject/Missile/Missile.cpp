@@ -23,8 +23,10 @@ Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, V
 	, isNoTexture(false)
 {
 	GetTransform()->LookAtDir(_dir);
-	if (_effect)
+	if (_effect) {
 		pEffect = _effect->Play("MissileBoost", _pos, 10.0f, _dir);
+		//pEffect->GetTransform()->AttachParent(GetTransform(),false);
+	}
 	Start();
 }
 
@@ -37,6 +39,7 @@ void Missile::Start() {
 
 	pCollider = std::make_unique<AABBCollider>(this, VScale(min, 100.0f), VScale(max, 100.0f));
 	pCollider->SetLayer(ColliderLayer::Missile);
+	pCollider->SetResolve(false);
 	pAudioManager.Play("Missile_Shoot", 255.0f, false, GetPosition(), 1000.0f);
 }
 
@@ -51,6 +54,8 @@ void Missile::Update() {
 
 	Move();
 
+	pEffect->GetTransform()->SetPosition(GetPosition());
+
 	if (lifeElapsedTime >= lifeLimitTime) {
 		// 爆発
 		Explosion();
@@ -61,7 +66,7 @@ void Missile::Update() {
 }
 
 void Missile::Explosion() {
-	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300,None,0.5f,[](Collider* _pOther){
+	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300,Tag::Explosion,0.5f,[](Collider* _pOther){
 		auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
 		if(breakWall != nullptr) {
 			breakWall->ActivGimmick(true);

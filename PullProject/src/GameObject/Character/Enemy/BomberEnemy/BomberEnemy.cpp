@@ -17,6 +17,7 @@ BomberEnemy::~BomberEnemy() {}
 void BomberEnemy::Start() {
 	EnemyBase::Start();
 	type = Bomber;
+	addScore = 500;
 }
 
 void BomberEnemy::Setup() {
@@ -42,7 +43,7 @@ void BomberEnemy::HitObject() {
 
 void BomberEnemy::Explosion() {
 	// 爆発を作る
-	sphereEvent(GetPosition(), 1000);
+	sphereEvent(GetPosition(), 1000,Tag::Explosion,0.1f);
 	effectEvent("Explosion", GetPosition(), 200.0f, VZero);
 	audioEvent("Explosion", 255.0f, false, GetPosition(), 1000.0f);
 	// 自分を消すように要請する

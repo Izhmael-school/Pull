@@ -34,10 +34,12 @@ void EnemyManager::Update() {
 	for (auto& enemy : useEnemyArray) {
 		enemy->VisionFan(playerPos);
 		enemy->Update();
+#if _DEBUG
 		ImGui::Begin("EnemyPos");
 		VECTOR p = enemy->GetPosition();
 		ImGui::Text("%f,%f,%f", p.x,p.y,p.z);
 		ImGui::End();
+#endif
 	}
 
 	// 配列からの除外

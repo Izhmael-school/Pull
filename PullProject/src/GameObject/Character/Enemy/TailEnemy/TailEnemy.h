@@ -16,6 +16,8 @@ private:
 	std::unique_ptr<ColliderObject> pTailCollider;
 	int tailFrameIndex;
 	int shotFrameIndex;
+
+	float tailRadius;
 public:
 	TailEnemy(int _modelHandle, VECTOR _pos);
 	~TailEnemy() = default;
@@ -41,6 +43,12 @@ public:
 	void Catching() override;
 
 private:
+
+	void Dead() override;
+
+	/*
+	 * @brief ミサイルの生成
+	 */
 	void CreateMissile();
 
 };
