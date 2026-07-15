@@ -91,6 +91,11 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		return;
 	}
 
+	// プレイヤーが持っていればプレイヤーとの処理は行わない
+	if (GetCurrentCaughtState() == CaughtState::Catching) {
+		return;
+	}
+
 	auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
 	if (breakWall != nullptr) {
 		breakWall->ActivGimmick(true);

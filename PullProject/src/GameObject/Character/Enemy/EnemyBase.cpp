@@ -10,6 +10,7 @@
 #include "Component/Collider/Collider.h"
 #include <vector>
 #include "Game/GameData.h"
+#include "ImGui/ImGui.h"
 
 EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	:Character(_modelHandle, _pos, Enemy)
@@ -441,12 +442,18 @@ void EnemyBase::CatchStart() {
 
 	ChangeNextState(OutofControl);
 
+	GetTransform()->SetRotation(VScale(VRight, 180.0f));
+
 	pCollider->SetResolve(false);
 }
 
 void EnemyBase::Catching() {
-	pAnimator->Play("Walk", 2.0f);
 	ChangeNextState(OutofControl);
+	pAnimator->Play("Walk", 2.0f);
+	ImGui::Begin("EnemyCatching");
+
+	pAnimator->ChangeSpeed("Walk", 2.0f);
+	ImGui::End();
 }
 
 void EnemyBase::ThrowStart() {
@@ -455,6 +462,7 @@ void EnemyBase::ThrowStart() {
 	AddFallSpeed(-20);
 	hitGroundingFrag = false;
 	pCollider->SetResolve(true);
+	GetTransform()->SetRotation(VScale(VRight, 0.0f));
 }
 
 void EnemyBase::Throwing() {

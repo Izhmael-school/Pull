@@ -35,9 +35,10 @@ void EnemyManager::Update() {
 		enemy->VisionFan(playerPos);
 		enemy->Update();
 #if _DEBUG
-		ImGui::Begin("EnemyPos");
+		ImGui::Begin("EnemyAnim");
 		VECTOR p = enemy->GetPosition();
-		ImGui::Text("%f,%f,%f", p.x,p.y,p.z);
+		auto anim = enemy->GetAnimator();
+		ImGui::Text("%d | %f", anim->GetCurrentAnimation(),anim->GetAnimation(anim->GetCurrentAnimation())->playSpeed);
 		ImGui::End();
 #endif
 	}
