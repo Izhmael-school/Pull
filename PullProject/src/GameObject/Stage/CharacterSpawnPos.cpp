@@ -13,6 +13,7 @@
 void CharacterSpawnPos::Load(int modelHandle) {
 	LoadEnemyPosition(modelHandle);
 	LoadPlayerPosition(modelHandle);
+	LoadCameraPosition(modelHandle);
 }
 
 
@@ -83,7 +84,7 @@ void CharacterSpawnPos::LoadCameraPosition(int modelHandle) {
 	// あれば
 	if (frameIndex != -1) {
 		// 座標を設定
-		playerPosition = MV1GetFramePosition(modelHandle, frameIndex);
+		cameraPosition = MV1GetFramePosition(modelHandle, frameIndex);
 	}
 }
 
