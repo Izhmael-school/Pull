@@ -158,6 +158,7 @@
     <ClCompile Include="src\Definition\CommonModule\MyJson.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyMath.cpp" />
     <ClCompile Include="src\Definition\CommonModule\MyString.cpp" />
+    <ClCompile Include="src\Fade\FadeBase.cpp" />
     <ClCompile Include="src\GameObject\Camera\CameraObject.cpp" />
     <ClCompile Include="src\GameObject\Camera\EventCameraMovement.cpp" />
     <ClCompile Include="src\GameObject\Character\Character.cpp" />
@@ -168,6 +169,7 @@
     <ClCompile Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerCharacter.cpp" />
     <ClCompile Include="src\GameObject\Character\Player\PlayerHands.cpp" />
+    <ClCompile Include="src\GameObject\Coin\Coin.cpp" />
     <ClCompile Include="src\GameObject\Collider\ColliderObject.cpp" />
     <ClCompile Include="src\GameObject\GameObject.cpp" />
     <ClCompile Include="src\GameObject\Missile\Missile.cpp" />
@@ -182,6 +184,8 @@
     <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Turret.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
+    <ClCompile Include="src\Game\GameData.cpp" />
+    <ClCompile Include="src\Generator\CoinGenerator.cpp" />
     <ClCompile Include="src\Generator\EnemyGenerator.cpp" />
     <ClCompile Include="src\Generator\GameObjectGenerator.cpp" />
     <ClCompile Include="src\Generator\StageCollisionGenerator.cpp" />
@@ -207,6 +211,7 @@
     <ClCompile Include="src\Manager\EffectManager.cpp" />
     <ClCompile Include="src\Manager\EffectResourceManager.cpp" />
     <ClCompile Include="src\Manager\EnemyManager.cpp" />
+    <ClCompile Include="src\Manager\FadeManager.cpp" />
     <ClCompile Include="src\Manager\GameObjectManager.cpp" />
     <ClCompile Include="src\Manager\InputManager.cpp" />
     <ClCompile Include="src\Manager\InputSystemManager.cpp" />
@@ -258,10 +263,12 @@
     <ClInclude Include="src\Definition\Enum\CaughtState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyType.h" />
+    <ClInclude Include="src\Definition\Enum\FadeEnum.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
     <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
+    <ClInclude Include="src\Fade\FadeBase.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
     <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h" />
     <ClInclude Include="src\GameObject\Character\Character.h" />
@@ -272,6 +279,7 @@
     <ClInclude Include="src\GameObject\Character\Enemy\WalkEnemy\WalkEnemy.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerCharacter.h" />
     <ClInclude Include="src\GameObject\Character\Player\PlayerHands.h" />
+    <ClInclude Include="src\GameObject\Coin\Coin.h" />
     <ClInclude Include="src\GameObject\Collider\ColliderObject.h" />
     <ClInclude Include="src\GameObject\GameObject.h" />
     <ClInclude Include="src\GameObject\Missile\Missile.h" />
@@ -289,6 +297,8 @@
     <ClInclude Include="src\GameObject\Stage\Stage.h" />
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />
+    <ClInclude Include="src\Game\GameData.h" />
+    <ClInclude Include="src\Generator\CoinGenerator.h" />
     <ClInclude Include="src\Generator\EnemyGenerator.h" />
     <ClInclude Include="src\Generator\GameObjectGenerator.h" />
     <ClInclude Include="src\Generator\StageCollisionGenerator.h" />
@@ -314,6 +324,7 @@
     <ClInclude Include="src\Manager\EffectManager.h" />
     <ClInclude Include="src\Manager\EffectResourceManager.h" />
     <ClInclude Include="src\Manager\EnemyManager.h" />
+    <ClInclude Include="src\Manager\FadeManager.h" />
     <ClInclude Include="src\Manager\GameObjectManager.h" />
     <ClInclude Include="src\Manager\InputManager.h" />
     <ClInclude Include="src\Manager\InputSystemManager.h" />

@@ -10,6 +10,7 @@
 #include "Debug/Scene/StageDebugScene.h"
 #include "Debug/Scene/DebugScene.h"
 #include "Manager/InputManager.h"
+#include "Manager/FadeManager.h"
 #include "Debug/Scene/TitleScene.h"
 #include "Debug/Scene/StageSelectScene.h"
 #include "Debug/Scene/MainGameScene.h"
@@ -52,6 +53,8 @@ void SceneManager::Render(){
 
 void SceneManager::ChangeScene(SceneType nextSceneType){
 	if(currentSceneType == nextSceneType || nextSceneType == SceneType::Invalid) return;
+	// フェードに入る
+	FadeManager::GetInstance().FadeStart(FadeOut, FadeType::FadeNormal,0.2f);
 	// 現在のシーンの後処理
 	scene[static_cast<int>(currentSceneType)]->Cleanup();
 	// 次のシーンの前処理

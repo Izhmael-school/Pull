@@ -22,9 +22,13 @@
 #include "Manager/GameObjectManager.h"
 #include "../../Definition/CommonModule/ActionMapData.h"
 #include "Application.h"
+#include "Generator/CoinGenerator.h"
 
 #include <DxLib.h>
 #include <format>
+
+#include <ImGui/imgui.h>
+#include "Game/GameData.h"
  /*
   *	コンストラクタ
   */
@@ -45,15 +49,17 @@ void MainGameScene::Setup() {
 	CollisionManager::GetInstance().Clear();
 
 	// ステージの初期化処理
-	StageManager::GetInstance().Initialize();
+	StageManager& stageManager = StageManager::GetInstance();
+	stageManager.Initialize();
 	// ステージのロード
-	int stageID = StageManager::GetInstance().GetStageID();
-	StageManager::GetInstance().LoadStage(stageID);
+	int stageID = stageManager.GetStageID();
+	stageManager.LoadStage(stageID);
+	stageManager.TransitionStage(stageID);
 
 	// 敵のスポーン位置を取得
-	enemyManager.SpawnStageFramePoint(stageID, StageManager::GetInstance());
+	enemyManager.SpawnStageFramePoint(stageID, stageManager);
 	// プレイヤーの生成位置を取得
-	VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
+	VECTOR playerPos = stageManager.GetPlayerSpawnPosition();
 
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -62,6 +68,9 @@ void MainGameScene::Setup() {
 
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
+
+	// コインの生成
+	CoinGenerator::GenerateCoin(stageID, stageManager.GetCurrentStage()->GetStageModelHandle());
 
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
@@ -195,6 +204,13 @@ void MainGameScene::Render() {
 	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
 
 	Application::GetInstance().GetEffectManager().Render();
+
+#if _DEBUG
+	ImGui::Begin("Score & Coin");
+	ImGui::Text("Score:%d", GameData::GetScore());
+	ImGui::Text("Coin:%d", GameData::GetCoin());
+	ImGui::End();
+#endif
 }
 
 /*

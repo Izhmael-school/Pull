@@ -6,5 +6,9 @@
   {
     "modelName": "BossMissile",
     "filePath": "res/Model/Object/Missile_Boss.mv1"
+  },
+  {
+    "modelName": "Coin",
+    "filePath": "res/Model/Object/Coin.mv1"
   }
 ]
