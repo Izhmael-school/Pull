@@ -226,6 +226,10 @@
     <ClCompile Include="src\Resource\Model\ModelResource.cpp" />
     <ClCompile Include="src\Resource\ResourceBase.cpp" />
     <ClCompile Include="src\Scene\SceneBase.cpp" />
+    <ClCompile Include="src\UI\Image\UIImage.cpp" />
+    <ClCompile Include="src\UI\UIManager.cpp" />
+    <ClCompile Include="src\UI\UIObject.cpp" />
+    <ClCompile Include="src\UI\UIScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -333,6 +337,13 @@
     <ClInclude Include="src\Resource\Model\ModelResource.h" />
     <ClInclude Include="src\Resource\ResourceBase.h" />
     <ClInclude Include="src\Scene\SceneBase.h" />
+    <ClInclude Include="src\UI\Image\UIImage.h" />
+    <ClInclude Include="src\UI\UICommand.h" />
+    <ClInclude Include="src\UI\UIGroup.h" />
+    <ClInclude Include="src\UI\UIInput.h" />
+    <ClInclude Include="src\UI\UIManager.h" />
+    <ClInclude Include="src\UI\UIObject.h" />
+    <ClInclude Include="src\UI\UIScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\AudioData.json" />

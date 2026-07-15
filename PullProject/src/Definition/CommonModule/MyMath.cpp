@@ -1,10 +1,85 @@
 #include "MyMath.h"
 #include "DxLib.h"
 
+#include <cassert>
+#include <cmath>
+
 /*
  * @file MyMath.cpp
  * @author Sekino
+ * @author oorui (Vector2)
  */
+
+const Vector2 Vector2::Zero{ 0.0f, 0.0f };
+const Vector2 Vector2::XAxis{ 1.0f, 0.0f };
+const Vector2 Vector2::YAxis{ 0.0f, 1.0f };
+
+
+Vector2 Vector2::operator-() const {
+
+	return Vector2(-x, -y);
+}
+
+Vector2 Vector2::operator+(const Vector2& vec) const {
+
+	return Vector2(x + vec.x, y + vec.y);
+}
+
+Vector2 Vector2::operator-(const Vector2& vec) const {
+
+	return Vector2(x - vec.x, y - vec.y);
+}
+
+Vector2 Vector2::operator*(float scale) const {
+
+	return Vector2(x * scale, y * scale);
+}
+
+Vector2 Vector2::operator/(float scale) const {
+
+	if (scale == 0) {
+
+		assert(0 && "0除算: Vector2");
+		return Vector2();
+	}
+
+	return Vector2(x / scale, y / scale);
+
+}
+
+Vector2& Vector2::operator+=(const Vector2& vec) {
+
+	x += vec.x;
+	y += vec.y;
+	return *this;
+}
+
+Vector2& Vector2::operator-=(const Vector2& vec) {
+
+	x -= vec.x;
+	y -= vec.y;
+	return *this;
+}
+
+Vector2& Vector2::operator*= (float scale) {
+
+	x *= scale;
+	y *= scale;
+	return *this;
+}
+
+
+Vector2& Vector2::operator/= (float scale) {
+
+	if (scale == 0) {
+
+		assert(0 && "0除算:Vector3");
+	}
+	x /= scale;
+	y /= scale;
+	return *this;
+}
+
 
 float MyMath::Deg2Rad(float _radian) {
     return (_radian * (DX_PI_F / 180.0f));
