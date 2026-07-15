@@ -78,13 +78,13 @@ void TitleScene::Setup() {
 	// カメラの初期位置を取得
 	VECTOR cameraPos = StageManager::GetInstance().GetCameraSpawnPosition();
 	// カメラ生成
-	CameraManager::GetInstance().CreateCamera(cameraPos);
+	CameraManager::GetInstance().CreateCamera(cameraPos, VGet(0.0f, 98.0f, 0.0f));
 	// カメラの取得
 	auto camera = CameraManager::GetInstance().GetCamera();
-	
+
 	camera->ChangeCameraMode(0);
 
-	
+
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
@@ -94,7 +94,7 @@ void TitleScene::Setup() {
 	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
 
 	// BGMを再生
-	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
+	AudioManager * pAudioManager = &Application::GetInstance().GetAudioManager();
 	pAudioManager->Play("Stage1BGM", 100.0f, true);
 }
 

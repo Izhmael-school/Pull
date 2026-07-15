@@ -226,6 +226,7 @@
     <ClCompile Include="src\Resource\Model\ModelResource.cpp" />
     <ClCompile Include="src\Resource\ResourceBase.cpp" />
     <ClCompile Include="src\Scene\SceneBase.cpp" />
+    <ClCompile Include="src\UI\Button\UIButton.cpp" />
     <ClCompile Include="src\UI\Image\UIImage.cpp" />
     <ClCompile Include="src\UI\UIManager.cpp" />
     <ClCompile Include="src\UI\UIObject.cpp" />
@@ -337,7 +338,9 @@
     <ClInclude Include="src\Resource\Model\ModelResource.h" />
     <ClInclude Include="src\Resource\ResourceBase.h" />
     <ClInclude Include="src\Scene\SceneBase.h" />
+    <ClInclude Include="src\UI\Button\UIButton.h" />
     <ClInclude Include="src\UI\Image\UIImage.h" />
+    <ClInclude Include="src\UI\Scene\TitleScreen.h" />
     <ClInclude Include="src\UI\UICommand.h" />
     <ClInclude Include="src\UI\UIGroup.h" />
     <ClInclude Include="src\UI\UIInput.h" />
