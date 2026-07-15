@@ -42,13 +42,23 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, TARGET_DISTANCE_MAX(30.0f)
 	, TARGET_THRESHOLD(0.5f)
 	, POSITION_Y_LIMIT_UP(-900.0f)
-	, POSITION_Y_LIMIT_DOWN(0.0f) {
+	, POSITION_Y_LIMIT_DOWN(0.0f)
+	, LOCK_ON_LENGTH(1500.0f)
+	, LOCK_ON_HEIGHT(150.0f)
+	, LOCK_ON_ANGLE(30.0f) {
 	pTransform->SetRotation(rotation);
 }
 
 void CameraObject::Start() {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
 	pCollider->SetLayer(ColliderLayer::Camera);
+
+	// ロックオン用の視界
+	pLockOnVision = std::make_unique<RayCollider>(
+		this, VZero,
+		pTransform->GetForward(),
+		LOCK_ON_LENGTH, LOCK_ON_HEIGHT, LOCK_ON_ANGLE, 0);
+	//pLockOnVision->SetLayer(ColliderLayer::PlayerRay);
 }
 
 void CameraObject::Update() {
@@ -123,7 +133,6 @@ void CameraObject::Render() {
 }
 
 void CameraObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
-	int a = 1;
 }
 
 void CameraObject::DebugUpdate() {
@@ -238,6 +247,9 @@ void CameraObject::PlayerUpdate() {
 	// ターゲットの移動に合わせてカメラも移動
 	pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
 
+	// ロックオン
+	if (action.button[static_cast<int>(PlayerAction::LockOn)])
+		LockOn();
 }
 
 void CameraObject::PullUpdate() {
@@ -342,7 +354,36 @@ void CameraObject::TargetMoveY() {
  *	ロックオン
  */
 void CameraObject::LockOn() {
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	VECTOR origin = VSub(player->GetPosition(), GetPosition());
+	pLockOnVision->SetOrigin(origin);
 
+	// プレイヤーと一番近いオブジェクトの位置を保存
+	VECTOR lockOnPos = VZero;
+	float length = FLT_MAX;
+	auto hitObjects = pLockOnVision->GetHitObjects();
+	for (auto object : hitObjects) {
+		if (object->GetTag() != Enemy &&
+			object->GetTag() != Hook &&
+			object->GetTag() != LeverTag)
+			continue;
+
+		VECTOR dir = VSub(object->GetPosition(), player->GetPosition());
+		float newLength = VDot(dir, dir);
+		if (length > newLength) {
+			length = newLength;
+			lockOnPos = object->GetPosition();
+		}
+	}
+	if (lockOnPos.x != 0.0f ||
+		lockOnPos.y != 0.0f ||
+		lockOnPos.z != 0.0f) {
+		// カメラを対象の方に向け、プレイヤーの向きも変える
+		pTransform->LookAt(lockOnPos);
+		VECTOR dir = VNorm(VSub(lockOnPos, player->GetPosition()));
+		float yaw = MyMath::Rad2Deg(atan2f(-dir.x, -dir.z));
+		player->GetTransform()->SetRotation(VGet(0.0f, yaw, 0.0f));
+	}
 }
 
 /*

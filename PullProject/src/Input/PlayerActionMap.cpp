@@ -48,6 +48,12 @@ void PlayerActionMap::Start() {
 		KEY_INPUT_RIGHT,
 		KEY_INPUT_LEFT
 	);
+	// ロックオン
+	AddButton(
+		static_cast<int>(PlayerAction::LockOn),
+		InputType::Key,
+		KEY_INPUT_R
+	);
 #endif
 	// ゲームパッド
 	// 移動
@@ -78,6 +84,12 @@ void PlayerActionMap::Start() {
 		static_cast<int>(PlayerAction::CameraMove),
 		InputType::PadStickR
 	);
+	// ロックオン
+	AddButton(
+		static_cast<int>(PlayerAction::LockOn),
+		InputType::PadButton,
+		XINPUT_BUTTON_LEFT_SHOULDER
+	);
 
 	// 値の初期化
 	state.axis[static_cast<int>(PlayerAction::Move)] = { 0.0f, 0.0f };
@@ -86,5 +98,6 @@ void PlayerActionMap::Start() {
 	state.buttonDown[static_cast<int>(PlayerAction::ArmExtend)] = false;
 	state.buttonDown[static_cast<int>(PlayerAction::CatchCancel)] = false;
 	state.axis[static_cast<int>(PlayerAction::CameraMove)] = { 0.0f, 0.0f };
+	state.button[static_cast<int>(PlayerAction::LockOn)] = false;
 
 }
