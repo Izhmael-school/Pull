@@ -20,8 +20,9 @@
 #include "EffekseerForDXLib.h"
 #include "EventCameraMovement.h"
 
-CameraObject::CameraObject()
-	: mode(CameraMode::Player)
+CameraObject::CameraObject(VECTOR position)
+	: GameObject(-1, position)
+	, mode(CameraMode::Event)
 	, target(VZero)
 	, speed(30.0f)
 	, shakePower(0.0f)
