@@ -48,8 +48,8 @@ private:
 	const float RETURN_THRESHOLD;
 	// ウデ伸ばし上限
 	const float ARM_LENGTH_MAX;
-	// 敵を掴んだ時の戻ってきたとみなす閾値
-	const float ENEMY_CATCH_RETURN_THRESHOLD;
+	// 持ち上げる位置
+	const VECTOR CARRY_POSITION;
 	
 public:
 	PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag = Player);
