@@ -75,15 +75,15 @@ void TitleScene::Setup() {
 	// プレイヤーの生成位置を取得
 	VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
 
+	// カメラの初期位置を取得
+	VECTOR cameraPos = StageManager::GetInstance().GetCameraSpawnPosition();
 	// カメラ生成
-	CameraManager::GetInstance().CreateCamera();
-	// プレイヤー生成
-	PlayerManager::GetInstance().CreatePlayer(playerPos);
+	CameraManager::GetInstance().CreateCamera(cameraPos, VGet(0.0f, 98.0f, 0.0f));
+	// カメラの取得
+	auto camera = CameraManager::GetInstance().GetCamera();
 
-	//// カメラの初期位置を取得
-	//VECTOR cameraPos = StageManager::GetInstance().GetCameraSpawnPosition();
-	//// カメラの配置
-	//CameraManager::GetInstance().GetCamera()->GetTransform()->SetPosition(cameraPos);
+	camera->ChangeCameraMode(0);
+
 
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
@@ -94,7 +94,7 @@ void TitleScene::Setup() {
 	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
 
 	// BGMを再生
-	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
+	AudioManager * pAudioManager = &Application::GetInstance().GetAudioManager();
 	pAudioManager->Play("Stage1BGM", 100.0f, true);
 }
 
@@ -108,13 +108,6 @@ void TitleScene::Update() {
 	VECTOR CameraPos = CameraManager::GetInstance().GetCamera()->GetPosition();
 	// スカイドームをカメラ位置へ移動
 	MV1SetPosition(SkyModel, CameraPos);
-
-	// プレイヤーの更新
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->Update();
-	// プレイヤーの腕の更新
-	player->GetHands()->Update();
-
 	// 敵の更新
 	enemyManager.Update();
 	// 当たり判定の更新
@@ -193,10 +186,6 @@ void TitleScene::Render() {
 #endif
 	// ステージの描画処理
 	StageManager::GetInstance().Render();
-	// プレイヤーの描画処理
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->Render();
-	player->GetHands()->Render();
 
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
@@ -220,6 +209,7 @@ void TitleScene::Render() {
  *	シーンの片付け処理
  */
 void TitleScene::Cleanup() {
+
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Clear();
 	StageManager::GetInstance().RequestStageClear(false);

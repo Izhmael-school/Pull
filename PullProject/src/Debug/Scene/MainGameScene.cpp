@@ -57,6 +57,9 @@ void MainGameScene::Setup() {
 
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
+	// カメラの取得
+	auto camera = CameraManager::GetInstance().GetCamera();
+	camera->ChangeCameraMode(1);
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer(playerPos);
 

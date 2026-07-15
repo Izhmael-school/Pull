@@ -215,6 +215,9 @@ public:
 		return direction; // 必要なら回転を適用
 	}
 
+	void SetOrigin(VECTOR ori) { origin = ori; }
+	void SetWorldOrigin(VECTOR ori) { worldOrigin = ori; }
+
 	float GetLength() const { return length; }
 	float GetHeight() const { return height; }
 	float GetAngleDeg() const { return angle; }
