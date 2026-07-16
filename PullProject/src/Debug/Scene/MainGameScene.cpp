@@ -33,7 +33,7 @@
   *	コンストラクタ
   */
 MainGameScene::MainGameScene()
-	: enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager()}) {
+	: enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager() }) {
 	Start();
 }
 
@@ -62,7 +62,7 @@ void MainGameScene::Setup() {
 	// 敵のスポーン位置を取得
 	enemyManager.SpawnStageFramePoint(stageID, stageManager);
 	// プレイヤーの生成位置を取得
-	VECTOR playerPos = stageManager.GetPlayerSpawnPosition();
+	playerPos = stageManager.GetPlayerSpawnPosition();
 
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -97,7 +97,7 @@ void MainGameScene::Setup() {
  *	更新処理
  */
 void MainGameScene::Update() {
-	m_UIManager.Update(0.0f,UIInput());
+	m_UIManager.Update(0.0f, UIInput());
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// カメラ座標を取得
@@ -109,6 +109,11 @@ void MainGameScene::Update() {
 	player->Update();
 	// プレイヤーの腕の更新
 	player->GetHands()->Update();
+
+	if (player->IsDead()) {
+
+	}
+
 
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
@@ -201,7 +206,7 @@ void MainGameScene::Render() {
 
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
-	
+
 	// 敵の描画処理
 	enemyManager.Render();
 
@@ -240,4 +245,12 @@ void MainGameScene::Cleanup() {
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	Application::GetInstance().GetEffectManager().Clean();
+}
+
+void MainGameScene::Reset() {
+	// ギミックのリセット
+	GimmickObjectManager::GetInstance().Reset();
+	// プレイヤーの位置を初期位置に戻す
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->GetTransform()->SetPosition(playerPos);
 }

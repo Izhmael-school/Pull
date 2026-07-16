@@ -66,7 +66,7 @@ int Application::DxLibInit() {
 #if _DEBUG
 	SetBackgroundColor(196, 196, 196);
 #else 
-	SetBackgroundColor(0, 0, 0);
+	SetBackgroundColor(196, 196, 196);
 #endif
 
 	// Dxlibの初期化
