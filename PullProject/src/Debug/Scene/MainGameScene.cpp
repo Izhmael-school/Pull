@@ -250,3 +250,6 @@ void MainGameScene::Cleanup() {
 	enemyManager.UnuseAllEnemy();
 	Application::GetInstance().GetEffectManager().Clean();
 }
+
+void MainGameScene::Reset() {
+}
