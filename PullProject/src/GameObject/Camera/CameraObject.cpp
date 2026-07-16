@@ -288,6 +288,7 @@ void CameraObject::PlayerUpdate() {
 void CameraObject::PullUpdate() {
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	if (!player) return;
+	lockOn = false;
 
 	// プレイヤーの引き具合によってカメラの位置調整
 	// ズーム割合の差
