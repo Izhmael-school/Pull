@@ -36,6 +36,7 @@ private:
 	float lurchBackwardTime;	// のけぞり継続時間
 	bool returnColor;			// 色戻しフラグ
 	bool throwAnimation;		// 投げアニメーション中
+	bool isDead;				// 死亡しているか
 	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
 
@@ -142,6 +143,10 @@ public:
 	 *	投げアニメーション中かどうか
 	 */
 	inline bool IsThrowAnimation() { return throwAnimation; }
+	/*
+	 *	死亡しているか
+	 */
+	inline bool IsDead() { return isDead; }
 };
 // 別名定義
 using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;
