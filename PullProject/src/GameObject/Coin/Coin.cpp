@@ -1,6 +1,7 @@
 #include "Coin.h"
 #include "Component/Collider/Collider.h"
 #include "Game/GameData.h"
+#include "Application.h"
 
 Coin::Coin(int _modelHandle, VECTOR _pos)
 	:GameObject(_modelHandle,_pos,Tag::Coin)
@@ -20,7 +21,7 @@ void Coin::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		// スコアを加算
 		GameData::AddScore(addScore);
 		GameData::AddCoin();
-
+		Application::GetInstance().GetAudioManager().Play("GetCoin", 255.0f, false, GetPosition(), 1000.0f);
 		isActive = false;
 	}
 }

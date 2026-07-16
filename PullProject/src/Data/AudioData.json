@@ -53,5 +53,10 @@
     "name": "Tackle",
     "path": "SE/Tackle.mp3",
     "is3D": true
+  },
+  {
+    "name": "GetCoin",
+    "path": "SE/GetCoin.mp3",
+    "is3D": true
   }
 ]
