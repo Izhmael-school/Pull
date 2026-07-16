@@ -76,8 +76,8 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
 	enemy->SetEvent(std::bind(&EnemyManager::PlayAnimEvent_Effect, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
 		std::bind(&EnemyManager::PlayAnimEvent_Audio, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5),
 		std::bind(&EnemyManager::PlayAnimEvent_Missile, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
-		std::bind(&EnemyManager::PlayAnimEvent_Sphere, this, std::placeholders::_1, std::placeholders::_2),
-		std::bind(&EnemyManager::PlayAnimEvent_AABB, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		std::bind(&EnemyManager::PlayAnimEvent_Sphere, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
+		std::bind(&EnemyManager::PlayAnimEvent_AABB, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
 
 	enemy->GetTransform()->SetPosition(_pos);
 
@@ -130,12 +130,12 @@ void EnemyManager::SpawnStageFramePoint(int _stageID, StageManager& _stageManage
 	}
 }
 
-void EnemyManager::PlayAnimEvent_Sphere(VECTOR _pos, float _radius) {
-	colliderObjectManager.CreateSphere(_pos, _radius, None, 0.2f);
+void EnemyManager::PlayAnimEvent_Sphere(VECTOR _pos, float _radius, Tag _tag, float _lifeTime) {
+	colliderObjectManager.CreateSphere(_pos, _radius, _tag, _lifeTime);
 }
 
-void EnemyManager::PlayAnimEvent_AABB(VECTOR _pos, VECTOR _min, VECTOR _max) {
-	colliderObjectManager.CreateAABB(_pos, _min, _max, None, 0.2f);
+void EnemyManager::PlayAnimEvent_AABB(VECTOR _pos, VECTOR _min, VECTOR _max, Tag _tag, float _lifeTime) {
+	colliderObjectManager.CreateAABB(_pos, _min, _max, _tag, _lifeTime);
 }
 
 void EnemyManager::PlayAnimEvent_Effect(const std::string& _effectName, VECTOR _pos, float _scale, VECTOR rot) {

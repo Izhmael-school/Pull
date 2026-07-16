@@ -86,12 +86,12 @@ public:
 	/*
 	 * @brief アニメーションイベント用のコライダー生成
 	 */
-	void PlayAnimEvent_Sphere(VECTOR _pos, float _radius);
+	void PlayAnimEvent_Sphere(VECTOR _pos, float _radius,Tag _tag = None,float _lifeTime = 0.2f);
 
 	/*
 	 * @brief アニメーションイベント用のコライダー生成
 	 */
-	void PlayAnimEvent_AABB(VECTOR _pos, VECTOR _min, VECTOR _max);
+	void PlayAnimEvent_AABB(VECTOR _pos, VECTOR _min, VECTOR _max, Tag _tag = None, float _lifeTime = 0.2f);
 
 	/*
 	 * @brief アニメーションイベント用のエフェクト再生

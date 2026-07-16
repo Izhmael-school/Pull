@@ -77,7 +77,7 @@ void TailEnemy::Setup() {
 		VECTOR min = VScale(VAdd(VLeft, VBack), 500);
 		VECTOR max = VAdd(VScale(VAdd(VRight, VForward), 500), VScale(VUp, 100));
 		VECTOR pos = GetPosition();
-		aabbEvent(pos, min, max);
+		aabbEvent(pos, min, max,EnemyAttack,0.1f);
 		effectEvent("Earthquake", pos, 0.7f, VZero);
 		audioEvent("Taunt", 255.0f, false, pos, 1000.0f);
 		});
