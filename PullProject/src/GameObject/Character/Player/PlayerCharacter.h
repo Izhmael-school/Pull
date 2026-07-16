@@ -1,4 +1,4 @@
-/* 
+/*
  *	@file	PlayerCharacter.h
  *	@author	Riku
  */
@@ -26,7 +26,7 @@ private:
 		Move,			// 移動
 		Jump,			// ジャンプ
 		LurchBackward,	// のけぞり
-		
+
 		Max
 	};
 	PlayerHandsPtr pHands;		// 手
@@ -147,6 +147,12 @@ public:
 	 *	死亡しているか
 	 */
 	inline bool IsDead() { return isDead; }
+
+	/*
+	 *	死亡判定の切り替え
+	 *  @author oorui
+	 */
+	inline void SetIsDead(bool frag) { isDead = frag; }
 };
 // 別名定義
 using PlayerCharacterPtr = std::shared_ptr<PlayerCharacter>;

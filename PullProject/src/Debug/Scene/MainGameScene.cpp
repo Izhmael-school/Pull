@@ -62,7 +62,7 @@ void MainGameScene::Setup() {
 	// 敵のスポーン位置を取得
 	enemyManager.SpawnStageFramePoint(stageID, stageManager);
 	// プレイヤーの生成位置を取得
-	VECTOR playerPos = stageManager.GetPlayerSpawnPosition();
+	playerPos = stageManager.GetPlayerSpawnPosition();
 
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -124,6 +124,11 @@ void MainGameScene::Update() {
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
+
+	if (player->IsDead()) {
+		Reset();
+	}
+
 	// クリア判定
 	if (StageManager::GetInstance().IsStageClear()) {
 		// シーンを切り替える
@@ -252,4 +257,9 @@ void MainGameScene::Cleanup() {
 }
 
 void MainGameScene::Reset() {
+	// ギミックの片付け処理
+	GimmickObjectManager::GetInstance().Reset();
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->GetTransform()->SetPosition(playerPos);
+	player->SetIsDead(false);
 }
