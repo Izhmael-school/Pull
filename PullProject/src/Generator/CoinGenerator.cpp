@@ -18,6 +18,6 @@ void CoinGenerator::GenerateCoin(int _stageID, int _stageModelHandle) {
 		// 座標の取得
 		VECTOR pos = MV1GetFramePosition(_stageModelHandle, frameIndex);
 		// 生成
-		Coin* coin = GameObjectManager::GetInstance().CreateGameObject<Coin>("Coin", pos,Tag::None);
+		class Coin* coin = GameObjectManager::GetInstance().CreateGameObject<class Coin>("Coin", pos);
 	}
 }
