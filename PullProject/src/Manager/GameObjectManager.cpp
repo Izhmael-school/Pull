@@ -33,3 +33,14 @@ void GameObjectManager::Render(){
 		obj->Render();
 	}
 }
+
+void GameObjectManager::Cleanup() {
+	// 配列からの除外
+	std::erase_if(useObjectArray, [this](std::unique_ptr<GameObject>& obj) {
+		// 消す
+		obj->~GameObject();
+		obj.release();
+		obj.reset();
+		return true;
+		});
+}

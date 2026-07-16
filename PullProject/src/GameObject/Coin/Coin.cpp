@@ -2,8 +2,8 @@
 #include "Component/Collider/Collider.h"
 #include "Game/GameData.h"
 
-Coin::Coin(int _modelHandle, VECTOR _pos, Tag _tag)
-	:GameObject(_modelHandle,_pos,_tag)
+Coin::Coin(int _modelHandle, VECTOR _pos)
+	:GameObject(_modelHandle,_pos,Tag::Coin)
 	,addScore(100)
 {
 	Start();

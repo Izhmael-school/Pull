@@ -84,24 +84,35 @@ VECTOR Missile::GetBoostEffectPoint() {
 }
 
 void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	auto otherObj = _pOther->GetGameObject();
 
-	auto hands = dynamic_cast<PlayerHands*>(_pOther->GetGameObject());
-	// ウデの処理はここでは行わない
-	if (hands != nullptr) {
+	// レイは処理しない
+	auto ray = dynamic_cast<RayCollider*>(_pOther);
+	if (ray)
 		return;
-	}
+	
+	auto hands = dynamic_cast<PlayerHands*>(otherObj);
+	// ウデの処理はここでは行わない
+	if (hands)
+		return;
+
+	// コインは処理しない
+	if (otherObj)
+		if( otherObj->GetTag() == Coin) 
+		return;
+	
 
 	// プレイヤーが持っていればプレイヤーとの処理は行わない
 	if (GetCurrentCaughtState() == CaughtState::Catching) {
 		return;
 	}
 
-	auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
-	if (breakWall != nullptr) {
+	auto breakWall = dynamic_cast<BomBreakWall*>(otherObj);
+	if (breakWall) 
 		breakWall->ActivGimmick(true);
-	}
 
-	if (pOwner != _pOther->GetGameObject())
+
+	if (pOwner != otherObj)
 		Explosion();
 }
 

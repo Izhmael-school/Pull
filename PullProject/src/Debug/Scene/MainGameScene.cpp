@@ -97,7 +97,7 @@ void MainGameScene::Setup() {
  *	更新処理
  */
 void MainGameScene::Update() {
-
+	m_UIManager.Update(0.0f,UIInput());
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// カメラ座標を取得
