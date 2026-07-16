@@ -49,8 +49,6 @@ void MainGameScene::Setup() {
 	// 複数生成防止処理
 	CollisionManager::GetInstance().Clear();
 
-	// メインゲーム用UIの準備
-	m_UIManager.PushScreen(std::make_unique<MainGameScreen>());
 
 	// ステージの初期化処理
 	StageManager& stageManager = StageManager::GetInstance();
@@ -94,6 +92,9 @@ void MainGameScene::Setup() {
 	// BGMを再生
 	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
 	pAudioManager->Play("Stage1BGM", 100.0f, true);
+
+	// メインゲーム用UIの準備
+	m_UIManager.PushScreen(std::make_unique<MainGameScreen>());
 }
 
 /*
@@ -228,11 +229,12 @@ void MainGameScene::Render() {
 	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
 
 	Application::GetInstance().GetEffectManager().Render();
+	
+	auto screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
 
-	// UI表示
-	if (playerHand->IsLeverCatch()) {
-		m_UIManager.Draw();
-	}
+	screen->SetActionUIVisible(playerHand->IsLeverCatch());
+	
+    m_UIManager.Draw();
 
 #if _DEBUG
 	ImGui::Begin("Score & Coin");
