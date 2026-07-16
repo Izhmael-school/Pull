@@ -42,6 +42,8 @@ void HookShot::Render() {
 
 	// 描画
 	GimmickObject::Render();
+#if _DEBUG
 	pCollider->Render();
+#endif
 }
 

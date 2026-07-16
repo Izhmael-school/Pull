@@ -31,7 +31,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 
 	, RETURN_THRESHOLD(1.0f)
 	, ARM_LENGTH_MAX(1500.0f)
-	, ENEMY_CATCH_RETURN_THRESHOLD(100.0f)
+	, CARRY_POSITION(0.0f, 150.0f, -50.0f)
 {}
 
 void PlayerHands::Start() {
@@ -122,8 +122,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			enemy->GetTransform()->AttachParent(GetTransform(), false);
 			enemy->SetIsGravity(false);
 			// 敵の掴まった時処理
-			VECTOR catchPos = VSub(enemy->GetPosition(), GetPosition());
-			enemy->CaughtAction(GetRotation(), catchPos);
+			//VECTOR catchPos = VSub(enemy->GetPosition(), GetPosition());
+			enemy->CaughtAction(GetRotation(), CARRY_POSITION);
 			// 振動
 			StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 			// アニメーション
@@ -143,12 +143,16 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		// 敵を一時的に子にする
 		missile->GetTransform()->AttachParent(GetTransform(), false);
 		// 敵の掴まった時処理
-		VECTOR catchPos = VSub(missile->GetPosition(), GetPosition());
+		//VECTOR catchPos = VSub(missile->GetPosition(), GetPosition());
 		missile->GetTransform()->SetRotation(GetRotation());
-		missile->GetTransform()->SetPosition(catchPos);
+		missile->GetTransform()->SetPosition(CARRY_POSITION);
 		// 敵の掴まった時処理
 		missile->CaughtAction();
+		// 振動
 		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+		// アニメーション
+		pAnimator->Play("Carry");
+		pOwner->GetAnimator()->Play("Carry");
 	}
 
 	// 当たったのがフックの場合
@@ -199,12 +203,13 @@ void PlayerHands::HandsMove() {
 		// 戻ってきたとみなす
 		if (distSq < RETURN_THRESHOLD * RETURN_THRESHOLD) {
 			pTransform->SetPosition(VZero);
-			handsState = HandsState::Idle;
+			
+			// 敵を掴んでいる場合は待機状態に移行しない
+			if (catchState != CatchState::EnemyCatch)
+				handsState = HandsState::Idle;
 		}
 		// 戻ってくる
-		// (敵掴み中の場合は閾値を超えるまで戻ってくる)
-		else if (distSq > ENEMY_CATCH_RETURN_THRESHOLD * ENEMY_CATCH_RETURN_THRESHOLD ||
-			catchState != CatchState::EnemyCatch) {
+		else {
 			pTransform->SetPosition(
 				MyMath::Lerp(
 					pTransform->GetLocalPosition(), 
