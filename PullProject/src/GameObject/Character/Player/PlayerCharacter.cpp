@@ -13,6 +13,7 @@
 #include "../../../Manager/InputSystemManager.h"
 #include "../../../Definition/Enum/PlayerActionEnum.h"
 #include "../../../Component/Collider/Collider.h"
+#include "Application.h"
 #include <DxLib.h>
 #include <ImGui/imgui.h>
 
@@ -83,6 +84,8 @@ void PlayerCharacter::Start() {
 	float stanceAnimTime = pAnimator->GetTotalTime("Stance");
 	stanceAnim->SetEvent([this]() {
 		throwAnimation = false;
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerShot");
 		}, 0.0f);
 	// ループしないように停止
 	// (なぜか再生終了時間で0にするとバグるので-0.2fしている)
@@ -114,6 +117,7 @@ void PlayerCharacter::Start() {
 		pAnimator->ChangeSpeed("Throw", 0.0f);
 		pHands->GetAnimator()->ChangeSpeed("Throw", 0.0f);
 		}, throwAnimTime);
+
 }
 
 void PlayerCharacter::Update() {
@@ -206,6 +210,9 @@ void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 		otherTag == EnemyAttack
 		)
 		isDead = true;
+	// SE
+	Application::GetInstance().GetAudioManager().Play("PlayerDead");
+
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
@@ -229,6 +236,9 @@ void PlayerCharacter::Move() {
 		// ジャンプアニメーション(最初は高速再生)
 		pAnimator->Play("Jump", 10.0f);
 		pHands->GetAnimator()->Play("Jump", 10.0f);
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerJump");
+
 	}
 	
 	auto camera = CameraManager::GetInstance().GetCamera();
