@@ -193,8 +193,18 @@ void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+	auto enemy = dynamic_cast<EnemyBase*>(_pOther->GetGameObject());
+	if (enemy) {
+		// 敵がつかまったり投げられていたら無視
+		if (enemy->GetCurrentCaughtState() != 0)
+			return;
+	}
+	auto otherTag = _pOther->GetGameObject()->GetTag();
 	if (_pOther->GetLayer() == ColliderLayer::Enemy ||
-		_pOther->GetLayer() == ColliderLayer::Missile)
+		_pOther->GetLayer() == ColliderLayer::Retry ||
+		otherTag == Explosion ||
+		otherTag == EnemyAttack
+		)
 		isDead = true;
 }
 
