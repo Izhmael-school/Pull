@@ -8,6 +8,8 @@
 
 #include "Scene/SceneBase.h"
 #include "GameObject/GameObject.h"
+#include "../../Definition/CommonModule/ActionMapData.h"
+
 
 #include <memory>
 #include <string>
@@ -30,6 +32,9 @@ private:
 	class AABBConllider* AABB;
 	class CapsuleCollider* capsule;
 	int currentScene;
+	ActionState action;			// アクション状態
+
+
 public:
 	/*
 	 *	コンストラクタ

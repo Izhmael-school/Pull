@@ -40,7 +40,9 @@ void ExitArea::Update() {
  */
 void ExitArea::Render() {
 	// 当たり判定の更新
+#if _DEBUG
 	pCollider->Render();
+#endif
 }
 
 /*

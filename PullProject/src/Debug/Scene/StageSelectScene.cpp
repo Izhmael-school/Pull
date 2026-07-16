@@ -8,6 +8,9 @@
 #include "Definition/Enum/SceneType.h"
 #include "Manager/InputManager.h"
 #include "Manager/Stage/StageManager.h"
+#include "../../Manager/InputSystemManager.h"
+#include "../../Definition/Enum/StageSelectActionEnum.h"
+
 #include <algorithm>
 #include <math.h>
 
@@ -20,6 +23,8 @@ StageSelectScene::StageSelectScene() :currentScene(0) { Start(); }
  *	開始処理
  */
 void StageSelectScene::Start() {
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::StageSelect, true);
+
 	selectInfoArray.push_back({ "Stage1 o",[]() {StageManager::GetInstance().SetStageID(1);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage2 o",[]() {StageManager::GetInstance().SetStageID(2);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage3 o",[]() {StageManager::GetInstance().SetStageID(3);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
@@ -68,7 +73,7 @@ void StageSelectScene::Update() {
 	//// プレイヤーの更新
 	//auto player = PlayerManager::GetInstance().GetPlayer();
 	//player->Update();
-	//player->GetHands()->Update();
+	//player->GetHands()->Update();t
 	//
 	//// ギミックの更新
 	//GimmickObjectManager::GetInstance().Update();
@@ -77,15 +82,28 @@ void StageSelectScene::Update() {
 	//// 当たり判定の更新
 	//CollisionManager::GetInstance().Update();
 	//ColliderObjectManager::GetInstance().Update();
-
+	// 
+	// 入力アクションの更新
+	
+	action = InputSystemManager::GetInstance().GetInputState(ActionMap::StageSelect);
 	int size = static_cast<int>(selectInfoArray.size());
 
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_UP))
+	if (action.buttonDown[static_cast<int>(StageSelectAction::SelectMove_UP)]) {
 		currentScene = std::max(currentScene - 1, 0);
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_DOWN))
+	}
+	if (action.buttonDown[static_cast<int>(StageSelectAction::SelectMove_DOWN)]) {
 		currentScene = std::min(currentScene + 1, size - 1);
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_RETURN))
+	}
+	if (action.buttonDown[static_cast<int>(StageSelectAction::Click)]) {
 		selectInfoArray[currentScene].SceneChangeFunc();
+	}
+
+	//if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_UP))
+	//	currentScene = std::max(currentScene - 1, 0);
+	//if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_DOWN))
+	//	currentScene = std::min(currentScene + 1, size - 1);
+	//if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_RETURN))
+	//	selectInfoArray[currentScene].SceneChangeFunc();
 
 }
 
