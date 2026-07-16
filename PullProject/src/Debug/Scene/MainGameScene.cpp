@@ -251,6 +251,8 @@ void MainGameScene::Cleanup() {
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Clear();
 	StageManager::GetInstance().RequestStageClear(false);
+	StageManager::GetInstance().Execute();
+	
 	// 音
 	AudioManager* audio = &Application::GetInstance().GetAudioManager();
 	audio->Clean();
