@@ -88,7 +88,7 @@ int Application::DxLibInit() {
 		// Zバッファに書き込みを行うか
 		SetWriteZBuffer3D(TRUE); // default : FALSE
 	}
-	int light = CreateDirLightHandle(VNorm(VGet(-1.0f, -1.0f, 0.0f)));
+	int light = CreateDirLightHandle(VNorm(VGet(-1.0f, -2.0f, -1.0f)));
 
 	// ライティング
 	{
