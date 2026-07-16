@@ -24,6 +24,7 @@
 #include "Application.h"
 #include "Generator/CoinGenerator.h"
 #include "../../UI/Scene/MainGameScreen.h"
+#include "Manager/FadeManager.h"
 
 #include <DxLib.h>
 #include <format>
@@ -257,6 +258,9 @@ void MainGameScene::Cleanup() {
 }
 
 void MainGameScene::Reset() {
+	// フェードに入る
+	// フェードに入る
+	FadeManager::GetInstance().FadeStart(FadeOut, FadeType::FadeNormal, 0.2f);
 	// ギミックの片付け処理
 	GimmickObjectManager::GetInstance().Reset();
 	auto player = PlayerManager::GetInstance().GetPlayer();
