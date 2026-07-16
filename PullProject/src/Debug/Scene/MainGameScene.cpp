@@ -33,7 +33,7 @@
   *	コンストラクタ
   */
 MainGameScene::MainGameScene()
-	: enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager() }) {
+	: enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager()}) {
 	Start();
 }
 
@@ -62,7 +62,7 @@ void MainGameScene::Setup() {
 	// 敵のスポーン位置を取得
 	enemyManager.SpawnStageFramePoint(stageID, stageManager);
 	// プレイヤーの生成位置を取得
-	playerPos = stageManager.GetPlayerSpawnPosition();
+	VECTOR playerPos = stageManager.GetPlayerSpawnPosition();
 
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -77,6 +77,8 @@ void MainGameScene::Setup() {
 
 	// コインの生成
 	CoinGenerator::GenerateCoin(stageID, stageManager.GetCurrentStage()->GetStageModelHandle());
+
+	shadowMap.SetUp();
 
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
@@ -97,7 +99,7 @@ void MainGameScene::Setup() {
  *	更新処理
  */
 void MainGameScene::Update() {
-	m_UIManager.Update(0.0f, UIInput());
+	m_UIManager.Update(0.0f,UIInput());
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// カメラ座標を取得
@@ -110,10 +112,7 @@ void MainGameScene::Update() {
 	// プレイヤーの腕の更新
 	player->GetHands()->Update();
 
-	if (player->IsDead()) {
-
-	}
-
+	shadowMap.Update();
 
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
@@ -193,6 +192,9 @@ void MainGameScene::Render() {
 	ColliderObjectManager::GetInstance().Render();
 
 #endif
+	shadowMap.Render();
+	shadowMap.Apply();
+
 	// ステージの描画処理
 	StageManager::GetInstance().Render();
 
@@ -206,12 +208,14 @@ void MainGameScene::Render() {
 
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
-
+	
 	// 敵の描画処理
 	enemyManager.Render();
 
 	// GameObjectの描画
 	GameObjectManager::GetInstance().Render();
+
+	shadowMap.Disable();
 
 	// スカイドームを描画
 	MV1DrawModel(SkyModel);
@@ -245,12 +249,4 @@ void MainGameScene::Cleanup() {
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	Application::GetInstance().GetEffectManager().Clean();
-}
-
-void MainGameScene::Reset() {
-	// ギミックのリセット
-	GimmickObjectManager::GetInstance().Reset();
-	// プレイヤーの位置を初期位置に戻す
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->GetTransform()->SetPosition(playerPos);
 }

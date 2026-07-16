@@ -2,6 +2,8 @@
 #include "DxLib.h"
 #include "Manager/Stage/StageManager.h"
 #include "Manager/PlayerManager.h"
+#include "GameObject/GameObject.h"
+#include "GameObject/Character/Character.h"
 
 ShadowMap::ShadowMap()
 	: shadowMapHandle(-1) {
@@ -31,7 +33,7 @@ void ShadowMap::Start() {
 
 void ShadowMap::Update() {
 	// ライトの方向をシャドウマップに同期
-	SetShadowMapLightDirection(shadowMapHandle, VNorm(VGet(-1.0f, -2.0f, -1.0f)));
+	SetShadowMapLightDirection(shadowMapHandle, VNorm(VGet(-1.0f, -3.0f, -1.0f)));
 }
 
 // ★ステップ1: シャドウマップに「影（深度）」を描き込む処理
@@ -40,7 +42,8 @@ void ShadowMap::Render() {
 
 
 	auto player = PlayerManager::GetInstance().GetPlayer();
-
+	
+	
 	if (player) {
 		VECTOR pos = player->GetPosition();
 
@@ -56,10 +59,10 @@ void ShadowMap::Render() {
 	ShadowMap_DrawSetup(shadowMapHandle);
 
 	// 影を落としたい3Dモデルを描画
-	auto stage = StageManager::GetInstance().GetCurrentStage();
+	/*auto stage = StageManager::GetInstance().GetCurrentStage();
 	if (stage) {
 		MV1DrawModel(stage->GetStageModelHandle());
-	}
+	}*/
 
 	if (player) {
 		MV1DrawModel(player->GetModelHandle());
