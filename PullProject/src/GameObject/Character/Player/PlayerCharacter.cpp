@@ -24,6 +24,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, lurchBackwardTime(0.0f)
 	, returnColor(false)
 	, throwAnimation(false)
+	, isDead(false)
 	, lurchBackwardPos(VZero)
 
 	, PULL_VALUE_MAX(100.0f)
@@ -183,6 +184,9 @@ void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+	if (_pOther->GetLayer() == ColliderLayer::Enemy ||
+		_pOther->GetLayer() == ColliderLayer::Missile)
+		isDead = true;
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
