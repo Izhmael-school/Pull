@@ -29,6 +29,9 @@
 
 #include <ImGui/imgui.h>
 #include "Game/GameData.h"
+#include "UI/Scene/MainGameScreen.h"
+#include <memory>
+
  /*
   *	コンストラクタ
   */
@@ -38,7 +41,7 @@ MainGameScene::MainGameScene()
 }
 
 void MainGameScene::Start() {
-
+	uiManager.PushScreen(std::make_unique<MainGameScreen>());
 }
 
 /*
@@ -94,7 +97,7 @@ void MainGameScene::Setup() {
  *	更新処理
  */
 void MainGameScene::Update() {
-
+	uiManager.Update(0.0f,UIInput());
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// カメラ座標を取得
@@ -208,6 +211,8 @@ void MainGameScene::Render() {
 
 	Application::GetInstance().GetEffectManager().Render();
 
+	uiManager.Draw();
+
 #if _DEBUG
 	ImGui::Begin("Score & Coin");
 	ImGui::Text("Score:%d", GameData::GetScore());
@@ -229,4 +234,5 @@ void MainGameScene::Cleanup() {
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	Application::GetInstance().GetEffectManager().Clean();
+	GameObjectManager::GetInstance().Cleanup();
 }

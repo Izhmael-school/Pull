@@ -42,4 +42,9 @@ public:
 	/// <param name="exRateX"></param>
 	/// <returns></returns>
 	static int StringRightPos(const TCHAR* _str, int _fontHandle, int posX, int exRateX = 1);
+
+	/*
+	 * @brief ‚ ‚éŒ…‚Ü‚Å0‚ð•\Ž¦‚·‚é
+	 */
+	static std::string ToZeroPadded(int _str, int _zeroIndex);
 };
