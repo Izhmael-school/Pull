@@ -43,11 +43,13 @@ void Character::Update() {
 void Character::Render() {
 	GameObject::Render();
 
+#if _DEBUG
 	/*
 	 *	@author Riku
 	 */
 	if (pGroundingCollider)
 		pGroundingCollider->Render();
+#endif
 }
 
 void Character::Setup() {

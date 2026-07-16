@@ -27,6 +27,7 @@ enum class ColliderLayer {
 	Wall,
 	Ground,
 	PlayerRay,
+	Retry
 };
 
 class Collider {

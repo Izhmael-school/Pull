@@ -24,6 +24,7 @@
 #include "Application.h"
 #include "Generator/CoinGenerator.h"
 #include "../../UI/Scene/MainGameScreen.h"
+#include "Manager/FadeManager.h"
 
 #include <DxLib.h>
 #include <format>
@@ -62,7 +63,7 @@ void MainGameScene::Setup() {
 	// 敵のスポーン位置を取得
 	enemyManager.SpawnStageFramePoint(stageID, stageManager);
 	// プレイヤーの生成位置を取得
-	VECTOR playerPos = stageManager.GetPlayerSpawnPosition();
+	playerPos = stageManager.GetPlayerSpawnPosition();
 
 	// カメラ生成
 	CameraManager::GetInstance().CreateCamera();
@@ -77,6 +78,8 @@ void MainGameScene::Setup() {
 
 	// コインの生成
 	CoinGenerator::GenerateCoin(stageID, stageManager.GetCurrentStage()->GetStageModelHandle());
+
+	shadowMap.SetUp();
 
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
@@ -110,6 +113,8 @@ void MainGameScene::Update() {
 	// プレイヤーの腕の更新
 	player->GetHands()->Update();
 
+	shadowMap.Update();
+
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
 	// 敵の更新
@@ -120,6 +125,11 @@ void MainGameScene::Update() {
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
+
+	if (player->IsDead()) {
+		Reset();
+	}
+
 	// クリア判定
 	if (StageManager::GetInstance().IsStageClear()) {
 		// シーンを切り替える
@@ -188,6 +198,9 @@ void MainGameScene::Render() {
 	ColliderObjectManager::GetInstance().Render();
 
 #endif
+	shadowMap.Render();
+	shadowMap.Apply();
+
 	// ステージの描画処理
 	StageManager::GetInstance().Render();
 
@@ -207,6 +220,8 @@ void MainGameScene::Render() {
 
 	// GameObjectの描画
 	GameObjectManager::GetInstance().Render();
+
+	shadowMap.Disable();
 
 	// スカイドームを描画
 	MV1DrawModel(SkyModel);
@@ -240,4 +255,15 @@ void MainGameScene::Cleanup() {
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	Application::GetInstance().GetEffectManager().Clean();
+}
+
+void MainGameScene::Reset() {
+	// フェードに入る
+	// フェードに入る
+	FadeManager::GetInstance().FadeStart(FadeOut, FadeType::FadeNormal, 0.2f);
+	// ギミックの片付け処理
+	GimmickObjectManager::GetInstance().Reset();
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->GetTransform()->SetPosition(playerPos);
+	player->SetIsDead(false);
 }

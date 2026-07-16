@@ -24,6 +24,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, lurchBackwardTime(0.0f)
 	, returnColor(false)
 	, throwAnimation(false)
+	, isDead(false)
 	, lurchBackwardPos(VZero)
 
 	, PULL_VALUE_MAX(100.0f)
@@ -60,6 +61,9 @@ void PlayerCharacter::Start() {
 
 	// 着地アニメーションにイベントを仕込む
 	auto landAnim = pAnimator->GetAnimation("Land");
+	landAnim->SetEvent([this]() {
+		throwAnimation = false;
+		}, pAnimator->GetTotalTime("Land"));
 	// 再生終了時待機状態に
 	landAnim->SetEvent([this]() {
 		playerState = PlayerState::Idle;
@@ -77,6 +81,9 @@ void PlayerCharacter::Start() {
 	// ウデ伸ばしアニメーションにイベントを仕込む
 	auto stanceAnim = pAnimator->GetAnimation("Stance");
 	float stanceAnimTime = pAnimator->GetTotalTime("Stance");
+	stanceAnim->SetEvent([this]() {
+		throwAnimation = false;
+		}, 0.0f);
 	// ループしないように停止
 	// (なぜか再生終了時間で0にするとバグるので-0.2fしている)
 	stanceAnim->SetEvent([this]() {
@@ -103,6 +110,9 @@ void PlayerCharacter::Start() {
 	// 再生中フラグ変更
 	throwAnim->SetEvent([this]() {
 		throwAnimation = false;
+		// ループしないように停止
+		pAnimator->ChangeSpeed("Throw", 0.0f);
+		pHands->GetAnimator()->ChangeSpeed("Throw", 0.0f);
 		}, throwAnimTime);
 }
 
@@ -183,6 +193,9 @@ void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+	if (_pOther->GetLayer() == ColliderLayer::Enemy ||
+		_pOther->GetLayer() == ColliderLayer::Missile)
+		isDead = true;
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {

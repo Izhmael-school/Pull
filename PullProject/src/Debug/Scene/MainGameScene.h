@@ -14,6 +14,7 @@
 #include "Manager/AudioManager.h"
 #include "Manager/AudioResourceManager.h"
 #include "../../UI/UIManager.h"
+#include "Resource/Shadow/ShadowMap.h"
 
 #include <memory>
 
@@ -25,10 +26,13 @@ private:
 	//AudioManager audioManager;						// オーディオ管理
 	//AudioResourceManager audioResourceManager;		// オーディオリソース管理
 	UIManager m_UIManager;
+	ShadowMap shadowMap;								// シャドウマップ
 
-	bool isStageClear = false;	// ステージクリア判定
+	bool isStageClear = false;						// ステージクリア判定
 	
 	int SkyModel;
+
+	VECTOR playerPos;
 public:
 	MainGameScene();
 	~MainGameScene() = default;
@@ -44,6 +48,8 @@ public:
 	void Render() override;
 
 	void Cleanup() override;
+
+	void Reset();
 
 };
 

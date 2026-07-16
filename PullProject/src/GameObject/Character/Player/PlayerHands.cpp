@@ -308,8 +308,8 @@ void PlayerHands::CatchUpdate() {
 			// 位置をワールド座標へ
 			missile->GetTransform()->AddPosition(GetPosition());
 			// アニメーション再生
-			pAnimator->Play("Throw");
-			pOwner->GetAnimator()->Play("Throw");
+			pAnimator->Play("Throw", 1.0f);
+			pOwner->GetAnimator()->Play("Throw", 1.0f);
 		}
 	}
 

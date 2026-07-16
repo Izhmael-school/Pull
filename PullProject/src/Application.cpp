@@ -66,7 +66,7 @@ int Application::DxLibInit() {
 #if _DEBUG
 	SetBackgroundColor(196, 196, 196);
 #else 
-	SetBackgroundColor(0, 0, 0);
+	SetBackgroundColor(196, 196, 196);
 #endif
 
 	// Dxlibの初期化
@@ -88,7 +88,7 @@ int Application::DxLibInit() {
 		// Zバッファに書き込みを行うか
 		SetWriteZBuffer3D(TRUE); // default : FALSE
 	}
-	int light = CreateDirLightHandle(VNorm(VGet(-1.0f, -1.0f, 0.0f)));
+	int light = CreateDirLightHandle(VNorm(VGet(-1.0f, -2.0f, -1.0f)));
 
 	// ライティング
 	{
