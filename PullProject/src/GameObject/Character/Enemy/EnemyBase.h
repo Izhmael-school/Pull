@@ -20,7 +20,7 @@ using EffectEvent = std::function<void(const std::string& _effectName, VECTOR _p
 using AudioEvent = std::function<void(const std::string& _audioName, float _volume, bool _isLoop, VECTOR _pos, float distance)>;
 using MissileEvent = std::function<void(std::string _modelName,GameObject* _pOwner, VECTOR _dir, VECTOR _pos)>;
 using SphereEvent = std::function<void(VECTOR _pos, float _radius,Tag _tag,float _lifeTime)>;
-using AABBEvent = std::function<void(VECTOR _pos, VECTOR _min, VECTOR _max)>;
+using AABBEvent = std::function<void(VECTOR _pos, VECTOR _min, VECTOR _max, Tag _tag, float _lifeTime)>;
 
 class EnemyBase : public Character, public CaughtObject {
 protected:

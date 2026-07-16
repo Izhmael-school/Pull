@@ -19,7 +19,7 @@ void WalkEnemy::Setup(){
 	// アニメーションに合わせて攻撃する
 	SetAnimEvent("Attack", 22, [this]() {
 		VECTOR pos = VAdd(GetPosition(), VScale(GetTransform()->GetForward(), 300));
-		sphereEvent(pos, 200.0f,Tag::None,0.1f);
+		sphereEvent(pos, 200.0f,Tag::EnemyAttack,0.1f);
 		effectEvent("EnemyAttack", pos,100.0f,GetTransform()->GetForward());
 		audioEvent("Tackle", 255.0f, false, GetPosition(), 1000.0f);
 		});
