@@ -14,16 +14,21 @@
 #include "Manager/PlayerManager.h"
 
 class MainGameScreen :public UIScreen {
+	UIImage* actionUI = nullptr;
 	UIText* coinCount;
 	UIText* scoreCount;
 public:
 
 	void Init() override {
 
-		auto actionUI = CreateUIObject<UIImage>(
+		actionUI = CreateUIObject<UIImage>(
 			LoadGraph("res/UI/actionUI.png"),
 			Vector2(0, 0)
 		);
+
+		// Å‰‚Í”ñ•\Ž¦
+		actionUI->SetVisible(false);
+
 		UITextStyle defaultStyle;
 		defaultStyle.fontSize = 50;
 		auto coinIcon = CreateUIObject<UIImage>(LoadGraph("res/Sprite/Game/CoinIcon.png"), Vector2(50, 50));
@@ -33,6 +38,12 @@ public:
 	}
 
 	void Update(float deltaTime, const UIInput& input) override;
+
+	void SetActionUIVisible(bool visible) {
+		if (actionUI) {
+			actionUI->SetVisible(visible);
+		}
+	}
 };
 
 #endif // !_MAINGAMESCREEN_H_
