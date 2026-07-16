@@ -23,6 +23,7 @@
 #include "Manager/GameObjectManager.h"
 #include "../../Definition/CommonModule/ActionMapData.h"
 #include "Application.h"
+#include "../../UI/Scene/TitleScreen.h"
 
 #include <DxLib.h>
 #include <format>
@@ -61,6 +62,9 @@ void TitleScene::Start() {
 void TitleScene::Setup() {
 	// 複数生成防止処理
 	CollisionManager::GetInstance().Clear();
+
+	// タイトルシーン用UI生成
+	m_uiManager.PushScreen(std::make_unique<TitleScreen>());
 
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
@@ -127,7 +131,7 @@ void TitleScene::Update() {
  *	描画処理
  */
 void TitleScene::Render() {
-	DrawString(940, 600, "Start", 0xffff00);
+
 #if _DEBUG 線
 
 	// オブジェクトの位置関係がわかるように地面にラインを描画する
@@ -203,6 +207,9 @@ void TitleScene::Render() {
 	// エフェクトの描画
 	EffectManager* effect = &Application::GetInstance().GetEffectManager();
 	effect->Render();
+
+	// UI描画
+	m_uiManager.Draw();
 }
 
 /*

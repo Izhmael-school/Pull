@@ -3,6 +3,11 @@
  *  @author oorui
  */
 
+#ifndef _UIMANAGER_H_
+#define _UIMANAGER_H_
+
+
+
 #include <vector>
 #include <memory>
 
@@ -58,3 +63,5 @@ private:
 	 */
 	std::vector<std::unique_ptr<UIScreen>> m_screens;
 };
+
+#endif // !_UIMANAGER_H_

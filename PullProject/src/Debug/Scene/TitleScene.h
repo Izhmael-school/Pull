@@ -13,6 +13,8 @@
 #include "Manager/AudioManager.h"
 #include "Manager/AudioResourceManager.h"
 #include "GameObject/GameObject.h"
+#include "../../UI/UIManager.h"
+
 #include <string>
 #include <functional>
 #include <vector>
@@ -30,7 +32,9 @@ private:
 	EffectManager effectManager;					// エフェクト管理
 	EffectResourceManager effectResourceManager;	// エフェクトリソース管理
 	AudioManager audioManager;						// オーディオ管理
-	AudioResourceManager audioResourceManager;
+	AudioResourceManager audioResourceManager;		// オーディオリソース管理
+	UIManager m_uiManager;							// UI管理
+
 public:
 	/*
 	 *	コンストラクタ

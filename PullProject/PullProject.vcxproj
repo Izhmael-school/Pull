@@ -351,6 +351,7 @@
     <ClInclude Include="src\Scene\SceneBase.h" />
     <ClInclude Include="src\UI\Button\UIButton.h" />
     <ClInclude Include="src\UI\Image\UIImage.h" />
+    <ClInclude Include="src\UI\Scene\MainGameScreen.h" />
     <ClInclude Include="src\UI\Scene\TitleScreen.h" />
     <ClInclude Include="src\UI\UICommand.h" />
     <ClInclude Include="src\UI\UIGroup.h" />
