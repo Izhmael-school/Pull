@@ -99,5 +99,6 @@ void PlayerActionMap::Start() {
 	state.buttonDown[static_cast<int>(PlayerAction::CatchCancel)] = false;
 	state.axis[static_cast<int>(PlayerAction::CameraMove)] = { 0.0f, 0.0f };
 	state.button[static_cast<int>(PlayerAction::LockOn)] = false;
+	state.buttonUp[static_cast<int>(PlayerAction::LockOn)] = false;
 
 }

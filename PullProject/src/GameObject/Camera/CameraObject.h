@@ -27,6 +27,7 @@ private:
 	};
 	CameraMode mode;		// カメラのモード
 	VECTOR target;			// 追従カメラのターゲット
+	VECTOR lockOnTarget;	// ロックオン中のターゲット
 	float speed;			// 移動速度
 	float shakePower;		// シェイクの大きさ
 	float shakeTime;		// シェイクの時間
@@ -35,6 +36,7 @@ private:
 	bool isShaking;			// シェイク中か否か
 	bool isChaseXZ;			// 追うか否か(XZ平面)
 	bool isChaseY;			// 追うか否か(Y軸)
+	bool lockOn;			// ロックオン
 	// ロックオン用の視界
 	std::unique_ptr<RayCollider> pLockOnVision;	
 	
@@ -57,11 +59,15 @@ private:
 	// ターゲットとプレイヤーが重なったとみなす閾値
 	const float TARGET_THRESHOLD;
 	// 視界の射程
-	const float LOCK_ON_LENGTH;
+	const float VISION_LENGTH;
 	// 視界の上下範囲
-	const float LOCK_ON_HEIGHT;
+	const float VISION_HEIGHT;
 	// 視界の扇形角度(度数)
-	const float LOCK_ON_ANGLE;
+	const float VISION_ANGLE;
+	// ロックオン中の高さ
+	const float LOCK_ON_HEIGHT;
+	// ロックオン中の離れる距離
+	const float LOCK_ON_DISTANCE;
 
 public:
 	CameraObject(VECTOR position, VECTOR rotation);
@@ -106,9 +112,9 @@ private:
 	 */
 	void TargetMoveY();
 	/*
-	 *	ロックオン
+	 *	ロックオン対象取得
 	 */
-	void LockOn();
+	bool GetLockOnTarget();
 
 public:
 	/*

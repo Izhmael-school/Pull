@@ -109,9 +109,11 @@ void PlayerCharacter::Start() {
 void PlayerCharacter::Update() {
 	Character::Update();
 
+#if _DEBUG
 	ImGui::Begin("PlayerPosition");
 	ImGui::Text("%f, %f, %f", GetPosition().x, GetPosition().y, GetPosition().z);
 	ImGui::End();
+#endif
 	
 	// 入力アクションの更新
 	action = InputSystemManager::GetInstance().GetInputState(ActionMap::PlayerAction);
@@ -164,11 +166,12 @@ void PlayerCharacter::Update() {
 		ReturnColor();
 	}
 
-	
+#if _DEBUG
 	ImGui::Begin("PlayerAnimation");
 	ImGui::Text("%d", pAnimator->GetCurrentAnimation());
 	ImGui::Text("%d", pHands->GetAnimator()->GetCurrentAnimation());
 	ImGui::End();
+#endif
 }
 
 void PlayerCharacter::Render() {
@@ -266,10 +269,12 @@ void PlayerCharacter::Move() {
 			}
 		}
 	}
+#if _DEBUG
 	ImGui::Begin("PlayerRotation");
 	VECTOR rot = GetRotation();
 	ImGui::Text("%f, %f, %f", rot.x, rot.y, rot.z);
 	ImGui::End();
+#endif
 }
 /*
  *	色を戻す
@@ -314,9 +319,11 @@ void PlayerCharacter::LurchBackward() {
 		playerState = PlayerState::Idle;
 	}
 
+#if _DEBUG
 	ImGui::Begin("LurchBackwardPosition");
 	ImGui::Text("%f, %f, %f", lurchBackwardPos.x, lurchBackwardPos.y, lurchBackwardPos.z);
 	ImGui::End();
+#endif
 }
 
 /*
@@ -341,9 +348,11 @@ bool PlayerCharacter::Pull() {
 	MV1SetDifColorScale(modelHandle, GetColorF(1, pullRatio, pullRatio, 1));
 	MV1SetDifColorScale(pHands->GetModelHandle(), GetColorF(1, pullRatio, pullRatio, 1));
 
+#if _DEBUG
 	ImGui::Begin("PullValue");
 	ImGui::Text("%f", pullValue);
 	ImGui::End();
+#endif
 	// ある程度引くと引っこ抜き
 	if (pullValue >= PULL_VALUE_MAX) {
 		// カメラシェイク
