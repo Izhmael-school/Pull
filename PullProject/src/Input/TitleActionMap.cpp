@@ -41,7 +41,7 @@ void TitleActionMap::Start() {
 	AddButton(
 		static_cast<int>(TitleAction::Click),
 		InputType::PadButton,
-		XINPUT_BUTTON_B
+		XINPUT_BUTTON_A
 	);
 
 	// 値の初期化
