@@ -23,10 +23,10 @@
 #include "../../Definition/CommonModule/ActionMapData.h"
 #include "Application.h"
 #include "Generator/CoinGenerator.h"
+#include "../../UI/Scene/MainGameScreen.h"
 
 #include <DxLib.h>
 #include <format>
-
 #include <ImGui/imgui.h>
 #include "Game/GameData.h"
  /*
@@ -47,6 +47,9 @@ void MainGameScene::Start() {
 void MainGameScene::Setup() {
 	// 複数生成防止処理
 	CollisionManager::GetInstance().Clear();
+
+	// メインゲーム用UIの準備
+	m_UIManager.PushScreen(std::make_unique<MainGameScreen>());
 
 	// ステージの初期化処理
 	StageManager& stageManager = StageManager::GetInstance();
@@ -191,7 +194,10 @@ void MainGameScene::Render() {
 	// プレイヤーの描画処理
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Render();
-	player->GetHands()->Render();
+	// プレイヤーの腕の取得
+	auto playerHand = player->GetHands();
+	// プレイヤーの腕の描画
+	playerHand->Render();
 
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
@@ -207,6 +213,11 @@ void MainGameScene::Render() {
 	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
 
 	Application::GetInstance().GetEffectManager().Render();
+
+	// UI表示
+	if (playerHand->IsLeverCatch()) {
+		m_UIManager.Draw();
+	}
 
 #if _DEBUG
 	ImGui::Begin("Score & Coin");

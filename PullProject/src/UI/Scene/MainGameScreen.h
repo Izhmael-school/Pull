@@ -13,9 +13,13 @@
 
 class MainGameScreen :public UIScreen {
 public:
-	// UI描画準備
+	
 	void Init() override {
-
+		// UI表示
+		auto actionUI = CreateUIObject<UIImage>(
+			LoadGraph("res/UI/actionUI.png"),
+			Vector2(0, 0)
+		);
 	}
 };
 

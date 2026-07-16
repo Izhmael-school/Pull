@@ -22,18 +22,18 @@ public:
             Vector2(100, 100)
         );
 
-        auto start = CreateUIObject<UIButton>();
-
-        auto image = std::make_unique<UIImage>(
-            LoadGraph("res/UI/StartButton.png"),
-            Vector2(10, 400)
-        );
-
-        start->AddChild(std::move(image));
-
-        start->SetOnClick([]() {
-            SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
-            });
+        // auto start = CreateUIObject<UIButton>();
+        // 
+        // auto image = std::make_unique<UIImage>(
+        //     LoadGraph("res/UI/StartButton.png"),
+        //     Vector2(10, 400)
+        // );
+        // 
+        // start->AddChild(std::move(image));
+        // 
+        // start->SetOnClick([]() {
+        //     SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
+        //     });
 
         // auto exit = CreateUIObject<UIButton>();
         // 
