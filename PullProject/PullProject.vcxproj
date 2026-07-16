@@ -230,6 +230,7 @@
     <ClCompile Include="src\Resource\Effect\EffectResource.cpp" />
     <ClCompile Include="src\Resource\Model\ModelResource.cpp" />
     <ClCompile Include="src\Resource\ResourceBase.cpp" />
+    <ClCompile Include="src\Resource\Shadow\ShadowMap.cpp" />
     <ClCompile Include="src\Scene\SceneBase.cpp" />
     <ClCompile Include="src\UI\Button\UIButton.cpp" />
     <ClCompile Include="src\UI\Font\FontManager.cpp" />
@@ -351,6 +352,7 @@
     <ClInclude Include="src\Resource\Effect\EffectResource.h" />
     <ClInclude Include="src\Resource\Model\ModelResource.h" />
     <ClInclude Include="src\Resource\ResourceBase.h" />
+    <ClInclude Include="src\Resource\Shadow\ShadowMap.h" />
     <ClInclude Include="src\Scene\SceneBase.h" />
     <ClInclude Include="src\UI\Button\UIButton.h" />
     <ClInclude Include="src\UI\Font\FontManager.h" />
