@@ -44,6 +44,15 @@ public:
 		/// </summary>
 		int thickness = 0;
 
+		/// <summary>
+		/// フォントタイプ
+		/// </summary>
+		int fontType = -1;
+
+		/// <summary>
+		/// 外枠のサイズ
+		/// </summary>
+		int edgeSize = -1;
 
 		//=================================================
 		// DXライブラリでフォントを使用するために必要なもの
@@ -80,7 +89,7 @@ public:
 	/// <param name="size"></param>
 	/// <param name="thickness"></param>
 	/// <returns></returns>
-	int GetFontHandle( const std::string& fontName, int size, int thickness);
+	int GetFontHandle( const std::string& fontName, int size, int thickness , int fontType = -1,int edgeSize = -1);
 
 private:
 

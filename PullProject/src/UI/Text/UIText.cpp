@@ -68,7 +68,8 @@ void UIText::OnDraw()
 		static_cast<int>(worldPosition.y),
 		m_text.c_str(),
 		color,
-		m_fontHandle
+		m_fontHandle,
+		m_style.outLineColor
 		);
 }
 
@@ -82,6 +83,8 @@ void UIText::Build()
 	m_fontHandle = FontManager::GetInstance().GetFontHandle(
 		m_style.fontName,
 		m_style.fontSize,
-		m_style.fontThickness
+		m_style.fontThickness,
+		DX_FONTTYPE_ANTIALIASING_EDGE,
+		2
 	);
 }

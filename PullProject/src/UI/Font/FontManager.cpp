@@ -30,7 +30,7 @@ void FontManager::End() {
 	m_fonts.clear();
 }
 
-int FontManager::GetFontHandle(const std::string& fontName, int size, int thickness)
+int FontManager::GetFontHandle(const std::string& fontName, int size, int thickness, int fontType, int edgeSize)
 {
 
 	// 同じ設定のフォントがあるかチェック
@@ -39,16 +39,18 @@ int FontManager::GetFontHandle(const std::string& fontName, int size, int thickn
 		bool isSameFontName = ( font.fontName == fontName );
 		bool isSameSize = ( font.size == size);
 		bool isSameThickness = ( font.thickness == thickness );
+		bool isSameFontType = (font.fontType == fontType);
+		bool isSameEdgeSize = (font.edgeSize == edgeSize);
 
 		// 完全に一致していたら生成済みのハンドルを返す
-		if ( isSameFontName && isSameSize && isSameThickness ) {
+		if ( isSameFontName && isSameSize && isSameThickness && isSameFontType && isSameEdgeSize) {
 
 			return font.handle;
 		}
 	}
 
 	// ここまで来たら作成していないのでハンドルを作成する
-	int handle = CreateFontToHandle( fontName.c_str(), size, thickness);
+	int handle = CreateFontToHandle( fontName.c_str(), size, thickness, fontType,-1, edgeSize);
 
 	// FontDataを作成する
 

@@ -17,6 +17,11 @@ struct UITextStyle
 	int normalColor = white;
 
 	/// <summary>
+	/// ‰‚ÌF
+	/// </summary>
+	int outLineColor = black;
+
+	/// <summary>
 	/// ‘I‘ğ‚Ì•¶š‚ÌF
 	/// </summary>
 	int selectedColor = red;
