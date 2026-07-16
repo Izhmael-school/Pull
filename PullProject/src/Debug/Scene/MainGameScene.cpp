@@ -257,6 +257,7 @@ void MainGameScene::Cleanup() {
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	Application::GetInstance().GetEffectManager().Clean();
+	m_UIManager.PopScreen();
 }
 
 void MainGameScene::Reset() {
