@@ -11,6 +11,7 @@
 #include "../../Component/Collider/Collider.h"
 #include "../../Pad/PadBase.h"
 #include "../../Definition/Enum/PlayerActionEnum.h"
+#include "../Character/Enemy/EnemyBase.h"
 #include <DxLib.h>
 #include <ImGui/imgui.h>
 
@@ -24,6 +25,7 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	: GameObject(-1, position)
 	, mode(CameraMode::Event)
 	, target(VZero)
+	, lockOnTarget(VZero)
 	, speed(30.0f)
 	, shakePower(0.0f)
 	, shakeTime(0.0f)
@@ -32,6 +34,7 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, isShaking(false)
 	, isChaseXZ(false)
 	, isChaseY(false)
+	, lockOn(false)
 
 	, isEvent(false)
 
@@ -42,19 +45,32 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, TARGET_DISTANCE_MAX(30.0f)
 	, TARGET_THRESHOLD(0.5f)
 	, POSITION_Y_LIMIT_UP(-900.0f)
-	, POSITION_Y_LIMIT_DOWN(0.0f) {
+	, POSITION_Y_LIMIT_DOWN(0.0f)
+	, VISION_LENGTH(1500.0f)
+	, VISION_HEIGHT(150.0f)
+	, VISION_ANGLE(30.0f) 
+	, LOCK_ON_HEIGHT(200.0f)
+	, LOCK_ON_DISTANCE(1400.0f){
 	pTransform->SetRotation(rotation);
 }
 
 void CameraObject::Start() {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
 	pCollider->SetLayer(ColliderLayer::Camera);
+
+	// ロックオン用の視界
+	pLockOnVision = std::make_unique<RayCollider>(
+		this, VZero,
+		pTransform->GetForward(),
+		VISION_LENGTH, VISION_HEIGHT, VISION_ANGLE, 0);
+	//pLockOnVision->SetLayer(ColliderLayer::PlayerRay);
 }
 
 void CameraObject::Update() {
 	GameObject::Update();
 
 #if _DEBUG
+#endif
 	// 引っ張りモード
 	if (mode == CameraMode::Player || mode == CameraMode::Pull) {
 		bool catchGimmick = PlayerManager::GetInstance().GetPlayer()->GetHands()->IsLeverCatch();
@@ -65,13 +81,14 @@ void CameraObject::Update() {
 			mode = CameraMode::Player;
 		}
 	}
-#endif
 
 	// 各モード毎の更新処理
 	switch (mode) {
 	case CameraObject::CameraMode::Debug:
+#if _DEBUG
 		pCollider->SetResolve(false);
 		DebugUpdate();
+#endif
 		break;
 	case CameraObject::CameraMode::Player:
 		pCollider->SetResolve(true);
@@ -123,7 +140,6 @@ void CameraObject::Render() {
 }
 
 void CameraObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
-	int a = 1;
 }
 
 void CameraObject::DebugUpdate() {
@@ -159,6 +175,43 @@ void CameraObject::PlayerUpdate() {
 	// プレイヤーの入力
 	ActionState action = player->GetInputAction();
 
+	// ロックオン
+	if (action.button[static_cast<int>(PlayerAction::LockOn)]) {
+		lockOn = GetLockOnTarget();
+	}
+	// ロックオン解除
+	if (action.buttonUp[static_cast<int>(PlayerAction::LockOn)] ||
+		player->GetHands()->IsCatch()) {
+		lockOn = false;
+	}
+
+	if (!lockOn) {
+		// ターゲットの追いかけ
+		if (isChaseXZ)
+			TargetMoveXZ();
+		if (isChaseY)
+			TargetMoveY();
+		// ターゲットの移動に合わせてカメラも移動
+		pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
+	}
+	// ロックオン
+	else {
+		// カメラを対象の方に向け、プレイヤーの向きも変える
+		target = MyMath::Lerp(target, lockOnTarget, TARGET_MOVE_RATIO);
+		pTransform->LookAt(target);
+		VECTOR dir = VSub(lockOnTarget, player->GetPosition());
+		VECTOR dirNorm = VNorm(dir);
+		float yaw = MyMath::Rad2Deg(atan2f(-dirNorm.x, -dirNorm.z));
+		player->GetTransform()->SetRotation(VGet(0.0f, yaw, 0.0f));
+
+		// ターゲットの移動に合わせてカメラも移動
+		VECTOR pos = VScale(player->GetTransform()->GetForward(), PLAYER_DISTANCE);
+		float height = VDot(dir, dir);
+		height = sqrt(height);
+		pos.y += LOCK_ON_HEIGHT + height;
+		pTransform->SetPosition(VAdd(player->GetPosition(), pos));
+	}
+
 	// 入力方向を保持
 	VECTOR moveVec = VZero;
 	// コントローラーの入力(反転しておく)
@@ -186,17 +239,19 @@ void CameraObject::PlayerUpdate() {
 		}
 	}
 
-	// 入力があれば回転
-	if (moveVec.x != 0 ||
+	// 入力があれば回転(ロックオン中はNG)
+	if ((moveVec.x != 0 ||
 		moveVec.y != 0 ||
-		moveVec.z != 0) {	
+		moveVec.z != 0) && !lockOn) {
 		// カメラの移動
 		pTransform->AddPosition(moveVec, speed);
 	}
+#if _DEBUG
 	float y = target.y - GetPosition().y;
 	ImGui::Begin("CameraPositionY");
 	ImGui::Text("%f", y);
 	ImGui::End();
+#endif
 
 	// ターゲットの方を向く
 	pTransform->LookAt(target);
@@ -228,16 +283,6 @@ void CameraObject::PlayerUpdate() {
 		if (!player->IsJump() || player->GetHitGroundingFrag())
 			chasePlayerPosY = player->GetPosition().y;
 	}
-
-	// ターゲットの追いかけ
-	if (isChaseXZ)
-		TargetMoveXZ();
-	if (isChaseY)
-		TargetMoveY();
-
-	// ターゲットの移動に合わせてカメラも移動
-	pTransform->SetPosition(VAdd(target, VScale(pTransform->GetForward(), -PLAYER_DISTANCE)));
-
 }
 
 void CameraObject::PullUpdate() {
@@ -341,8 +386,50 @@ void CameraObject::TargetMoveY() {
 /*
  *	ロックオン
  */
-void CameraObject::LockOn() {
+bool CameraObject::GetLockOnTarget() {
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	VECTOR origin = VSub(player->GetPosition(), GetPosition());
+	//auto s = GetPosition();
+	pLockOnVision->SetOrigin(origin);
 
+#if _DEBUG
+	VECTOR aorigin = pLockOnVision->GetWorldOrigin();
+	ImGui::Begin("RayOrigin");
+	ImGui::Text("%f, %f, %f", aorigin.x, aorigin.y, aorigin.z);
+	ImGui::End();
+#endif
+
+	// プレイヤーと一番近いオブジェクトの位置を保存
+	VECTOR lockOnPos = VZero;
+	float length = FLT_MAX;
+	auto hitObjects = pLockOnVision->GetHitObjects();
+	for (auto object : hitObjects) {
+		if (object->GetTag() != Enemy &&
+			object->GetTag() != Hook &&
+			object->GetTag() != LeverTag)
+			continue;
+
+		auto enemy = dynamic_cast<EnemyBase*>(object);
+		if (enemy) {
+			// 敵がつかまったり投げられていたら無視
+			if (enemy->GetCurrentCaughtState() != 0)
+				continue;
+		}
+
+		VECTOR dir = VSub(object->GetPosition(), player->GetPosition());
+		float newLength = VDot(dir, dir);
+		if (length > newLength) {
+			length = newLength;
+			lockOnPos = object->GetPosition();
+		}
+	}
+	if (lockOnPos.x != 0.0f ||
+		lockOnPos.y != 0.0f ||
+		lockOnPos.z != 0.0f) {
+		lockOnTarget = lockOnPos;
+		return true;
+	}
+	return lockOn;
 }
 
 /*

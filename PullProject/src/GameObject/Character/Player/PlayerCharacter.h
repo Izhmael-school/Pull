@@ -11,7 +11,7 @@
 #include "../../../Definition/CommonModule/ActionMapData.h"
 #include <memory>
 
-class Cliider;
+class Collider;
 class EnemyBase;
 class ActionMapBase;
 
@@ -38,7 +38,6 @@ private:
 	bool throwAnimation;		// 投げアニメーション中
 	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
-
 
 	// 引っこ抜きライン
 	const float PULL_VALUE_MAX;

@@ -13,6 +13,7 @@ enum class PlayerAction {
 	ArmExtend,
 	CatchCancel,
 	CameraMove,
+	LockOn,
 
 	Max
 };

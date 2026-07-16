@@ -7,6 +7,7 @@
 #define _CAMERAOBJECT_H_
 
 #include "../GameObject.h"
+#include "../../Component/Collider/Collider.h"
 #include <unordered_map>
 #include <functional>
 
@@ -26,6 +27,7 @@ private:
 	};
 	CameraMode mode;		// カメラのモード
 	VECTOR target;			// 追従カメラのターゲット
+	VECTOR lockOnTarget;	// ロックオン中のターゲット
 	float speed;			// 移動速度
 	float shakePower;		// シェイクの大きさ
 	float shakeTime;		// シェイクの時間
@@ -34,9 +36,12 @@ private:
 	bool isShaking;			// シェイク中か否か
 	bool isChaseXZ;			// 追うか否か(XZ平面)
 	bool isChaseY;			// 追うか否か(Y軸)
-
-	bool isEvent;
+	bool lockOn;			// ロックオン
+	// ロックオン用の視界
+	std::unique_ptr<RayCollider> pLockOnVision;	
 	
+	bool isEvent;
+
 	// Y軸移動の上限
 	const float POSITION_Y_LIMIT_UP;
 	// Y軸移動の下限
@@ -53,6 +58,16 @@ private:
 	const float TARGET_DISTANCE_MAX;
 	// ターゲットとプレイヤーが重なったとみなす閾値
 	const float TARGET_THRESHOLD;
+	// 視界の射程
+	const float VISION_LENGTH;
+	// 視界の上下範囲
+	const float VISION_HEIGHT;
+	// 視界の扇形角度(度数)
+	const float VISION_ANGLE;
+	// ロックオン中の高さ
+	const float LOCK_ON_HEIGHT;
+	// ロックオン中の離れる距離
+	const float LOCK_ON_DISTANCE;
 
 public:
 	CameraObject(VECTOR position, VECTOR rotation);
@@ -97,9 +112,9 @@ private:
 	 */
 	void TargetMoveY();
 	/*
-	 *	ロックオン
+	 *	ロックオン対象取得
 	 */
-	void LockOn();
+	bool GetLockOnTarget();
 
 public:
 	/*
