@@ -168,6 +168,10 @@ void StageCollisionGenerator::GenerateFromUnity(
 		else if (b.type == "ground") {
 			col->SetLayer(ColliderLayer::Ground);
 		}
+		else if (b.type == "retry") {
+			col->SetLayer(ColliderLayer::Retry);
+			col->SetResolve(false);
+		}
 		else {
 			col->SetLayer(ColliderLayer::Stage);
 		}
