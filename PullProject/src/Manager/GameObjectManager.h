@@ -31,6 +31,7 @@ public:
 
 	void Render() override;
 
+	void Cleanup() override;
 	/*
 	 * @brief GameObjectを継承したオブジェクトを生成する
 	 * @param _modelName:Jsonに書いた名前

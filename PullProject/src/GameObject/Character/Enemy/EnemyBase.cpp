@@ -367,6 +367,10 @@ void EnemyBase::SetAnimEvent(std::string _animName, int _frameCount, std::functi
 void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	Character::OnTriggerEnter(_pSelf, _pOther);
 
+	// 当たったのがレイなら帰る
+	if (dynamic_cast<RayCollider*>(_pOther))
+		return;
+
 	// 壁に当たったらゴールとする
 	ColliderLayer layer = _pOther->GetLayer();
 	if (layer == ColliderLayer::Stage || layer == ColliderLayer::Wall || layer == ColliderLayer::BomBreakWall || layer == ColliderLayer::BreakWall || layer == ColliderLayer::ExitArea || layer == ColliderLayer::MissileWall)
@@ -398,6 +402,11 @@ void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 
 void EnemyBase::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	Character::OnTriggerStay(_pSelf, _pOther);
+
+	// 当たったのがレイなら帰る
+	if (dynamic_cast<RayCollider*>(_pOther))
+		return;
+
 	Tag tag = _pOther->GetGameObject()->GetTag();
 	if (tag == Player) {
 		if (rayAnswer)

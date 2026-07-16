@@ -77,7 +77,10 @@ void BreakWall::Render() {
 
 	// •`‰æ
 	GimmickObject::Render();
+
+#if _DEBUG
 	pCollider->Render();
+#endif
 }
 
 /*

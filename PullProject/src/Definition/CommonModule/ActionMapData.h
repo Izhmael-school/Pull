@@ -43,6 +43,7 @@ struct ActionState {
 enum class ActionMap {
 	Invalid = -1,
 	PlayerAction,
+	StageSelect,
 
 	Max
 };

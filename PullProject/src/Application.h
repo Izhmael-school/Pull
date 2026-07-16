@@ -9,6 +9,7 @@
 #include "Manager/EffectManager.h"
 #include "Manager/AudioResourceManager.h"
 #include "Manager/EffectResourceManager.h"
+#include "Resource/Shadow/ShadowMap.h"
 
 constexpr double FRAME_TIME = 1.0 / 60.0;
 class Application : public Singleton<Application>  {
@@ -18,6 +19,7 @@ private:
 	EffectManager effectManager;
 	AudioResourceManager audioResourceManager;
 	AudioManager audioManager;
+	ShadowMap shadowMap;
 
 	bool isGameEnd;
 public:

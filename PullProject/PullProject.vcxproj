@@ -199,6 +199,7 @@
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Input\ActionMapBase.cpp" />
     <ClCompile Include="src\Input\PlayerActionMap.cpp" />
+    <ClCompile Include="src\Input\StageSelectActionMap.cpp" />
     <ClCompile Include="src\Instance\Audio\AudioInstance.cpp" />
     <ClCompile Include="src\Instance\Effect\EffectInstance.cpp" />
     <ClCompile Include="src\Instance\InstanceBase.cpp" />
@@ -230,9 +231,13 @@
     <ClCompile Include="src\Resource\Effect\EffectResource.cpp" />
     <ClCompile Include="src\Resource\Model\ModelResource.cpp" />
     <ClCompile Include="src\Resource\ResourceBase.cpp" />
+    <ClCompile Include="src\Resource\Shadow\ShadowMap.cpp" />
     <ClCompile Include="src\Scene\SceneBase.cpp" />
     <ClCompile Include="src\UI\Button\UIButton.cpp" />
+    <ClCompile Include="src\UI\Font\FontManager.cpp" />
     <ClCompile Include="src\UI\Image\UIImage.cpp" />
+    <ClCompile Include="src\UI\Scene\MainGameScreen.cpp" />
+    <ClCompile Include="src\UI\Text\UIText.cpp" />
     <ClCompile Include="src\UI\UIManager.cpp" />
     <ClCompile Include="src\UI\UIObject.cpp" />
     <ClCompile Include="src\UI\UIScreen.cpp" />
@@ -272,6 +277,7 @@
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
     <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
+    <ClInclude Include="src\Definition\Enum\StageSelectActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
     <ClInclude Include="src\Fade\FadeBase.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
@@ -318,6 +324,7 @@
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\Input\ActionMapBase.h" />
     <ClInclude Include="src\Input\PlayerActionMap.h" />
+    <ClInclude Include="src\Input\StageSelectActionMap.h" />
     <ClInclude Include="src\Instance\Audio\AudioInstance.h" />
     <ClInclude Include="src\Instance\Effect\EffectInstance.h" />
     <ClInclude Include="src\Instance\InstanceBase.h" />
@@ -348,10 +355,15 @@
     <ClInclude Include="src\Resource\Effect\EffectResource.h" />
     <ClInclude Include="src\Resource\Model\ModelResource.h" />
     <ClInclude Include="src\Resource\ResourceBase.h" />
+    <ClInclude Include="src\Resource\Shadow\ShadowMap.h" />
     <ClInclude Include="src\Scene\SceneBase.h" />
     <ClInclude Include="src\UI\Button\UIButton.h" />
+    <ClInclude Include="src\UI\Font\FontManager.h" />
     <ClInclude Include="src\UI\Image\UIImage.h" />
+    <ClInclude Include="src\UI\Scene\MainGameScreen.h" />
     <ClInclude Include="src\UI\Scene\TitleScreen.h" />
+    <ClInclude Include="src\UI\Text\UIText.h" />
+    <ClInclude Include="src\UI\Text\UITextStyle.h" />
     <ClInclude Include="src\UI\UICommand.h" />
     <ClInclude Include="src\UI\UIGroup.h" />
     <ClInclude Include="src\UI\UIInput.h" />

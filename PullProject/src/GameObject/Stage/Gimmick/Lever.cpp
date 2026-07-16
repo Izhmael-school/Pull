@@ -58,7 +58,9 @@ void Lever::Render() {
 
 	// •`‰æ
 	GimmickObject::Render();
+#if _DEBUG
 	pCollider->Render();
+#endif
 }
 
 /*

@@ -13,6 +13,7 @@
 #include "Manager/EffectResourceManager.h"
 #include "Manager/AudioManager.h"
 #include "Manager/AudioResourceManager.h"
+#include "../../UI/UIManager.h"
 
 #include <memory>
 
@@ -23,7 +24,7 @@ private:
 	//EffectResourceManager effectResourceManager;	// エフェクトリソース管理
 	//AudioManager audioManager;						// オーディオ管理
 	//AudioResourceManager audioResourceManager;		// オーディオリソース管理
-
+	UIManager m_UIManager;
 
 	bool isStageClear = false;	// ステージクリア判定
 	

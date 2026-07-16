@@ -14,5 +14,6 @@ enum Tag {
 	Turrets,
 	LeverTag,
 	TailEnemy,
-	Explosion
+	Explosion,
+	Coin
 };

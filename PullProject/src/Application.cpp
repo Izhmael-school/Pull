@@ -11,6 +11,7 @@
 #include "Manager/InputSystemManager.h"
 #include "Manager/FadeManager.h"
 
+
 Application::Application()
 	:audioManager(audioResourceManager)
 	, effectManager(effectResourceManager)
@@ -87,7 +88,7 @@ int Application::DxLibInit() {
 		// Zバッファに書き込みを行うか
 		SetWriteZBuffer3D(TRUE); // default : FALSE
 	}
-	int light = CreateDirLightHandle(VGet(-1.0f, -1.0f, 0.0f));
+	int light = CreateDirLightHandle(VNorm(VGet(-1.0f, -1.0f, 0.0f)));
 
 	// ライティング
 	{
@@ -99,13 +100,13 @@ int Application::DxLibInit() {
 		SetLightSpcColorHandle(light, GetColorF(0.0f, 0.0f, 0.0f, 1.0f)); // スペキュラなし
 		SetLightEnableHandle(light, TRUE);
 		// グローバル環境光の設定
-		SetGlobalAmbientLight(GetColorF(0.5f, 0.5f, 0.5f, 0.5f));
-		//// 反射光の設定  Diffuse
+		SetGlobalAmbientLight(GetColorF(0.4f, 0.4f, 0.4f, 1.0f));
+		// 反射光の設定  Diffuse
 		//SetLightDifColor(GetColorF(1, 0, 0, 0));
 		//// 鏡面反射光の設定　Specular
 		//SetLightSpcColor(GetColorF(1, 0, 0.25f, 1));
-		//// 環境光の設定　Ambient
-		//SetLightAmbColor(GetColorF(1, 1, 1, 1));
+		// 環境光の設定　Ambient
+		SetLightAmbColor(GetColorF(0.3f, 0.3f, 0.3f, 1));
 	}
 #pragma endregion
 
@@ -148,6 +149,8 @@ void Application::ResourceDelete() {
 void Application::End() {
 	// ImGuiの終了処理
 	imgui.Release();
+
+	DeleteShadowMap(shadowMap.GetShadowMapHandle());
 }
 
 void Application::DxLibEnd() {

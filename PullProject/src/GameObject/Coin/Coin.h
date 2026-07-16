@@ -15,7 +15,7 @@ private:
 	int addScore;
 
 public:
-	Coin(int _modelHandle = -1, VECTOR _pos = VZero, Tag _tag = None);
+	Coin(int _modelHandle = -1, VECTOR _pos = VZero);
 	~Coin() = default;
 
 private:
