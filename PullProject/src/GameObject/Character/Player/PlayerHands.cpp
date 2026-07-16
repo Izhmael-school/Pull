@@ -13,6 +13,7 @@
 #include "PlayerCharacter.h"
 #include "../../../Pad/PadBase.h"
 #include "../../../Definition/Enum/PlayerActionEnum.h"
+#include "Application.h"
 #include <ImGui/imgui.h>
 
 /*
@@ -112,6 +113,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			handsState = HandsState::Catch;
 			// 敵の掴まった時処理;
 			enemy->CaughtAction();
+			// SE
+			Application::GetInstance().GetAudioManager().Play("PlayerCatch");
 		}
 		// デフォルトレイヤーは処理しない
 		else if (enemyLayer == ColliderLayer::Enemy) {
@@ -129,6 +132,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			// アニメーション
 			pAnimator->Play("Carry");
 			pOwner->GetAnimator()->Play("Carry");
+			// SE
+			Application::GetInstance().GetAudioManager().Play("PlayerCatch");
 		}
 	}
 
@@ -153,6 +158,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		// アニメーション
 		pAnimator->Play("Carry");
 		pOwner->GetAnimator()->Play("Carry");
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
 	}
 
 	// 当たったのがフックの場合
@@ -160,6 +167,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		handsState = HandsState::Catch;
 
 		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
 	}
 
 	// 当たったのがレバーの場合
@@ -169,6 +178,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		handsState = HandsState::Catch;
 
 		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
 	}
 }
 
