@@ -11,6 +11,7 @@
 #include "../Image/UIImage.h"
 #include "../UIManager.h"
 #include "UI/Text/UIText.h"
+#include "Manager/PlayerManager.h"
 
 class MainGameScreen :public UIScreen {
 	UIText* coinCount;
@@ -18,12 +19,11 @@ class MainGameScreen :public UIScreen {
 public:
 
 	void Init() override {
-		// UI表示
+
 		auto actionUI = CreateUIObject<UIImage>(
 			LoadGraph("res/UI/actionUI.png"),
 			Vector2(0, 0)
 		);
-
 		UITextStyle defaultStyle;
 		defaultStyle.fontSize = 50;
 		auto coinIcon = CreateUIObject<UIImage>(LoadGraph("res/Sprite/Game/CoinIcon.png"), Vector2(50, 50));

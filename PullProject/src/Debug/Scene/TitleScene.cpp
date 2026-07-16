@@ -24,6 +24,7 @@
 #include "../../Definition/CommonModule/ActionMapData.h"
 #include "Application.h"
 #include "../../UI/Scene/TitleScreen.h"
+#include "../../Definition/Enum/TitleActionEnum.h"
 
 #include <DxLib.h>
 #include <format>
@@ -54,6 +55,9 @@ TitleScene::~TitleScene() {
  */
 void TitleScene::Start() {
 	effectResourceManager.LoadEffectFromExternalFile();
+	// アクションマップを使用可能にする
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::TitleAction, true);
+
 }
 
 /*
@@ -118,11 +122,19 @@ void TitleScene::Update() {
 	CollisionManager::GetInstance().Update();
 	ColliderObjectManager::GetInstance().Update();
 
+	// TitleAction
+	action = InputSystemManager::GetInstance().GetInputState(ActionMap::TitleAction);
+	
+
 	// エフェクトの更新
 	EffectManager* effect = &Application::GetInstance().GetEffectManager();
 	effect->Update();
 
 	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_RETURN)) {
+		
+	}
+
+	if (action.buttonDown[static_cast<int>(TitleAction::Click)]) {
 		SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
 	}
 }

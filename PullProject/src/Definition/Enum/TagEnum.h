@@ -15,5 +15,6 @@ enum Tag {
 	LeverTag,
 	TailEnemy,
 	Explosion,
+	EnemyAttack,
 	Coin
 };

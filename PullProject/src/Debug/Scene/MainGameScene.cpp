@@ -78,6 +78,8 @@ void MainGameScene::Setup() {
 	// コインの生成
 	CoinGenerator::GenerateCoin(stageID, stageManager.GetCurrentStage()->GetStageModelHandle());
 
+	shadowMap.SetUp();
+
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
@@ -109,6 +111,8 @@ void MainGameScene::Update() {
 	player->Update();
 	// プレイヤーの腕の更新
 	player->GetHands()->Update();
+
+	shadowMap.Update();
 
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
@@ -188,6 +192,9 @@ void MainGameScene::Render() {
 	ColliderObjectManager::GetInstance().Render();
 
 #endif
+	shadowMap.Render();
+	shadowMap.Apply();
+
 	// ステージの描画処理
 	StageManager::GetInstance().Render();
 
@@ -207,6 +214,8 @@ void MainGameScene::Render() {
 
 	// GameObjectの描画
 	GameObjectManager::GetInstance().Render();
+
+	shadowMap.Disable();
 
 	// スカイドームを描画
 	MV1DrawModel(SkyModel);
@@ -240,4 +249,7 @@ void MainGameScene::Cleanup() {
 	// 使用中の敵全てを未使用化
 	enemyManager.UnuseAllEnemy();
 	Application::GetInstance().GetEffectManager().Clean();
+}
+
+void MainGameScene::Reset() {
 }
