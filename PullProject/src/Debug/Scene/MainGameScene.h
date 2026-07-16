@@ -13,6 +13,7 @@
 #include "Manager/EffectResourceManager.h"
 #include "Manager/AudioManager.h"
 #include "Manager/AudioResourceManager.h"
+#include "Resource/Shadow/ShadowMap.h"
 
 #include <memory>
 
@@ -24,6 +25,7 @@ private:
 	//AudioManager audioManager;						// オーディオ管理
 	//AudioResourceManager audioResourceManager;		// オーディオリソース管理
 
+	ShadowMap shadowMap;
 
 	bool isStageClear = false;	// ステージクリア判定
 	

@@ -44,6 +44,9 @@ void MainGameScene::Setup() {
 	// 複数生成防止処理
 	CollisionManager::GetInstance().Clear();
 
+	//	シャドウマップのSetUp
+	shadowMap.SetUp();
+
 	// ステージの初期化処理
 	StageManager::GetInstance().Initialize();
 	// ステージのロード
@@ -98,6 +101,8 @@ void MainGameScene::Update() {
 	// プレイヤーの腕の更新
 	player->GetHands()->Update();
 
+	shadowMap.Update();
+
 	// ギミックの更新
 	GimmickObjectManager::GetInstance().Update();
 	// 敵の更新
@@ -119,85 +124,66 @@ void MainGameScene::Update() {
 }
 
 void MainGameScene::Render() {
+	
+	shadowMap.Render();
 
-#if _DEBUG 線
+	//SetDrawScreen(DX_SCREEN_BACK);
+	//SetUseZBuffer3D(TRUE);
+	//SetWriteZBuffer3D(TRUE);
 
-	// オブジェクトの位置関係がわかるように地面にラインを描画する
-	{
-		VECTOR pos1, pos2;
+	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
+	MV1DrawModel(SkyModel);
 
-		// XZ平面 100.0f毎に1本ライン引き
-		{
-			pos1 = VGet(-5000.0f, 0, -5000.0f);
-			pos2 = VGet(-5000.0f, 0, 5000.0f);
+	shadowMap.Apply();
 
-			for (int i = 0; i < 100; i++) {
-				DrawLine3D(pos1, pos2, gray);
-
-				pos1.x += 100.0f;
-				pos2.x += 100.0f;
-			}
-
-			pos1 = VGet(-5000.0f, 0, -5000.0f);
-			pos2 = VGet(5000.0f, 0, -5000.0f);
-			for (int i = 0; i < 100; i++) {
-				DrawLine3D(pos1, pos2, GetColor(100, 100, 100));
-
-				pos1.z += 100.0f;
-				pos2.z += 100.0f;
-			}
-		}
-
-		// X軸
-		{
-			pos1 = VZero;
-			pos2 = VScale(VRight, 5000);	// VRight * 5000 をしてる
-			DrawLine3D(pos1, pos2, red);
-		}
-
-		// Y軸
-		{
-			pos1 = VZero;
-			pos2 = VScale(VUp, 5000);	    // VUp * 5000 をしてる
-			DrawLine3D(pos1, pos2, green);
-		}
-
-		// Z軸
-		{
-			pos1 = VZero;
-			pos2 = VScale(VForward, 5000);	// VRight * 5000 をしてる
-			DrawLine3D(pos1, pos2, blue);
-		}
-	}
-	// 当たり判定の描画処理
-#if _DEBUG
-	CollisionManager::GetInstance().Render();
-#endif
-	ColliderObjectManager::GetInstance().Render();
-
-#endif
 	// ステージの描画処理
 	StageManager::GetInstance().Render();
 
 	// プレイヤーの描画処理
 	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->Render();
-	player->GetHands()->Render();
+	if (player) {
+		player->Render();
+		if (player->GetHands()) {
+			player->GetHands()->Render();
+		}
+	}
 
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
-	
+
 	// 敵の描画処理
 	enemyManager.Render();
 
-	// GameObjectの描画
 	GameObjectManager::GetInstance().Render();
 
-	// スカイドームを描画
-	MV1DrawModel(SkyModel);
-	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
+	shadowMap.Disable();
 
 	Application::GetInstance().GetEffectManager().Render();
+
+#if _DEBUG // デバッグ線の描画
+	{
+		VECTOR pos1, pos2;
+		// XZ平面 100.0f毎に1本ライン引き
+		pos1 = VGet(-5000.0f, 0, -5000.0f);
+		pos2 = VGet(-5000.0f, 0, 5000.0f);
+		for (int i = 0; i < 100; i++) {
+			DrawLine3D(pos1, pos2, gray);
+			pos1.x += 100.0f; pos2.x += 100.0f;
+		}
+		pos1 = VGet(-5000.0f, 0, -5000.0f);
+		pos2 = VGet(5000.0f, 0, -5000.0f);
+		for (int i = 0; i < 100; i++) {
+			DrawLine3D(pos1, pos2, GetColor(100, 100, 100));
+			pos1.z += 100.0f; pos2.z += 100.0f;
+		}
+		// X, Y, Z軸
+		DrawLine3D(VZero, VScale(VRight, 5000), red);
+		DrawLine3D(VZero, VScale(VUp, 5000), green);
+		DrawLine3D(VZero, VScale(VForward, 5000), blue);
+	}
+	CollisionManager::GetInstance().Render();
+	ColliderObjectManager::GetInstance().Render();
+#endif
 }
 
 /*
