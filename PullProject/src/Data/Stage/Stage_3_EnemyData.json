@@ -2,23 +2,15 @@
     "data": [
         {
             "frameName": "Enemy_SP0",
-            "enemyType": 0
+            "enemyType": 2
         },
         {
             "frameName": "Enemy_SP1",
-            "enemyType": 0
+            "enemyType": 2
         },
         {
             "frameName": "Enemy_SP2",
             "enemyType": 2
-        },
-        {
-            "frameName": "Enemy_SP3",
-            "enemyType": 2
-        },
-        {
-            "frameName": "Enemy_SP4",
-            "enemyType": 0
         }
     ]
 }
