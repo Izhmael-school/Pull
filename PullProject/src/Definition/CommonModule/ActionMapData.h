@@ -44,6 +44,7 @@ enum class ActionMap {
 	Invalid = -1,
 	PlayerAction,
 	StageSelect,
+	TitleAction,
 
 	Max
 };

@@ -200,6 +200,7 @@
     <ClCompile Include="src\Input\ActionMapBase.cpp" />
     <ClCompile Include="src\Input\PlayerActionMap.cpp" />
     <ClCompile Include="src\Input\StageSelectActionMap.cpp" />
+    <ClCompile Include="src\Input\TitleActionMap.cpp" />
     <ClCompile Include="src\Instance\Audio\AudioInstance.cpp" />
     <ClCompile Include="src\Instance\Effect\EffectInstance.cpp" />
     <ClCompile Include="src\Instance\InstanceBase.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\StageSelectActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\TagEnum.h" />
+    <ClInclude Include="src\Definition\Enum\TitleActionEnum.h" />
     <ClInclude Include="src\Fade\FadeBase.h" />
     <ClInclude Include="src\GameObject\Camera\CameraObject.h" />
     <ClInclude Include="src\GameObject\Camera\EventCameraMovement.h" />
@@ -325,6 +327,7 @@
     <ClInclude Include="src\Input\ActionMapBase.h" />
     <ClInclude Include="src\Input\PlayerActionMap.h" />
     <ClInclude Include="src\Input\StageSelectActionMap.h" />
+    <ClInclude Include="src\Input\TitleActionMap.h" />
     <ClInclude Include="src\Instance\Audio\AudioInstance.h" />
     <ClInclude Include="src\Instance\Effect\EffectInstance.h" />
     <ClInclude Include="src\Instance\InstanceBase.h" />
