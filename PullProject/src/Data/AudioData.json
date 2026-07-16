@@ -58,5 +58,25 @@
     "name": "GetCoin",
     "path": "SE/GetCoin.mp3",
     "is3D": true
+  },
+  {
+    "name": "PlayerJump",
+    "path": "SE/PlayerJump.mp3",
+    "is3D": true
+  },
+  {
+    "name": "PlayerCatch",
+    "path": "SE/PlayerCatch.mp3",
+    "is3D": true
+  },
+  {
+    "name": "PlayerShot",
+    "path": "SE/PlayerShot.mp3",
+    "is3D": true
+  },
+  {
+    "name": "PlayerDead",
+    "path": "SE/PlayerDead.mp3",
+    "is3D": true
   }
 ]

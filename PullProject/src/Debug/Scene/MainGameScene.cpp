@@ -271,4 +271,6 @@ void MainGameScene::Reset() {
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->GetTransform()->SetPosition(playerPos);
 	player->SetIsDead(false);
+	// 使用中の敵全てを未使用化
+	enemyManager.UnuseAllEnemy();
 }
