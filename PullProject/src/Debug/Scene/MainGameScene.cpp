@@ -264,13 +264,9 @@ void MainGameScene::Cleanup() {
 
 void MainGameScene::Reset() {
 	// フェードに入る
-	// フェードに入る
 	FadeManager::GetInstance().FadeStart(FadeOut, FadeType::FadeNormal, 0.2f);
-	// ギミックの片付け処理
-	GimmickObjectManager::GetInstance().Reset();
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->GetTransform()->SetPosition(playerPos);
-	player->SetIsDead(false);
-	// 使用中の敵全てを未使用化
-	enemyManager.UnuseAllEnemy();
+	// シーンの片付けを呼ぶ
+	Cleanup();
+	// 自身のセットアップ処理を呼ぶ
+	this->Setup();
 }
