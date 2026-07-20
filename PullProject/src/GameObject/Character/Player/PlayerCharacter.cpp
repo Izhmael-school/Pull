@@ -208,10 +208,12 @@ void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 		_pOther->GetLayer() == ColliderLayer::Retry ||
 		otherTag == Explosion ||
 		otherTag == EnemyAttack
-		)
+		) {
 		isDead = true;
-	// SE
-	Application::GetInstance().GetAudioManager().Play("PlayerDead");
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerDead");
+
+	}
 
 }
 

@@ -63,7 +63,6 @@ void Turret::Render() {
 
 	// 描画
 	GimmickObject::Render();
-	pCollider->Render();
 }
 
 /*

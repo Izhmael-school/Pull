@@ -95,9 +95,11 @@ void Character::GravityFall() {
 
 	// 落下速度計算
 	fallSpeed += GRAVITY_ACCELERATION * 0.01f;
+#if _DEBUG
 	ImGui::Begin("Gravity");
 	ImGui::Text("%f", fallSpeed);
 	ImGui::End();
+#endif
 	if (fallSpeed >= FALL_SPEED_MAX)
 		fallSpeed = FALL_SPEED_MAX;
 

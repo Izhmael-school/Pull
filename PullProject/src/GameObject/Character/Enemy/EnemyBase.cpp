@@ -459,10 +459,6 @@ void EnemyBase::CatchStart() {
 void EnemyBase::Catching() {
 	ChangeNextState(OutofControl);
 	pAnimator->Play("Walk", 2.0f);
-	ImGui::Begin("EnemyCatching");
-
-	pAnimator->ChangeSpeed("Walk", 2.0f);
-	ImGui::End();
 }
 
 void EnemyBase::ThrowStart() {
