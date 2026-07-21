@@ -45,7 +45,7 @@ protected:
 protected:
 	std::unique_ptr<Animator> pAnimator;
 
-
+	int groundCount = 0;
 public:
 	Character(int _modelHandle, VECTOR _pos, Tag _tag = None);
 	~Character();

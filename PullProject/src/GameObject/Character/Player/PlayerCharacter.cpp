@@ -245,6 +245,7 @@ void PlayerCharacter::Move() {
 	if (action.buttonDown[static_cast<int>(PlayerAction::Jump)] &&
 		hitGroundingFrag) {
 		AddFallSpeed(-JUMP_POWER);
+		groundCount = 0;
 		hitGroundingFrag = false;
 		playerState = PlayerState::Jump;
 		// SE

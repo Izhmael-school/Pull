@@ -53,8 +53,10 @@ void Character::Setup() {
  */
 void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground)
-		hitGroundingFrag = true;
+		_pOther->GetLayer() == ColliderLayer::Ground) {
+		groundCount++;
+		hitGroundingFrag = (groundCount > 0);
+	}
 }
 
 /*
@@ -62,8 +64,14 @@ void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
  */
 void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground)
-		hitGroundingFrag = false;
+		_pOther->GetLayer() == ColliderLayer::Ground) {
+		groundCount--;
+
+		if (groundCount < 0)
+			groundCount = 0;
+
+		hitGroundingFrag = (groundCount > 0);
+	}
 }
 
 void Character::DrawVisionFanDebug() {

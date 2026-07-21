@@ -159,6 +159,7 @@ void StageCollisionGenerator::GenerateFromUnity(
 		col->SetMin(b.min);
 		col->SetMax(b.max);
 
+
 		if (b.type == "missilewall") {
 			col->SetLayer(ColliderLayer::MissileWall);
 		}
