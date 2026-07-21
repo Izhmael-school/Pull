@@ -86,6 +86,8 @@ void PlayerCharacter::Start() {
 		throwAnimation = false;
 		// SE
 		Application::GetInstance().GetAudioManager().Play("PlayerShot");
+		// 手使用状態に変更
+		playerState = PlayerState::UseHands;
 		}, 0.0f);
 	// ループしないように停止
 	// (なぜか再生終了時間で0にするとバグるので-0.2fしている)
@@ -101,6 +103,8 @@ void PlayerCharacter::Start() {
 	stanceCancelAnim->SetEvent([this]() {
 		pAnimator->ChangeSpeed("StanceCancel", 0.0f);
 		pHands->GetAnimator()->ChangeSpeed("StanceCancel", 0.0f);
+		// 待機状態に変更
+		playerState = PlayerState::Idle;
 		}, stanceCancelAnimTime - 0.2f);
 
 	// 投げアニメーションにイベントを仕込む
@@ -132,15 +136,18 @@ void PlayerCharacter::Update() {
 	// 入力アクションの更新
 	action = InputSystemManager::GetInstance().GetInputState(ActionMap::PlayerAction);
 
-	// ジャンプ後着地なら着地アニメーション再生
-	if (hitGroundingFrag && playerState == PlayerState::Jump) {
+	// ジャンプ後着地なら着地アニメーション再生(敵を持っていたらNG)
+	if (hitGroundingFrag && 
+		playerState == PlayerState::Jump &&
+		!pHands->IsEnemyCatch()) {
 		pAnimator->Play("Land", 1.0f);
 		pHands->GetAnimator()->Play("Land", 1.0f);
 	}
 	// 地面についているなら待機状態へ
-	// のけぞり中はNG
+	// のけぞり中と手使用中はNG
 	else if (hitGroundingFrag && 
-		playerState != PlayerState::LurchBackward) {
+		playerState != PlayerState::LurchBackward &&
+		playerState != PlayerState::UseHands) {
 		playerState = PlayerState::Idle;
 	}
 
@@ -156,17 +163,15 @@ void PlayerCharacter::Update() {
 	// 待機アニメーション(投げアニメーション中じゃなければ)
 	if (playerState == PlayerState::Idle &&
 		!throwAnimation) {
-		if (!pHands->IsArmExtending() &&
-			!pHands->IsCatch() &&
-			!pHands->IsArmReturning()) {
-			// ウデ使用中でなければ待機アニメーション
-			pAnimator->Play("Idle");
-			pHands->GetAnimator()->Play("Idle");
-		}
-		else if (pHands->IsEnemyCatch()){
+		if (pHands->IsEnemyCatch()) {
 			// 敵を掴んでるならそれ用の待機アニメーション
 			pAnimator->Play("CarryIdle");
 			pHands->GetAnimator()->Play("CarryIdle");
+		}
+		else if (playerState != PlayerState::UseHands){
+			// 手使用中でなければ待機アニメーション
+			pAnimator->Play("Idle");
+			pHands->GetAnimator()->Play("Idle");
 		}
 	}
 
@@ -184,6 +189,13 @@ void PlayerCharacter::Update() {
 	ImGui::Begin("PlayerAnimation");
 	ImGui::Text("%d", pAnimator->GetCurrentAnimation());
 	ImGui::Text("%d", pHands->GetAnimator()->GetCurrentAnimation());
+	ImGui::End();
+
+	ImGui::Begin("PlayerHitGrounding");
+	if (hitGroundingFrag)
+		ImGui::Text("true");
+	else
+		ImGui::Text("false");
 	ImGui::End();
 #endif
 }
@@ -235,12 +247,14 @@ void PlayerCharacter::Move() {
 		AddFallSpeed(-JUMP_POWER);
 		hitGroundingFrag = false;
 		playerState = PlayerState::Jump;
-		// ジャンプアニメーション(最初は高速再生)
-		pAnimator->Play("Jump", 10.0f);
-		pHands->GetAnimator()->Play("Jump", 10.0f);
 		// SE
 		Application::GetInstance().GetAudioManager().Play("PlayerJump");
-
+		// 敵を持ち上げている時はアニメーションしない
+		if (!pHands->IsEnemyCatch()) {
+			// ジャンプアニメーション(最初は高速再生)
+			pAnimator->Play("Jump", 10.0f);
+			pHands->GetAnimator()->Play("Jump", 10.0f);
+		}
 	}
 	
 	auto camera = CameraManager::GetInstance().GetCamera();
@@ -352,6 +366,7 @@ void PlayerCharacter::LurchBackward() {
 	lurchBackwardTime++;
 	if (lurchBackwardTime > LURCH_BACKWARD_TIME_MAX) {
 		playerState = PlayerState::Idle;
+		lurchBackwardTime = 0;
 	}
 
 #if _DEBUG
