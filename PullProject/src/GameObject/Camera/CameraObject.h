@@ -40,7 +40,10 @@ private:
 	// ロックオン用の視界
 	std::unique_ptr<RayCollider> pLockOnVision;	
 	
+	// カメライベント再生中か
 	bool isEvent;
+	// カメライベントが終わったか
+	bool isEventEnd;
 
 	// Y軸移動の上限
 	const float POSITION_Y_LIMIT_UP;
@@ -129,6 +132,16 @@ public:
 	 * @author Sekino
 	 */
 	inline void ChangeCameraMode(int _mode) { mode = static_cast<CameraMode>(_mode); }
+
+	/*
+	 * @brief イベントカメラが再生中か
+	 */
+	inline bool IsCameraEvent() const { return isEvent; }
+
+	/*
+	 * @brief カメライベントが終わったか
+	 */
+	inline bool IsCameraEventEnd() const { return !isEvent && isEventEnd; }
 };
 // 別名定義
 using CameraObjectPtr = std::shared_ptr<CameraObject>;

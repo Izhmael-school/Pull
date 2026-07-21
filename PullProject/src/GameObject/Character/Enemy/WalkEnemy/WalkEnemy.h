@@ -1,5 +1,6 @@
 #pragma once
 #include "../EnemyBase.h"
+
 class WalkEnemy : public EnemyBase{
 private:
 	void Start() override;
@@ -9,7 +10,8 @@ public:
 	~WalkEnemy();
 
 public:
-	void Setup() override;
+	void Update() override;
 
+	void Setup() override;
 };
 

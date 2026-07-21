@@ -33,6 +33,8 @@ private:
 	int SkyModel;
 
 	VECTOR playerPos;
+
+	bool useEventCamera = false;
 public:
 	MainGameScene();
 	~MainGameScene() = default;
@@ -51,6 +53,11 @@ public:
 
 	void Reset();
 
+	/*
+	 * @brief ステージを開始したときに入る
+	 * @author Sekino
+	 */
+	void StageStartSetup();
 };
 
 

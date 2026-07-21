@@ -41,7 +41,7 @@ void EventCameraMovement::Update(CameraObject* _camera) {
 
 void EventCameraMovement::InitEventCamera_StartStage(CameraObject* _camera,nlohmann::json_abi_v3_12_0::json _json) {
 	if (_json == nullptr) return;
-	int modelHandle = StageManager::GetInstance().GetCurrentStageHandle();
+	int modelHandle = StageManager::GetInstance().GetCurrentStage()->GetStageModelHandle();
 	if(modelHandle == -1) return;
 	// フレーム名からワールド座標を算出
 	std::string frameName = _json["lookAtStageFrameName"];

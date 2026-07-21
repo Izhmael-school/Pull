@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "Manager/TimeManager.h"
 
-void FadeBase::Render() {
+void FadeBase::Update() {
 	if (currentState == FadeNone)return;
 
 	// アルファの増減
@@ -20,17 +20,20 @@ void FadeBase::Render() {
 		currentState = FadeNone;
 		break;
 	}
+}
 
-	//	透明度を変化させてフェード処理とする
+void FadeBase::Render() {
+	// 描画をアルファモードにする
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, (int)alpha);
-	DrawFillBox(0, 0, 1920, 1080, 0x000000);
-	// ブレンドモードを元に戻す
+	DrawFillBox(0, 0, 1920, 1080, color);
+	// 戻す
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, -1);
 }
 
-void FadeBase::FadeStart(FadeState _state, float _time) {
+void FadeBase::FadeStart(FadeState _state, float _time, int _color) {
 	if (_state == FadeNone || currentState != FadeNone) return;
 	currentState = _state;
 	time = _time;
 	alpha = currentState == FadeIn ? BLEND_MAX : 0.0f;
+	color = _color;
 }

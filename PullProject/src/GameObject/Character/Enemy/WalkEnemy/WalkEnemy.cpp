@@ -5,12 +5,16 @@
 #include "Component/Collider/Collider.h"
 
 WalkEnemy::WalkEnemy(int _modelHandle, VECTOR _pos)
-	:EnemyBase(_modelHandle,_pos)
+	:EnemyBase(_modelHandle, _pos)
 {
 	Start();
 }
 
 WalkEnemy::~WalkEnemy(){
+}
+
+void WalkEnemy::Update() {
+	EnemyBase::Update();
 }
 
 void WalkEnemy::Setup(){

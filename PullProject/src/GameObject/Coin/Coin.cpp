@@ -13,6 +13,9 @@ Coin::Coin(int _modelHandle, VECTOR _pos)
 void Coin::Start() {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, 50);
 	GetTransform()->AddPosition(GetBottomFramePos());
+	pCollider->SetResolve(false);
+	isGravity = false;
+	GetTransform()->AddPosition(VUp, 200);
 }
 
 void Coin::Update() {
