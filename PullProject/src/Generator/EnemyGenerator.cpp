@@ -8,8 +8,12 @@
 #include "Definition/Const/EnemyConst.h"
 #include "Definition/CommonModule/MyString.h"
 #include "Definition/CommonModule/MyJson.h"
+#include "Manager/GameObjectManager.h"
+#include "GameObject/Pumpkin/Pumpkin.h"
 #include <string>
 #include <cassert>
+
+#undef Tag::TailEnemy;
 
 EnemyGenerator::EnemyGenerator()
 	:originEnemyModelHandle()
@@ -55,6 +59,7 @@ void EnemyGenerator::SetCreateEvent() {
 	CreateEnemyEvent[Shooter] = [this](int _modelHandle, VECTOR _pos) {return CreateShooter(_modelHandle, _pos);};
 	CreateEnemyEvent[Bomber] = [this](int _modelHandle, VECTOR _pos) {return CreateBomber(_modelHandle, _pos);};
 	CreateEnemyEvent[Tail] = [this](int _modelHandle, VECTOR _pos) {return CreateTail(_modelHandle, _pos);};
+	CreateEnemyEvent[Armor] = [this](int _modelHandle, VECTOR _pos) {return CreateArmor(_modelHandle, _pos);};
 }
 
 std::unique_ptr<EnemyBase> EnemyGenerator::CreateEnemy(EnemyType _type, VECTOR _pos) {
@@ -97,5 +102,17 @@ EnemyPtr EnemyGenerator::CreateBomber(int _modelHandle, VECTOR _pos) {
 }
 
 EnemyPtr EnemyGenerator::CreateTail(int _modelHandle, VECTOR _pos) {
-	return std::make_unique<TailEnemy>(_modelHandle, _pos);
+	return std::make_unique<class TailEnemy>(_modelHandle, _pos);
+}
+
+EnemyPtr EnemyGenerator::CreateArmor(int _modelHandle, VECTOR _pos) {
+	EnemyPtr enemy = std::make_unique<WalkEnemy>(_modelHandle, _pos);
+	int handle = enemy->GetModelHandle();
+	// フレームから座標を取得
+	int framePoint = MV1SearchFrame(handle, "PumpkinPoint");
+	VECTOR armorPoint = MV1GetFramePosition(handle, framePoint);
+	
+
+	GameObjectManager::GetInstance().CreateGameObject<Pumpkin>("Pumpkin", armorPoint,enemy->GetTransform());
+	return std::move(enemy);
 }

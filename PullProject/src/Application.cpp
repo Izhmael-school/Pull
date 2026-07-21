@@ -119,7 +119,9 @@ bool Application::Update() {
 	InputManager::GetInstance().Update();
 	InputSystemManager::GetInstance().Update();
 	FadeManager::GetInstance().Update();
+
 	SceneManager::GetInstance().Update();
+	
 	audioManager.Update();
 
 	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_ESCAPE)) {

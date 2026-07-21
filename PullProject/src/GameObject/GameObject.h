@@ -22,6 +22,15 @@ protected:
 	bool isActive;
 	int modelHandle;
 
+	/* @author Riku */
+	bool isGravity;									// 重力を掛けるかどうか
+	float fallSpeed;								// 落下速度
+	std::unique_ptr<Collider> pGroundingCollider;	// 接地判定用コライダー
+	bool hitGroundingFrag;
+
+	const float FALL_SPEED_MAX;						// 最大落下速度
+	const float GRAVITY_ACCELERATION;				// 重力加速度
+
 public:
 	GameObject(int _modelHandle = -1 ,VECTOR _pos = VZero,Tag _tag = None);
 	virtual ~GameObject();

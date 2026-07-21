@@ -27,7 +27,8 @@ void TimeManager::Update() {
 
 #if _DEBUG
 	ImGui::Begin("FPS");
-	ImGui::Text("FPS: %.1f", GetFPS());
+	ImGui::Text("FPS: %f", deltaTime);
+	ImGui::Text("FPS: %f", GetFPS());
 	ImGui::End();
 #endif
 }
