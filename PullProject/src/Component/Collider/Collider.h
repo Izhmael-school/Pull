@@ -33,6 +33,7 @@ enum class ColliderLayer {
 	Stage3,
 	Stage4,
 	Stage5,
+	GroundCheck,
 };
 
 class Collider {

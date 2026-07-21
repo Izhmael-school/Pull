@@ -365,7 +365,9 @@ bool CollisionManager::SphereVsAABB(Collider* a, Collider* b) {
 	VECTOR diff = VSub(center, closest);
 	float distSq = VDot(diff, diff);
 
-	return distSq <= (s->GetRadius() * s->GetRadius());
+	float r = s->GetRadius() + 2.0f;
+
+	return distSq <= r * r;
 }
 
 bool CollisionManager::AABBvsAABB(Collider* a, Collider* b) {
@@ -419,7 +421,7 @@ bool CollisionManager::CapsuleVsAABB(Collider* a, Collider* b) {
 	VECTOR min = box->GetMin();
 	VECTOR max = box->GetMax();
 
-	const int steps = 64;
+	const int steps = 256;
 
 	for (int i = 0; i <= steps; i++) {
 		float t = (float)i / steps;
@@ -574,6 +576,8 @@ void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
 	auto s = static_cast<SphereCollider*>(sCol);
 	auto box = static_cast<AABBCollider*>(boxCol);
 
+	if (s->GetLayer() == ColliderLayer::GroundCheck) return;
+
 	VECTOR center = s->GetWorldCenter();
 	VECTOR bmin = box->GetMin();
 	VECTOR bmax = box->GetMax();
@@ -666,7 +670,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 
 	float radius = cap->GetRadius();
 
-	const int steps = 64;
+	const int steps = 256;
 
 	float bestDistSq = FLT_MAX;
 	VECTOR bestSegPoint{};
@@ -760,7 +764,22 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	}
 
 
-	float penetration = radius - dist;
+	float penetration = radius - dist + 1.0f;
+
+
+	if (normal.y > 0.5f) {
+		VECTOR pos =
+			cap->GetGameObject()->GetTransform()->GetPosition();
+
+		pos.y += penetration;
+
+		cap->GetGameObject()
+			->GetTransform()
+			->SetPosition(pos);
+
+		printfDx("GROUND\n");
+		return;
+	}
 
 	VECTOR move =
 		VScale(normal, penetration);
@@ -768,6 +787,8 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	cap->GetGameObject()
 		->GetTransform()
 		->AddPosition(move);
+
+
 }
 
 void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
