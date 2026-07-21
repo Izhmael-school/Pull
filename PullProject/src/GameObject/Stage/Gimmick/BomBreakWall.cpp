@@ -32,7 +32,7 @@ void BomBreakWall::Setup() {
 	VECTOR scale = VGet(15.9f, 7.0f, 8.12f);
 	CalculateLocalAABB(minPos, maxPos, scale, this->GetRotation());
 	// コライダーを付与
-	pCollider = std::make_unique<AABBCollider>(this, minPos,maxPos);
+	pCollider = std::make_unique<AABBCollider>(this, minPos, maxPos);
 	pCollider->SetLayer(ColliderLayer::BreakWall);
 }
 
@@ -92,12 +92,15 @@ void BomBreakWall::OpacityChange() {
 	// α値を徐々に減らしていく
 	opacity -= fadeSpeed;
 
+	if (opacity <= 0.8f) {
+		// 当たり判定削除
+		CollisionManager::GetInstance().UnRegister(pCollider.get());
+
+	}
+
 	// 0以下対策
 	if (opacity <= 0.0f) {
 		opacity = 0.0f;
-
-		// 当たり判定削除
-		CollisionManager::GetInstance().UnRegister(pCollider.get());
 
 		// 消えた判定にする
 		isFading = false;

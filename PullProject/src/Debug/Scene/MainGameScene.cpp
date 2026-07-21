@@ -230,10 +230,13 @@ void MainGameScene::Render() {
 
 	Application::GetInstance().GetEffectManager().Render();
 	
+	// 最前面UIScreenを取得
 	auto screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
-
-	screen->SetActionUIVisible(playerHand->IsLeverCatch());
-	
+	// レバーを掴んだ時のUI表示
+	screen->SetLeverUIVisible(playerHand->IsLeverCatch());
+	// 敵を掴んだ時のUI
+	screen->SetMisileUIVisible(playerHand->IsEnemyCatch());
+	// UI表示
     m_UIManager.Draw();
 
 #if _DEBUG
@@ -264,13 +267,9 @@ void MainGameScene::Cleanup() {
 
 void MainGameScene::Reset() {
 	// フェードに入る
-	// フェードに入る
-	FadeManager::GetInstance().FadeStart(FadeOut, FadeType::FadeNormal, 0.2f);
-	// ギミックの片付け処理
-	GimmickObjectManager::GetInstance().Reset();
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	player->GetTransform()->SetPosition(playerPos);
-	player->SetIsDead(false);
-	// 使用中の敵全てを未使用化
-	enemyManager.UnuseAllEnemy();
+	FadeManager::GetInstance().FadeStart(FadeIn, FadeType::FadeNormal, 1.0f);
+	// シーンの片付けを呼ぶ
+	Cleanup();
+	// 自身のセットアップ処理を呼ぶ
+	this->Setup();
 }

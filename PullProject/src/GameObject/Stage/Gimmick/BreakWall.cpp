@@ -120,7 +120,7 @@ void BreakWall::OnTriggered() {
 	// エフェクト
 	EffectManager* effect = &Application::GetInstance().GetEffectManager();
 	effect->Play("BreakWallSmoke", this->GetPosition(), 70.0f);
-	
+
 	// 音
 	AudioManager* audio = &Application::GetInstance().GetAudioManager();
 	audio->Play("BreakWall_BreakSE");
@@ -154,11 +154,15 @@ void BreakWall::OpacityChange() {
 	// α値を徐々に減らしていく
 	opacity -= fadeSpeed;
 
+	if (opacity <= 0.6f) {
+		// 当たり判定削除
+		CollisionManager::GetInstance().UnRegister(pCollider.get());
+
+	}
+
 	// 0以下対策
 	if (opacity <= 0.0f) {
 		opacity = 0.0f;
-		// 当たり判定削除
-		CollisionManager::GetInstance().UnRegister(pCollider.get());
 
 		// 消えた判定にする
 		isFading = false;
