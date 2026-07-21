@@ -7,11 +7,7 @@ Character::Character(int _modelHandle, VECTOR _pos, Tag _tag)
 	:GameObject(_modelHandle, _pos, _tag)
 	, point()
 	, rayAnswer(false)
-	, isGravity(false)
-	, fallSpeed(0.0f)
-	, FALL_SPEED_MAX(100.0f)
-	, GRAVITY_ACCELERATION(100.0f)
-	, hitGroundingFrag(false)
+
 {
 	Start();
 }
@@ -30,11 +26,7 @@ void Character::Update() {
 	if (pAnimator != nullptr)
 		pAnimator->Update();
 
-	/*
-	 *	@author Riku
-	 */
-	// 重力落下
-	GravityFall();
+
 
 	if (pGroundingCollider)
 		pGroundingCollider->Update();
@@ -72,38 +64,6 @@ void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
 		_pOther->GetLayer() == ColliderLayer::Ground)
 		hitGroundingFrag = false;
-}
-
-/*
- *	重力による落下処理
- *	@author Riku
- */
-void Character::GravityFall() {
-	// 重力がかかるまで処理しない
-	if (!isGravity) {
-		fallSpeed = 0.0f;
-		return;
-	}
-
-	// 接地していた場合は落下しない
-	if (hitGroundingFrag) {
-		// 落下速度を0にする
-		fallSpeed = 0.0f;
-		return;
-	}
-
-
-	// 落下速度計算
-	fallSpeed += GRAVITY_ACCELERATION * 0.01f;
-#if _DEBUG
-	ImGui::Begin("Gravity");
-	ImGui::Text("%f", fallSpeed);
-	ImGui::End();
-#endif
-	if (fallSpeed >= FALL_SPEED_MAX)
-		fallSpeed = FALL_SPEED_MAX;
-
- 	pTransform->AddPosition(VScale(VUp, -fallSpeed));
 }
 
 void Character::DrawVisionFanDebug() {

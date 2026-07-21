@@ -112,5 +112,28 @@ public:
 	 * @brief 離れた時
 	 */
 	virtual void OnTriggerExit(Collider* _pSelf, Collider* _pOther);
+
+private:
+	/*
+	 *	重力による落下処理
+	 *	@author Riku
+	 */
+	void GravityFall();
+	public:
+	/*
+ *	落下速度に指定した値を加える
+ *  @param	float	addValue	増加値
+ *	@author Riku
+ */
+	void AddFallSpeed(float addValue) {
+		fallSpeed += addValue;
+	}
+	/*
+	 *	重力の有効無効変更
+	 *  @author Riku
+	 */
+	void SetIsGravity(bool setValue) {
+		isGravity = setValue;
+	}
 };
 #endif // !_GAMEOBJECT_

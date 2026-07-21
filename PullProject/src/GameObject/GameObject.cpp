@@ -13,6 +13,11 @@ GameObject::GameObject(int _modelHandle, VECTOR _pos, Tag _tag)
 	:tag(_tag)
 	, isActive(true)
 	, modelHandle(_modelHandle)
+	, isGravity(false)
+	, fallSpeed(0.0f)
+	, FALL_SPEED_MAX(100.0f)
+	, GRAVITY_ACCELERATION(100.0f)
+	, hitGroundingFrag(false)
 {
 	pTransform = std::make_unique<Transform>();
 	pTransform->SetPosition(_pos);
@@ -40,6 +45,12 @@ void GameObject::Update() {
 	if (!isActive) return;
 
 	pTransform->Update();
+
+	/*
+ *	@author Riku
+ */
+ // 重力落下
+	GravityFall();
 
 	if (pCollider != nullptr)
 		pCollider->Update();
@@ -79,4 +90,32 @@ void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther)
 
 void GameObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther)
 {
+}
+
+/*
+ *	重力による落下処理
+ *	@author Riku
+ */
+void GameObject::GravityFall() {
+	// 重力がかかるまで処理しない
+	if (!isGravity) {
+		fallSpeed = 0.0f;
+		return;
+	}
+
+	// 接地していた場合は落下しない
+	if (hitGroundingFrag) {
+		// 落下速度を0にする
+		fallSpeed = 0.0f;
+		return;
+	}
+
+
+	// 落下速度計算
+	fallSpeed += GRAVITY_ACCELERATION * 0.01f;
+
+	if (fallSpeed >= FALL_SPEED_MAX)
+		fallSpeed = FALL_SPEED_MAX;
+
+	pTransform->AddPosition(VScale(VUp, -fallSpeed));
 }

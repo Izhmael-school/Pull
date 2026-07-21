@@ -44,14 +44,7 @@ protected:
 	bool rayAnswer;	// 視界内にいるか
 protected:
 	std::unique_ptr<Animator> pAnimator;
-	/* @author Riku */
-	bool isGravity;									// 重力を掛けるかどうか
-	float fallSpeed;								// 落下速度
-	std::unique_ptr<Collider> pGroundingCollider;	// 接地判定用コライダー
-	bool hitGroundingFrag;
-	
-	const float FALL_SPEED_MAX;						// 最大落下速度
-	const float GRAVITY_ACCELERATION;				// 重力加速度
+
 
 public:
 	Character(int _modelHandle, VECTOR _pos, Tag _tag = None);
@@ -71,33 +64,14 @@ public:
 
 	virtual void OnTriggerExit(Collider* _pSelf, Collider* _pOther);
 
-private:
-	/*
-	 *	重力による落下処理
-	 *	@author Riku
-	 */
-	void GravityFall();
+
 protected:
 	/*
 	 * @brief VisionFanのデバッグ表示
 	 */
 	void DrawVisionFanDebug();
 public:
-	/*
-	 *	落下速度に指定した値を加える
-	 *  @param	float	addValue	増加値
-	 *	@author Riku
-	 */
-	void AddFallSpeed(float addValue) {
-		fallSpeed += addValue;
-	}
-	/*
-	 *	重力の有効無効変更
-	 *  @author Riku
-	 */
-	void SetIsGravity(bool setValue) {
-		isGravity = setValue;
-	}
+
 
 	/*
 	 * @brief 扇状の視界
