@@ -89,7 +89,8 @@ void PlayerHands::Update() {
 	}
 
 #if _DEBUG
-	ImGui::Begin("CatchState");
+	ImGui::Begin("HandsState&CatchState");
+	ImGui::Text("%d", handsState);
 	ImGui::Text("%d", catchState);
 	ImGui::End();
 #endif
@@ -111,8 +112,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	pCatchCollider = _pOther;
 
 	auto enemy = dynamic_cast<EnemyBase*>(other);
-	// 当たったのが敵の場合
-	if (enemy) {
+	// 当たったのが敵の場合(通常状態以外はNG)
+	if (enemy && enemy->GetCurrentCaughtState() == 0) {
 		auto enemyLayer = enemy->GetCollider()->GetLayer();
 		// 尻尾の場合はレバーと同じように処理
 		if (_pOther->GetLayer() == ColliderLayer::Tail) {
@@ -271,8 +272,8 @@ void PlayerHands::HandsMove() {
  */
 void PlayerHands::CatchMoving() {
 	VECTOR dist = VSub(pOwner->GetPosition(), pTransform->GetPosition());
-	// 手とプレイヤーの距離の2乗
-	float distSq = VDot(dist, dist);
+	// 手とプレイヤーの距離(前方向)
+	float distSq = VDot(dist, pTransform->GetForward());
 	// 戻ってきたとみなす
 	if (distSq < RETURN_THRESHOLD) {
 		catchState = CatchState::None;

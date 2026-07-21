@@ -99,6 +99,9 @@ void PlayerCharacter::Start() {
 	// (なぜか再生終了時間で0にするとバグるので-0.2fしている)
 	auto stanceCancelAnim = pAnimator->GetAnimation("StanceCancel");
 	float stanceCancelAnimTime = pAnimator->GetTotalTime("StanceCancel");
+	stanceCancelAnim->SetEvent([this]() {
+		throwAnimation = false;
+		}, 0.0f);
 	// ループしないように停止
 	stanceCancelAnim->SetEvent([this]() {
 		pAnimator->ChangeSpeed("StanceCancel", 0.0f);
