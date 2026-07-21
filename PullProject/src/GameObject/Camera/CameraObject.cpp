@@ -305,9 +305,12 @@ void CameraObject::PullUpdate() {
 	float distanceValue = PLAYER_DISTANCE * zoomRatio;
 
 	// プレイヤーから離れた位置に配置
-	VECTOR distance = VScale(pTransform->GetForward(), -distanceValue);
+	VECTOR distance = VScale(player->GetTransform()->GetForward(), distanceValue);
 	VECTOR targetPos = VAdd(player->GetPosition(), distance);
+	targetPos.y = pTransform->GetLocalPosition().y;
 	pTransform->SetPosition(MyMath::Lerp(GetPosition(), targetPos, 0.2f));
+	// ターゲットの方を向く
+	pTransform->LookAt(target);
 }
 
 void CameraObject::EventUpdate() {
