@@ -10,5 +10,9 @@
   {
     "modelName": "Coin",
     "filePath": "res/Model/Object/Coin.mv1"
+  },
+  {
+    "modelName": "Pumpkin",
+    "filePath": "res/Model/Object/Pumpkin.mv1"
   }
 ]

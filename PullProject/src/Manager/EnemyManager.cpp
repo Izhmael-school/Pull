@@ -34,13 +34,7 @@ void EnemyManager::Update() {
 	for (auto& enemy : useEnemyArray) {
 		enemy->VisionFan(playerPos);
 		enemy->Update();
-#if _DEBUG
-		ImGui::Begin("EnemyAnim");
-		VECTOR p = enemy->GetPosition();
-		auto anim = enemy->GetAnimator();
-		ImGui::Text("%d | %f", anim->GetCurrentAnimation(),anim->GetAnimation(anim->GetCurrentAnimation())->playSpeed);
-		ImGui::End();
-#endif
+
 	}
 
 	// 配列からの除外

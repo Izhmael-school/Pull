@@ -20,6 +20,7 @@
  * author Sekino
  */
 #include "GameObject/Missile/Missile.h"
+#include "GameObject/Pumpkin/Pumpkin.h"
 
 PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag)
 	: Character(_modelHandle, _pos, _tag)
@@ -153,6 +154,30 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		missile->GetTransform()->SetPosition(CARRY_POSITION);
 		// 敵の掴まった時処理
 		missile->CaughtAction();
+		// 振動
+		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+		// アニメーション
+		pAnimator->Play("Carry");
+		pOwner->GetAnimator()->Play("Carry");
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
+	}
+	/*
+	 * @author Sekino
+	 */
+	auto pumpkin = dynamic_cast<Pumpkin*>(other);
+	if (pumpkin) {
+		// ステート変更
+		catchState = CatchState::EnemyCatch;
+		handsState = HandsState::Catch;
+		// 敵を一時的に子にする
+		pumpkin->GetTransform()->AttachParent(GetTransform(), false);
+		// 敵の掴まった時処理
+		//VECTOR catchPos = VSub(missile->GetPosition(), GetPosition());
+		pumpkin->GetTransform()->SetRotation(GetRotation());
+		pumpkin->GetTransform()->SetPosition(CARRY_POSITION);
+		// 敵の掴まった時処理
+		pumpkin->CaughtAction();
 		// 振動
 		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 		// アニメーション
@@ -318,6 +343,26 @@ void PlayerHands::CatchUpdate() {
 			missile->GetTransform()->DetachParent();
 			// 位置をワールド座標へ
 			missile->GetTransform()->AddPosition(GetPosition());
+			// アニメーション再生
+			pAnimator->Play("Throw", 1.0f);
+			pOwner->GetAnimator()->Play("Throw", 1.0f);
+		}
+	}
+
+	/*
+	 * @author Sekino
+	 */
+	auto pumpkin = dynamic_cast<Pumpkin*>(catchObject);
+	if (pumpkin) {
+		// かぼちゃを離す
+		if (release) {
+			pumpkin->ThrownAction(GetTransform()->GetForward());
+			catchState = CatchState::None;
+			handsState = HandsState::ArmsReturning;
+			// 子じゃなくする
+			pumpkin->GetTransform()->DetachParent();
+			// 位置をワールド座標へ
+			pumpkin->GetTransform()->AddPosition(GetPosition());
 			// アニメーション再生
 			pAnimator->Play("Throw", 1.0f);
 			pOwner->GetAnimator()->Play("Throw", 1.0f);

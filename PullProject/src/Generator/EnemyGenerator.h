@@ -56,6 +56,11 @@ private:
 	 * @brief 尻尾を掴める敵の生成
 	 */
 	EnemyPtr CreateTail(int _modelHandle, VECTOR _pos);
+
+	/*
+	 * @brief 鎧を着ている敵の生成
+	 */
+	EnemyPtr CreateArmor(int _modelHandle, VECTOR _pos);
 public:
 	/*
 	 * @brief 敵の生成
