@@ -7,11 +7,16 @@
 #include "Component/CaughtObject.h"
 
 class Pumpkin : public GameObject ,public CaughtObject{
+private:
+	VECTOR thrownDir;
+
 public:
 	Pumpkin(int _modelHandle = -1, VECTOR _pos = VZero, Transform* _parent = nullptr);
 	~Pumpkin() = default;
 
 public:
+	void Update();
+
 	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 
 	/*
