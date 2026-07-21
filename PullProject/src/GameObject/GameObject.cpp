@@ -96,8 +96,10 @@ void GameObject::DeleteModel() {
  */
 void GameObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground)
-		hitGroundingFrag = true;
+		_pOther->GetLayer() == ColliderLayer::Ground) {
+		groundCount++;
+		hitGroundingFrag = (groundCount > 0);
+	}
 }
 
 void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
@@ -109,8 +111,14 @@ void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
  */
 void GameObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground)
-		hitGroundingFrag = false;
+		_pOther->GetLayer() == ColliderLayer::Ground) {
+		groundCount--;
+
+		if (groundCount < 0)
+			groundCount = 0;
+
+		hitGroundingFrag = (groundCount > 0);
+	}
 }
 
 /*
