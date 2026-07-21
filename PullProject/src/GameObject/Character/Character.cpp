@@ -7,7 +7,7 @@ Character::Character(int _modelHandle, VECTOR _pos, Tag _tag)
 	:GameObject(_modelHandle, _pos, _tag)
 	, point()
 	, rayAnswer(false)
-	,isGravity(false)
+	, isGravity(false)
 	, fallSpeed(0.0f)
 	, FALL_SPEED_MAX(100.0f)
 	, GRAVITY_ACCELERATION(100.0f)
@@ -61,7 +61,7 @@ void Character::Setup() {
  */
 void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetGameObject()->GetTag() == Ground)
+		_pOther->GetLayer() == ColliderLayer::Ground)
 		hitGroundingFrag = true;
 }
 
@@ -70,7 +70,7 @@ void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
  */
 void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetGameObject()->GetTag() == Ground)
+		_pOther->GetLayer() == ColliderLayer::Ground)
 		hitGroundingFrag = false;
 }
 

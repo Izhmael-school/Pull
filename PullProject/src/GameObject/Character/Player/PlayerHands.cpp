@@ -52,8 +52,9 @@ void PlayerHands::Update() {
 		// 掴み更新処理
 		CatchUpdate();
 		
-		// 掴み解除
-		if (action.buttonDown[static_cast<int>(PlayerAction::CatchCancel)]) {
+		// 掴み解除(なにかを持ち上げている場合はNG)
+		if (action.buttonDown[static_cast<int>(PlayerAction::CatchCancel)] &&
+			catchState != CatchState::EnemyCatch) {
 			handsState = HandsState::ArmsReturning;
 			catchState = CatchState::None;
 			// 引っこ抜き解除時処理を呼ぶ
@@ -85,6 +86,12 @@ void PlayerHands::Update() {
 	if (catchState == CatchState::PillerCatch) {
 		CatchMoving();
 	}
+
+#if _DEBUG
+	ImGui::Begin("CatchState");
+	ImGui::Text("%d", catchState);
+	ImGui::End();
+#endif
 }
 
 void PlayerHands::Render() {

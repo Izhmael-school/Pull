@@ -26,6 +26,7 @@ private:
 		Move,			// 移動
 		Jump,			// ジャンプ
 		LurchBackward,	// のけぞり
+		UseHands,		// 手使用
 
 		Max
 	};
