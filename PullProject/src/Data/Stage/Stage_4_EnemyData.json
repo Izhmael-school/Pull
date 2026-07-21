@@ -2,11 +2,15 @@
     "data": [
         {
             "frameName": "Enemy_SP0",
-            "enemyType": 0
+            "enemyType": 0,
+            "wanderingRadius": 1000.0,
+            "rotationY": 0.0
         },
         {
             "frameName": "Enemy_SP1",
-            "enemyType": 0
+            "enemyType": 0,
+            "wanderingRadius": 1000.0,
+            "rotationY": 0.0
         }
     ]
 }

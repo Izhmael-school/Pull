@@ -66,7 +66,7 @@ public:
 	/*
 	 * @brief 敵の使用
 	 */
-	void UseEnemy(EnemyType _type,VECTOR _pos);
+	void UseEnemy(EnemyType _type,VECTOR _pos,float _wanderingRadius,float _rotY);
 
 	/*
 	 * @brief 使用中の敵全てを未使用化

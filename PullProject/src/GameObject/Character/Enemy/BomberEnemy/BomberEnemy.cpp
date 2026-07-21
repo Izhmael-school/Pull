@@ -1,5 +1,8 @@
 #include "BomberEnemy.h"
 #include "Manager/TimeManager.h"
+#include "GameObject/Stage/Gimmick/BomBreakWall.h"
+#include "Component/Collider/Collider.h"
+#include "Manager/ColliderObjectManager.h"
 
 BomberEnemy::BomberEnemy(int _modelHandle, VECTOR _pos)
 	:EnemyBase(_modelHandle, _pos)
@@ -43,8 +46,13 @@ void BomberEnemy::HitObject() {
 
 void BomberEnemy::Explosion() {
 	// 爆発を作る
-	sphereEvent(GetPosition(), 1000,Tag::Explosion,0.1f);
-	effectEvent("Explosion", GetPosition(), 200.0f, VZero);
+	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300, Tag::Explosion, 0.1f, [](Collider* _pOther) {
+		auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
+		if (breakWall != nullptr) {
+			breakWall->ActivGimmick(true);
+		}
+		});
+	effectEvent("Explosion", GetPosition(), 50.0f, VZero);
 	audioEvent("Explosion", 255.0f, false, GetPosition(), 1000.0f);
 	// 自分を消すように要請する
 	wantUnuse = true;
@@ -65,7 +73,7 @@ void BomberEnemy::Blinking() {
 		explosionElapsedTime += TimeManager::GetInstance().GetDeltaTime();
 	}
 
-	int currentLevel = min(currentExplosionLevel, EXPLOSION_LEVEL - 1);
+	int currentLevel = std::min(currentExplosionLevel, EXPLOSION_LEVEL - 1);
 	if (texChangeElapsedTime >= COLOR_CHANGE_INTERVAL[currentLevel]) {
 		if (!isNoTexture) {
 			// 段階に応じて色の変化

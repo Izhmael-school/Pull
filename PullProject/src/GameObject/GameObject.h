@@ -31,6 +31,7 @@ protected:
 	const float FALL_SPEED_MAX;						// 最大落下速度
 	const float GRAVITY_ACCELERATION;				// 重力加速度
 
+	int groundCount = 0;
 public:
 	GameObject(int _modelHandle = -1 ,VECTOR _pos = VZero,Tag _tag = None);
 	virtual ~GameObject();
