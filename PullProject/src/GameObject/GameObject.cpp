@@ -17,8 +17,7 @@ GameObject::GameObject(int _modelHandle, VECTOR _pos, Tag _tag)
 	, fallSpeed(0.0f)
 	, FALL_SPEED_MAX(100.0f)
 	, GRAVITY_ACCELERATION(100.0f)
-	, hitGroundingFrag(false)
-{
+	, hitGroundingFrag(false) {
 	pTransform = std::make_unique<Transform>();
 	pTransform->SetPosition(_pos);
 	Start();
@@ -28,8 +27,7 @@ GameObject::~GameObject() {
 	MV1DeleteModel(modelHandle);
 
 
-	if (pCollider)
-	{
+	if (pCollider) {
 		CollisionManager::GetInstance().UnRegister(pCollider.get());
 		pCollider.release();
 	}
@@ -46,11 +44,15 @@ void GameObject::Update() {
 
 	pTransform->Update();
 
+
 	/*
- *	@author Riku
- */
- // 重力落下
+	 *	@author Riku
+	 */
+	 // 重力落下
 	GravityFall();
+
+	if (pGroundingCollider)
+		pGroundingCollider->Update();
 
 	if (pCollider != nullptr)
 		pCollider->Update();
@@ -70,26 +72,45 @@ void GameObject::Render() {
 	if (pCollider != nullptr)
 		pCollider->Render();
 #endif
+
+
+#if _DEBUG
+	/*
+	 *	@author Riku
+	 */
+	if (pGroundingCollider)
+		pGroundingCollider->Render();
+#endif
 }
 
-void GameObject::Setup()
-{
+void GameObject::Setup() {
 }
 
 void GameObject::DeleteModel() {
 	MV1DeleteModel(modelHandle);
 }
 
-void GameObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther)
-{
+
+/*
+ *	@author Riku
+ */
+void GameObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pGroundingCollider.get() &&
+		_pOther->GetLayer() == ColliderLayer::Ground)
+		hitGroundingFrag = true;
 }
 
-void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther)
-{
+void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+
 }
 
-void GameObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther)
-{
+/*
+ *	@author Riku
+ */
+void GameObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pGroundingCollider.get() &&
+		_pOther->GetLayer() == ColliderLayer::Ground)
+		hitGroundingFrag = false;
 }
 
 /*

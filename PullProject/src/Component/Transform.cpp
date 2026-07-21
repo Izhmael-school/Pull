@@ -118,7 +118,7 @@ MATRIX Transform::CalcMatrix() {
 		matrix = local;
 		return matrix;
 	}
-	// 親の行列を先に適用する (親->ローカル の順で合成)
+	// 子の行列を先に適用する (子->親 の順で合成)
 	matrix = MMult(local, parent->matrix);
 
 	return matrix;

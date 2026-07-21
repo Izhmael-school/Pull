@@ -28,7 +28,9 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, canAttack(true)
 	, standbyElapsedTime(0.0f)
 	, thrownDir(VZero)
-	, footPos(0.0f) {
+	, footPos(0.0f)
+	, wanderingRadius(1000)
+{
 }
 
 EnemyBase::~EnemyBase() {}
@@ -154,14 +156,16 @@ void EnemyBase::Render() {
 
 #if _DEBUG
 	DrawVisionFanDebug();
-	DrawCone3D(spawnPoint, VAdd(spawnPoint, VUp), WANDERING_RADIUS, 16, green, green, false);
+	DrawCone3D(spawnPoint, VAdd(spawnPoint, VUp), wanderingRadius, 16, green, green, false);
 	DrawSphere3D(wanderingGoalPos, 10, 16, red, red, true);
 #endif
 }
 
 void EnemyBase::Setup() {
-	spawnPoint = GetPosition();
+	spawnPoint = GetTransform()->GetLocalPosition();
 	wanderingGoalPos = VGet(static_cast<float>(INT_MAX), 0, 0);
+
+	GetTransform()->SetRotation(VScale(VRight, 0.0f));
 
 	if (pAnimator) {
 		// 攻撃終了時処理を持たせる
@@ -212,6 +216,8 @@ void EnemyBase::Cleanup() {
 		pCollider->SetEnable(false);
 	if (pGroundingCollider)
 		pGroundingCollider->SetEnable(false);
+
+	GetTransform()->DetachParent();
 }
 
 void EnemyBase::Move(VECTOR targetPos) {
@@ -240,8 +246,8 @@ void EnemyBase::WanderingAction() {
 	if (wanderingGoalPos.x == static_cast<float>(INT_MAX)) {
 		int x = static_cast<int>(spawnPoint.x);
 		int z = static_cast<int>(spawnPoint.z);
-		wanderingGoalPos.x = MyMath::RandomF(x - WANDERING_RADIUS, x + WANDERING_RADIUS);
-		wanderingGoalPos.z = MyMath::RandomF(z - WANDERING_RADIUS, z + WANDERING_RADIUS);
+		wanderingGoalPos.x = MyMath::RandomF(x - wanderingRadius, x + wanderingRadius);
+		wanderingGoalPos.z = MyMath::RandomF(z - wanderingRadius, z + wanderingRadius);
 	}
 
 	moveSpeed = 200;
@@ -377,12 +383,12 @@ void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		wanderingGoalPos = GetPosition();
 
 	// 当たった敵が投げられた敵なら
-	auto enemy = dynamic_cast<EnemyBase*>(_pOther->GetGameObject());
-	if (enemy) {
+	auto caught = dynamic_cast<CaughtObject*>(_pOther->GetGameObject());
+	if (caught) {
 		// 尻尾の敵にはしない
 		if (tag == Tag::TailEnemy)
 			return;
-		if (enemy->GetCurrentCaughtState() == CaughtState::Throwing)
+		if (caught->GetCurrentCaughtState() == CaughtState::Throwing)
 			HitObject();
 	}
 

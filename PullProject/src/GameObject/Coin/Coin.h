@@ -22,6 +22,8 @@ private:
 	void Start();
 
 public:
+	void Update();
+
 	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 
 	VECTOR GetBottomFramePos() { return MV1GetFramePosition(modelHandle, MV1SearchFrame(modelHandle, BOTTOM_FRAME_NAME)); }

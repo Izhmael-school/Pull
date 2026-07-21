@@ -25,45 +25,24 @@ void Character::Update() {
 
 	if (pAnimator != nullptr)
 		pAnimator->Update();
-
-
-
-	if (pGroundingCollider)
-		pGroundingCollider->Update();
 }
 
 void Character::Render() {
 	GameObject::Render();
 
-#if _DEBUG
-	/*
-	 *	@author Riku
-	 */
-	if (pGroundingCollider)
-		pGroundingCollider->Render();
-#endif
 }
 
 void Character::Setup() {
 	GameObject::Setup();
 }
 
-/*
- *	@author Riku
- */
 void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
-	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground)
-		hitGroundingFrag = true;
+	GameObject::OnTriggerEnter(_pSelf, _pOther);
 }
 
-/*
- *	@author Riku
- */
+
 void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
-	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground)
-		hitGroundingFrag = false;
+	GameObject::OnTriggerExit(_pSelf, _pOther);
 }
 
 void Character::DrawVisionFanDebug() {

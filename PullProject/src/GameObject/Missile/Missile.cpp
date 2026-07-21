@@ -66,14 +66,14 @@ void Missile::Update() {
 }
 
 void Missile::Explosion() {
-	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 300,Tag::Explosion,0.5f,[](Collider* _pOther){
+	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 150,Tag::Explosion,0.1f, [](Collider* _pOther) {
 		auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
-		if(breakWall != nullptr) {
+		if (breakWall != nullptr) {
 			breakWall->ActivGimmick(true);
 		}
-	});
+		});
 	isActive = false;
-	pEffectManager.Play("Explosion", GetPosition(), 50.0f, VZero);
+	pEffectManager.Play("Explosion", GetPosition(), 25.0f, VZero);
 	lifeElapsedTime = 0;
 	pEffect->Stop();
 	pAudioManager.Play("Explosion", 255.0f, false, GetPosition(), 1000.0f);

@@ -49,6 +49,8 @@ protected:
 	bool isWallHit;		// 壁に当たったか
 
 	int addScore;
+
+	int wanderingRadius; // 徘徊する半径
 protected:
 	EffectEvent effectEvent;
 	AudioEvent audioEvent;
@@ -79,6 +81,8 @@ public:
 	inline bool IsWantUnuse() const { return wantUnuse; }
 
 	void SetFootPos(float _footPos) { footPos = _footPos; }
+
+	void SetWanderingRadius(float _wanderingRadius) { wanderingRadius = _wanderingRadius; }
 protected:	// 行動
 	/*
 	 * @brief 移動

@@ -34,7 +34,6 @@ void EnemyManager::Update() {
 	for (auto& enemy : useEnemyArray) {
 		enemy->VisionFan(playerPos);
 		enemy->Update();
-
 	}
 
 	// 配列からの除外
@@ -56,7 +55,7 @@ void EnemyManager::Render() {
 	}
 }
 
-void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
+void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos, float _wanderingRadius, float _rotY) {
 	std::unique_ptr<EnemyBase> enemy;
 	// 未使用状態がいなければつくる
 	if (unuseEnemyArray[_type].size() == 0)
@@ -73,7 +72,11 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos) {
 		std::bind(&EnemyManager::PlayAnimEvent_Sphere, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4),
 		std::bind(&EnemyManager::PlayAnimEvent_AABB, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5));
 
-	enemy->GetTransform()->SetPosition(_pos);
+	Transform* t = enemy->GetTransform();
+	t->SetPosition(_pos);
+	t->SetRotation(VScale(VUp, _rotY));
+
+	enemy->SetWanderingRadius(_wanderingRadius);
 
 	CollisionManager::GetInstance().Register(enemy->GetCollider());
 
@@ -100,7 +103,7 @@ void EnemyManager::SpawnStageFramePoint(EnemyType _type, StageManager& _stageMan
 
 	// 今は敵の種類を選べないからWalkerで固定
 	for (int i = 0; i < count; i++) {
-		UseEnemy(_type, spawnPositions[i]);
+		UseEnemy(_type, spawnPositions[i],1000,0);
 	}
 }
 
@@ -119,7 +122,10 @@ void EnemyManager::SpawnStageFramePoint(int _stageID, StageManager& _stageManage
 
 		int typeNum = d["enemyType"];
 		EnemyType type = static_cast<EnemyType>(typeNum);
-		UseEnemy(type, spawnPositions[index]);
+		float wanderingRadius = d["wanderingRadius"];
+		float rotY = d["rotationY"];
+
+		UseEnemy(type, spawnPositions[index],wanderingRadius,rotY);
 		index++;
 	}
 }

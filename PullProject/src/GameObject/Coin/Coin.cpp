@@ -15,6 +15,10 @@ void Coin::Start() {
 	GetTransform()->AddPosition(GetBottomFramePos());
 }
 
+void Coin::Update() {
+	GetTransform()->AddRotation(VUp, 5);
+}
+
 void Coin::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pOther->GetGameObject()->GetTag() == Tag::Player) {
 
