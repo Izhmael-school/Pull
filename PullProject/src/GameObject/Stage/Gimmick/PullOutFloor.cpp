@@ -50,7 +50,7 @@ void PullOutFloor::Setup() {
 	// コライダーを付与
 	pCollider = std::make_unique<AABBCollider>(this, minPos, maxPos);
 	// レイヤーを設定
-	pCollider->SetLayer(ColliderLayer::Stage);
+	pCollider->SetLayer(ColliderLayer::Ground);
 
 }
 
