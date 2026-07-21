@@ -7,7 +7,6 @@
 #define _CAMERAOBJECT_H_
 
 #include "../GameObject.h"
-#include "../../Component/Collider/Collider.h"
 #include <unordered_map>
 #include <functional>
 
@@ -37,8 +36,6 @@ private:
 	bool isChaseXZ;			// 追うか否か(XZ平面)
 	bool isChaseY;			// 追うか否か(Y軸)
 	bool lockOn;			// ロックオン
-	// ロックオン用の視界
-	std::unique_ptr<RayCollider> pLockOnVision;	
 	
 	bool isEvent;
 
@@ -58,12 +55,7 @@ private:
 	const float TARGET_DISTANCE_MAX;
 	// ターゲットとプレイヤーが重なったとみなす閾値
 	const float TARGET_THRESHOLD;
-	// 視界の射程
-	const float VISION_LENGTH;
-	// 視界の上下範囲
-	const float VISION_HEIGHT;
-	// 視界の扇形角度(度数)
-	const float VISION_ANGLE;
+
 	// ロックオン中の高さ
 	const float LOCK_ON_HEIGHT;
 	// ロックオン中の離れる距離
@@ -111,10 +103,6 @@ private:
 	 *	ターゲットのY軸移動
 	 */
 	void TargetMoveY();
-	/*
-	 *	ロックオン対象取得
-	 */
-	bool GetLockOnTarget();
 
 public:
 	/*

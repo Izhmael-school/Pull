@@ -8,10 +8,10 @@
 
 #include "../Character.h"
 #include "PlayerHands.h"
+#include "../../../Component/Collider/Collider.h"
 #include "../../../Definition/CommonModule/ActionMapData.h"
 #include <memory>
 
-class Collider;
 class EnemyBase;
 class ActionMapBase;
 
@@ -40,6 +40,8 @@ private:
 	bool isDead;				// 死亡しているか
 	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
+	// ロックオン用の視界
+	std::unique_ptr<RayCollider> pLockOnVision;
 
 	// 引っこ抜きライン
 	const float PULL_VALUE_MAX;
@@ -63,6 +65,12 @@ private:
 	const float LURCH_BACKWARD_THRESHOLD;
 	// のけぞりの最大時間
 	const float LURCH_BACKWARD_TIME_MAX;
+	// 視界の射程
+	const float VISION_LENGTH;
+	// 視界の上下範囲
+	const float VISION_HEIGHT;
+	// 視界の扇形角度(度数)
+	const float VISION_ANGLE;
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
@@ -117,6 +125,12 @@ public:
 	 *	@param	float 移動速度
 	 */
 	void CatchMovingMove(float moveSpeed);
+	/*
+	 *	視界内にオブジェクトがあるかどうか
+	 *	@param[out]	VECTOR	視界内の一番近いオブジェクトの位置
+	 */
+	bool GetVisionObject(VECTOR& targetObject);
+	
 
 public:
 	/*

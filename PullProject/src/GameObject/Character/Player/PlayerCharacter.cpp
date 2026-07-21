@@ -12,7 +12,6 @@
 #include "../../../Pad/PadBase.h"
 #include "../../../Manager/InputSystemManager.h"
 #include "../../../Definition/Enum/PlayerActionEnum.h"
-#include "../../../Component/Collider/Collider.h"
 #include "Application.h"
 #include <DxLib.h>
 #include <ImGui/imgui.h>
@@ -39,12 +38,22 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, LURCH_BACKWARD_RATIO(0.95f)
 	, LURCH_BACKWARD_THRESHOLD(30.0f)
 	, LURCH_BACKWARD_TIME_MAX(70.0f)
+	, VISION_LENGTH(1500.0f)
+	, VISION_HEIGHT(150.0f)
+	, VISION_ANGLE(30.0f)
 {}
 
 void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 50), VScale(VUp, 10), 40, VZero);
 	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -30), 5);
 	isGravity = true;
+
+	// ロックオン用の視界
+	pLockOnVision = std::make_unique<RayCollider>(
+		this, VZero,
+		pTransform->GetForward(),
+		VISION_LENGTH, VISION_HEIGHT, VISION_ANGLE, 0);
+	pLockOnVision->SetLayer(ColliderLayer::PlayerRay);
 
 	// ジャンプアニメーションにイベントを仕込む
 	auto jumpAnim = pAnimator->GetAnimation("Jump");
@@ -443,6 +452,45 @@ void PlayerCharacter::PullReset() {
  */
 void PlayerCharacter::CatchMovingMove(float moveSpeed) {
 	pTransform->AddPosition(pTransform->GetForward(), -moveSpeed);
+}
+
+/*
+ *	視界内にオブジェクトがあるかどうか
+ *	@param[out]	GameObject*	視界内の一番近いオブジェクト
+ */
+bool PlayerCharacter::GetVisionObject(VECTOR& targetObject) {
+	// プレイヤーと一番近いオブジェクトの位置を保存
+	VECTOR lockOnPos = VZero;
+	float length = FLT_MAX;
+	auto hitObjects = pLockOnVision->GetHitObjects();
+	for (auto object : hitObjects) {
+		if (object->GetTag() != Enemy &&
+			object->GetTag() != Hook &&
+			object->GetTag() != LeverTag/* &&
+			object->GetTag() != Missile*/)
+			continue;
+
+		auto enemy = dynamic_cast<EnemyBase*>(object);
+		if (enemy) {
+			// 敵がつかまったり投げられていたら無視
+			if (enemy->GetCurrentCaughtState() != 0)
+				continue;
+		}
+
+		VECTOR dir = VSub(object->GetPosition(), GetPosition());
+		float newLength = VDot(dir, dir);
+		if (length > newLength) {
+			length = newLength;
+			lockOnPos = object->GetPosition();
+		}
+	}
+	if (lockOnPos.x != 0.0f ||
+		lockOnPos.y != 0.0f ||
+		lockOnPos.z != 0.0f) {
+		targetObject = lockOnPos;
+		return true;
+	}
+	return false;
 }
 
 /*

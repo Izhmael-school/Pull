@@ -46,9 +46,6 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, TARGET_THRESHOLD(0.5f)
 	, POSITION_Y_LIMIT_UP(-900.0f)
 	, POSITION_Y_LIMIT_DOWN(0.0f)
-	, VISION_LENGTH(1500.0f)
-	, VISION_HEIGHT(150.0f)
-	, VISION_ANGLE(30.0f) 
 	, LOCK_ON_HEIGHT(200.0f)
 	, LOCK_ON_DISTANCE(1400.0f){
 	pTransform->SetRotation(rotation);
@@ -57,13 +54,6 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 void CameraObject::Start() {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, 100);
 	pCollider->SetLayer(ColliderLayer::Camera);
-
-	// ロックオン用の視界
-	pLockOnVision = std::make_unique<RayCollider>(
-		this, VZero,
-		pTransform->GetForward(),
-		VISION_LENGTH, VISION_HEIGHT, VISION_ANGLE, 0);
-	//pLockOnVision->SetLayer(ColliderLayer::PlayerRay);
 }
 
 void CameraObject::Update() {
@@ -177,7 +167,7 @@ void CameraObject::PlayerUpdate() {
 
 	// ロックオン
 	if (action.button[static_cast<int>(PlayerAction::LockOn)]) {
-		lockOn = GetLockOnTarget();
+		lockOn = player->GetVisionObject(lockOnTarget);
 	}
 	// ロックオン解除
 	if (action.buttonUp[static_cast<int>(PlayerAction::LockOn)] ||
@@ -385,55 +375,6 @@ void CameraObject::TargetMoveY() {
 	else {
 		isChaseY = false;
 	}
-}
-
-/*
- *	ロックオン
- */
-bool CameraObject::GetLockOnTarget() {
-	auto player = PlayerManager::GetInstance().GetPlayer();
-	VECTOR origin = VSub(player->GetPosition(), GetPosition());
-	//auto s = GetPosition();
-	pLockOnVision->SetOrigin(origin);
-
-#if _DEBUG
-	VECTOR aorigin = pLockOnVision->GetWorldOrigin();
-	ImGui::Begin("RayOrigin");
-	ImGui::Text("%f, %f, %f", aorigin.x, aorigin.y, aorigin.z);
-	ImGui::End();
-#endif
-
-	// プレイヤーと一番近いオブジェクトの位置を保存
-	VECTOR lockOnPos = VZero;
-	float length = FLT_MAX;
-	auto hitObjects = pLockOnVision->GetHitObjects();
-	for (auto object : hitObjects) {
-		if (object->GetTag() != Enemy &&
-			object->GetTag() != Hook &&
-			object->GetTag() != LeverTag)
-			continue;
-
-		auto enemy = dynamic_cast<EnemyBase*>(object);
-		if (enemy) {
-			// 敵がつかまったり投げられていたら無視
-			if (enemy->GetCurrentCaughtState() != 0)
-				continue;
-		}
-
-		VECTOR dir = VSub(object->GetPosition(), player->GetPosition());
-		float newLength = VDot(dir, dir);
-		if (length > newLength) {
-			length = newLength;
-			lockOnPos = object->GetPosition();
-		}
-	}
-	if (lockOnPos.x != 0.0f ||
-		lockOnPos.y != 0.0f ||
-		lockOnPos.z != 0.0f) {
-		lockOnTarget = lockOnPos;
-		return true;
-	}
-	return lockOn;
 }
 
 /*
