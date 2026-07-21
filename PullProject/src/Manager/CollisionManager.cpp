@@ -749,6 +749,17 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 		}
 	}
 
+
+
+	if (fabsf(normal.y) > 0.7f) {
+		normal = VGet(0, normal.y > 0 ? 1.0f : -1.0f, 0);
+	}
+	else {
+		normal.y = 0.0f;
+		normal = VNorm(normal);
+	}
+
+
 	float penetration = radius - dist;
 
 	VECTOR move =
