@@ -27,7 +27,12 @@ enum class ColliderLayer {
 	Wall,
 	Ground,
 	PlayerRay,
-	Retry
+	Retry,
+	Stage1,
+	Stage2,
+	Stage3,
+	Stage4,
+	Stage5,
 };
 
 class Collider {

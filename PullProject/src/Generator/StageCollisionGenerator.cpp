@@ -172,6 +172,26 @@ void StageCollisionGenerator::GenerateFromUnity(
 			col->SetLayer(ColliderLayer::Retry);
 			col->SetResolve(false);
 		}
+		else if (b.type == "stage1") {
+			col->SetLayer(ColliderLayer::Stage1);
+			col->SetResolve(false);
+		}
+		else if (b.type == "stage2") {
+			col->SetLayer(ColliderLayer::Stage2);
+			col->SetResolve(false);
+		}
+		else if (b.type == "stage3") {
+			col->SetLayer(ColliderLayer::Stage3);
+			col->SetResolve(false);
+		}
+		else if (b.type == "stage4") {
+			col->SetLayer(ColliderLayer::Stage4);
+			col->SetResolve(false);
+		}
+		else if (b.type == "stage5") {
+			col->SetLayer(ColliderLayer::Stage5);
+			col->SetResolve(false);
+		}
 		else {
 			col->SetLayer(ColliderLayer::Stage);
 		}
