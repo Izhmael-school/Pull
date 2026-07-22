@@ -239,10 +239,14 @@ void PlayerCharacter::Render() {
 }
 
 void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pLockOnVision.get())
+		return;
 	Character::OnTriggerEnter(_pSelf, _pOther);
 }
 
 void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pLockOnVision.get())
+		return;
 	auto enemy = dynamic_cast<EnemyBase*>(_pOther->GetGameObject());
 	if (enemy) {
 		// 敵がつかまったり投げられていたら無視
@@ -264,6 +268,8 @@ void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pLockOnVision.get())
+		return;
 	Character::OnTriggerExit(_pSelf, _pOther);
 }
 
