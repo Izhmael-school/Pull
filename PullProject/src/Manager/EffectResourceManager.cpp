@@ -24,8 +24,11 @@ bool EffectResourceManager::LoadEffect(const std::string& _name, const std::stri
 }
 
 void EffectResourceManager::LoadEffectFromExternalFile() {
+#if _DEBUG
 	auto data = MyJson::LoadJsonFile(EFFECTDATA_FILEPATH);
-
+#else
+	auto data = MyJson::LoadBinary(RELEASE_EFFECTDATA_FILEPATH);
+#endif
 	for (auto& d : data) {
 		std::string name = d["name"];
 		std::string fileName = d["path"];

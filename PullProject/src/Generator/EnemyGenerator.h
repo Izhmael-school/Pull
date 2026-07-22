@@ -17,6 +17,10 @@ class EffectManager;
 
 using EnemyPtr = std::unique_ptr<EnemyBase>;
 
+
+const char const ENEMYDATA_FILEPATH[] = "src/Data/EnemyData.json";
+const char const RELEASE_ENEMYDATA_FILEPATH[] = "res/ExternalFile/Resource/EnemyData.msgpack";
+
 class EnemyGenerator{
 private:
 	std::vector<int> originEnemyModelHandle;	// モデルの配列

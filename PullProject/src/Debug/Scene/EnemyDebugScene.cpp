@@ -139,8 +139,11 @@ void EnemyDebugScene::Setup(){
 	CameraManager::GetInstance().CreateCamera();
 	audioManager.Play("test", 100.0f, true);
 	GimmickObjectManager::GetInstance().Update();
-	//generator.GenerateFromUnity("src/Data/Stage_4.json", CollisionManager::GetInstance());
+#if _DEBUG
 	generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
+#else
+	generator.GenerateFromUnity("res/ExternalFile/Stage/Collision/DebugStage.json", CollisionManager::GetInstance());
+#endif
 
 	VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
 	PlayerManager::GetInstance().CreatePlayer(pos);

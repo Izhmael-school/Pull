@@ -46,7 +46,11 @@ static const std::unordered_map<std::string, ResolveFunc> resolveFuncMap = {
 
 //	コンストラクタ・デストラクタ
 CollisionManager::CollisionManager() {
+#if _DEBUG
 	LoadCollisionRules("src/Data/collision_rules.json");
+#else
+	LoadCollisionRules("res/ExternalFile/Collision/collision_rules.msgpack");
+#endif
 }
 CollisionManager::~CollisionManager() {
 	UnRegisterAll();
@@ -308,7 +312,12 @@ void CollisionManager::Resolve(Collider* a, Collider* b) {
 // JSONから当たり判定ルールを読み込む
 void CollisionManager::LoadCollisionRules(const std::string& path) {
 	// JSONファイルを読み込む
+#if _DEBUG
 	auto json = MyJson::LoadJsonFile(path);
+#else
+	auto json = MyJson::LoadBinary(path);
+#endif
+
 
 	// ルールを読み込む
 	for (auto& rule : json["collision_rules"]) {
