@@ -56,6 +56,7 @@ void GameObject::Update() {
 
 	if (pCollider != nullptr)
 		pCollider->Update();
+
 }
 
 void GameObject::Render() {
@@ -84,6 +85,7 @@ void GameObject::Render() {
 }
 
 void GameObject::Setup() {
+	groundCount = 0;
 }
 
 void GameObject::DeleteModel() {
@@ -114,8 +116,11 @@ void GameObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 		_pOther->GetLayer() == ColliderLayer::Ground) {
 		groundCount--;
 
-		if (groundCount < 0)
+		if (groundCount <= 0) {
 			groundCount = 0;
+			hitGroundingFrag = false;
+			return;
+		}
 
 		hitGroundingFrag = (groundCount > 0);
 	}

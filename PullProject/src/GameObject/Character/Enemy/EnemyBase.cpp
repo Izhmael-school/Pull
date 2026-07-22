@@ -162,6 +162,7 @@ void EnemyBase::Render() {
 }
 
 void EnemyBase::Setup() {
+	GameObject::Setup();
 	spawnPoint = GetTransform()->GetLocalPosition();
 	wanderingGoalPos = VGet(static_cast<float>(INT_MAX), 0, 0);
 
@@ -236,7 +237,7 @@ void EnemyBase::Move(VECTOR targetPos) {
 	// 移動
 	GetTransform()->AddPosition(pos);
 	// ゴールを向く
-	GetTransform()->LookAtY(targetPos);
+	GetTransform()->GraduallyLookAtY(targetPos);
 	// アニメーションの再生
 	pAnimator->Play("Walk");
 }

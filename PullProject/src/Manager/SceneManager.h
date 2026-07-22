@@ -14,6 +14,8 @@ class SceneManager : public ManagerBase, public Singleton<SceneManager>{
 private:
 	std::unique_ptr<SceneBase> scene[static_cast<int>(SceneType::Max)];
 	SceneType currentSceneType;
+	SceneType nextSceneType;
+	bool isFade;
 
 public:
 	SceneManager();

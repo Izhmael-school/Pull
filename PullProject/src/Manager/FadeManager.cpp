@@ -12,15 +12,14 @@ void FadeManager::Update() {
 	// フェードが無ければ帰る
 	if (!currentFade) return;
 
+	// フェードの更新
+	currentFade->Update();
+
 	prevFadeState = currentFadeState;
 	currentFadeState = currentFade->GetCurrentState();
-	// フェードアウトが終わったらフェードインに入る
-	if (prevFadeState == FadeOut && currentFadeState == FadeNone) {
-		FadeEnd();
-		FadeStart(FadeIn, currentFadeType,time);
-	}
+
 	// フェードインが終わったら終了宣言
-	if (prevFadeState == FadeIn && currentFade->GetCurrentState() == FadeNone)
+	if (currentFade->GetCurrentState() == FadeNone)
 		FadeEnd();
 }
 
@@ -32,16 +31,17 @@ void FadeManager::Render() {
 }
 
 void FadeManager::FadeStart(FadeState _state, FadeType _type, float _time) {
-	if (currentFade || _state == FadeNone || _type == FadeMax || _time <= 0) return;
+	if (_state == FadeNone || _type == FadeMax || _time <= 0) return;
 
 	time = _time;
-	currentFade = std::move(fade[_type]);
-	currentFade->FadeStart(_state, _time / 2);
 	currentFadeType = _type;
 	currentFadeState = _state;
+	currentFade = fade[currentFadeType].get();
+	currentFade->FadeStart(_state, _time);
 }
 
 void FadeManager::FadeEnd() {
-	fade[currentFadeType] = std::move(currentFade);
 	currentFadeState = FadeNone;
+	currentFade = nullptr;
 }
+

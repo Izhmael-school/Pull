@@ -46,61 +46,21 @@ void MainGameScene::Start() {
  *	準備処理
  */
 void MainGameScene::Setup() {
-	// 複数生成防止処理
-	CollisionManager::GetInstance().Clear();
-
-
-	// ステージの初期化処理
-	StageManager& stageManager = StageManager::GetInstance();
-	stageManager.Initialize();
-	// ステージのロード
-	int stageID = stageManager.GetStageID();
-	stageManager.LoadStage(stageID);
-	stageManager.TransitionStage(stageID);
-
-	// 敵のスポーン位置を取得
-	enemyManager.SpawnStageFramePoint(stageID, stageManager);
-	// プレイヤーの生成位置を取得
-	playerPos = stageManager.GetPlayerSpawnPosition();
-
-	// カメラ生成
-	CameraManager::GetInstance().CreateCamera();
-	// カメラの取得
-	auto camera = CameraManager::GetInstance().GetCamera();
-	camera->ChangeCameraMode(1);
-	// プレイヤー生成
-	PlayerManager::GetInstance().CreatePlayer(playerPos);
-
-	// ギミックの更新
-	GimmickObjectManager::GetInstance().Update();
-
-	// コインの生成
-	CoinGenerator::GenerateCoin(stageID, stageManager.GetCurrentStage()->GetStageModelHandle());
-
-	shadowMap.SetUp();
-
-	// ステージの当たり判定を作成
-	StageCollisionGenerator generator;
-	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
-	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
-	// プレイヤーアクションマップを有効化
-	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
-
-	// スカイドームのモデルを取得
-	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
-
-	// BGMを再生
-	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
-	pAudioManager->Play("Stage1BGM", 100.0f, true);
-
-	// メインゲーム用UIの準備
-	m_UIManager.PushScreen(std::make_unique<MainGameScreen>());
+	StageStartSetup();
+	useEventCamera = false;
 }
 
 /*
  *	更新処理
  */
 void MainGameScene::Update() {
+	
+	// イベントカメラ
+	if (FadeManager::GetInstance().IsFadeInEnd() && !useEventCamera) {
+		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(3);
+		useEventCamera = true;
+	}
+
 	m_UIManager.Update(0.0f,UIInput());
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
@@ -255,7 +215,7 @@ void MainGameScene::Cleanup() {
 	GimmickObjectManager::GetInstance().Clear();
 	StageManager::GetInstance().RequestStageClear(false);
 	StageManager::GetInstance().Execute();
-	
+	GameObjectManager::GetInstance().Cleanup();
 	// 音
 	AudioManager* audio = &Application::GetInstance().GetAudioManager();
 	audio->Clean();
@@ -271,5 +231,57 @@ void MainGameScene::Reset() {
 	// シーンの片付けを呼ぶ
 	Cleanup();
 	// 自身のセットアップ処理を呼ぶ
-	this->Setup();
+	this->StageStartSetup();
+}
+
+void MainGameScene::StageStartSetup() {
+	// 複数生成防止処理
+	CollisionManager::GetInstance().Clear();
+
+
+	// ステージの初期化処理
+	StageManager& stageManager = StageManager::GetInstance();
+	stageManager.Initialize();
+	// ステージのロード
+	int stageID = stageManager.GetStageID();
+	stageManager.LoadStage(stageID);
+	stageManager.TransitionStage(stageID);
+
+	// 敵のスポーン位置を取得
+	enemyManager.SpawnStageFramePoint(stageID, stageManager);
+	// プレイヤーの生成位置を取得
+	playerPos = stageManager.GetPlayerSpawnPosition();
+
+	// カメラ生成
+	CameraManager::GetInstance().CreateCamera();
+	// カメラの取得
+	auto camera = CameraManager::GetInstance().GetCamera();
+	camera->ChangeCameraMode(1);
+	// プレイヤー生成
+	PlayerManager::GetInstance().CreatePlayer(playerPos);
+
+	// ギミックの更新
+	GimmickObjectManager::GetInstance().Update();
+
+	// コインの生成
+	CoinGenerator::GenerateCoin(stageID, stageManager.GetCurrentStage()->GetStageModelHandle());
+
+	shadowMap.SetUp();
+
+	// ステージの当たり判定を作成
+	StageCollisionGenerator generator;
+	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
+	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
+	// プレイヤーアクションマップを有効化
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
+
+	// スカイドームのモデルを取得
+	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
+
+	// BGMを再生
+	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
+	pAudioManager->Play("Stage1BGM", 100.0f, true);
+
+	// メインゲーム用UIの準備
+	m_UIManager.PushScreen(std::make_unique<MainGameScreen>());
 }

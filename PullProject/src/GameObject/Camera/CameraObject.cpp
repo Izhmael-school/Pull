@@ -35,6 +35,7 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, isChaseY(false)
 
 	, isEvent(false)
+	, isEventEnd(false)
 
 	, PLAYER_DISTANCE(1000)
 	, PULL_ZOOM_RATIO_MAX(0.95f)
@@ -86,7 +87,7 @@ void CameraObject::Update() {
 		PullUpdate();
 		break;
 	case CameraObject::CameraMode::Event:
-		pCollider->SetResolve(true);
+		pCollider->SetResolve(false);
 		EventUpdate();
 		break;
 	}
@@ -299,8 +300,10 @@ void CameraObject::EventUpdate() {
 
 	EventCameraMovement::Update(this);
 
-	if (EventCameraMovement::IsEventEnd())
+	if (EventCameraMovement::IsEventEnd()) {
 		isEvent = false;
+		isEventEnd = true;
+	}
 
 	/**/
 }

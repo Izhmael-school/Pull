@@ -168,6 +168,21 @@ void Transform::LookAt(VECTOR targetPos) {
 	rotation.x = MyMath::Rad2Deg(-atan2f(dir.y, horizontal));
 }
 
+void Transform::GraduallyLookAtY(VECTOR targetPos) {
+	// ターゲットへの方向ベクトル
+	VECTOR dir = VSub(targetPos, GetPosition());
+	// 重なってそうなら戻る
+	if (VSize(dir) <= 0.001f) return;
+	// 単位ベクトルへ変換
+	dir = VNorm(dir);
+
+	// XZ平面上の方向からヨーの目標角度を算出
+	float targetYaw = MyMath::Rad2Deg(atan2f(dir.x, dir.z));
+	float deltaTime = TimeManager::GetInstance().GetDeltaTime();
+	// ヨーだけ現在角度から目標角度へ最短経路で補間
+	rotation.y = MyMath::LerpAngle(rotation.y, targetYaw, 5.0f * deltaTime);
+}
+
 void Transform::AttachParent(Transform* _parent, bool isHoldWorld) {
 	if (!_parent) {
 #if _DEBUG

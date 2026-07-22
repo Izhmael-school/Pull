@@ -19,7 +19,7 @@ void Pumpkin::Update() {
 void Pumpkin::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	GameObject::OnTriggerEnter(_pSelf, _pOther);
 
-	if (GetCurrentCaughtState() == ::Throwing)
+	if (_pOther->GetGameObject()->GetTag() != Player && GetCurrentCaughtState() == ::Throwing)
 		HitObject();
 }
 

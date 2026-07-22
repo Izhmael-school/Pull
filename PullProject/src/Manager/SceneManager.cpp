@@ -38,7 +38,28 @@ void SceneManager::Start(){
 	scene[static_cast<int>(currentSceneType)]->Setup();
 }
 
-void SceneManager::Update(){
+void SceneManager::Update() {
+	if (isFade) {
+
+		FadeManager& fade = FadeManager::GetInstance();
+		// フェードアウトが終わったら
+		if (fade.IsFadeOutEnd()) {
+			// 後処理
+			scene[static_cast<int>(currentSceneType)]->Cleanup();
+			// 初期化
+			scene[static_cast<int>(nextSceneType)]->Setup();
+			currentSceneType = nextSceneType;
+			nextSceneType = SceneType::Invalid;
+			// フェードイン
+			fade.FadeStart(FadeIn, FadeNormal);
+			return;
+		}
+
+		if (fade.IsFadeInEnd()) {
+			isFade = false;
+		}
+	}
+
 	scene[static_cast<int>(currentSceneType)]->Update();
 
 #if _DEBUG
@@ -47,17 +68,14 @@ void SceneManager::Update(){
 #endif
 }
 
-void SceneManager::Render(){
+void SceneManager::Render() {
 	scene[static_cast<int>(currentSceneType)]->Render();
 }
 
-void SceneManager::ChangeScene(SceneType nextSceneType){
-	if(currentSceneType == nextSceneType || nextSceneType == SceneType::Invalid) return;
+void SceneManager::ChangeScene(SceneType _nextSceneType) {
+	if (currentSceneType == _nextSceneType || _nextSceneType == SceneType::Invalid) return;
 	// フェードに入る
-	FadeManager::GetInstance().FadeStart(FadeOut, FadeType::FadeNormal,0.2f);
-	// 現在のシーンの後処理
-	scene[static_cast<int>(currentSceneType)]->Cleanup();
-	// 次のシーンの前処理
-	scene[static_cast<int>(nextSceneType)]->Setup();
-	currentSceneType = nextSceneType;
+	FadeManager::GetInstance().FadeStart(FadeOut, FadeNormal);
+	isFade = true;
+	nextSceneType = _nextSceneType;
 }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 /*
  * @file MyMath.h
@@ -13,82 +13,82 @@
 #undef min
 
  /*
-  *  UIÀ‘•—p‚Ì2ŸŒ³ƒxƒNƒgƒ‹\‘¢‘Ì
+  *  UIå®Ÿè£…ç”¨ã®2æ¬¡å…ƒãƒ™ã‚¯ãƒˆãƒ«æ§‹é€ ä½“
   */
 struct Vector2 {
 public:
 	float x, y;
 
 	/*
-	 *  ƒ[ƒƒxƒNƒgƒ‹
+	 *  ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«
 	 */
 	static const Vector2 Zero;
 
 	/*
 	 * <summary>
-	 * X²‚Ì³•ûŒü‚Ì’PˆÊƒxƒNƒgƒ‹
-	 * Right,Left‚ÍŒ»ó—pˆÓ‚µ‚È‚¢
+	 * Xè»¸ã®æ­£æ–¹å‘ã®å˜ä½ãƒ™ã‚¯ãƒˆãƒ«
+	 * Right,Leftã¯ç¾çŠ¶ç”¨æ„ã—ãªã„
 	 */
 	static const Vector2 XAxis;
 
 	/*
-	 *	Y²‚Ì³•ûŒü‚Ì’PˆÊƒxƒNƒgƒ‹
-	 *  Up,Down‚ÍŒ»ó—pˆÓ‚µ‚È‚¢
+	 *	Yè»¸ã®æ­£æ–¹å‘ã®å˜ä½ãƒ™ã‚¯ãƒˆãƒ«
+	 *  Up,Downã¯ç¾çŠ¶ç”¨æ„ã—ãªã„
 	 */
 	static const Vector2 YAxis;
 
 	/*
-	 *	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 *	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 */
 	constexpr Vector2():x(0.0f),y(0.0f){}
 	/*
-	 *	ˆø”‚ ‚è‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 *	å¼•æ•°ã‚ã‚Šã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 */
 	constexpr Vector2(float x, float y) : x(x), y(y) {}
 
 	/*
-	 *	ƒ}ƒCƒiƒX‚ÌƒxƒNƒgƒ‹‚ğ•Ô‚·
+	 *	ãƒã‚¤ãƒŠã‚¹ã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
 	 */
 	Vector2 operator-() const;
 	
 	/*
-	 *	ƒxƒNƒgƒ‹‚Ì‰ÁZ
+	 *	ãƒ™ã‚¯ãƒˆãƒ«ã®åŠ ç®—
 	 */
 	Vector2 operator+(const Vector2& vec) const;
 
 	/*
-	 *	ƒxƒNƒgƒ‹‚ÌŒ¸Z
+	 *	ãƒ™ã‚¯ãƒˆãƒ«ã®æ¸›ç®—
 	 */
 	Vector2 operator-(const Vector2& vec) const;
 
 	/*
-	 *	ƒxƒNƒgƒ‹‚ÆƒXƒJƒ‰[‚ÌæZ
+	 *	ãƒ™ã‚¯ãƒˆãƒ«ã¨ã‚¹ã‚«ãƒ©ãƒ¼ã®ä¹—ç®—
 	 */
 	Vector2 operator*(float scale) const;
 
 	/*
-	 * ƒxƒNƒgƒ‹‚ÆƒXƒJƒ‰[‚ÌœZ
+	 * ãƒ™ã‚¯ãƒˆãƒ«ã¨ã‚¹ã‚«ãƒ©ãƒ¼ã®é™¤ç®—
 	 */
 	Vector2 operator/(float scale) const;
 
 	/*
-	 *	ƒxƒNƒgƒ‹‚ÆƒxƒNƒgƒ‹‚Ì‰ÁZ‘ã“ü‰‰Zq
+	 *	ãƒ™ã‚¯ãƒˆãƒ«ã¨ãƒ™ã‚¯ãƒˆãƒ«ã®åŠ ç®—ä»£å…¥æ¼”ç®—å­
 	 */
 	Vector2& operator+= (const Vector2& vec);
 
 	
 	/*
-	 *	ƒxƒNƒgƒ‹‚ÆƒxƒNƒgƒ‹‚ÌŒ¸Z‘ã“ü‰‰Zq
+	 *	ãƒ™ã‚¯ãƒˆãƒ«ã¨ãƒ™ã‚¯ãƒˆãƒ«ã®æ¸›ç®—ä»£å…¥æ¼”ç®—å­
 	 */
 	Vector2& operator-= (const Vector2& vec);
 
 	/*
-	 *	ƒxƒNƒgƒ‹‚ÆƒXƒJƒ‰[‚ÌæZ‘ã“ü‰‰Zq
+	 *	ãƒ™ã‚¯ãƒˆãƒ«ã¨ã‚¹ã‚«ãƒ©ãƒ¼ã®ä¹—ç®—ä»£å…¥æ¼”ç®—å­
 	 */
 	Vector2& operator*= (float scale);
 
 	/*
-	 *	ƒxƒNƒgƒ‹‚ÆƒXƒJƒ‰[‚ÌœZ‘ã“ü‰‰Z‚µ
+	 *	ãƒ™ã‚¯ãƒˆãƒ«ã¨ã‚¹ã‚«ãƒ©ãƒ¼ã®é™¤ç®—ä»£å…¥æ¼”ç®—ã—
 	 */
 	Vector2& operator/= (float scale);
 
@@ -114,7 +114,7 @@ public:
 	inline static int Random(int min, int max) { return (min)+GetRand(max - min); }
 	inline static float RandomF(int min, int max) { return static_cast<float>((min)+GetRand(max - min)); }
 	/// <summary>
-	/// ³‹K‰»
+	/// æ­£è¦åŒ–
 	/// </summary>
 	/// <param name="dir"></param>
 	/// <returns></returns>
@@ -128,7 +128,7 @@ public:
 	}
 
 	/// <summary>
-	/// Œü‚«
+	/// å‘ã
 	/// </summary>
 	/// <param name="pos1"></param>
 	/// <param name="pos2"></param>
@@ -138,7 +138,7 @@ public:
 	}
 
 	/// <summary>
-	/// ³‹K‰»•t‚«Œü‚«ŒvZ
+	/// æ­£è¦åŒ–ä»˜ãå‘ãè¨ˆç®—
 	/// </summary>
 	/// <param name="pos1"></param>
 	/// <param name="pos2"></param>
@@ -148,7 +148,7 @@ public:
 	}
 
 	/*
-	 *  üŒ`•âŠÔ
+	 *  ç·šå½¢è£œé–“
 	 *  @author Riku
 	 */
 	inline static VECTOR Lerp(VECTOR pos1, VECTOR pos2, float t) {
@@ -163,7 +163,7 @@ public:
 	}
 
 	/// <summary>
-	/// “àÏ
+	/// å†…ç©
 	/// </summary>
 	/// <param name="dir1"></param>
 	/// <param name="dir2"></param>
@@ -173,7 +173,7 @@ public:
 	}
 
 	/// <summary>
-	/// ŠOÏ
+	/// å¤–ç©
 	/// </summary>
 	/// <param name="dir1"></param>
 	/// <param name="dir2"></param>
@@ -186,7 +186,7 @@ public:
 	}
 
 	/*
-	 *  float”ÅƒC[ƒWƒ“ƒO
+	 *  floatç‰ˆã‚¤ãƒ¼ã‚¸ãƒ³ã‚°
 	 *  @author oorui
 	 */
 	static float EaseQuadIn(const float start, const float end, const float time);
@@ -202,6 +202,16 @@ public:
 	template<typename ...Args>
 	inline static float MinF(const Args& ...args) {
 		return std::min({ static_cast<float>(args)... });
+	}
+
+	inline static float LerpAngle(float current, float target, float t) {
+		t = std::clamp(t, 0.0f, 1.0f);
+		float delta = target - current;
+		// -180ã€œ180ã®ç¯„å›²ã«æ­£è¦åŒ–(æœ€çŸ­æ–¹å‘ã‚’é¸ã¶)
+		delta = fmodf(delta + 180.0f, 360.0f);
+		if (delta < 0.0f) delta += 360.0f;
+		delta -= 180.0f;
+		return current + delta * t;
 	}
 };
 

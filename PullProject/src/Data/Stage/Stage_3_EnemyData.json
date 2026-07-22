@@ -2,19 +2,19 @@
     "data": [
         {
             "frameName": "Enemy_SP0",
-            "enemyType": 1,
+            "enemyType": 2,
             "wanderingRadius": 1000.0,
             "rotationY": 0.0
         },
         {
             "frameName": "Enemy_SP1",
-            "enemyType": 1,
+            "enemyType": 2,
             "wanderingRadius": 1000.0,
             "rotationY": 0.0
         },
         {
             "frameName": "Enemy_SP2",
-            "enemyType": 1,
+            "enemyType": 4,
             "wanderingRadius": 1000.0,
             "rotationY": 0.0
         }
