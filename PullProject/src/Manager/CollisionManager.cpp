@@ -463,10 +463,6 @@ bool CollisionManager::RayVsSphere(Collider* a, Collider* b) {
 	RayCollider* ray = (RayCollider*)a;
 	SphereCollider* sphere = (SphereCollider*)b;
 
-	if (ray->GetLayer() == ColliderLayer::PlayerRay && sphere->GetLayer() == ColliderLayer::Enemy) {
-		return false;
-	}
-
 	VECTOR center = sphere->GetWorldCenter();
 
 	if (ray->CheckHitPoint(center)) {
@@ -774,9 +770,41 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	VECTOR move =
 		VScale(normal, penetration);
 
-	cap->GetGameObject()
-		->GetTransform()
-		->AddPosition(move);
+
+	auto tr = cap->GetGameObject()->GetTransform();
+
+	VECTOR world = tr->GetPosition();
+	VECTOR local = tr->GetLocalPosition();
+
+	ImGui::Begin("TransformDebug");
+
+	ImGui::Text(
+		"World : %.2f %.2f %.2f",
+		world.x,
+		world.y,
+		world.z
+	);
+
+	ImGui::Text(
+		"Local : %.2f %.2f %.2f",
+		local.x,
+		local.y,
+		local.z
+	);
+
+	ImGui::End();
+
+
+	if (cap->GetLayer() == ColliderLayer::PlayerArm) {
+		cap->GetGameObject()
+			->GetTransform()
+			->AddPosition(move);
+	}
+	else {
+		cap->GetGameObject()
+			->GetTransform()
+			->AddPosition(move);
+	}
 
 
 }
