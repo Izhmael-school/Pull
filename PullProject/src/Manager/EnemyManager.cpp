@@ -79,6 +79,7 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos, float _wanderingRadius
 	enemy->SetWanderingRadius(_wanderingRadius);
 
 	CollisionManager::GetInstance().Register(enemy->GetCollider());
+	CollisionManager::GetInstance().Register(enemy->GetGroundingCollider());
 
 	// 使用準備
 	enemy->Setup();
@@ -160,6 +161,8 @@ void EnemyManager::UnuseEnemy(EnemyPtr& _unuseEnemy) {
 	if (itr == useEnemyArray.end()) return;
 	// 後処理
 	_unuseEnemy->Cleanup();
+	CollisionManager::GetInstance().UnRegister(_unuseEnemy->GetCollider());
+	CollisionManager::GetInstance().UnRegister(_unuseEnemy->GetGroundingCollider());
 	// 未使用配列に入れる
 	EnemyType type = _unuseEnemy->GetType();
 	unuseEnemyArray[type].push_back(std::move(_unuseEnemy));

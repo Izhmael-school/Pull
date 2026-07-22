@@ -38,6 +38,10 @@ public:
 	inline void SetPosition(VECTOR _pos) { position = _pos; CalcMatrix(); }
 	inline void AddPosition(VECTOR _add) { position = VAdd(position, _add); CalcMatrix();}
 	inline void AddPosition(VECTOR _dir, float _add) { position = VAdd(position, VScale(_dir, _add)); CalcMatrix();}
+	/*
+	 * @brief âüèoópä÷êî
+	 */
+	void AddWorldOffset(VECTOR _worldOffset);
 
 	// âÒì]ä÷òA
 	VECTOR GetRotation();

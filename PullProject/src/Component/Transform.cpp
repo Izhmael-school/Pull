@@ -66,6 +66,25 @@ int Transform::GetChildID() {
 	return -1;
 }
 
+void Transform::AddWorldOffset(VECTOR _worldOffset) {
+	if (parent) {
+		MATRIX parentMat = parent->GetMatrix();
+		// 平行移動成分を消して回転・拡縮だけ取り出す
+		parentMat.m[3][0] = 0.0f;
+		parentMat.m[3][1] = 0.0f;
+		parentMat.m[3][2] = 0.0f;
+
+		MATRIX parentInv = MInverse(parentMat);
+		VECTOR localOffset = VTransform(_worldOffset, parentInv);
+
+		position = VAdd(position, localOffset);
+	}
+	else {
+		position = VAdd(position, _worldOffset);
+	}
+	CalcMatrix();
+}
+
 VECTOR Transform::GetRotation() {
 	MATRIX m = matrix;
 	// 行列から抜き出す

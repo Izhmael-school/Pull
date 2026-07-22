@@ -61,6 +61,11 @@ CollisionManager::~CollisionManager() {
 void CollisionManager::Register(Collider* _pCol) {
 	if (!_pCol) return;
 
+	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
+
+	// 二重登録防止
+	if (itr != pColliderArray.end()) return;
+
 	pColliderArray.push_back(_pCol);
 }
 // 登録済みか確認して登録
@@ -577,8 +582,8 @@ void CollisionManager::ResolveSphereSphere(Collider* aCol, Collider* bCol) {
 
 	VECTOR move = VScale(dir, push * 0.5f);
 
-	a->GetGameObject()->GetTransform()->AddPosition(move);
-	b->GetGameObject()->GetTransform()->AddPosition(VScale(move, -1.0f));
+	a->GetGameObject()->GetTransform()->AddWorldOffset(move);
+	b->GetGameObject()->GetTransform()->AddWorldOffset(VScale(move, -1.0f));
 }
 
 void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
@@ -652,7 +657,7 @@ void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
 	float push = radius - dist;
 	VECTOR move = VScale(dir, push);
 
-	s->GetGameObject()->GetTransform()->AddPosition(move);
+	s->GetGameObject()->GetTransform()->AddWorldOffset(move);
 }
 
 void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
@@ -807,12 +812,12 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	if (cap->GetLayer() == ColliderLayer::PlayerArm) {
 		cap->GetGameObject()
 			->GetTransform()
-			->AddPosition(move);
+			->AddWorldOffset(move);
 	}
 	else {
 		cap->GetGameObject()
 			->GetTransform()
-			->AddPosition(move);
+			->AddWorldOffset(move);
 	}
 
 
@@ -973,7 +978,7 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	}
 
 	// A の Transform を押し出す
-	a->GetGameObject()->GetTransform()->AddPosition(move);
+	a->GetGameObject()->GetTransform()->AddWorldOffset(move);
 }
 
 #pragma endregion
