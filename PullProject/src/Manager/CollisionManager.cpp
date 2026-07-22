@@ -463,6 +463,10 @@ bool CollisionManager::RayVsSphere(Collider* a, Collider* b) {
 	RayCollider* ray = (RayCollider*)a;
 	SphereCollider* sphere = (SphereCollider*)b;
 
+	if (ray->GetLayer() == ColliderLayer::PlayerRay && sphere->GetLayer() == ColliderLayer::Enemy) {
+		return false;
+	}
+
 	VECTOR center = sphere->GetWorldCenter();
 
 	if (ray->CheckHitPoint(center)) {
@@ -753,15 +757,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 		}
 	}
 
-
-
-
-	normal = VNorm(
-		VSub(bestSegPoint, bestBoxPoint)
-	);
-
-	float penetration = radius - dist + 1.0f;
-
+	float penetration = radius - dist;
 
 	if (normal.y > 0.5f) {
 		VECTOR pos =
