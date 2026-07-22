@@ -24,6 +24,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, lurchBackwardTime(0.0f)
 	, returnColor(false)
 	, throwAnimation(false)
+	, dieAnimation(false)
 	, isDead(false)
 	, lockOn(false)
 	, lockOnTarget(VZero)
@@ -137,10 +138,26 @@ void PlayerCharacter::Start() {
 		pHands->GetAnimator()->ChangeSpeed("Throw", 0.0f);
 		}, throwAnimTime);
 
+	// 死亡アニメーションにイベントを仕込む
+	auto dieAnim = pAnimator->GetAnimation("Die");
+	float dieAnimTime = pAnimator->GetTotalTime("Die");
+	// アニメーションの最初にSE
+	dieAnim->SetEvent([this]() {
+		// SE
+		Application::GetInstance().GetAudioManager().Play("PlayerDead");
+		dieAnimation = true;
+		}, 0.0f);
+	// アニメーション終了時に死亡
+	dieAnim->SetEvent([this]() {
+		dieAnimation = false;
+		isDead = true;
+		}, dieAnimTime);
 }
 
 void PlayerCharacter::Update() {
 	Character::Update();
+	if (dieAnimation || isDead)
+		return;
 
 #if _DEBUG
 	ImGui::Begin("PlayerPosition");
@@ -242,11 +259,8 @@ void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pLockOnVision.get())
 		return;
 	Character::OnTriggerEnter(_pSelf, _pOther);
-}
 
-void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
-	if (_pSelf == pLockOnVision.get())
-		return;
+	// 死亡判定
 	auto enemy = dynamic_cast<EnemyBase*>(_pOther->GetGameObject());
 	if (enemy) {
 		// 敵がつかまったり投げられていたら無視
@@ -259,12 +273,15 @@ void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 		otherTag == Explosion ||
 		otherTag == EnemyAttack
 		) {
-		isDead = true;
-		// SE
-		Application::GetInstance().GetAudioManager().Play("PlayerDead");
-
+		// 死亡アニメーション
+		pAnimator->Play("Die", 1.0f);
+		pHands->GetAnimator()->Play("Die", 1.0f);
 	}
+}
 
+void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
+	if (_pSelf == pLockOnVision.get())
+		return;
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {

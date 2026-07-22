@@ -25,6 +25,7 @@
 #include "Generator/CoinGenerator.h"
 #include "../../UI/Scene/MainGameScreen.h"
 #include "Manager/FadeManager.h"
+#include "../../Definition/Enum/CameraModeEnum.h"
 
 #include <DxLib.h>
 #include <format>
@@ -57,7 +58,8 @@ void MainGameScene::Update() {
 	
 	// イベントカメラ
 	if (FadeManager::GetInstance().IsFadeInEnd() && !useEventCamera) {
-		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(3);
+		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(CameraMode::Event);
+		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
 		useEventCamera = true;
 	}
 
@@ -256,7 +258,7 @@ void MainGameScene::StageStartSetup() {
 	CameraManager::GetInstance().CreateCamera();
 	// カメラの取得
 	auto camera = CameraManager::GetInstance().GetCamera();
-	camera->ChangeCameraMode(1);
+	camera->ChangeCameraMode(CameraMode::Player);
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer(playerPos);
 

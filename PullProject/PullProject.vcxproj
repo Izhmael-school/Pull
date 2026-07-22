@@ -272,6 +272,7 @@
     <ClInclude Include="src\Definition\Const\EnemyConst.h" />
     <ClInclude Include="src\Definition\Const\InputConst.h" />
     <ClInclude Include="src\Definition\Const\VECTORConst.h" />
+    <ClInclude Include="src\Definition\Enum\CameraModeEnum.h" />
     <ClInclude Include="src\Definition\Enum\CaughtState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyState.h" />
     <ClInclude Include="src\Definition\Enum\EnemyType.h" />

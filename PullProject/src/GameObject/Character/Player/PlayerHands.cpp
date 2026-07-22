@@ -44,6 +44,8 @@ void PlayerHands::Start() {
 
 void PlayerHands::Update() {
 	Character::Update();
+	if (pOwner->IsDieAnimation() || pOwner->IsDead())
+		return;
 
 	// プレイヤーの入力アクションの取得
 	action = pOwner->GetInputAction();

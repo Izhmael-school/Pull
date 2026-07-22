@@ -37,6 +37,7 @@ private:
 	float lurchBackwardTime;	// のけぞり継続時間
 	bool returnColor;			// 色戻しフラグ
 	bool throwAnimation;		// 投げアニメーション中
+	bool dieAnimation;			// 死亡アニメーション中
 	bool isDead;				// 死亡しているか
 	bool lockOn;				// ロックオン
 	VECTOR lockOnTarget;		// ロックオン中のターゲット位置
@@ -160,6 +161,10 @@ public:
 	 *	投げアニメーション中かどうか
 	 */
 	inline bool IsThrowAnimation() { return throwAnimation; }
+	/*
+	 *	死亡アニメーション中かどうか
+	 */
+	inline bool IsDieAnimation() { return dieAnimation; }
 	/*
 	 *	死亡しているか
 	 */

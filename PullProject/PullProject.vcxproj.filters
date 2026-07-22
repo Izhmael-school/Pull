@@ -857,6 +857,9 @@
     <ClInclude Include="src\GameObject\Pumpkin\Pumpkin.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="src\Definition\Enum\CameraModeEnum.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Data\EnemyData.json">

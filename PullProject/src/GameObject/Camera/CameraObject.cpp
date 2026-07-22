@@ -72,21 +72,21 @@ void CameraObject::Update() {
 
 	// 各モード毎の更新処理
 	switch (mode) {
-	case CameraObject::CameraMode::Debug:
+	case CameraMode::Debug:
 #if _DEBUG
 		pCollider->SetResolve(false);
 		DebugUpdate();
 #endif
 		break;
-	case CameraObject::CameraMode::Player:
+	case CameraMode::Player:
 		pCollider->SetResolve(true);
 		PlayerUpdate();
 		break;
-	case CameraObject::CameraMode::Pull:
+	case CameraMode::Pull:
 		pCollider->SetResolve(true);
 		PullUpdate();
 		break;
-	case CameraObject::CameraMode::Event:
+	case CameraMode::Event:
 		pCollider->SetResolve(false);
 		EventUpdate();
 		break;

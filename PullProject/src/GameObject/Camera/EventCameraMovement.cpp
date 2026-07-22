@@ -1,5 +1,8 @@
 #include "EventCameraMovement.h"
 #include "GameObject/Camera/CameraObject.h"
+#include "../../Definition/Enum/CameraModeEnum.h"
+#include "../../Manager/InputSystemManager.h"
+#include "../../Definition/CommonModule/ActionMapData.h"
 
 EventCameraMove EventCameraMovement::eventCameraMove;
 bool EventCameraMovement::isEventEnd = true;
@@ -70,7 +73,8 @@ void EventCameraMovement::InitEventCamera_StartStage(CameraObject* _camera,nlohm
 void EventCameraMovement::UpdateEventCamera_StartStage(CameraObject* _camera) {
 	if (eventCameraMove.elapsedTime >= 1.0f) {
 		// カメラモードを変える
-		_camera->ChangeCameraMode(1);
+		_camera->ChangeCameraMode(CameraMode::Player);
+		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 		isEventEnd = true;
 		// 終了
 		return;

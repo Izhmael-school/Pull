@@ -25,6 +25,7 @@
 #include "Application.h"
 #include "../../UI/Scene/TitleScreen.h"
 #include "../../Definition/Enum/TitleActionEnum.h"
+#include "../../Definition/Enum/CameraModeEnum.h"
 
 #include <DxLib.h>
 #include <format>
@@ -90,7 +91,7 @@ void TitleScene::Setup() {
 	// カメラの取得
 	auto camera = CameraManager::GetInstance().GetCamera();
 
-	camera->ChangeCameraMode(0);
+	camera->ChangeCameraMode(CameraMode::Debug);
 
 
 	// ステージの当たり判定を作成
