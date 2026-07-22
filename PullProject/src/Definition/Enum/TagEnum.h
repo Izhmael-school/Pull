@@ -16,5 +16,6 @@ enum Tag {
 	TailEnemy,
 	Explosion,
 	EnemyAttack,
-	Coin
+	Coin,
+	MissileObject
 };

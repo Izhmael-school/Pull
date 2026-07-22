@@ -26,7 +26,6 @@ private:
 	};
 	CameraMode mode;		// カメラのモード
 	VECTOR target;			// 追従カメラのターゲット
-	VECTOR lockOnTarget;	// ロックオン中のターゲット
 	float speed;			// 移動速度
 	float shakePower;		// シェイクの大きさ
 	float shakeTime;		// シェイクの時間
@@ -35,7 +34,6 @@ private:
 	bool isShaking;			// シェイク中か否か
 	bool isChaseXZ;			// 追うか否か(XZ平面)
 	bool isChaseY;			// 追うか否か(Y軸)
-	bool lockOn;			// ロックオン
 	
 	bool isEvent;
 
@@ -55,9 +53,6 @@ private:
 	const float TARGET_DISTANCE_MAX;
 	// ターゲットとプレイヤーが重なったとみなす閾値
 	const float TARGET_THRESHOLD;
-
-	// ロックオン中の高さ
-	const float LOCK_ON_HEIGHT;
 	// ロックオン中の離れる距離
 	const float LOCK_ON_DISTANCE;
 

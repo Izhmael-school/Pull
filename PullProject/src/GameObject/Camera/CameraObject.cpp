@@ -25,7 +25,6 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	: GameObject(-1, position)
 	, mode(CameraMode::Event)
 	, target(VZero)
-	, lockOnTarget(VZero)
 	, speed(30.0f)
 	, shakePower(0.0f)
 	, shakeTime(0.0f)
@@ -34,7 +33,6 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, isShaking(false)
 	, isChaseXZ(false)
 	, isChaseY(false)
-	, lockOn(false)
 
 	, isEvent(false)
 
@@ -46,8 +44,7 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, TARGET_THRESHOLD(0.5f)
 	, POSITION_Y_LIMIT_UP(-900.0f)
 	, POSITION_Y_LIMIT_DOWN(0.0f)
-	, LOCK_ON_HEIGHT(200.0f)
-	, LOCK_ON_DISTANCE(1400.0f){
+	, LOCK_ON_DISTANCE(700.0f){
 	pTransform->SetRotation(rotation);
 }
 
@@ -165,17 +162,7 @@ void CameraObject::PlayerUpdate() {
 	// プレイヤーの入力
 	ActionState action = player->GetInputAction();
 
-	// ロックオン
-	if (action.button[static_cast<int>(PlayerAction::LockOn)]) {
-		lockOn = player->GetVisionObject(lockOnTarget);
-	}
-	// ロックオン解除
-	if (action.buttonUp[static_cast<int>(PlayerAction::LockOn)] ||
-		player->GetHands()->IsCatch()) {
-		lockOn = false;
-	}
-
-	if (!lockOn) {
+	if (!player->GetLockOn()) {
 		// ターゲットの追いかけ
 		if (isChaseXZ)
 			TargetMoveXZ();
@@ -186,19 +173,17 @@ void CameraObject::PlayerUpdate() {
 	}
 	// ロックオン
 	else {
-		// カメラを対象の方に向け、プレイヤーの向きも変える
-		target = MyMath::Lerp(target, lockOnTarget, TARGET_MOVE_RATIO);
+		// カメラを対象の方に向ける
+		VECTOR lockOnPos = player->GetLockOnTarget();
+		target = MyMath::Lerp(target, lockOnPos, TARGET_MOVE_RATIO);
 		pTransform->LookAt(target);
-		VECTOR dir = VSub(lockOnTarget, player->GetPosition());
-		VECTOR dirNorm = VNorm(dir);
-		float yaw = MyMath::Rad2Deg(atan2f(-dirNorm.x, -dirNorm.z));
-		player->GetTransform()->SetRotation(VGet(0.0f, yaw, 0.0f));
+		VECTOR dir = VSub(lockOnPos, player->GetPosition());
 
 		// ターゲットの移動に合わせてカメラも移動
-		VECTOR pos = VScale(player->GetTransform()->GetForward(), PLAYER_DISTANCE);
+		VECTOR pos = VScale(player->GetTransform()->GetForward(), LOCK_ON_DISTANCE);
 		float height = VDot(dir, dir);
 		height = sqrt(height);
-		pos.y += LOCK_ON_HEIGHT + height;
+		pos.y += height;
 		pTransform->SetPosition(VAdd(player->GetPosition(), pos));
 	}
 
@@ -232,7 +217,7 @@ void CameraObject::PlayerUpdate() {
 	// 入力があれば回転(ロックオン中はNG)
 	if ((moveVec.x != 0 ||
 		moveVec.y != 0 ||
-		moveVec.z != 0) && !lockOn) {
+		moveVec.z != 0) && !player->GetLockOn()) {
 		// カメラの移動
 		pTransform->AddPosition(moveVec, speed);
 	}
@@ -278,7 +263,6 @@ void CameraObject::PlayerUpdate() {
 void CameraObject::PullUpdate() {
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	if (!player) return;
-	lockOn = false;
 
 	// プレイヤーの引き具合によってカメラの位置調整
 	// ズーム割合の差

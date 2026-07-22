@@ -38,6 +38,8 @@ private:
 	bool returnColor;			// 色戻しフラグ
 	bool throwAnimation;		// 投げアニメーション中
 	bool isDead;				// 死亡しているか
+	bool lockOn;				// ロックオン
+	VECTOR lockOnTarget;		// ロックオン中のターゲット位置
 	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
 	// ロックオン用の視界
@@ -162,6 +164,14 @@ public:
 	 *	死亡しているか
 	 */
 	inline bool IsDead() { return isDead; }
+	/*
+	 *	ロックオン中かどうか
+	 */
+	inline bool GetLockOn() { return lockOn; }
+	/*
+	 *	ロックオン中のターゲット位置取得
+	 */
+	inline VECTOR GetLockOnTarget() { return lockOnTarget; }
 
 	/*
 	 *	死亡判定の切り替え

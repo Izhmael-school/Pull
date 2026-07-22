@@ -8,7 +8,7 @@
 #include "Application.h"
 
 Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, VECTOR _dir, VECTOR _pos)
-	:GameObject(_modelHandle, _pos)
+	:GameObject(_modelHandle, _pos, MissileObject)
 	, moveSpeed(1000)
 	, lifeLimitTime(5.0f)
 	, lifeElapsedTime(0.0f)

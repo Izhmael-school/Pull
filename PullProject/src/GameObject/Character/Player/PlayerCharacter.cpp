@@ -25,6 +25,8 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, returnColor(false)
 	, throwAnimation(false)
 	, isDead(false)
+	, lockOn(false)
+	, lockOnTarget(VZero)
 	, lurchBackwardPos(VZero)
 
 	, PULL_VALUE_MAX(100.0f)
@@ -45,6 +47,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 
 void PlayerCharacter::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 50), VScale(VUp, 10), 40, VZero);
+	pCollider->SetLayer(ColliderLayer::Player);
 	pGroundingCollider = std::make_unique<SphereCollider>(this, VScale(VUp, -30), 5);
 	isGravity = true;
 
@@ -172,6 +175,24 @@ void PlayerCharacter::Update() {
 		Move();
 	}
 
+	// ロックオン
+	if (action.button[static_cast<int>(PlayerAction::LockOn)]) {
+		lockOn = GetVisionObject(lockOnTarget);
+	}
+	// ロックオン解除
+	if (action.buttonUp[static_cast<int>(PlayerAction::LockOn)] ||
+		GetHands()->IsCatch()) {
+		lockOn = false;
+	}
+
+	// ロックオン中はターゲットの方を向く
+	if (lockOn) {
+		VECTOR dir = VSub(lockOnTarget, GetPosition());
+		VECTOR dirNorm = VNorm(dir);
+		float yaw = MyMath::Rad2Deg(atan2f(-dirNorm.x, -dirNorm.z));
+		pTransform->SetRotation(VGet(0.0f, yaw, 0.0f));
+	}
+
 	// 待機アニメーション(投げアニメーション中じゃなければ)
 	if (playerState == PlayerState::Idle &&
 		!throwAnimation) {
@@ -196,6 +217,7 @@ void PlayerCharacter::Update() {
 	if (returnColor) {
 		ReturnColor();
 	}
+
 
 #if _DEBUG
 	ImGui::Begin("PlayerAnimation");
@@ -393,6 +415,7 @@ void PlayerCharacter::LurchBackward() {
  *	引っこ抜き
  */
 bool PlayerCharacter::Pull() {
+	lockOn = false;
 	// 後ろに引き続けないと引っこ抜けない
 	float back = action.axis[static_cast<int>(PlayerAction::Move)].y;
 	if (back < 0) {
@@ -464,10 +487,12 @@ bool PlayerCharacter::GetVisionObject(VECTOR& targetObject) {
 	float length = FLT_MAX;
 	auto hitObjects = pLockOnVision->GetHitObjects();
 	for (auto object : hitObjects) {
+		if (!object)
+			continue;
 		if (object->GetTag() != Enemy &&
 			object->GetTag() != Hook &&
-			object->GetTag() != LeverTag/* &&
-			object->GetTag() != Missile*/)
+			object->GetTag() != LeverTag&&
+			object->GetTag() != MissileObject)
 			continue;
 
 		auto enemy = dynamic_cast<EnemyBase*>(object);
