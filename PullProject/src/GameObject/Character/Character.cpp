@@ -12,7 +12,7 @@ Character::Character(int _modelHandle, VECTOR _pos, Tag _tag)
 	Start();
 }
 
-Character::~Character(){}
+Character::~Character() {}
 
 void Character::Start() {
 	GameObject::Start();
@@ -55,7 +55,9 @@ void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
 		_pOther->GetLayer() == ColliderLayer::Ground) {
 		groundCount++;
-		hitGroundingFrag = (groundCount > 0);
+
+		if (groundCount > 0)
+			hitGroundingFrag = true;
 	}
 }
 
@@ -70,7 +72,8 @@ void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 		if (groundCount < 0)
 			groundCount = 0;
 
-		hitGroundingFrag = (groundCount > 0);
+		if (groundCount == 0)
+			hitGroundingFrag = false;
 	}
 }
 
