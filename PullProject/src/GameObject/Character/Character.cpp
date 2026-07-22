@@ -44,8 +44,6 @@ void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		groundCount++;
 		hitGroundingFrag = true;
 	}
-
-
 }
 
 
@@ -61,7 +59,7 @@ void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 			groundCount = 0;
 		}
 
-		hitGroundingFrag = false;
+		hitGroundingFrag = (groundCount > 0);
 	}
 
 }
