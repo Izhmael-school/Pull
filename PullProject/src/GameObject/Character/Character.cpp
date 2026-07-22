@@ -38,11 +38,32 @@ void Character::Setup() {
 
 void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	GameObject::OnTriggerEnter(_pSelf, _pOther);
+
+	if (_pSelf == pGroundingCollider.get() &&
+			_pOther->GetLayer() == ColliderLayer::Ground) {
+		groundCount++;
+		hitGroundingFrag = true;
+	}
+
+
 }
 
 
 void Character::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	GameObject::OnTriggerExit(_pSelf, _pOther);
+
+
+	if (_pSelf == pGroundingCollider.get() &&
+			_pOther->GetLayer() == ColliderLayer::Ground) {
+		groundCount--;
+
+		if (groundCount < 0) {
+			groundCount = 0;
+		}
+
+		hitGroundingFrag = false;
+	}
+
 }
 
 void Character::DrawVisionFanDebug() {
