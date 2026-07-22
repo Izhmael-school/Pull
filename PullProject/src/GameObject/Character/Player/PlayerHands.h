@@ -43,6 +43,7 @@ private:
 	float extendSpeed;							// 伸ばすスピード
 	float returnSpeedRatio;						// 戻ってくる速度割合
 	ActionState action;							// アクション状態
+	bool isWallHit;								// 壁に当たっているかどうか
 	
 	// 戻ってきたとみなす閾値
 	const float RETURN_THRESHOLD;
