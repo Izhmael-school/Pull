@@ -29,6 +29,7 @@ struct EnemyNeedManager {
 };
 
 const char* const STAGE_ENEMY_DATA_FILEPATH = "src/Data/Stage/Stage_{}_EnemyData.json";
+const char* const RELEASE_STAGE_ENEMY_DATA_FILEPATH = "res/ExternalFile/Stage/Enemy/Stage_{}_EnemyData.msgpack";
 
 class EnemyManager : public ManagerBase {
 

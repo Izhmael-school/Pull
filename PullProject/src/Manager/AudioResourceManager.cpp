@@ -23,8 +23,11 @@ bool AudioResourceManager::LoadAudio(const std::string& _name, const std::string
 }
 
 void AudioResourceManager::LoadAudioFromExternalFile() {
+#if _DEBUG
 	auto data = MyJson::LoadJsonFile(AUDIODATA_FILEPATH);
-
+#else
+	auto data = MyJson::LoadBinary(RELEASE_AUDIODATA_FILEPATH);
+#endif
 	for (auto& d : data) {
 		std::string name = d["name"];
 		std::string fileName = d["path"];

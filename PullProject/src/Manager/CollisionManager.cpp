@@ -46,7 +46,11 @@ static const std::unordered_map<std::string, ResolveFunc> resolveFuncMap = {
 
 //	コンストラクタ・デストラクタ
 CollisionManager::CollisionManager() {
+#if _DEBUG
 	LoadCollisionRules("src/Data/collision_rules.json");
+#else
+	LoadCollisionRules("res/ExternalFile/Collision/collision_rules.msgpack");
+#endif
 }
 CollisionManager::~CollisionManager() {
 	UnRegisterAll();
@@ -56,6 +60,11 @@ CollisionManager::~CollisionManager() {
 // 登録
 void CollisionManager::Register(Collider* _pCol) {
 	if (!_pCol) return;
+
+	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
+
+	// 二重登録防止
+	if (itr != pColliderArray.end()) return;
 
 	pColliderArray.push_back(_pCol);
 }
@@ -308,7 +317,12 @@ void CollisionManager::Resolve(Collider* a, Collider* b) {
 // JSONから当たり判定ルールを読み込む
 void CollisionManager::LoadCollisionRules(const std::string& path) {
 	// JSONファイルを読み込む
+#if _DEBUG
 	auto json = MyJson::LoadJsonFile(path);
+#else
+	auto json = MyJson::LoadBinary(path);
+#endif
+
 
 	// ルールを読み込む
 	for (auto& rule : json["collision_rules"]) {
@@ -568,8 +582,8 @@ void CollisionManager::ResolveSphereSphere(Collider* aCol, Collider* bCol) {
 
 	VECTOR move = VScale(dir, push * 0.5f);
 
-	a->GetGameObject()->GetTransform()->AddPosition(move);
-	b->GetGameObject()->GetTransform()->AddPosition(VScale(move, -1.0f));
+	a->GetGameObject()->GetTransform()->AddWorldOffset(move);
+	b->GetGameObject()->GetTransform()->AddWorldOffset(VScale(move, -1.0f));
 }
 
 void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
@@ -643,7 +657,7 @@ void CollisionManager::ResolveSphereAABB(Collider* sCol, Collider* boxCol) {
 	float push = radius - dist;
 	VECTOR move = VScale(dir, push);
 
-	s->GetGameObject()->GetTransform()->AddPosition(move);
+	s->GetGameObject()->GetTransform()->AddWorldOffset(move);
 }
 
 void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
@@ -798,12 +812,12 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	if (cap->GetLayer() == ColliderLayer::PlayerArm) {
 		cap->GetGameObject()
 			->GetTransform()
-			->AddPosition(move);
+			->AddWorldOffset(move);
 	}
 	else {
 		cap->GetGameObject()
 			->GetTransform()
-			->AddPosition(move);
+			->AddWorldOffset(move);
 	}
 
 
@@ -964,7 +978,7 @@ void CollisionManager::ResolveAABBVsAABB(Collider* aCol, Collider* bCol) {
 	}
 
 	// A の Transform を押し出す
-	a->GetGameObject()->GetTransform()->AddPosition(move);
+	a->GetGameObject()->GetTransform()->AddWorldOffset(move);
 }
 
 #pragma endregion

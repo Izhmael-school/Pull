@@ -98,8 +98,11 @@ void MergeAABB3D(std::vector<AABB>& boxes) {
 void StageCollisionGenerator::GenerateFromUnity(
 	const std::string& path,
 	CollisionManager& manager) {
+#if _DEBUG
 	auto json = MyJson::LoadJsonFile(path);
-
+#else
+	auto json = MyJson::LoadBinary(path);
+#endif
 	// JSONが正しく読み込まれなかった場合のエラー表示
 	if (json.is_null()) {
 		printfDx("JSON load failed\n");

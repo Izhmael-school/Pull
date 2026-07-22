@@ -79,6 +79,7 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos, float _wanderingRadius
 	enemy->SetWanderingRadius(_wanderingRadius);
 
 	CollisionManager::GetInstance().Register(enemy->GetCollider());
+	CollisionManager::GetInstance().Register(enemy->GetGroundingCollider());
 
 	// 使用準備
 	enemy->Setup();
@@ -109,8 +110,13 @@ void EnemyManager::SpawnStageFramePoint(EnemyType _type, StageManager& _stageMan
 
 void EnemyManager::SpawnStageFramePoint(int _stageID, StageManager& _stageManager) {
 	// ステージのデータを取得
+#if _DEBUG
 	std::string filePath = std::format(STAGE_ENEMY_DATA_FILEPATH, _stageID);
 	auto data = MyJson::LoadJsonFile(filePath);
+#else
+	std::string filePath = std::format(RELEASE_STAGE_ENEMY_DATA_FILEPATH, _stageID);
+	auto data = MyJson::LoadBinary(filePath);
+#endif
 	// データが無ければ帰る
 	if (data.empty()) return;
 	// フレームのワールド座標を取得
@@ -155,6 +161,8 @@ void EnemyManager::UnuseEnemy(EnemyPtr& _unuseEnemy) {
 	if (itr == useEnemyArray.end()) return;
 	// 後処理
 	_unuseEnemy->Cleanup();
+	CollisionManager::GetInstance().UnRegister(_unuseEnemy->GetCollider());
+	CollisionManager::GetInstance().UnRegister(_unuseEnemy->GetGroundingCollider());
 	// 未使用配列に入れる
 	EnemyType type = _unuseEnemy->GetType();
 	unuseEnemyArray[type].push_back(std::move(_unuseEnemy));

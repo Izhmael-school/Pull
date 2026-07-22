@@ -5,8 +5,11 @@
 GameObjectGenerator::GameObjectGenerator() { Start(); }
 
 void GameObjectGenerator::Start(){
-    auto data = MyJson::LoadJsonFile("src/Data/GameObjectModelData.json");
-
+#if _DEBUG
+    auto data = MyJson::LoadJsonFile(GAMEOBJECTDATA_FILEPATH);
+#else
+    auto data = MyJson::LoadBinary(RELEASE_GAMEOBJECTDATA_FILEPATH);
+#endif
     // モデルのロード
     for (auto d : data) {
         std::string modelName = d["modelName"];

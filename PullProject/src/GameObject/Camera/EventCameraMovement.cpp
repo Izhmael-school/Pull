@@ -8,7 +8,11 @@ EventCameraMove EventCameraMovement::eventCameraMove;
 bool EventCameraMovement::isEventEnd = true;
 
 void EventCameraMovement::StartEventCamera(CameraObject* _camera, std::string _eventName) {
+#if _DEBUG
 	auto data = MyJson::LoadJsonFile("src/Data/EventCamera.json");
+#else
+	auto data = MyJson::LoadBinary("res/ExternalFile/EventCamera/EventCamera.msgpack");
+#endif
 	if (data.is_null()) return;
 	auto events = data["events"];
 	if (events.is_null()) return;

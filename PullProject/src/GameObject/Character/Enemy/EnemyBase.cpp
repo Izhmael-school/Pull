@@ -213,10 +213,15 @@ void EnemyBase::Cleanup() {
 	if (pAnimator)
 		pAnimator->ResetEvents();
 	// 当たり判定の更新をしないように
-	if (pCollider)
+	if (pCollider) {
 		pCollider->SetEnable(false);
-	if (pGroundingCollider)
+	}
+
+	if (pGroundingCollider) {
 		pGroundingCollider->SetEnable(false);
+		pGroundingCollider->SetHit(false);
+		pGroundingCollider->SetPrevHit(false);
+	}
 
 	GetTransform()->DetachParent();
 }

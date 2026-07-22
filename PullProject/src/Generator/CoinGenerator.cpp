@@ -6,7 +6,11 @@
 #include "DxLib.h"
 
 void CoinGenerator::GenerateCoin(int _stageID, int _stageModelHandle) {
+#if _DEBUG
 	auto data = MyJson::LoadJsonFile(std::format(COINDATA_FILEPATH, _stageID));
+#else
+	auto data = MyJson::LoadBinary(std::format(RELEASE_COINDATA_FILEPATH, _stageID));
+#endif
 	// データが無ければ帰る
 	if (data.empty()) return;
 	int index = 0;
