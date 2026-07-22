@@ -270,7 +270,11 @@ void MainGameScene::StageStartSetup() {
 
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
+#if _DEBUG
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
+#else
+	std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_Collision.msgpack", stageID);
+#endif
 	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
 	// プレイヤーアクションマップを有効化
 	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);

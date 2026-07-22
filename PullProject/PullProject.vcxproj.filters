@@ -204,9 +204,6 @@
     <ClCompile Include="src\Generator\EnemyGenerator.cpp">
       <Filter>ソース ファイル\Generator</Filter>
     </ClCompile>
-    <ClCompile Include="src\Definition\CommonModule\MyJson.cpp">
-      <Filter>ソース ファイル\Definition\CommonModule</Filter>
-    </ClCompile>
     <ClCompile Include="src\Definition\CommonModule\MyString.cpp">
       <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClCompile>
@@ -459,6 +456,9 @@
     <ClCompile Include="src\GameObject\Pumpkin\Pumpkin.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="src\Definition\CommonModule\MyJson.cpp">
+      <Filter>ソース ファイル\Definition\CommonModule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Manager\ManagerBase.h">
@@ -547,9 +547,6 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\Character\Enemy\EnemyBase.h">
       <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Definition\CommonModule\MyJson.h">
-      <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClInclude>
     <ClInclude Include="src\Definition\CommonModule\MyString.h">
       <Filter>ソース ファイル\Definition\CommonModule</Filter>
@@ -856,6 +853,9 @@
     </ClInclude>
     <ClInclude Include="src\GameObject\Pumpkin\Pumpkin.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Definition\CommonModule\MyJson.h">
+      <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

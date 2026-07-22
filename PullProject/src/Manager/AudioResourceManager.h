@@ -14,6 +14,7 @@
 
 const char* const AUDIO_FILEPATH = "res/Audio/";	// オーディオのファイルパス
 const char* const AUDIODATA_FILEPATH = "src/Data/AudioData.json";	// オーディオデータのファイルパス
+const char* const RELEASE_AUDIODATA_FILEPATH = "res/ExternalFile/Resource/AudioData.msgpack";	// オーディオデータのファイルパス
 
 class AudioResourceManager {
 private:

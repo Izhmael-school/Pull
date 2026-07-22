@@ -27,7 +27,12 @@ EnemyGenerator::~EnemyGenerator() {}
 void EnemyGenerator::LoadModel() {
 	originEnemyModelHandle.resize(EnemyType::MaxEnemyType);
 	originEnemyAnimHandle.resize(EnemyType::MaxEnemyType);
-	auto data = MyJson::LoadJsonFile("src/Data/EnemyData.json");
+
+#if _DEBUG
+	auto data = MyJson::LoadJsonFile(ENEMYDATA_FILEPATH);
+#else
+	auto data = MyJson::LoadBinary(RELEASE_ENEMYDATA_FILEPATH);
+#endif 
 
 	// jsonが無ければ帰る
 	if (data == nullptr) {

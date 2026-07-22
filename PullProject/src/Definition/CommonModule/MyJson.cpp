@@ -1,16 +1,13 @@
 #include "MyJson.h"
-#include "../../Data/json.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
 #include <iterator>
 #include <Windows.h>
+#include <filesystem>
+#include <unordered_set>
 
-/// <summary>
-/// バイトバッファを UTF-8 の std::string に変換する
-/// 対応: UTF-8 (BOM 有/無), UTF-16 LE (BOM), UTF-16 BE (BOM)
-/// </summary>
 std::string MyJson::BufferToUtf8String(const std::vector<unsigned char>& buf) {
     size_t n = buf.size();
     if (n >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF) {
@@ -51,9 +48,6 @@ std::string MyJson::BufferToUtf8String(const std::vector<unsigned char>& buf) {
     return std::string(buf.begin(), buf.end());
 }
 
-/// <summary>
-/// jsonファイルの読み込み（エンコーディングを自動判定して UTF-8 に変換）
-/// </summary>
  nlohmann::json_abi_v3_12_0::json MyJson::LoadJsonFile(const std::string& path) {
      std::ifstream file(path, std::ios::binary);
      if (!file.is_open()) {
@@ -98,4 +92,134 @@ std::string MyJson::Utf8ToString(const std::string& utf8) {
     std::string out(len, '\0');
     WideCharToMultiByte(CP_ACP, 0, wstr.data(), (int)wstr.size(), &out[0], len, nullptr, nullptr);
     return out;
+}
+
+
+bool MyJson::CollectFilesToJson(const fs::path& rootDir, const fs::path& outputDir, std::string jsonFileName) {
+    if (!fs::exists(rootDir) || !fs::is_directory(rootDir)) {
+        std::cerr << "指定されたフォルダが存在しません: " << rootDir << std::endl;
+        return false;
+    }
+
+    // 拡張子が付いていなければ .json を補完
+    if (jsonFileName.size() < 5 ||
+        jsonFileName.substr(jsonFileName.size() - 5) != ".json") {
+        jsonFileName += ".json";
+    }
+
+    fs::path outputPath = outputDir / jsonFileName;
+
+    // ---- 1. 既存のJSONがあれば読み込む ----
+    json existingList = json::array();
+    if (fs::exists(outputPath)) {
+        std::ifstream ifs(outputPath);
+        if (ifs) {
+            try {
+                ifs >> existingList;
+                if (!existingList.is_array()) {
+                    //std::cerr << "既存のJSONが配列形式ではないため、新規として扱います。" << std::endl;
+                    existingList = json::array();
+                }
+            }
+            catch (const json::parse_error& e) {
+                //std::cerr << "既存JSONの読み込みに失敗しました: " << e.what() << std::endl;
+                //std::cerr << "新規として扱います。" << std::endl;
+                existingList = json::array();
+            }
+        }
+    }
+
+    // 既存エントリの"path"だけを集めた集合を作る（重複チェック用）
+    std::unordered_set<std::string> existingPaths;
+    for (const auto& entry : existingList) {
+        if (entry.contains("path") && entry["path"].is_string()) {
+            existingPaths.insert(entry["path"].get<std::string>());
+        }
+    }
+
+    // ---- 2. フォルダを走査して新規ファイルを収集 ----
+    std::error_code ec;
+    for (auto it = fs::recursive_directory_iterator(
+        rootDir, fs::directory_options::skip_permission_denied, ec);
+        it != fs::recursive_directory_iterator(); it.increment(ec)) {
+
+        if (ec) { ec.clear(); continue; }
+        if (!it->is_regular_file(ec)) continue;
+
+        fs::path relPath = fs::relative(it->path(), rootDir, ec);
+        if (ec) {
+            relPath = it->path();
+            ec.clear();
+        }
+        std::string relPathStr = relPath.generic_string(); // "/"区切りに統一
+
+        // 既に登録済みのpathなら書き換えずスキップ
+        if (existingPaths.count(relPathStr) > 0) {
+            continue;
+        }
+
+        // 新規ファイルとして追加
+        existingList.push_back({
+            {"name", it->path().stem().string()},
+            {"path", relPathStr}
+            });
+        existingPaths.insert(relPathStr); // 同一走査内での重複追加防止
+    }
+
+    // ---- 3. 書き込み(既存分＋新規分をまとめて上書き保存) ----
+    std::ofstream ofs(outputPath);
+    if (!ofs) {
+        std::cerr << "出力ファイルを開けませんでした: " << outputPath << std::endl;
+        return false;
+    }
+    ofs << existingList.dump(2);
+    return true;
+}
+
+bool CompileBinary(const json& jsonData, const std::string& outputPath) {
+    // JSON -> MessagePackバイナリへ変換
+    std::vector<uint8_t> binaryData;
+    try {
+        binaryData = json::to_msgpack(jsonData);
+    }
+    catch (const std::exception& e) {
+        std::cerr << "バイナリ変換に失敗しました: " << e.what() << std::endl;
+        return false;
+    }
+
+    // バイナリモードで書き込み(出力先フォルダが無い場合はここで失敗する)
+    std::ofstream ofs(outputPath, std::ios::binary);
+    if (!ofs) {
+        std::cerr << "出力ファイルを開けませんでした: " << outputPath << std::endl;
+        return false;
+    }
+
+    ofs.write(reinterpret_cast<const char*>(binaryData.data()), binaryData.size());
+    if (!ofs) {
+        std::cerr << "書き込み中にエラーが発生しました: " << outputPath << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+json MyJson::LoadBinary(const std::string& inputPath) {
+    std::ifstream ifs(inputPath, std::ios::binary);
+    if (!ifs) {
+        std::cerr << "入力ファイルを開けませんでした: " << inputPath << std::endl;
+        return json::array(); // 失敗時は空配列を返す
+    }
+
+    std::vector<uint8_t> buffer(
+        (std::istreambuf_iterator<char>(ifs)),
+        std::istreambuf_iterator<char>()
+    );
+
+    try {
+        return json::from_msgpack(buffer);
+    }
+    catch (const json::parse_error& e) {
+        std::cerr << "バイナリの解析に失敗しました: " << e.what() << std::endl;
+        return json::array(); // 失敗時は空配列を返す
+    }
 }

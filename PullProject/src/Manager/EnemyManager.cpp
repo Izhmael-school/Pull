@@ -109,8 +109,13 @@ void EnemyManager::SpawnStageFramePoint(EnemyType _type, StageManager& _stageMan
 
 void EnemyManager::SpawnStageFramePoint(int _stageID, StageManager& _stageManager) {
 	// ステージのデータを取得
+#if _DEBUG
 	std::string filePath = std::format(STAGE_ENEMY_DATA_FILEPATH, _stageID);
 	auto data = MyJson::LoadJsonFile(filePath);
+#else
+	std::string filePath = std::format(RELEASE_STAGE_ENEMY_DATA_FILEPATH, _stageID);
+	auto data = MyJson::LoadBinary(filePath);
+#endif
 	// データが無ければ帰る
 	if (data.empty()) return;
 	// フレームのワールド座標を取得

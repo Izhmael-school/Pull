@@ -6,6 +6,10 @@
 #include <cassert>
 #include <type_traits>
 class GameObject;
+
+const char const GAMEOBJECTDATA_FILEPATH[] = "src/Data/GameObjectModelData.json";
+const char const RELEASE_GAMEOBJECTDATA_FILEPATH[] = "res/ExternalFile/Resource/GameObjectModelData.msgpack";
+
 class GameObjectGenerator {
 private:
 	std::map<std::string, int> modelArray;
