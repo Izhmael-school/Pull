@@ -53,6 +53,8 @@ public:
 	void Setup()override;
 	void Render() override;
 
+	void Cleanup();
+
 };
 
 #endif // !_STAGESELECTSCENE_H_

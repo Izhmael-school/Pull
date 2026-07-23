@@ -15,6 +15,9 @@
 #include "../../Manager/Stage/GimmickObjectManager.h"
 #include "Manager/ColliderObjectManager.h"
 #include "Manager/GameObjectManager.h"
+#include "Manager/AudioManager.h"
+#include "Manager/EnemyManager.h"
+#include "Application.h"
 
 #include <algorithm>
 #include <math.h>
@@ -46,11 +49,16 @@ void StageSelectScene::Setup() {
 	 // 当たり判定の複数生成回避
 	 CollisionManager::GetInstance().Clear();
 	 
+	 auto camera = CameraManager::GetInstance().GetCamera();
+	 camera->ChangeCameraMode(CameraMode::Player);
+
 	 // ステージの初期化処理
-	 StageManager::GetInstance().Initialize();
+	 StageManager& stageManager = StageManager::GetInstance();
+	 stageManager.Initialize();
 	 // セレクトステージの読み込み※仮でDebugStage
-	 StageManager::GetInstance().LoadStage(113);
-	 
+	 stageManager.LoadStage(113);
+	 stageManager.TransitionStage(113);
+
 	 // プレイヤーの生成位置の取得
 	 VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
 	 // カメラ生成
@@ -140,4 +148,15 @@ void StageSelectScene::Render() {
 			DrawString(100, 100 + (20 * i), selectInfoArray[i].sceneName.c_str(), 0x000000);
 	}
 
+}
+
+void StageSelectScene::Cleanup() {
+	// ギミックの片付け処理
+	GimmickObjectManager::GetInstance().Clear();
+	StageManager::GetInstance().RequestStageClear(false);
+	StageManager::GetInstance().Execute();
+	GameObjectManager::GetInstance().Cleanup();
+	// 音
+	AudioManager* audio = &Application::GetInstance().GetAudioManager();
+	audio->Clean();
 }
