@@ -38,7 +38,9 @@ void StageManager::LoadStage(int stageID) {
 #if _DEBUG
 		stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
 #else 
-		stageFile = std::format("res/ExternalFile/Stage/Gimmick/Stage{}Gimmick.msgpack", stageID);
+		stageFile = std::format("src/Data/Gimmick/Stage{}Gimmick.json", stageID);
+
+		// stageFile = std::format("res/ExternalFile/Stage/Gimmick/Stage{}Gimmick.msgpack", stageID);
 #endif
 		// ステージモデルロード
 		std::string filePath = std::format("res/Model/Stage/Stage{}/Stage_{}.mv1", stageID, stageID);

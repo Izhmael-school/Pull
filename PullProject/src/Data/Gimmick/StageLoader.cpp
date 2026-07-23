@@ -34,7 +34,8 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 #if _DEBUG
 	auto data = MyJson::LoadJsonFile(fileName);
 #else
-	auto data = MyJson::LoadBinary(fileName);
+	auto data = MyJson::LoadJsonFile(fileName);
+	// auto data = MyJson::LoadBinary(fileName);
 #endif
 	// レバー対応オブジェクト
 	std::unordered_map<int, TriggerInterface*> triggerMap;
