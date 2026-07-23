@@ -86,7 +86,21 @@ void CollisionManager::UnRegister(Collider* _pCol) {
 	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
 	if (itr == pColliderArray.end()) return;
 
+	int Index = std::distance(pColliderArray.begin(), itr);
+
+	//衝突結果配列の要素も削除
+	for (auto& p : prevs) {
+		p.erase(p.begin() + Index);
+		index = p.size();
+	}
+	for (auto& p : currents) {
+		p.erase(p.begin() + Index);
+		index = p.size();
+	}
+	//指定された要素の削除
 	pColliderArray.erase(itr);
+	prevs.erase(prevs.begin() + Index);
+	currents.erase(currents.begin() + Index);
 }
 
 //	すべての登録解除

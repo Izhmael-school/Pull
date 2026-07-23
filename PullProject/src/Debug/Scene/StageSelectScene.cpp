@@ -61,8 +61,6 @@ void StageSelectScene::Setup() {
 
 	 // プレイヤーの生成位置の取得
 	 VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
-	 // カメラ生成
-	 CameraManager::GetInstance().CreateCamera();
 	 // プレイヤー生成
 	 PlayerManager::GetInstance().CreatePlayer(playerPos);
 	 
