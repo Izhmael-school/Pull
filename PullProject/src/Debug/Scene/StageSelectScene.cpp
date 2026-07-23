@@ -32,7 +32,7 @@ StageSelectScene::StageSelectScene() :currentScene(0) { Start(); }
  */
 void StageSelectScene::Start() {
 	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::StageSelect, true);
-
+#if _DEBUG
 	selectInfoArray.push_back({ "Stage1 o",[]() {StageManager::GetInstance().SetStageID(1);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage2 o",[]() {StageManager::GetInstance().SetStageID(2);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage3 o",[]() {StageManager::GetInstance().SetStageID(3);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
@@ -40,6 +40,7 @@ void StageSelectScene::Start() {
 	selectInfoArray.push_back({ "Stage5 o",[]() {StageManager::GetInstance().SetStageID(5);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "DebugSelect o",[]() {SceneManager::GetInstance().ChangeScene(SceneType::DebugSceneSelect);} });
 	selectInfoArray.push_back({ "Return to Title",[]() {SceneManager::GetInstance().ChangeScene(SceneType::Title);} });
+#endif
 }
 
 /*
@@ -76,6 +77,8 @@ void StageSelectScene::Setup() {
 	 StageCollisionGenerator generator;
 	 generator.GenerateFromUnity("src/Data/Stage_113.json", CollisionManager::GetInstance());
 	//currentScene = 0;
+	 // スカイドームのモデルを取得
+	 SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
 }
 
 /*
@@ -84,7 +87,10 @@ void StageSelectScene::Setup() {
 void StageSelectScene::Update() {
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
-	
+	// カメラ座標を取得
+	VECTOR CameraPos = CameraManager::GetInstance().GetCamera()->GetPosition();
+	// スカイドームをカメラ位置へ移動
+	MV1SetPosition(SkyModel, CameraPos);
 	// プレイヤーの更新
 	auto player = PlayerManager::GetInstance().GetPlayer();
 	player->Update();
@@ -133,13 +139,17 @@ void StageSelectScene::Render() {
 	player->Render();
 	// プレイヤーの腕の描画
 	player->GetHands()->Render();
-	
 	// ギミックの描画 
 	GimmickObjectManager::GetInstance().Render();
-	
+
+	// スカイドームを描画
+	MV1DrawModel(SkyModel);
+	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
+#if _DEBUG
 	// 当たり判定の描画
 	CollisionManager::GetInstance().Render();
 	ColliderObjectManager::GetInstance().Render();
+	
 	int size = static_cast<int>(selectInfoArray.size());
 	for (int i = 0;i < size;i++) {
 		if (i == currentScene)
@@ -147,6 +157,8 @@ void StageSelectScene::Render() {
 		else
 			DrawString(100, 100 + (20 * i), selectInfoArray[i].sceneName.c_str(), 0x000000);
 	}
+#endif
+	
 
 }
 

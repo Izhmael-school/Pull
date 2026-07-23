@@ -34,7 +34,7 @@ private:
 	int currentScene;
 	ActionState action;			// アクション状態
 
-
+	int SkyModel;
 public:
 	/*
 	 *	コンストラクタ
