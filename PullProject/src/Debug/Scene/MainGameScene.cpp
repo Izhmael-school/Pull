@@ -25,6 +25,7 @@
 #include "Generator/CoinGenerator.h"
 #include "../../UI/Scene/MainGameScreen.h"
 #include "Manager/FadeManager.h"
+#include "../../Definition/Enum/CameraModeEnum.h"
 
 #include <DxLib.h>
 #include <format>
@@ -57,7 +58,8 @@ void MainGameScene::Update() {
 	
 	// イベントカメラ
 	if (FadeManager::GetInstance().IsFadeInEnd() && !useEventCamera) {
-		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(3);
+		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(CameraMode::Event);
+		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
 		useEventCamera = true;
 	}
 
@@ -92,6 +94,8 @@ void MainGameScene::Update() {
 
 	// クリア判定
 	if (StageManager::GetInstance().IsStageClear()) {
+		// プレイヤーの入力を行わないようにする
+		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
 		// シーンを切り替える
 		SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
 		return;
@@ -225,6 +229,8 @@ void MainGameScene::Cleanup() {
 }
 
 void MainGameScene::Reset() {
+	// プレイヤーの入力を行わないようにする
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction,false);
 	// フェードに入る
 	FadeManager::GetInstance().FadeStart(FadeIn, FadeType::FadeNormal, 1.0f);
 	// シーンの片付けを呼ぶ
@@ -255,7 +261,7 @@ void MainGameScene::StageStartSetup() {
 	CameraManager::GetInstance().CreateCamera();
 	// カメラの取得
 	auto camera = CameraManager::GetInstance().GetCamera();
-	camera->ChangeCameraMode(1);
+	camera->ChangeCameraMode(CameraMode::Player);
 	// プレイヤー生成
 	PlayerManager::GetInstance().CreatePlayer(playerPos);
 
@@ -269,7 +275,11 @@ void MainGameScene::StageStartSetup() {
 
 	// ステージの当たり判定を作成
 	StageCollisionGenerator generator;
+#if _DEBUG
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
+#else
+	std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_Collision.msgpack", stageID);
+#endif
 	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
 	// プレイヤーアクションマップを有効化
 	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);

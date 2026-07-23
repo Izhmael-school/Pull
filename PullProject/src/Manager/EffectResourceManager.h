@@ -14,6 +14,7 @@ class EffectResource;
 
 const char* const EFFECT_FILEPATH = "res/Model/Effect/";	// エフェクトのファイルパス
 const char* const EFFECTDATA_FILEPATH = "src/Data/EffectData.json";	// エフェクトデータのファイルパス
+const char* const RELEASE_EFFECTDATA_FILEPATH = "res/ExternalFile/Resource/EffectData.msgpack";	// エフェクトデータのファイルパス
 
 using EffectResourcePtr = std::shared_ptr<EffectResource>;
 

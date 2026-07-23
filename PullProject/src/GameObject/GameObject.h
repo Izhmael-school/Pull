@@ -60,6 +60,11 @@ public:
 	inline Collider* GetCollider() const { return pCollider.get(); }
 
 	/*
+	 * @brief 接地判定コライダーの取得
+	 */
+	inline Collider* GetGroundingCollider() const { return pGroundingCollider.get(); }
+
+	/*
 	 * @brief 座標の取得
 	 */
 	inline VECTOR GetPosition() const { return pTransform->GetPosition(); }

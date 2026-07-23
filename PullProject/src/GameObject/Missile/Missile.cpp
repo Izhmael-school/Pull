@@ -14,14 +14,13 @@ Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, V
 	, lifeElapsedTime(0.0f)
 	, pEffectManager(*_effect)
 	, pAudioManager(Application::GetInstance().GetAudioManager())
-	, pOwner(_owner) 
+	, pOwner(_owner)
 	, explosionElapsedTime(0.0f)
 	, explosionTime(2.0f * EXPLOSION_LEVEL)
 	, currentExplosionLevel(0)
 	, texChangeElapsedTime(0.5f)
 	, texChangeTime(0.5f)
-	, isNoTexture(false)
-{
+	, isNoTexture(false) {
 	GetTransform()->LookAtDir(_dir);
 	if (_effect) {
 		pEffect = _effect->Play("MissileBoost", _pos, 10.0f, _dir);
@@ -53,8 +52,8 @@ void Missile::Update() {
 	if (GetCurrentCaughtState() != NoneCaughtState) return;
 
 	Move();
-
-	pEffect->GetTransform()->SetPosition(GetPosition());
+	if (pEffect)
+		pEffect->GetTransform()->SetPosition(GetPosition());
 
 	if (lifeElapsedTime >= lifeLimitTime) {
 		// 爆発
@@ -66,7 +65,7 @@ void Missile::Update() {
 }
 
 void Missile::Explosion() {
-	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 150,Tag::Explosion,0.1f, [](Collider* _pOther) {
+	ColliderObjectManager::GetInstance().CreateSphere(GetPosition(), 150, Tag::Explosion, 0.1f, [](Collider* _pOther) {
 		auto breakWall = dynamic_cast<BomBreakWall*>(_pOther->GetGameObject());
 		if (breakWall != nullptr) {
 			breakWall->ActivGimmick(true);
@@ -90,7 +89,7 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	auto ray = dynamic_cast<RayCollider*>(_pOther);
 	if (ray)
 		return;
-	
+
 	auto hands = dynamic_cast<PlayerHands*>(otherObj);
 	// ウデの処理はここでは行わない
 	if (hands)
@@ -98,9 +97,9 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 
 	// コインは処理しない
 	if (otherObj)
-		if( otherObj->GetTag() == Coin) 
-		return;
-	
+		if (otherObj->GetTag() == Coin)
+			return;
+
 
 	// プレイヤーが持っていればプレイヤーとの処理は行わない
 	if (GetCurrentCaughtState() == CaughtState::Catching) {
@@ -108,7 +107,7 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	}
 
 	auto breakWall = dynamic_cast<BomBreakWall*>(otherObj);
-	if (breakWall) 
+	if (breakWall)
 		breakWall->ActivGimmick(true);
 
 

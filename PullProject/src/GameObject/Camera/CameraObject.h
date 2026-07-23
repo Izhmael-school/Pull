@@ -7,6 +7,7 @@
 #define _CAMERAOBJECT_H_
 
 #include "../GameObject.h"
+#include "../../Definition/Enum/CameraModeEnum.h"
 #include <unordered_map>
 #include <functional>
 
@@ -15,15 +16,6 @@
  */
 class CameraObject : public GameObject {
 private:
-	enum class CameraMode {
-		Invalid = -1,
-		Debug,
-		Player,
-		Pull,
-		Event,
-
-		Max
-	};
 	CameraMode mode;		// カメラのモード
 	VECTOR target;			// 追従カメラのターゲット
 	float speed;			// 移動速度
@@ -114,7 +106,7 @@ public:
 	 * @brief カメラモードの変更
 	 * @author Sekino
 	 */
-	inline void ChangeCameraMode(int _mode) { mode = static_cast<CameraMode>(_mode); }
+	inline void ChangeCameraMode(CameraMode _mode) { mode = _mode; }
 
 	/*
 	 * @brief イベントカメラが再生中か

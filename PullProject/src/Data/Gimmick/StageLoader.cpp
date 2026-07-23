@@ -15,6 +15,8 @@
 
 #include <fstream>
 #include <unordered_map>
+
+#include "Definition/CommonModule/MyJson.h"
 using json = nlohmann::json;
 
 namespace {
@@ -29,10 +31,11 @@ namespace {
 }
 
 void StageLoader::Load(const std::string& fileName, int stageHandle) {
-	std::ifstream file(fileName);
-	json data;
-	// dataにjsonを格納する
-	file >> data;
+#if _DEBUG
+	auto data = MyJson::LoadJsonFile(fileName);
+#else
+	auto data = MyJson::LoadBinary(fileName);
+#endif
 	// レバー対応オブジェクト
 	std::unordered_map<int, TriggerInterface*> triggerMap;
 
