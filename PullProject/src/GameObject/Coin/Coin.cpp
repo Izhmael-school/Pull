@@ -14,6 +14,7 @@ void Coin::Start() {
 	pCollider = std::make_unique<SphereCollider>(this, VZero, 50);
 	GetTransform()->AddPosition(GetBottomFramePos());
 	pCollider->SetResolve(false);
+	pCollider->SetLayer(ColliderLayer::Coin);
 	isGravity = false;
 	GetTransform()->AddPosition(VUp, 200);
 }
@@ -23,7 +24,7 @@ void Coin::Update() {
 }
 
 void Coin::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
-	if (_pOther->GetGameObject()->GetTag() == Tag::Player) {
+	if (_pOther->GetGameObject()->GetTag() == Tag::Player && _pOther->GetTypeName() != "Ray") {
 
 		// スコアを加算
 		GameData::AddScore(addScore);
