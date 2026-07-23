@@ -30,7 +30,6 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, pCatchCollider(nullptr)
 	, extendSpeed(35.0f)
 	, returnSpeedRatio(0.3f)
-	, isWallHit(false)
 
 	, RETURN_THRESHOLD(1.0f)
 	, ARM_LENGTH_MAX(1500.0f)
@@ -91,8 +90,6 @@ void PlayerHands::Update() {
 		CatchMoving();
 	}
 
-	// 毎Update終わりにfalseにする
-	isWallHit = false;
 #if _DEBUG
 	ImGui::Begin("HandsState&CatchState");
 	ImGui::Text("%d", handsState);
@@ -222,10 +219,6 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 }
 
 void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
-	// 押し出しオブジェクトの衝突時
-	if (!_pOther->IsResolve() && _pOther->GetLayer() == ColliderLayer::Player)
-		return;
-	isWallHit = true;
 }
 
 void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
@@ -239,8 +232,8 @@ void PlayerHands::HandsMove() {
 	// 手とプレイヤーの距離の2乗
 	float distSq = VDot(dist, dist);
 
-	// ウデ伸ばし中なら前に進む(壁に衝突していたらNG)
-	if (handsState == HandsState::ArmsExtending && !isWallHit) {
+	// ウデ伸ばし中なら前に進む
+	if (handsState == HandsState::ArmsExtending) {
 		// ウデ伸ばしの距離制限
 		if (distSq < ARM_LENGTH_MAX * ARM_LENGTH_MAX) {
 			// 移動
