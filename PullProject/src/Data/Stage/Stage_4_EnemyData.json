@@ -8,8 +8,20 @@
         },
         {
             "frameName": "Enemy_SP1",
+            "enemyType": 1,
+            "wanderingRadius": 1000.0,
+            "rotationY": 180.0
+        },
+        {
+            "frameName": "Enemy_SP2",
             "enemyType": 0,
             "wanderingRadius": 1000.0,
+            "rotationY": 0.0
+        },
+        {
+            "frameName": "Enemy_SP3",
+            "enemyType": 0,
+            "wanderingRadius": 750.0,
             "rotationY": 0.0
         }
     ]

@@ -18,6 +18,7 @@ void ShooterEnemy::Start() {
 	type = Shooter;
 
 	addScore = 1000;
+	vision.rayLenght = 3000;
 }
 
 void ShooterEnemy::Setup() {
@@ -33,5 +34,5 @@ void ShooterEnemy::WanderingAction() {
 
 void ShooterEnemy::TracingAction() {
 	ChangeNextState(Attack);
-	GetTransform()->LookAt(tracingTargetPos);
+	GetTransform()->LookAtY(tracingTargetPos);
 }

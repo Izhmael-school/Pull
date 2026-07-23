@@ -111,7 +111,7 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		breakWall->ActivGimmick(true);
 
 
-	if (pOwner != otherObj)
+	if (pOwner != otherObj && _pOther->GetLayer() != ColliderLayer::Ground)
 		Explosion();
 }
 
