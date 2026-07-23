@@ -61,14 +61,10 @@ void ExitArea::Cleanup() {
  */
 void ExitArea::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	// 当たった相手を取得
-	auto other = _pOther->GetGameObject();
+	auto other = _pOther->GetLayer();
 	// 当たったのがプレイヤーの場合
-	auto player = dynamic_cast<PlayerCharacter*>(other);
-	if (player) {
-		// プレイヤーの初期位置を取得
-		VECTOR pos = StageManager::GetInstance().GetPlayerSpawnPosition();
-		// プレイヤーの座標を変更
-		player->GetTransform()->SetPosition(pos);
+	
+	if (other == ColliderLayer::Player) {
 		// ギミックをリセット
 		GimmickObjectManager::GetInstance().Reset();
 		// クリア判定
