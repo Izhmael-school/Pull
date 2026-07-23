@@ -55,13 +55,18 @@ void MainGameScene::Setup() {
  *	更新処理
  */
 void MainGameScene::Update() {
+	auto screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
 	
 	// イベントカメラ
 	if (FadeManager::GetInstance().IsFadeInEnd() && !useEventCamera) {
 		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(CameraMode::Event);
 		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
 		useEventCamera = true;
+		// イベントテキストを表示
+		screen->eventTextSetvisible(true);
 	}
+	bool eventCameraCheck = CameraManager::GetInstance().GetCamera()->IsCameraEvent();
+	screen->eventTextSetvisible(eventCameraCheck);
 
 	m_UIManager.Update(0.0f,UIInput());
 	// カメラの更新
