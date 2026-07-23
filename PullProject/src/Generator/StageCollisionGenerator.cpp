@@ -102,7 +102,8 @@ void StageCollisionGenerator::GenerateFromUnity(
 #if _DEBUG
 	auto json = MyJson::LoadJsonFile(path);
 #else
-	auto json = MyJson::LoadBinary(path);
+	auto json = MyJson::LoadJsonFile(path);
+	//auto json = MyJson::LoadBinary(path);
 #endif
 	// JSONが正しく読み込まれなかった場合のエラー表示
 	if (json.is_null()) {
