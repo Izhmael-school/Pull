@@ -184,7 +184,7 @@ void CameraObject::PlayerUpdate() {
 		VECTOR pos = VScale(player->GetTransform()->GetForward(), LOCK_ON_DISTANCE);
 		float height = VDot(dir, dir);
 		height = sqrt(height);
-		pos.y += height;
+		pos.y += height * 0.8f;
 		pTransform->SetPosition(VAdd(player->GetPosition(), pos));
 	}
 

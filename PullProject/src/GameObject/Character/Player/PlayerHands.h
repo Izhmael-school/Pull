@@ -84,6 +84,10 @@ private:
 	 *	掴み中の更新処理
 	 */
 	void CatchUpdate();
+	/*
+	 *	掴み時の反応
+	 */
+	void CatchReaction();
 
 public:
 	/*

@@ -38,7 +38,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 {}
 
 void PlayerHands::Start() {
-	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 40), VScale(VUp, 30), 40, VZero);
+	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 40), VScale(VUp, 30), 35, VZero);
 	pCollider->SetResolve(false);
 	pCollider->SetLayer(ColliderLayer::PlayerArm);
 }
@@ -125,8 +125,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			handsState = HandsState::Catch;
 			// 敵の掴まった時処理;
 			enemy->CaughtAction();
-			// SE
-			Application::GetInstance().GetAudioManager().Play("PlayerCatch");
+			// 反応
+			CatchReaction();
 		}
 		// デフォルトレイヤーは処理しない
 		else if (enemyLayer == ColliderLayer::Enemy) {
@@ -139,13 +139,11 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			// 敵の掴まった時処理
 			//VECTOR catchPos = VSub(enemy->GetPosition(), GetPosition());
 			enemy->CaughtAction(GetRotation(), CARRY_POSITION);
-			// 振動
-			StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 			// アニメーション
 			pAnimator->Play("Carry");
 			pOwner->GetAnimator()->Play("Carry");
-			// SE
-			Application::GetInstance().GetAudioManager().Play("PlayerCatch");
+			// 反応
+			CatchReaction();
 		}
 	}
 
@@ -165,13 +163,11 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		missile->GetTransform()->SetPosition(CARRY_POSITION);
 		// 敵の掴まった時処理
 		missile->CaughtAction();
-		// 振動
-		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 		// アニメーション
 		pAnimator->Play("Carry");
 		pOwner->GetAnimator()->Play("Carry");
-		// SE
-		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
+		// 反応
+		CatchReaction();
 	}
 	/*
 	 * @author Sekino
@@ -189,22 +185,18 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		pumpkin->GetTransform()->SetPosition(CARRY_POSITION);
 		// 敵の掴まった時処理
 		pumpkin->CaughtAction();
-		// 振動
-		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
 		// アニメーション
 		pAnimator->Play("Carry");
 		pOwner->GetAnimator()->Play("Carry");
-		// SE
-		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
+		// 反応
+		CatchReaction();
 	}
 
 	// 当たったのがフックの場合
 	if (other->GetTag() == Hook) {
 		handsState = HandsState::Catch;
-
-		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
-		// SE
-		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
+		// 反応
+		CatchReaction();
 	}
 
 	// 当たったのがレバーの場合
@@ -212,10 +204,8 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		// ステート変更
 		catchState = CatchState::LeverCatch;
 		handsState = HandsState::Catch;
-
-		StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
-		// SE
-		Application::GetInstance().GetAudioManager().Play("PlayerCatch");
+		// 反応
+		CatchReaction();
 	}
 }
 
@@ -407,11 +397,21 @@ void PlayerHands::CatchUpdate() {
 			MV1SetDifColorScale(modelHandle, color);
 			MV1SetDifColorScale(pOwner->GetModelHandle(), color);
 		}
-		// 離したらジャンプ
-		if (release) {
+		// ジャンプで進む
+		if (action.buttonDown[static_cast<int>(PlayerAction::Jump)]) {
 			catchState = CatchState::PillerCatch;
 			pOwner->CatchMovingJamp();
 			pOwner->CatchReset();
 		}
 	}
+}
+
+/*
+ *	掴み時の反応
+ */
+void PlayerHands::CatchReaction() {
+	// 振動
+	StartJoypadVibration(DX_INPUT_PAD1, 300, 180, -1);
+	// SE
+	Application::GetInstance().GetAudioManager().Play("PlayerCatch");
 }
