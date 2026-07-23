@@ -10,6 +10,14 @@
 #include "Manager/Stage/StageManager.h"
 #include "../../Manager/InputSystemManager.h"
 #include "../../Definition/Enum/StageSelectActionEnum.h"
+#include "Manager/CameraManager.h"
+#include "Manager/Playermanager.h"
+#include "../../Manager/Stage/GimmickObjectManager.h"
+#include "Manager/ColliderObjectManager.h"
+#include "Manager/GameObjectManager.h"
+#include "Manager/AudioManager.h"
+#include "Manager/EnemyManager.h"
+#include "Application.h"
 
 #include <algorithm>
 #include <math.h>
@@ -38,55 +46,62 @@ void StageSelectScene::Start() {
  *	準備処理
  */
 void StageSelectScene::Setup() {
-	// // 当たり判定の複数生成回避
-	// CollisionManager::GetInstance().Clear();
-	// 
-	// // ステージの初期化処理
-	// StageManager::GetInstance().Initialize();
-	// // セレクトステージの読み込み※仮でDebugStage
-	// StageManager::GetInstance().LoadStage(111);
-	// 
-	// // プレイヤーの生成位置の取得
-	// VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
-	// // カメラ生成
-	// CameraManager::GetInstance().CreateCamera();
-	// // プレイヤー生成
-	// PlayerManager::GetInstance().CreatePlayer(playerPos);
-	// 
-	// // ギミックの更新を一度だけ呼ぶ
-	// GimmickObjectManager::GetInstance().Update();
-	// 
-	// 
-	// // ステージの当たり判定を生成
-	// StageCollisionGenerator generator;
-	// generator.GenerateFromUnity("src/Data/DebugStage.json", CollisionManager::GetInstance());
-	currentScene = 0;
+	 // 当たり判定の複数生成回避
+	 CollisionManager::GetInstance().Clear();
+	 
+	 auto camera = CameraManager::GetInstance().GetCamera();
+	 camera->ChangeCameraMode(CameraMode::Player);
+
+	 // ステージの初期化処理
+	 StageManager& stageManager = StageManager::GetInstance();
+	 stageManager.Initialize();
+	 // セレクトステージの読み込み※仮でDebugStage
+	 stageManager.LoadStage(113);
+	 stageManager.TransitionStage(113);
+
+	 // プレイヤーの生成位置の取得
+	 VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
+	 // カメラ生成
+	 CameraManager::GetInstance().CreateCamera();
+	 // プレイヤー生成
+	 PlayerManager::GetInstance().CreatePlayer(playerPos);
+	 
+	 // ギミックの更新を一度だけ呼ぶ
+	 GimmickObjectManager::GetInstance().Update();
+	 
+	 // GameObjectの更新
+	 GameObjectManager::GetInstance().Update();
+	 
+	 // ステージの当たり判定を生成
+	 StageCollisionGenerator generator;
+	 generator.GenerateFromUnity("src/Data/Stage_113.json", CollisionManager::GetInstance());
+	//currentScene = 0;
 }
 
 /*
  *	更新処理
  */
 void StageSelectScene::Update() {
-	//// カメラの更新
-	//CameraManager::GetInstance().GetCamera()->Update();
-	//
-	//// プレイヤーの更新
-	//auto player = PlayerManager::GetInstance().GetPlayer();
-	//player->Update();
-	//player->GetHands()->Update();t
-	//
-	//// ギミックの更新
-	//GimmickObjectManager::GetInstance().Update();
-	//
-	//
-	//// 当たり判定の更新
-	//CollisionManager::GetInstance().Update();
-	//ColliderObjectManager::GetInstance().Update();
+	// カメラの更新
+	CameraManager::GetInstance().GetCamera()->Update();
+	
+	// プレイヤーの更新
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	player->Update();
+	player->GetHands()->Update();
+	
+	// ギミックの更新
+	GimmickObjectManager::GetInstance().Update();
+
+	// 当たり判定の更新
+	CollisionManager::GetInstance().Update();
+	ColliderObjectManager::GetInstance().Update();
 	// 
 	// 入力アクションの更新
 	
-	action = InputSystemManager::GetInstance().GetInputState(ActionMap::StageSelect);
-	int size = static_cast<int>(selectInfoArray.size());
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
+	//InputSystemManager::GetInstance().GetInputState(ActionMap::PlayerAction);
+	/*int size = static_cast<int>(selectInfoArray.size());
 
 	if (action.buttonDown[static_cast<int>(StageSelectAction::SelectMove_UP)]) {
 		currentScene = std::max(currentScene - 1, 0);
@@ -96,7 +111,7 @@ void StageSelectScene::Update() {
 	}
 	if (action.buttonDown[static_cast<int>(StageSelectAction::Click)]) {
 		selectInfoArray[currentScene].SceneChangeFunc();
-	}
+	}*/
 
 	//if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_UP))
 	//	currentScene = std::max(currentScene - 1, 0);
@@ -109,22 +124,22 @@ void StageSelectScene::Update() {
 
 void StageSelectScene::Render() {
 
-	//// ステージの描画
-	//StageManager::GetInstance().Render();
-	//
-	//// プレイヤーを取得
-	//auto player = PlayerManager::GetInstance().GetPlayer();
-	//// プレイヤーの描画
-	//player->Render();
-	//// プレイヤーの腕の描画
-	//player->GetHands()->Render();
-	//
-	//// ギミックの描画 
-	//GimmickObjectManager::GetInstance().Render();
-	//
-	//// 当たり判定の描画
-	//CollisionManager::GetInstance().Render();
-	//ColliderObjectManager::GetInstance().Render();
+	// ステージの描画
+	StageManager::GetInstance().Render();
+	
+	// プレイヤーを取得
+	auto player = PlayerManager::GetInstance().GetPlayer();
+	// プレイヤーの描画
+	player->Render();
+	// プレイヤーの腕の描画
+	player->GetHands()->Render();
+	
+	// ギミックの描画 
+	GimmickObjectManager::GetInstance().Render();
+	
+	// 当たり判定の描画
+	CollisionManager::GetInstance().Render();
+	ColliderObjectManager::GetInstance().Render();
 	int size = static_cast<int>(selectInfoArray.size());
 	for (int i = 0;i < size;i++) {
 		if (i == currentScene)
@@ -133,4 +148,15 @@ void StageSelectScene::Render() {
 			DrawString(100, 100 + (20 * i), selectInfoArray[i].sceneName.c_str(), 0x000000);
 	}
 
+}
+
+void StageSelectScene::Cleanup() {
+	// ギミックの片付け処理
+	GimmickObjectManager::GetInstance().Clear();
+	StageManager::GetInstance().RequestStageClear(false);
+	StageManager::GetInstance().Execute();
+	GameObjectManager::GetInstance().Cleanup();
+	// 音
+	AudioManager* audio = &Application::GetInstance().GetAudioManager();
+	audio->Clean();
 }
