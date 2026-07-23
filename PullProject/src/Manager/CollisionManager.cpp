@@ -159,16 +159,27 @@ void CollisionManager::Update() {
 			Collider* a = pColliderArray[i];
 			Collider* b = pColliderArray[j];
 
+			auto goA = a->GetGameObject();
+			auto goB = b->GetGameObject();
+
 			if (!a || !b) continue;
 
-			if (!a->IsEnable() || !b->IsEnable()) continue;
+
+			if (!a->IsEnable() || !b->IsEnable()) {
+				if (prevs[i][j]) {
+					goA->OnTriggerExit(a, b);
+					goB->OnTriggerExit(b, a);
+
+					prevs[i][j] = false;
+				}
+				continue;
+			}
+
 
 			if (a->GetLayer() == ColliderLayer::MissileWall && b->GetLayer() == ColliderLayer::Missile || b->GetLayer() == ColliderLayer::MissileWall && a->GetLayer() == ColliderLayer::Missile) {
 				continue;
 			}
 
-			auto goA = a->GetGameObject();
-			auto goB = b->GetGameObject();
 
 			if (!goA || !goB) continue;
 			if (!goA->IsActive() || !goB->IsActive()) continue;

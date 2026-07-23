@@ -81,8 +81,7 @@ void MainGameScene::Update() {
 	// 敵の更新
 	enemyManager.Update();
 
-	// GameObjectの更新
-	GameObjectManager::GetInstance().Update();
+
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();

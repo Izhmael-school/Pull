@@ -184,6 +184,7 @@
     <ClCompile Include="src\GameObject\Stage\Gimmick\Lever.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\PullOutFloor.cpp" />
     <ClCompile Include="src\GameObject\Stage\Gimmick\Turret.cpp" />
+    <ClCompile Include="src\GameObject\Stage\Select\StageTransitionTrigger.cpp" />
     <ClCompile Include="src\GameObject\Stage\Stage.cpp" />
     <ClCompile Include="src\Game\GameData.cpp" />
     <ClCompile Include="src\Generator\CoinGenerator.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="src\GameObject\Stage\Gimmick\PullOutFloor.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\TriggerInterface.h" />
     <ClInclude Include="src\GameObject\Stage\Gimmick\Turret.h" />
+    <ClInclude Include="src\GameObject\Stage\Select\StageTransitionTrigger.h" />
     <ClInclude Include="src\GameObject\Stage\Stage.h" />
     <ClInclude Include="src\GameObject\Stage\StageBase.h" />
     <ClInclude Include="src\GameObject\Stage\StageState.h" />

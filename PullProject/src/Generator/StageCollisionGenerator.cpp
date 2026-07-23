@@ -9,6 +9,7 @@
 #include "../Definition/CommonModule/MyJson.h"
 #include "../Component/Collider/Collider.h"
 #include "../GameObject/GameObject.h"
+#include "GameObject/Stage/Select/StageTransitionTrigger.h"
 
 // AABB構造体の定義
 struct AABB {
@@ -153,12 +154,45 @@ void StageCollisionGenerator::GenerateFromUnity(
 
 	// 結合後のAABBをColliderとして登録
 	for (auto& b : boxes) {
-		GameObject* obj = new GameObject(-1, VZero, Tag::Ground);
+		GameObject* owner = nullptr;
 
-		AABBCollider* col = std::make_unique<AABBCollider>(obj, VZero, VZero).release();
+		if (b.type == "stage1") {
+			auto* trigger = new StageTransitionTrigger();
+			trigger->SetStageNo(1);
+			owner = trigger;
+		}
+		else if (b.type == "stage2") {
+			auto* trigger = new StageTransitionTrigger();
+			trigger->SetStageNo(2);
+			owner = trigger;
+		}
+		else if (b.type == "stage3") {
+			auto* trigger = new StageTransitionTrigger();
+			trigger->SetStageNo(3);
+			owner = trigger;
+		}
+		else if (b.type == "stage4") {
+			auto* trigger = new StageTransitionTrigger();
+			trigger->SetStageNo(4);
+			owner = trigger;
+		}
+		else if (b.type == "stage5") {
+			auto* trigger = new StageTransitionTrigger();
+			trigger->SetStageNo(5);
+			owner = trigger;
+		}
+		else {
+			owner = new GameObject(-1, VZero, Tag::Ground);
+		}
+
+		AABBCollider* col =
+			std::make_unique<AABBCollider>(
+				owner,
+				VZero,
+				VZero).release();
+
 		col->SetMin(b.min);
 		col->SetMax(b.max);
-
 
 		if (b.type == "missilewall") {
 			col->SetLayer(ColliderLayer::MissileWall);
@@ -196,6 +230,8 @@ void StageCollisionGenerator::GenerateFromUnity(
 		else {
 			col->SetLayer(ColliderLayer::Stage);
 		}
+
+		// 以下 stage3～5 も同様
 		colCount++;
 	}
 	// 結合後のAABBの数を表示
