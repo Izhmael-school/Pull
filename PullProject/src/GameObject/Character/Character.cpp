@@ -38,7 +38,6 @@ void Character::Setup() {
 
 void Character::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	GameObject::OnTriggerEnter(_pSelf, _pOther);
-
 }
 
 

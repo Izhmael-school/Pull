@@ -102,7 +102,7 @@ void GameObject::DeleteModel() {
  */
 void GameObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground) {
+		_pOther->GetLayer() == ColliderLayer::Ground && isGravity) {
 		if (tag == Enemy) {
 			printfDx("a");
 		}
@@ -120,7 +120,7 @@ void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
  */
 void GameObject::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground) {
+		_pOther->GetLayer() == ColliderLayer::Ground && isGravity) {
 		groundCount--;
 
 		if (groundCount <= 0) {
