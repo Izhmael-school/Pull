@@ -5,6 +5,7 @@
 #include "../../../Manager/Stage/GimmickObjectManager.h"
 #include "Manager/SceneManager.h"
 #include "Definition/CommonModule/MyMath.h"
+#include "Manager/InputSystemManager.h"
 
 StageTransitionTrigger::StageTransitionTrigger()
     : m_stageNo(-1){
@@ -13,8 +14,9 @@ StageTransitionTrigger::StageTransitionTrigger()
 
 void StageTransitionTrigger::OnTriggerEnter(Collider* pSelf ,Collider* other) {
     auto _other = other->GetLayer();
-    
     if (_other == ColliderLayer::Player) {
+        // プレイヤーの入力を行わないようにする
+        InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
         StageManager::GetInstance().SetStageID(m_stageNo);
         SceneManager::GetInstance().ChangeScene(SceneType::Game);
     }

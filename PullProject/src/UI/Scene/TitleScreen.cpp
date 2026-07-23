@@ -8,7 +8,7 @@ void TitleScreen::Update(float deltaTime, const UIInput& input) {
     colorTimer += deltaTime;
 
     // 0.3秒ごとに色を切り替える
-    if (colorTimer >= 0.9f) {
+    if (colorTimer >= 0.5f) {
         colorTimer = 0.0f;
         isWhite = !isWhite;
     }

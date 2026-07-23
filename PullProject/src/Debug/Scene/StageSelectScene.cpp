@@ -66,7 +66,7 @@ void StageSelectScene::Setup() {
 	 CameraManager::GetInstance().CreateCamera();
 	 // プレイヤー生成
 	 PlayerManager::GetInstance().CreatePlayer(playerPos);
-	 
+	 InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 	 // ギミックの更新を一度だけ呼ぶ
 	 GimmickObjectManager::GetInstance().Update();
 	 
@@ -102,10 +102,6 @@ void StageSelectScene::Update() {
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
 	ColliderObjectManager::GetInstance().Update();
-	// 
-	// 入力アクションの更新
-	
-	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 	//InputSystemManager::GetInstance().GetInputState(ActionMap::PlayerAction);
 	/*int size = static_cast<int>(selectInfoArray.size());
 
