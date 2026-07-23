@@ -95,6 +95,8 @@ void MainGameScene::Update() {
 
 	// クリア判定
 	if (StageManager::GetInstance().IsStageClear()) {
+		// プレイヤーの入力を行わないようにする
+		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
 		// シーンを切り替える
 		SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
 		return;
@@ -228,6 +230,8 @@ void MainGameScene::Cleanup() {
 }
 
 void MainGameScene::Reset() {
+	// プレイヤーの入力を行わないようにする
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction,false);
 	// フェードに入る
 	FadeManager::GetInstance().FadeStart(FadeIn, FadeType::FadeNormal, 1.0f);
 	// シーンの片付けを呼ぶ
