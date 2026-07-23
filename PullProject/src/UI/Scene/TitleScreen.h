@@ -27,7 +27,7 @@ public:
 
         // フォントを追加
         AddFontResourceEx(
-            "res/UI/Kaisotai-Next-UP-B.ttf",
+            "res/UI/FONT/Kaisotai-Next-UP-B.ttf",
             FR_PRIVATE,
             NULL
         );

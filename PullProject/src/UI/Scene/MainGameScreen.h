@@ -28,7 +28,7 @@ public:
 	void Init() override {
 		// ƒtƒHƒ“ƒg‚ð’Ç‰Á
 		AddFontResourceEx(
-			"res/UI/Kaisotai-Next-UP-B.ttf",
+			"res/UI/FONT/Kaisotai-Next-UP-B.ttf",
 			FR_PRIVATE,
 			NULL
 		);
