@@ -35,6 +35,33 @@
         },
         {
             "frameName": "Coin_SP11"
+        },
+        {
+            "frameName": "Coin_SP12"
+        },
+        {
+            "frameName": "Coin_SP13"
+        },
+        {
+            "frameName": "Coin_SP14"
+        },
+        {
+            "frameName": "Coin_SP15"
+        },
+        {
+            "frameName": "Coin_SP16"
+        },
+        {
+            "frameName": "Coin_SP17"
+        },
+        {
+            "frameName": "Coin_SP18"
+        },
+        {
+            "frameName": "Coin_SP19"
+        },
+        {
+            "frameName": "Coin_SP20"
         }
     ]
 }

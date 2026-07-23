@@ -28,7 +28,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, catchState(CatchState::None)
 	, pOwner(_owner)
 	, pCatchCollider(nullptr)
-	, extendSpeed(20.0f)
+	, extendSpeed(35.0f)
 	, returnSpeedRatio(0.3f)
 
 	, RETURN_THRESHOLD(1.0f)
@@ -37,7 +37,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 {}
 
 void PlayerHands::Start() {
-	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 50), VScale(VUp, 10), 40, VZero);
+	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 40), VScale(VUp, 30), 40, VZero);
 	pCollider->SetResolve(false);
 	pCollider->SetLayer(ColliderLayer::PlayerArm);
 }
@@ -219,7 +219,6 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 }
 
 void PlayerHands::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
-	
 }
 
 void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {

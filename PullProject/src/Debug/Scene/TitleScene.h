@@ -15,6 +15,7 @@
 #include "GameObject/GameObject.h"
 #include "../../UI/UIManager.h"
 #include "../../Definition/CommonModule/ActionMapData.h"
+#include "../../UI/Text/UIText.h"
 
 #include <string>
 #include <functional>
@@ -35,7 +36,9 @@ private:
 	AudioManager audioManager;						// オーディオ管理
 	AudioResourceManager audioResourceManager;		// オーディオリソース管理
 	UIManager m_uiManager;							// UI管理
-	ActionState action;			// アクション状態
+	ActionState action;								// アクション状態
+
+	
 public:
 	/*
 	 *	コンストラクタ

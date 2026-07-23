@@ -42,7 +42,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, LURCH_BACKWARD_THRESHOLD(30.0f)
 	, LURCH_BACKWARD_TIME_MAX(70.0f)
 	, VISION_LENGTH(1500.0f)
-	, VISION_HEIGHT(150.0f)
+	, VISION_HEIGHT(100.0f)
 	, VISION_ANGLE(30.0f)
 {}
 
@@ -193,9 +193,7 @@ void PlayerCharacter::Update() {
 	}
 
 	// ロックオン
-	if (action.button[static_cast<int>(PlayerAction::LockOn)]) {
-		lockOn = GetVisionObject(lockOnTarget);
-	}
+	lockOn = GetVisionObject(lockOnTarget);
 	// ロックオン解除
 	if (action.buttonUp[static_cast<int>(PlayerAction::LockOn)] ||
 		GetHands()->IsCatch()) {
@@ -539,7 +537,13 @@ bool PlayerCharacter::GetVisionObject(VECTOR& targetObject) {
 		lockOnPos.y != 0.0f ||
 		lockOnPos.z != 0.0f) {
 		targetObject = lockOnPos;
-		return true;
+		// 入力があればロックオンする
+		if (action.button[static_cast<int>(PlayerAction::LockOn)]) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	return false;
 }

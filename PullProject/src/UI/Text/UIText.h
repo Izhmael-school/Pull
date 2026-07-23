@@ -43,7 +43,9 @@ public:
 	void SetText( const std::string& text) { m_text = text; }
 	void SetStyle(const UITextStyle& style) { m_style = style; }
 	void SetSelected(bool isSelected) { m_isSelected = isSelected; }
-
+	const UITextStyle& GetStyle() const {
+		return m_style;
+	}
 protected:
 
 	/// <summary>

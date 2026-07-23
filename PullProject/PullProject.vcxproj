@@ -240,6 +240,7 @@
     <ClCompile Include="src\UI\Font\FontManager.cpp" />
     <ClCompile Include="src\UI\Image\UIImage.cpp" />
     <ClCompile Include="src\UI\Scene\MainGameScreen.cpp" />
+    <ClCompile Include="src\UI\Scene\TitleScreen.cpp" />
     <ClCompile Include="src\UI\Text\UIText.cpp" />
     <ClCompile Include="src\UI\UIManager.cpp" />
     <ClCompile Include="src\UI\UIObject.cpp" />
