@@ -6,7 +6,7 @@
 #include "Manager/SceneManager.h"
 
 StageTransitionTrigger::StageTransitionTrigger()
-    : m_stageNo(0){
+    : m_stageNo(-1){
 
 }
 

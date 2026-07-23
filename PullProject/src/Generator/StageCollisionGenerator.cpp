@@ -233,8 +233,6 @@ void StageCollisionGenerator::GenerateFromUnity(
 		else {
 			col->SetLayer(ColliderLayer::Stage);
 		}
-
-		// 以下 stage3～5 も同様
 		colCount++;
 	}
 	// 結合後のAABBの数を表示
