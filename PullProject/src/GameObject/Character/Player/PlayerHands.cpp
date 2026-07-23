@@ -34,6 +34,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, RETURN_THRESHOLD(1.0f)
 	, ARM_LENGTH_MAX(1500.0f)
 	, CARRY_POSITION(0.0f, 150.0f, -50.0f)
+	, CATCH_COLOR_CHANGE_RATIO(0.9f)
 {}
 
 void PlayerHands::Start() {
@@ -60,8 +61,8 @@ void PlayerHands::Update() {
 			catchState != CatchState::EnemyCatch) {
 			handsState = HandsState::ArmsReturning;
 			catchState = CatchState::None;
-			// 引っこ抜き解除時処理を呼ぶ
-			pOwner->PullReset();
+			// 掴み解除時処理を呼ぶ
+			pOwner->CatchReset();
 		}
 	}
 	// 何も掴んでいなければ(かつ地に足ついていれば)
@@ -393,9 +394,24 @@ void PlayerHands::CatchUpdate() {
 
 	// 掴んだのがフックの場合
 	if (catchObject->GetTag() == Hook) {
+		//掴んでいる間は微量のシェイク
+		if (catchState != CatchState::PillerCatch) {
+			CameraManager::GetInstance().CameraShake(1, 1);
+			StartJoypadVibration(DX_INPUT_PAD1, 5, 10, -1);
+
+			// だんだん赤くする
+			auto color = MV1GetDifColorScale(modelHandle);
+			color.g = MyMath::Lerp(0, color.g, CATCH_COLOR_CHANGE_RATIO);
+			color.b = color.g;
+			// 適応
+			MV1SetDifColorScale(modelHandle, color);
+			MV1SetDifColorScale(pOwner->GetModelHandle(), color);
+		}
+		// 離したらジャンプ
 		if (release) {
 			catchState = CatchState::PillerCatch;
-			pOwner->SetIsGravity(false);
+			pOwner->CatchMovingJamp();
+			pOwner->CatchReset();
 		}
 	}
 }

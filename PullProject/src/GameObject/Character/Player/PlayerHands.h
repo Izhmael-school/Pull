@@ -50,6 +50,8 @@ private:
 	const float ARM_LENGTH_MAX;
 	// 持ち上げる位置
 	const VECTOR CARRY_POSITION;
+	// 掴み変色割合
+	const float CATCH_COLOR_CHANGE_RATIO;
 	
 public:
 	PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHandle, VECTOR _pos, Tag _tag = Player);
