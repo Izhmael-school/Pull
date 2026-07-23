@@ -101,18 +101,27 @@ void GameObject::DeleteModel() {
  *	@author Riku
  */
 void GameObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+	if (!_pSelf || !_pOther) return;
+
 	if (_pSelf == pGroundingCollider.get() &&
-		_pOther->GetLayer() == ColliderLayer::Ground && isGravity) {
+		_pOther->GetLayer() == ColliderLayer::Ground) {
 		if (tag == Enemy) {
 			printfDx("a");
 		}
 		groundCount++;
-		hitGroundingFrag = (groundCount > 0);
+		hitGroundingFrag = true;
 	}
 }
 
 void GameObject::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
-
+	//if (_pSelf == pGroundingCollider.get() &&
+	//	_pOther->GetLayer() == ColliderLayer::Ground) {
+	//	if (tag == Enemy) {
+	//		printfDx("a");
+	//	}
+	//	groundCount++;
+	//	hitGroundingFrag = (groundCount > 0);
+	//}
 }
 
 /*

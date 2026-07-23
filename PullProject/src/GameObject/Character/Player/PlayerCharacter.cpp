@@ -282,6 +282,7 @@ void PlayerCharacter::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 void PlayerCharacter::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 	if (_pSelf == pLockOnVision.get())
 		return;
+	Character::OnTriggerStay(_pSelf, _pOther);
 }
 
 void PlayerCharacter::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
