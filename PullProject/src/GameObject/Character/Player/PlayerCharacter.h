@@ -74,6 +74,10 @@ private:
 	const float VISION_HEIGHT;
 	// 視界の扇形角度(度数)
 	const float VISION_ANGLE;
+	// 距離をジャンプパワーに変換する割合
+	const float CHANGE_LENGTH_TO_POWER_RATIO;
+	// 掴み移動時のジャンプ制限距離
+	const float CATCH_MOVING_JAMP_LENGTH;
 
 public:
 	PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag = Player);
@@ -120,9 +124,9 @@ public:
 	 */
 	bool Pull();
 	/*
-	 *	引っこ抜き解除時処理
+	 *	掴み解除時処理
 	 */
-	void PullReset();
+	void CatchReset();
 	/*
 	 *	掴み移動の移動処理
 	 *	@param	float 移動速度
@@ -133,7 +137,10 @@ public:
 	 *	@param[out]	VECTOR	視界内の一番近いオブジェクトの位置
 	 */
 	bool GetVisionObject(VECTOR& targetObject);
-	
+	/*
+	 *	掴み移動時のジャンプ
+	 */
+	void CatchMovingJamp();
 
 public:
 	/*

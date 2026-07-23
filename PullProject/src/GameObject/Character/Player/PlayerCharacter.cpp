@@ -32,7 +32,7 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 
 	, PULL_VALUE_MAX(100.0f)
 	, PULL_CAMERA_SHAKE_POWER(20.0f)
-	, PULL_CAMERA_SHAKE_TIME(5.0f) 
+	, PULL_CAMERA_SHAKE_TIME(5.0f)
 	, JUMP_POWER(20)
 	, RETURN_COLOR_RATIO(0.95f)
 	, RETURN_PULL_VALUE_RATIO(0.95f)
@@ -44,6 +44,8 @@ PlayerCharacter::PlayerCharacter(int _modelHandle, VECTOR _pos, Tag _tag)
 	, VISION_LENGTH(1500.0f)
 	, VISION_HEIGHT(100.0f)
 	, VISION_ANGLE(30.0f)
+	, CHANGE_LENGTH_TO_POWER_RATIO(0.0135f)
+	, CATCH_MOVING_JAMP_LENGTH(200.0f)
 {}
 
 void PlayerCharacter::Start() {
@@ -477,7 +479,7 @@ bool PlayerCharacter::Pull() {
 		pHands->GetAnimator()->Play("Jump", 10.0f);
 
 		// 解除時処理を呼ぶ
-		PullReset();
+		CatchReset();
 		
 		return true;
 	}
@@ -485,9 +487,9 @@ bool PlayerCharacter::Pull() {
 }
 
 /*
- *	引っこ抜き解除時処理
+ *	掴み解除時処理
  */
-void PlayerCharacter::PullReset() {
+void PlayerCharacter::CatchReset() {
 	pullValue = 0;
 	returnColor = true;
 	isGravity = true;
@@ -546,6 +548,23 @@ bool PlayerCharacter::GetVisionObject(VECTOR& targetObject) {
 		}
 	}
 	return false;
+}
+
+/*
+ *	掴み移動時のジャンプ
+ */
+void PlayerCharacter::CatchMovingJamp() {
+	// 手とプレイヤーの距離を出す
+	VECTOR dir = VSub(pHands->GetPosition(), GetPosition());
+	float length = VDot(dir, dir);
+	length = sqrt(length);
+	
+	// 一定距離以上なら距離に応じてジャンプ
+	if (length > CATCH_MOVING_JAMP_LENGTH) {
+		AddFallSpeed(-length * CHANGE_LENGTH_TO_POWER_RATIO);
+		groundCount = 0;
+		hitGroundingFrag = false;
+	}
 }
 
 /*
