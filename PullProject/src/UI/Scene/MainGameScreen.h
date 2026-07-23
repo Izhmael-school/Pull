@@ -19,12 +19,20 @@ class MainGameScreen :public UIScreen {
 	UIImage* operationUI = nullptr;
 	UIText* coinCount;
 	UIText* scoreCount;
+	UIText* eventText = nullptr;        
 
 	bool isLeverVisible = false;
 	bool isMisileVisible = false;
 public:
 
 	void Init() override {
+		// フォントを追加
+		AddFontResourceEx(
+			"res/UI/Kaisotai-Next-UP-B.ttf",
+			FR_PRIVATE,
+			NULL
+		);
+
 		// レバー掴み時UIを生成
 		leverUI = CreateUIObject<UIImage>(
 			LoadGraph("res/UI/actionUI.png"),
@@ -47,6 +55,23 @@ public:
 			Vector2(0, 0)
 		);
 		operationUI->SetVisible(false);
+
+		// イベントカメラ時UIテキスト
+		// テキストスタイルを生成
+		UITextStyle eventStyle;
+		eventStyle.fontName = "Kaisotai-Next-UP-B";
+		eventStyle.fontSize = 250;
+		eventStyle.fontThickness = 5;
+		eventStyle.normalColor = white;
+		eventStyle.outLineColor = black;
+
+		// スタートテキスト生成
+		eventText = CreateUIObject<UIText>(
+			"ゴールをめざせ",
+			eventStyle,
+			Vector2(220, 140)
+		);
+		eventText->SetVisible(false);
 
 		UITextStyle defaultStyle;
 		defaultStyle.fontSize = 50;
@@ -81,6 +106,13 @@ public:
 	void UpdateOperationUI() {
 		// レバー・ミサイルのどちらも表示していないときだけ操作UIを表示
 		operationUI->SetVisible(!(isLeverVisible || isMisileVisible));
+	}
+
+	/*
+	 *	イベントテキストを表示
+	 */
+	void eventTextSetvisible(bool visible) {
+		eventText->SetVisible(visible);
 	}
 };
 

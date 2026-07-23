@@ -125,10 +125,10 @@ bool Application::Update() {
 	audioManager.Update();
 
 	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_ESCAPE)) {
-		return true;
+		GameEnd();
 	}
 
-	return false;
+	return isGameEnd;
 }
 
 void Application::Render() {

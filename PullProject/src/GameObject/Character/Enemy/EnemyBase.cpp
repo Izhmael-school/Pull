@@ -428,8 +428,6 @@ void EnemyBase::OnTriggerStay(Collider* _pSelf, Collider* _pOther) {
 
 void EnemyBase::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
 	Character::OnTriggerExit(_pSelf, _pOther);
-
-
 }
 
 void EnemyBase::CaughtAction(VECTOR _rot, VECTOR _pos) {

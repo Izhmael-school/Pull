@@ -55,13 +55,18 @@ void MainGameScene::Setup() {
  *	更新処理
  */
 void MainGameScene::Update() {
+	auto screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
 	
 	// イベントカメラ
 	if (FadeManager::GetInstance().IsFadeInEnd() && !useEventCamera) {
 		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(CameraMode::Event);
 		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
 		useEventCamera = true;
+		// イベントテキストを表示
+		screen->eventTextSetvisible(true);
 	}
+	bool eventCameraCheck = CameraManager::GetInstance().GetCamera()->IsCameraEvent();
+	screen->eventTextSetvisible(eventCameraCheck);
 
 	m_UIManager.Update(0.0f,UIInput());
 	// カメラの更新
@@ -83,8 +88,8 @@ void MainGameScene::Update() {
 	// 敵の更新
 	enemyManager.Update();
 
-	// GameObjectの更新
 	GameObjectManager::GetInstance().Update();
+
 
 	// 当たり判定の更新
 	CollisionManager::GetInstance().Update();
@@ -279,7 +284,8 @@ void MainGameScene::StageStartSetup() {
 #if _DEBUG
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
 #else
-	std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_Collision.msgpack", stageID);
+	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
+	//std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_Collision.msgpack", stageID);
 #endif
 	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
 	// プレイヤーアクションマップを有効化

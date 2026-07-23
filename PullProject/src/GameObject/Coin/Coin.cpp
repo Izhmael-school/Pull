@@ -16,10 +16,11 @@ void Coin::Start() {
 	pCollider->SetResolve(false);
 	pCollider->SetLayer(ColliderLayer::Coin);
 	isGravity = false;
-	GetTransform()->AddPosition(VUp, 200);
+	GetTransform()->AddPosition(VUp, 100);
 }
 
 void Coin::Update() {
+	GameObject::Update();
 	GetTransform()->AddRotation(VUp, 5);
 }
 

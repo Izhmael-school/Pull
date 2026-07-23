@@ -34,7 +34,7 @@ private:
 	int currentScene;
 	ActionState action;			// アクション状態
 
-
+	int SkyModel;
 public:
 	/*
 	 *	コンストラクタ
@@ -52,6 +52,8 @@ public:
 	void Update() override;
 	void Setup()override;
 	void Render() override;
+
+	void Cleanup();
 
 };
 

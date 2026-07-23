@@ -74,7 +74,7 @@ void EnemyManager::UseEnemy(EnemyType _type, VECTOR _pos, float _wanderingRadius
 
 	Transform* t = enemy->GetTransform();
 	t->SetPosition(_pos);
-	t->SetRotation(VScale(VUp, _rotY));
+	t->SetRotation(VGet(0,_rotY,0));
 
 	enemy->SetWanderingRadius(_wanderingRadius);
 

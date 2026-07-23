@@ -26,6 +26,7 @@
 #include "../../UI/Scene/TitleScreen.h"
 #include "../../Definition/Enum/TitleActionEnum.h"
 #include "../../Definition/Enum/CameraModeEnum.h"
+#include "../../Manager/TimeManager.h"
 
 #include <DxLib.h>
 #include <format>
@@ -99,7 +100,8 @@ void TitleScene::Setup() {
 #if _DEBUG
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
 #else
-	std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_Collision.msgpack", stageID);
+	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
+	//std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_Collision.msgpack", stageID);
 #endif
 	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
 
@@ -107,7 +109,7 @@ void TitleScene::Setup() {
 	SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");
 
 	// BGMを再生
-	AudioManager * pAudioManager = &Application::GetInstance().GetAudioManager();
+	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
 	pAudioManager->Play("Stage1BGM", 100.0f, true);
 }
 
@@ -129,18 +131,35 @@ void TitleScene::Update() {
 
 	// TitleAction
 	action = InputSystemManager::GetInstance().GetInputState(ActionMap::TitleAction);
-	
+
 
 	// エフェクトの更新
 	EffectManager* effect = &Application::GetInstance().GetEffectManager();
 	effect->Update();
 
-	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_RETURN)) {
-		
+	// 最前面UIScreenを取得
+	auto screen = static_cast<TitleScreen*>(m_uiManager.GetTopScreen());
+	// スクリーンを更新
+	screen->Update(TimeManager::GetInstance().GetDeltaTime(), UIInput());
+
+	// 上を選択したらスタートを選択状態にする
+	if (action.buttonDown[static_cast<int>(TitleAction::SelectMove_UP)]) {
+		screen->SetSelected(0);
+	}
+	// 下を選択したら終了を選択状態にする
+	if (action.buttonDown[static_cast<int>(TitleAction::SelectMove_DOWN)]) {
+		screen->SetSelected(1);
 	}
 
 	if (action.buttonDown[static_cast<int>(TitleAction::Click)]) {
-		SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
+		int selectText = screen->GetSelectText();
+		if (selectText == 0) {
+			SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
+		}
+		else if (selectText == 1) {
+			Application::GetInstance().GameEnd();
+		}
+
 	}
 }
 
