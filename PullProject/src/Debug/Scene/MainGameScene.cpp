@@ -83,6 +83,7 @@ void MainGameScene::Update() {
 	// 敵の更新
 	enemyManager.Update();
 
+	GameObjectManager::GetInstance().Update();
 
 
 	// 当たり判定の更新
