@@ -43,6 +43,7 @@ private:
 	VECTOR lockOnTarget;		// ロックオン中のターゲット位置
 	VECTOR lurchBackwardPos;	// のけぞり位置
 	ActionState action;			// アクション状態
+	
 	// ロックオン用の視界
 	std::unique_ptr<RayCollider> pLockOnVision;
 

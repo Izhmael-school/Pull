@@ -13,7 +13,8 @@
 #undef min
 
  /*
-  *  UI実装用の2次元ベクトル構造体
+  *  2次元ベクトル構造体
+  *	 @author oorui
   */
 struct Vector2 {
 public:

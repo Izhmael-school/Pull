@@ -29,7 +29,7 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, pOwner(_owner)
 	, pCatchCollider(nullptr)
 	, extendSpeed(35.0f)
-	, returnSpeedRatio(0.3f)
+	, RETURN_SPEED_RATIO(0.7f)
 
 	, RETURN_THRESHOLD(1.0f)
 	, ARM_LENGTH_MAX(1500.0f)
@@ -247,10 +247,7 @@ void PlayerHands::HandsMove() {
 		// 戻ってくる
 		else {
 			pTransform->SetPosition(
-				MyMath::Lerp(
-					pTransform->GetLocalPosition(), 
-					VZero,
-					returnSpeedRatio)
+				MyMath::Lerp(VZero, pTransform->GetLocalPosition(), RETURN_SPEED_RATIO)
 			);
 		}
 

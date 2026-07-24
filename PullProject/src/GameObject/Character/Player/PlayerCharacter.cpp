@@ -332,7 +332,7 @@ void PlayerCharacter::Move() {
 
 	// 入力
 	VECTOR moveDir = VZero;
-	Axis2D move = action.axis[static_cast<int>(PlayerAction::Move)];
+	Vector2 move = action.axis[static_cast<int>(PlayerAction::Move)];
 	if (move.y != 0) {
 		moveDir = VAdd(moveDir, VScale(forward, move.y));
 	}
@@ -449,6 +449,7 @@ bool PlayerCharacter::Pull() {
 		pullValue -= back;
 		// 微量のシェイク
 		CameraManager::GetInstance().CameraShake(1, 1);
+		// 振動
 		StartJoypadVibration(DX_INPUT_PAD1, pullValue * 0.5f, 10, -1);
 
 	}
