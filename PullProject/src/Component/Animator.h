@@ -66,7 +66,7 @@ struct AnimationClip {
 		e.animEvent = _event;
 		e.eventTime = _eventTime;
 		e.isAction = false;
-		events.push_back(e);
+		events.emplace_back(e);
 	}
 
 	/*

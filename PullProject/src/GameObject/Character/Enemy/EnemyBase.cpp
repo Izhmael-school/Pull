@@ -30,7 +30,7 @@ EnemyBase::EnemyBase(int _modelHandle, VECTOR _pos)
 	, thrownDir(VZero)
 	, footPos(0.0f)
 	, wanderingRadius(1000)
-{
+	, isInstantLook(false) {
 }
 
 EnemyBase::~EnemyBase() {}
@@ -73,8 +73,8 @@ void EnemyBase::Start() {
 	std::vector<VECTOR> maxs;
 	for (int i = 0;i < num;i++) {
 		// 各メッシュの最大点と最小点を保持
-		maxs.push_back(VScale(MV1GetMeshMaxPosition(modelHandle, i), 50));
-		mins.push_back(VScale(MV1GetMeshMinPosition(modelHandle, i), 50));
+		maxs.emplace_back(VScale(MV1GetMeshMaxPosition(modelHandle, i), 50));
+		mins.emplace_back(VScale(MV1GetMeshMinPosition(modelHandle, i), 50));
 	}
 
 	VECTOR min = VGet(INT_MAX, INT_MAX, INT_MAX);
@@ -93,7 +93,7 @@ void EnemyBase::Start() {
 	float radius = VSize(VSub(max, min)) / 4;
 
 	// 当たり判定
-	pCollider = std::make_unique<SphereCollider>(this,VZero,radius);
+	pCollider = std::make_unique<SphereCollider>(this, VZero, radius);
 	pCollider->SetLayer(ColliderLayer::Enemy);
 #endif
 
@@ -242,7 +242,12 @@ void EnemyBase::Move(VECTOR targetPos) {
 	// 移動
 	GetTransform()->AddPosition(pos);
 	// ゴールを向く
-	GetTransform()->GraduallyLookAtY(targetPos);
+	if (isInstantLook) {
+		isInstantLook = false;
+		GetTransform()->LookAt(wanderingGoalPos);
+	}
+	else
+		GetTransform()->GraduallyLookAtY(targetPos);
 	// アニメーションの再生
 	pAnimator->Play("Walk");
 }
@@ -328,7 +333,7 @@ bool EnemyBase::VisionFan(VECTOR target) {
 	// レイに入っていて攻撃中じゃない時に追跡行動に移る
 	if (rayAnswer && nextState != Attack)
 		ChangeNextState(Tracing);
-	
+
 	return rayAnswer;
 }
 
@@ -385,8 +390,10 @@ void EnemyBase::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 
 	// 壁に当たったらゴールとする
 	ColliderLayer layer = _pOther->GetLayer();
-	if (layer == ColliderLayer::Stage || layer == ColliderLayer::Wall || layer == ColliderLayer::BomBreakWall || layer == ColliderLayer::BreakWall || layer == ColliderLayer::ExitArea || layer == ColliderLayer::MissileWall)
+	if (layer == ColliderLayer::Stage || layer == ColliderLayer::Wall || layer == ColliderLayer::BomBreakWall || layer == ColliderLayer::BreakWall || layer == ColliderLayer::ExitArea || layer == ColliderLayer::MissileWall) {
 		wanderingGoalPos = GetPosition();
+		isInstantLook = true;
+	}
 
 	// 当たった敵が投げられた敵なら
 	auto caught = dynamic_cast<CaughtObject*>(_pOther->GetGameObject());

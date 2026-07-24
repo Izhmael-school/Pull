@@ -38,7 +38,8 @@ private:
 
 	int currentExplosionLevel;
 	COLOR_F BLINKING_COLOR[EXPLOSION_LEVEL] = { white_f,yellow_f,red_f };	// 爆発表現用の色
-
+	
+	bool isPlayerHad;
 public:
 	Missile(int _modelHandle = -1, GameObject* _owner = nullptr, EffectManager* _effect = nullptr, VECTOR _dir = VForward, VECTOR _pos = VZero);
 	~Missile() noexcept override;

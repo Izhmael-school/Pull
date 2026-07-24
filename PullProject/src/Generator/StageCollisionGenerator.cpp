@@ -102,8 +102,7 @@ void StageCollisionGenerator::GenerateFromUnity(
 #if _DEBUG
 	auto json = MyJson::LoadJsonFile(path);
 #else
-	auto json = MyJson::LoadJsonFile(path);
-	//auto json = MyJson::LoadBinary(path);
+	auto json = MyJson::LoadBinary(path);
 #endif
 	// JSONが正しく読み込まれなかった場合のエラー表示
 	if (json.is_null()) {
@@ -116,6 +115,8 @@ void StageCollisionGenerator::GenerateFromUnity(
 
 	//	全体のスケールを設定
 	float scale = 100.0f;
+
+	if (json.empty()) return;
 
 	//	JSONのブロック情報を取得
 	for (auto& b : json["blocks"]) {

@@ -40,8 +40,28 @@ public:
 
 	void ThrownAction(VECTOR _dir) override;
 
-	void Catching() override;
+	/*
+	 * @brief 捕まった時
+	 */
+	virtual void CatchStart();
 
+	/*
+	 * @brief 捕まってる時
+	 */
+	virtual void Catching();
+
+	/*
+	 * @brief 投げられた時
+	 */
+	virtual void ThrowStart();
+
+	/*
+	 * @brief 投げられてる時
+	 */
+	virtual void Throwing();
+
+
+	void OnTriggerEnter(Collider* _pSelf, Collider* _pOther) override;
 private:
 
 	void Dead() override;

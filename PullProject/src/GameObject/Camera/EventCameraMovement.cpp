@@ -109,7 +109,7 @@ void EventCameraMovement::InitEventCamera_Action(nlohmann::json_abi_v3_12_0::jso
 		float end = j["actionEndTime"];
 		cameraAction.actionEndTime = end + cameraAction.actionStartTime;
 		// イベントを入れる
-		eventCameraMove.cameraAction.push_back(cameraAction);
+		eventCameraMove.cameraAction.emplace_back(cameraAction);
 	}
 }
 

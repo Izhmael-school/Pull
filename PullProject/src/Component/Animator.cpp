@@ -74,7 +74,7 @@ void Animator::Load(std::string _filePath, bool _canInterrupt, bool _isLoop) {
 		pAnimClip = std::make_unique<AnimationClip<>>(animHandle, name, _canInterrupt, _isLoop);
 		pAnimClip->animIndex = i;
 		// アニメーション群に追加
-		pAnimations.push_back(std::move(pAnimClip));
+		pAnimations.emplace_back(std::move(pAnimClip));
 	}
 }
 
@@ -88,7 +88,7 @@ void Animator::Load(int _animHandle, bool _canInterrupt, bool _isLoop){
 		pAnimClip = std::make_unique<AnimationClip<>>(_animHandle, name, _canInterrupt, _isLoop);
 		pAnimClip->animIndex = i;
 		// アニメーション群に追加
-		pAnimations.push_back(std::move(pAnimClip));
+		pAnimations.emplace_back(std::move(pAnimClip));
 	}
 }
 

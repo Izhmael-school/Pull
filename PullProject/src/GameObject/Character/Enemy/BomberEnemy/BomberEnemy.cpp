@@ -27,6 +27,11 @@ void BomberEnemy::Setup() {
 	EnemyBase::Setup();
 	// アニメーションの終了に合わせて爆発させる
 	SetAnimEvent("Attack", -1, [this]() {Explosion(); });
+	// 点滅から戻す
+	MV1SetMaterialDifColor(modelHandle, 0, GetColorF(1, 1, 1, 1));
+	currentExplosionLevel = 0;
+	explosionElapsedTime = 0.0f;
+	texChangeElapsedTime = 0.0f;
 }
 
 void BomberEnemy::Catching() {

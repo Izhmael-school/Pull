@@ -237,7 +237,7 @@ void Transform::AttachParent(Transform* _parent, bool isHoldWorld) {
 	// 親を登録
 	parent = _parent;
 	// 親に自分を登録
-	parent->children.push_back(this);
+	parent->children.emplace_back(this);
 
 	// 保持するなら座標を入れる
 	if (isHoldWorld) {

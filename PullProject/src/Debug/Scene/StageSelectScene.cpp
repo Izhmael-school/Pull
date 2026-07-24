@@ -63,7 +63,11 @@ void StageSelectScene::Setup() {
 	 // プレイヤーの生成位置の取得
 	 VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
 	 // プレイヤー生成
-	 PlayerManager::GetInstance().CreatePlayer(playerPos);
+	 PlayerManager& playerM = PlayerManager::GetInstance();
+	 playerM.CreatePlayer(playerPos);
+	 PlayerCharacter* player = playerM.GetPlayer().get();
+	 player->GetTransform()->AddPosition(VUp, 1000);
+
 	 InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 	 // ギミックの更新を一度だけ呼ぶ
 	 GimmickObjectManager::GetInstance().Update();
@@ -73,7 +77,11 @@ void StageSelectScene::Setup() {
 	 
 	 // ステージの当たり判定を生成
 	 StageCollisionGenerator generator;
+#if _DEBUG
 	 generator.GenerateFromUnity("src/Data/Stage_113.json", CollisionManager::GetInstance());
+#else
+	 generator.GenerateFromUnity("res/ExternalFile/Stage/Collision/Stage_113_Collision.msgpack", CollisionManager::GetInstance());
+#endif
 	//currentScene = 0;
 	 // スカイドームのモデルを取得
 	 SkyModel = MV1LoadModel("res/Model/Stage/SkyBox.mv1");

@@ -6,6 +6,7 @@
 #include "GameObject/Character/Player/PlayerHands.h"
 #include "GameObject/Stage/Gimmick/BomBreakWall.h"
 #include "Application.h"
+#include "GameObject/Character/Player/PlayerCharacter.h"
 
 Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, VECTOR _dir, VECTOR _pos)
 	:GameObject(_modelHandle, _pos, MissileObject)
@@ -20,11 +21,12 @@ Missile::Missile(int _modelHandle, GameObject* _owner, EffectManager* _effect, V
 	, currentExplosionLevel(0)
 	, texChangeElapsedTime(0.5f)
 	, texChangeTime(0.5f)
-	, isNoTexture(false) {
+	, isNoTexture(false)
+	, isPlayerHad(false) {
 	GetTransform()->LookAtDir(_dir);
 	if (_effect) {
 		pEffect = _effect->Play("MissileBoost", _pos, 10.0f, _dir);
-		//pEffect->GetTransform()->AttachParent(GetTransform(),false);
+
 	}
 	Start();
 }
@@ -48,13 +50,16 @@ void Missile::Update() {
 
 	CaughtUpdate();
 
+	// ブースターの部分に合わせてエフェクトの座標を更新する
+	if (pEffect) {
+		pEffect->GetTransform()->SetPosition(GetBoostEffectPoint());
+		pEffect->Update();
+	}
+
 	// 掴まれたら更新しない
 	if (GetCurrentCaughtState() != NoneCaughtState) return;
 
 	Move();
-	if (pEffect)
-		pEffect->GetTransform()->SetPosition(GetPosition());
-
 	if (lifeElapsedTime >= lifeLimitTime) {
 		// 爆発
 		Explosion();
@@ -101,10 +106,15 @@ void Missile::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 			return;
 
 
-	// プレイヤーが持っていればプレイヤーとの処理は行わない
+	// プレイヤーが持っていれば処理は行わない
 	if (GetCurrentCaughtState() == CaughtState::Catching) {
 		return;
 	}
+
+	// プレイヤーに持たれた後はプレイヤーとの処理はしない
+	auto player = dynamic_cast<PlayerCharacter*>(otherObj);
+	if (player && isPlayerHad)
+		return;
 
 	auto breakWall = dynamic_cast<BomBreakWall*>(otherObj);
 	if (breakWall)
@@ -126,6 +136,8 @@ void Missile::ThrownAction(VECTOR _dir) {
 
 void Missile::CatchStart() {
 	CaughtObject::CatchStart();
+	isPlayerHad = true;
+	GetTransform()->AddRotation(VUp, 180);
 }
 
 void Missile::Catching() {
@@ -188,7 +200,5 @@ void Missile::Move() {
 	// 加算
 	GetTransform()->AddPosition(pos);
 
-	if (pEffect)
-		pEffect->GetTransform()->SetPosition(GetBoostEffectPoint());
 }
 

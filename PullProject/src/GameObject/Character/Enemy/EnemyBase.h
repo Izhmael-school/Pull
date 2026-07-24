@@ -51,6 +51,8 @@ protected:
 	int addScore;
 
 	int wanderingRadius; // 徘徊する半径
+
+	bool isInstantLook; // 即座に指定の方向に向くか
 protected:
 	EffectEvent effectEvent;
 	AudioEvent audioEvent;

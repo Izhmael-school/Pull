@@ -34,11 +34,12 @@ void StageLoader::Load(const std::string& fileName, int stageHandle) {
 #if _DEBUG
 	auto data = MyJson::LoadJsonFile(fileName);
 #else
-	auto data = MyJson::LoadJsonFile(fileName);
-	// auto data = MyJson::LoadBinary(fileName);
+	auto data = MyJson::LoadBinary(fileName);
 #endif
 	// レバー対応オブジェクト
 	std::unordered_map<int, TriggerInterface*> triggerMap;
+
+	if (data.empty()) return;
 
 	// ギミック生成
 	for (auto& gimmick : data[_DATENAME_GIMMICK]) {

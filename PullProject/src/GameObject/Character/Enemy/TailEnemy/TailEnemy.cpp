@@ -73,11 +73,13 @@ void TailEnemy::Setup() {
 
 	SetAnimEvent("Taunt", 0, [this]() {audioEvent("Tail_Jump", 255.0f, false, GetPosition(), 1000.0f);});
 
+	// 衝撃波
 	SetAnimEvent("Taunt", 40, [this]() {
-		VECTOR min = VScale(VAdd(VLeft, VBack), 500);
-		VECTOR max = VAdd(VScale(VAdd(VRight, VForward), 500), VScale(VUp, 100));
+		VECTOR min = VAdd(VScale(VAdd(VLeft, VBack), 500), VScale(VUp, -100));
+		VECTOR max = VAdd(VScale(VAdd(VRight, VForward), 500), VScale(VUp, -50));
 		VECTOR pos = GetPosition();
 		aabbEvent(pos, min, max,EnemyAttack,0.1f);
+		pos.y += -50;
 		effectEvent("Earthquake", pos, 0.7f, VZero);
 		audioEvent("Taunt", 255.0f, false, pos, 1000.0f);
 		});
@@ -120,16 +122,32 @@ void TailEnemy::TracingAction() {
 }
 
 void TailEnemy::ThrownAction(VECTOR _dir) {
-	EnemyBase::ThrownAction(_dir);
 	pCollider->SetEnable(true);
+	ChangeCaughtState(CaughtState::Throw);
+}
+
+void TailEnemy::CatchStart() {
+	CaughtObject::CatchStart();
+	ChangeNextState(OutofControl);
 }
 
 void TailEnemy::Catching() {
-	EnemyBase::Catching();
-
+	ChangeNextState(OutofControl);
 	pAnimator->Play("Shot", 2.0f);
 	auto col = static_cast<SphereCollider*>(pTailCollider->GetCollider());
 	col->SetRadius(tailRadius * 2);
+}
+
+void TailEnemy::ThrowStart() {
+	HitObject();
+}
+
+void TailEnemy::Throwing() {
+	ChangeNextState(OutofControl);
+}
+
+void TailEnemy::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
+
 }
 
 void TailEnemy::Dead() {

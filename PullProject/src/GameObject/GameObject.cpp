@@ -8,7 +8,6 @@
 #include "../Definition/CommonModule/MyMath.h"
 #include "Component/Collider/Collider.h"
 #include "../Manager/CollisionManager.h"
-#include "ImGui/ImGui.h"
 
 GameObject::GameObject(int _modelHandle, VECTOR _pos, Tag _tag)
 	:tag(_tag)
@@ -44,10 +43,6 @@ void GameObject::Update() {
 	if (!isActive) return;
 
 	pTransform->Update();
-
-	ImGui::Begin("HitGround");
-	ImGui::Text("%d : %d : %d", tag, groundCount,hitGroundingFrag);
-	ImGui::End();
 
 	/*
 	 *	@author Riku
