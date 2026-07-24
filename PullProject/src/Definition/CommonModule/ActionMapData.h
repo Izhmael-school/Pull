@@ -6,6 +6,7 @@
 #ifndef _ACTIONMAPDATA_H_
 #define _ACTIONMAPDATA_H_
 
+#include "MyMath.h"
 #include <unordered_map>
 
  // 入力機の種類 
@@ -25,15 +26,9 @@ enum class BindingType {
 	AxisValue,	// 軸の入力量
 };
 
-// 2軸
-struct Axis2D {
-	float x;
-	float y;
-};
-
 // 行動の状態
 struct ActionState {
-	std::unordered_map<int, Axis2D> axis;
+	std::unordered_map<int, Vector2> axis;
 	std::unordered_map<int, bool> button;
 	std::unordered_map<int, bool> buttonDown;
 	std::unordered_map<int, bool> buttonUp;

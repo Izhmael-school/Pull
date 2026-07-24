@@ -42,6 +42,8 @@ private:
 	const float PULL_ZOOM_RATIO_MAX;
 	// 引っ張り時のズーム割合の最小
 	const float PULL_ZOOM_RATIO_MIN;
+	// 引っ張り時のカメラ移動割合
+	const float PULL_MOVE_RATIO;
 	// ターゲットがプレイヤーを追う時の補間割合
 	const float TARGET_MOVE_RATIO;
 	// ターゲットがプレイヤーと離れられる最大距離
@@ -50,6 +52,10 @@ private:
 	const float TARGET_THRESHOLD;
 	// ロックオン中の離れる距離
 	const float LOCK_ON_DISTANCE;
+	// ロックオン中の高さ割合
+	const float LOCK_ON_HEIGHT_RATIO;
+	// ロックオンのカメラ移動割合
+	const float LOCK_ON_MOVE_RATIO;
 
 public:
 	CameraObject(VECTOR position, VECTOR rotation);

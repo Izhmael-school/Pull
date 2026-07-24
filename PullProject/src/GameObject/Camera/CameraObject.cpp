@@ -40,12 +40,15 @@ CameraObject::CameraObject(VECTOR position, VECTOR rotation)
 	, PLAYER_DISTANCE(1000)
 	, PULL_ZOOM_RATIO_MAX(0.95f)
 	, PULL_ZOOM_RATIO_MIN(0.7f) 
+	, PULL_MOVE_RATIO(0.8f)
 	, TARGET_MOVE_RATIO(0.15f)
 	, TARGET_DISTANCE_MAX(30.0f)
 	, TARGET_THRESHOLD(0.5f)
 	, POSITION_Y_LIMIT_UP(-900.0f)
 	, POSITION_Y_LIMIT_DOWN(0.0f)
-	, LOCK_ON_DISTANCE(700.0f){
+	, LOCK_ON_DISTANCE(700.0f)
+	, LOCK_ON_HEIGHT_RATIO(0.8f)
+	, LOCK_ON_MOVE_RATIO(0.8f){
 	pTransform->SetRotation(rotation);
 }
 
@@ -184,14 +187,15 @@ void CameraObject::PlayerUpdate() {
 		VECTOR pos = VScale(player->GetTransform()->GetForward(), LOCK_ON_DISTANCE);
 		float height = VDot(dir, dir);
 		height = sqrt(height);
-		pos.y += height * 0.8f;
-		pTransform->SetPosition(VAdd(player->GetPosition(), pos));
+		pos.y += height * LOCK_ON_HEIGHT_RATIO;
+		VECTOR movePos = MyMath::Lerp(VAdd(player->GetPosition(), pos), GetPosition(), LOCK_ON_MOVE_RATIO);
+		pTransform->SetPosition(movePos);
 	}
 
 	// 入力方向を保持
 	VECTOR moveVec = VZero;
 	// コントローラーの入力(反転しておく)
-	Axis2D cameraMove = action.axis[static_cast<int>(PlayerAction::CameraMove)];
+	Vector2 cameraMove = action.axis[static_cast<int>(PlayerAction::CameraMove)];
 	cameraMove = { -cameraMove.x, -cameraMove.y };
 	// コントローラー入力
 	if (cameraMove.x != 0) {
@@ -283,7 +287,7 @@ void CameraObject::PullUpdate() {
 	VECTOR distance = VScale(player->GetTransform()->GetForward(), distanceValue);
 	VECTOR targetPos = VAdd(player->GetPosition(), distance);
 	targetPos.y = pTransform->GetLocalPosition().y;
-	pTransform->SetPosition(MyMath::Lerp(GetPosition(), targetPos, 0.2f));
+	pTransform->SetPosition(MyMath::Lerp(targetPos, GetPosition(), PULL_MOVE_RATIO));
 	// ターゲットの方を向く
 	pTransform->LookAt(target);
 }
