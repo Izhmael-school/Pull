@@ -11,11 +11,17 @@ enum class UICommand {
 	None,
 
 
-	// ゲーム画面に戻る
-	ResumeGame,
+    // ゲームへ戻る
+    ResumeGame,
 
-	// シーン遷移
-	LoadTitleScene,
+    // ステージセレクト
+    LoadStageSelectScene,
+
+    // タイトルへ戻る
+    LoadTitleScene,
+
+    // 音量画面
+    OpenVolume,
 
 };
 

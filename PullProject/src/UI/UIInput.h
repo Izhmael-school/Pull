@@ -19,6 +19,8 @@ struct UIInput {
 
 	bool decide = false;
 	bool cancel = false;
+
+	bool pause = false;
 };
 
 #endif // !_UIINPUT_H_

@@ -9,6 +9,7 @@
 #include "../Input/PlayerActionMap.h"
 #include "../Input/StageSelectActionMap.h"
 #include "../Input/TitleActionMap.h"
+#include "../Input/MainGameActionMap.h"
 
 InputSystemManager::InputSystemManager() {
 	Start();
@@ -23,6 +24,7 @@ void InputSystemManager::Start() {
 	actionMaps[ActionMap::PlayerAction] = std::make_shared<PlayerActionMap>();
 	actionMaps[ActionMap::StageSelect] = std::make_shared<StageSelectActionMap>();
 	actionMaps[ActionMap::TitleAction] = std::make_shared<TitleActionMap>();
+	actionMaps[ActionMap::MainGameAction] = std::make_shared<MainGameActionMap>();
 	for (auto [mapNum, actionMap] : actionMaps) {
 		// 全アクションマップの初期化
 		actionMap->Start();

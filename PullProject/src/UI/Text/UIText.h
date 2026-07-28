@@ -9,13 +9,12 @@
 /// <summary>
 /// 汎用テキストUIオブジェクト
 /// </summary>
-class UIText : public UIObject
-{
+class UIText : public UIObject {
 
 public:
 
 	UIText();
-	UIText( const std::string& text, const UITextStyle& style, const Vector2& position);
+	UIText(const std::string& text, const UITextStyle& style, const Vector2& position);
 	virtual ~UIText() override = default;
 
 	//====================================================
@@ -40,7 +39,7 @@ public:
 	/// </summary>
 	void Build();
 
-	void SetText( const std::string& text) { m_text = text; }
+	void SetText(const std::string& text) { m_text = text; }
 	void SetStyle(const UITextStyle& style) { m_style = style; }
 	void SetSelected(bool isSelected) { m_isSelected = isSelected; }
 	const UITextStyle& GetStyle() const {

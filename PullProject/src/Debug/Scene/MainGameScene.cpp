@@ -26,6 +26,8 @@
 #include "../../UI/Scene/MainGameScreen.h"
 #include "Manager/FadeManager.h"
 #include "../../Definition/Enum/CameraModeEnum.h"
+#include "../../Definition/Enum/MainGameActionEnum.h"
+#include "../../UI/Scene/PauseScreen.h"
 
 #include <DxLib.h>
 #include <format>
@@ -35,11 +37,13 @@
   *	コンストラクタ
   */
 MainGameScene::MainGameScene()
-	: enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager()}) {
+	: enemyManager({ Application::GetInstance().GetEffectManager() ,Application::GetInstance().GetAudioManager() }) {
 	Start();
 }
 
 void MainGameScene::Start() {
+	// アクションマップを有効化する
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::MainGameAction, true);
 
 }
 
@@ -55,8 +59,30 @@ void MainGameScene::Setup() {
  *	更新処理
  */
 void MainGameScene::Update() {
-	auto screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
-	
+	MainGameScreen* screen = nullptr;
+
+	if (!m_isPause) {
+		screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
+	}
+	// UI用Inputの更新
+	UIInputSetings();
+	// StartボタンでPuaseScreenを表示
+	if (!m_isPause && uiInput.pause) {
+		m_isPause = true;
+
+		// プレイヤー入力停止
+		InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
+
+		// Pause画面表示
+		m_UIManager.PushScreen(std::make_unique<PauseScreen>());
+
+		return;
+	}
+	// ポーズ中ならここで終了
+	if (m_isPause) {
+		PauseRound();
+		return;
+	}
 	// イベントカメラ
 	if (FadeManager::GetInstance().IsFadeInEnd() && !useEventCamera) {
 		CameraManager::GetInstance().GetCamera()->ChangeCameraMode(CameraMode::Event);
@@ -68,7 +94,8 @@ void MainGameScene::Update() {
 	bool eventCameraCheck = CameraManager::GetInstance().GetCamera()->IsCameraEvent();
 	screen->eventTextSetvisible(eventCameraCheck);
 
-	m_UIManager.Update(0.0f,UIInput());
+	// UIマネージャーの更新
+	m_UIManager.Update(0.0f, uiInput);
 	// カメラの更新
 	CameraManager::GetInstance().GetCamera()->Update();
 	// カメラ座標を取得
@@ -184,7 +211,7 @@ void MainGameScene::Render() {
 
 	// ギミックの描画処理
 	GimmickObjectManager::GetInstance().Render();
-	
+
 	// 敵の描画処理
 	enemyManager.Render();
 
@@ -198,15 +225,15 @@ void MainGameScene::Render() {
 	MV1SetScale(SkyModel, VGet(10000, 10000, 10000));
 
 	Application::GetInstance().GetEffectManager().Render();
-	
-	// 最前面UIScreenを取得
-	auto screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
-	// レバーを掴んだ時のUI表示
-	screen->SetLeverUIVisible(playerHand->IsLeverCatch());
-	// 敵を掴んだ時のUI
-	screen->SetMisileUIVisible(playerHand->IsEnemyCatch());
+
+	if (!m_isPause) {
+		auto screen = static_cast<MainGameScreen*>(m_UIManager.GetTopScreen());
+
+		screen->SetLeverUIVisible(playerHand->IsLeverCatch());
+		screen->SetMisileUIVisible(playerHand->IsEnemyCatch());
+	}
 	// UI表示
-    m_UIManager.Draw();
+	m_UIManager.Draw();
 
 #if _DEBUG
 	ImGui::Begin("Score & Coin");
@@ -236,7 +263,7 @@ void MainGameScene::Cleanup() {
 
 void MainGameScene::Reset() {
 	// プレイヤーの入力を行わないようにする
-	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction,false);
+	InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, false);
 	// フェードに入る
 	FadeManager::GetInstance().FadeStart(FadeIn, FadeType::FadeNormal, 1.0f);
 	// シーンの片付けを呼ぶ
@@ -300,4 +327,65 @@ void MainGameScene::StageStartSetup() {
 
 	// メインゲーム用UIの準備
 	m_UIManager.PushScreen(std::make_unique<MainGameScreen>());
+}
+/*
+ * UI用入力処理
+ */
+void MainGameScene::UIInputSetings() {
+
+	action = InputSystemManager::GetInstance().GetInputState(ActionMap::MainGameAction);
+
+	uiInput.pause = action.buttonDown[static_cast<int>(MainGameAction::pause)];
+	uiInput.cancel = action.buttonDown[static_cast<int>(MainGameAction::cancel)];
+	uiInput.decide = action.buttonDown[static_cast<int>(MainGameAction::decide)];
+	uiInput.up = action.buttonDown[static_cast<int>(MainGameAction::Up)];
+	uiInput.down = action.buttonDown[static_cast<int>(MainGameAction::Down)];
+}
+/*
+ * ポーズ中の処理
+ */
+void MainGameScene::PauseRound() {
+	if (m_isPause) {
+		// PauseScreenだけ更新
+		m_UIManager.Update(0.0f, uiInput);
+
+		switch (m_UIManager.ConsumeCommand()) {
+			// ゲーム再開
+		case UICommand::ResumeGame:
+			// フラグを戻す
+			m_isPause = false;
+			// プレイヤーの入力を可能にする
+			InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
+			// 最前面のUIScreenを解放
+			m_UIManager.PopScreen();
+			break;
+
+			// タイトル画面に戻る
+		case UICommand::LoadTitleScene:
+			// シーン遷移
+			SceneManager::GetInstance().ChangeScene(SceneType::Title);
+			// フラグを戻す
+			m_isPause = false;
+
+			return;
+
+			// ステージセレクト画面に戻る
+		case UICommand::LoadStageSelectScene:
+			// シーン遷移
+			SceneManager::GetInstance().ChangeScene(SceneType::StageSelect);
+			// フラグを戻す
+			m_isPause = false;
+
+			return;
+
+			// 音量変更
+		case UICommand::OpenVolume:
+
+			// 後で実装
+			break;
+		}
+
+		// ポーズ中はゲーム更新しない
+		return;
+	}
 }

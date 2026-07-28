@@ -15,26 +15,26 @@
 #include "Manager/AudioResourceManager.h"
 #include "../../UI/UIManager.h"
 #include "Resource/Shadow/ShadowMap.h"
+#include "../../UI/Scene/PauseScreen.h"
+#include "../../Definition/CommonModule/ActionMapData.h"
 
 #include <memory>
 
 class MainGameScene :public SceneBase {
 private:
-	EnemyManager enemyManager;						// エネミーの管理
-	//EffectManager effectManager;					// エフェクト管理
-	//EffectResourceManager effectResourceManager;	// エフェクトリソース管理
-	//AudioManager audioManager;						// オーディオ管理
-	//AudioResourceManager audioResourceManager;		// オーディオリソース管理
-	UIManager m_UIManager;
-	ShadowMap shadowMap;								// シャドウマップ
+	EnemyManager enemyManager;		// 敵の管理
+	UIManager m_UIManager;			// UIの管理
+	ShadowMap shadowMap;			// シャドウマップ
 
-	bool isStageClear = false;						// ステージクリア判定
-	
-	int SkyModel;
+	bool isStageClear = false;		// ステージクリア判定
+	bool useEventCamera = false;	// イベントカメラ使用判定
+	bool m_isPause = false;			// ポーズ中かどうか
 
-	VECTOR playerPos;
+	int SkyModel;	// スカイボックス用のモデル
 
-	bool useEventCamera = false;
+	VECTOR playerPos;	// プレイヤーの座標
+	ActionState action;								// アクション状態
+	UIInput uiInput;
 public:
 	MainGameScene();
 	~MainGameScene() = default;
@@ -58,6 +58,16 @@ public:
 	 * @author Sekino
 	 */
 	void StageStartSetup();
+
+	/*
+	 * UI用入力処理
+	 */
+	void UIInputSetings();
+
+	/*
+	 * ポーズ中の処理
+	 */
+	void PauseRound();
 };
 
 

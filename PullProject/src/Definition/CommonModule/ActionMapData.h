@@ -40,6 +40,7 @@ enum class ActionMap {
 	PlayerAction,
 	StageSelect,
 	TitleAction,
+	MainGameAction,
 
 	Max
 };

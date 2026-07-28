@@ -160,7 +160,7 @@ public:
 	}
 
 	inline VECTOR Velocity(VECTOR dir, float speed) {
-
+		return VECTOR{};
 	}
 
 	/// <summary>

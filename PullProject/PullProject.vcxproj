@@ -200,6 +200,7 @@
     <ClCompile Include="src\ImGui\imgui_tables.cpp" />
     <ClCompile Include="src\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Input\ActionMapBase.cpp" />
+    <ClCompile Include="src\Input\MainGameActionMap.cpp" />
     <ClCompile Include="src\Input\PlayerActionMap.cpp" />
     <ClCompile Include="src\Input\StageSelectActionMap.cpp" />
     <ClCompile Include="src\Input\TitleActionMap.cpp" />
@@ -240,6 +241,7 @@
     <ClCompile Include="src\UI\Font\FontManager.cpp" />
     <ClCompile Include="src\UI\Image\UIImage.cpp" />
     <ClCompile Include="src\UI\Scene\MainGameScreen.cpp" />
+    <ClCompile Include="src\UI\Scene\PauseScreen.cpp" />
     <ClCompile Include="src\UI\Scene\TitleScreen.cpp" />
     <ClCompile Include="src\UI\Text\UIText.cpp" />
     <ClCompile Include="src\UI\UIManager.cpp" />
@@ -280,6 +282,7 @@
     <ClInclude Include="src\Definition\Enum\EnemyType.h" />
     <ClInclude Include="src\Definition\Enum\FadeEnum.h" />
     <ClInclude Include="src\Definition\Enum\InputEnum.h" />
+    <ClInclude Include="src\Definition\Enum\MainGameActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\PlayerActionEnum.h" />
     <ClInclude Include="src\Definition\Enum\SceneType.h" />
     <ClInclude Include="src\Definition\Enum\StageSelectActionEnum.h" />
@@ -331,6 +334,7 @@
     <ClInclude Include="src\ImGui\imstb_textedit.h" />
     <ClInclude Include="src\ImGui\imstb_truetype.h" />
     <ClInclude Include="src\Input\ActionMapBase.h" />
+    <ClInclude Include="src\Input\MainGameActionMap.h" />
     <ClInclude Include="src\Input\PlayerActionMap.h" />
     <ClInclude Include="src\Input\StageSelectActionMap.h" />
     <ClInclude Include="src\Input\TitleActionMap.h" />
@@ -370,6 +374,7 @@
     <ClInclude Include="src\UI\Font\FontManager.h" />
     <ClInclude Include="src\UI\Image\UIImage.h" />
     <ClInclude Include="src\UI\Scene\MainGameScreen.h" />
+    <ClInclude Include="src\UI\Scene\PauseScreen.h" />
     <ClInclude Include="src\UI\Scene\TitleScreen.h" />
     <ClInclude Include="src\UI\Text\UIText.h" />
     <ClInclude Include="src\UI\Text\UITextStyle.h" />
