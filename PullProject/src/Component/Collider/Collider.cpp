@@ -134,6 +134,102 @@ void AABBCollider::CalculateBounds(const VECTOR corners[8], VECTOR& min, VECTOR&
 	}
 }
 
+bool AABBCollider::Raycast(
+	const Ray& ray,
+	float maxDistance,
+	RayHit& hit) {
+	const float EPS = 0.00001f;
+
+	VECTOR dir = VNorm(ray.direction);
+
+	float tMin = 0.0f;
+	float tMax = maxDistance;
+
+	// X
+	if (fabsf(dir.x) < EPS) {
+		if (ray.origin.x < worldMin.x ||
+			ray.origin.x > worldMax.x) {
+			return false;
+		}
+	}
+	else {
+		float tx1 =
+			(worldMin.x - ray.origin.x) / dir.x;
+
+		float tx2 =
+			(worldMax.x - ray.origin.x) / dir.x;
+
+		tMin = std::max(
+			tMin,
+			std::min(tx1, tx2));
+
+		tMax = std::min(
+			tMax,
+			std::max(tx1, tx2));
+	}
+
+	// Y
+	if (fabsf(dir.y) < EPS) {
+		if (ray.origin.y < worldMin.y ||
+			ray.origin.y > worldMax.y) {
+			return false;
+		}
+	}
+	else {
+		float ty1 =
+			(worldMin.y - ray.origin.y) / dir.y;
+
+		float ty2 =
+			(worldMax.y - ray.origin.y) / dir.y;
+
+		tMin = std::max(
+			tMin,
+			std::min(ty1, ty2));
+
+		tMax = std::min(
+			tMax,
+			std::max(ty1, ty2));
+	}
+
+	// Z
+	if (fabsf(dir.z) < EPS) {
+		if (ray.origin.z < worldMin.z ||
+			ray.origin.z > worldMax.z) {
+			return false;
+		}
+	}
+	else {
+		float tz1 =
+			(worldMin.z - ray.origin.z) / dir.z;
+
+		float tz2 =
+			(worldMax.z - ray.origin.z) / dir.z;
+
+		tMin = std::max(
+			tMin,
+			std::min(tz1, tz2));
+
+		tMax = std::min(
+			tMax,
+			std::max(tz1, tz2));
+	}
+
+	if (tMax < tMin)
+		return false;
+
+	hit.hit = true;
+	hit.distance = tMin;
+
+	hit.point =
+		VAdd(
+			ray.origin,
+			VScale(dir, tMin));
+
+	hit.collider = this;
+
+	return true;
+}
+
 #pragma endregion
 
 
@@ -164,6 +260,45 @@ void SphereCollider::Render() {
 	DrawSphere3D(worldCenter, radius, 16, GetColor(0, 255, 0), GetColor(0, 0, 0), FALSE);
 }
 
+bool SphereCollider::Raycast(
+	const Ray& ray,
+	float maxDistance,
+	RayHit& hit) {
+	VECTOR dir = VNorm(ray.direction);
+
+	VECTOR toCenter =
+		VSub(worldCenter, ray.origin);
+
+	float proj =
+		VDot(toCenter, dir);
+
+	if (proj < 0.0f)
+		return false;
+
+	if (proj > maxDistance)
+		return false;
+
+	VECTOR closest =
+		VAdd(
+			ray.origin,
+			VScale(dir, proj));
+
+	float dist =
+		VSize(
+			VSub(
+				worldCenter,
+				closest));
+
+	if (dist > radius)
+		return false;
+
+	hit.hit = true;
+	hit.distance = proj;
+	hit.point = closest;
+	hit.collider = this;
+
+	return true;
+}
 
 #pragma endregion
 
@@ -210,6 +345,80 @@ void CapsuleCollider::Render() {
 void CapsuleCollider::Move(VECTOR offset) {
 	localStart = VAdd(localStart, offset);
 	localEnd = VAdd(localEnd, offset);
+}
+
+bool CapsuleCollider::Raycast(
+	const Ray& ray,
+	float maxDistance,
+	RayHit& hit) {
+	VECTOR dir = VNorm(ray.direction);
+
+	VECTOR capsuleDir =
+		VSub(worldEnd, worldStart);
+
+	float capsuleLen =
+		VSize(capsuleDir);
+
+	if (capsuleLen < 0.0001f)
+		return false;
+
+	capsuleDir =
+		VScale(
+			capsuleDir,
+			1.0f / capsuleLen);
+
+	// Ray上の最近点
+	float proj =
+		VDot(
+			VSub(worldStart, ray.origin),
+			dir);
+
+	if (proj < 0.0f)
+		proj = 0.0f;
+
+	if (proj > maxDistance)
+		return false;
+
+	VECTOR rayPoint =
+		VAdd(
+			ray.origin,
+			VScale(dir, proj));
+
+	// Capsule軸への射影
+	float capsuleProj =
+		VDot(
+			VSub(rayPoint, worldStart),
+			capsuleDir);
+
+	capsuleProj =
+		std::max(
+			0.0f,
+			std::min(
+				capsuleProj,
+				capsuleLen));
+
+	VECTOR capsulePoint =
+		VAdd(
+			worldStart,
+			VScale(
+				capsuleDir,
+				capsuleProj));
+
+	float dist =
+		VSize(
+			VSub(
+				rayPoint,
+				capsulePoint));
+
+	if (dist > radius)
+		return false;
+
+	hit.hit = true;
+	hit.distance = proj;
+	hit.point = rayPoint;
+	hit.collider = this;
+
+	return true;
 }
 #pragma endregion
 
