@@ -3,6 +3,7 @@
 
 #include "GameObject/GameObject.h"
 #include <string>
+#include "Component/Ray/RayCast.h"
 
 /*
  * @file Collider.h
@@ -38,6 +39,14 @@ enum class ColliderLayer {
 };
 
 class Collider {
+public:
+	virtual bool Raycast(
+		const Ray& ray,
+		float maxDistance,
+		RayHit& hit) {
+		return false;
+	}
+
 protected:
 	bool isEnable;
 	GameObject* pGameObject;
@@ -124,7 +133,11 @@ private:
 		const VECTOR corners[8],
 		VECTOR& min,
 		VECTOR& max);
-
+	public:
+		bool Raycast(
+			const Ray& ray,
+			float maxDistance,
+			RayHit& hit) override;
 };
 
 
@@ -147,6 +160,12 @@ public:
 	void SetRadius(float _radius) { radius = _radius; }
 
 	VECTOR GetWorldCenter() const { return worldCenter; }
+
+public:
+	bool Raycast(
+		const Ray& ray,
+		float maxDistance,
+		RayHit& hit) override;
 
 	/*
 	 * @author Sekion
@@ -183,6 +202,12 @@ public:
 	void Move(VECTOR offset);
 
 	const char* GetTypeName() const override { return "Capsule"; }
+
+public:
+	bool Raycast(
+		const Ray& ray,
+		float maxDistance,
+		RayHit& hit) override;
 };
 
 class RayCollider : public Collider {

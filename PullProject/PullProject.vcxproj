@@ -143,6 +143,7 @@
     <ClCompile Include="src\Component\Animator.cpp" />
     <ClCompile Include="src\Component\CaughtObject.cpp" />
     <ClCompile Include="src\Component\Collider\Collider.cpp" />
+    <ClCompile Include="src\Component\Ray\RayCast.cpp" />
     <ClCompile Include="src\Component\Transform.cpp" />
     <ClCompile Include="src\Data\Gimmick\StageLoader.cpp" />
     <ClCompile Include="src\Debug\DebugCamera.cpp" />
@@ -252,6 +253,10 @@
     <ClInclude Include="src\Component\Animator.h" />
     <ClInclude Include="src\Component\CaughtObject.h" />
     <ClInclude Include="src\Component\Collider\Collider.h" />
+    <ClInclude Include="src\Component\Ray\Ray.h" />
+    <ClInclude Include="src\Component\Ray\RayCast.h" />
+    <ClInclude Include="src\Component\Ray\RayCastSetting.h" />
+    <ClInclude Include="src\Component\Ray\RayHit.h" />
     <ClInclude Include="src\Component\Singleton.h" />
     <ClInclude Include="src\Component\Transform.h" />
     <ClInclude Include="src\Data\Gimmick\StageLoader.h" />

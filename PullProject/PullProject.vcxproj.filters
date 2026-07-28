@@ -142,6 +142,9 @@
     <Filter Include="ソース ファイル\GameObject\Pumpkin">
       <UniqueIdentifier>{23b2796d-417f-4a51-8206-852b10b90444}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Component\Ray">
+      <UniqueIdentifier>{2d56a42f-4b31-4081-9334-05f44cdfcc30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -461,6 +464,12 @@
     </ClCompile>
     <ClCompile Include="src\UI\Scene\TitleScreen.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Stage\Select\StageTransitionTrigger.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\Ray\RayCast.cpp">
+      <Filter>ソース ファイル\Component\Ray</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -861,6 +870,21 @@
       <Filter>ソース ファイル\Definition\CommonModule</Filter>
     </ClInclude>
     <ClInclude Include="src\Definition\Enum\CameraModeEnum.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Stage\Select\StageTransitionTrigger.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Ray\RayCast.h">
+      <Filter>ソース ファイル\Component\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Ray\Ray.h">
+      <Filter>ソース ファイル\Component\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Ray\RayHit.h">
+      <Filter>ソース ファイル\Component\Ray</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Component\Ray\RayCastSetting.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

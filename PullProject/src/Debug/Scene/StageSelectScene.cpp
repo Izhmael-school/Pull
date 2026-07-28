@@ -159,4 +159,5 @@ void StageSelectScene::Cleanup() {
 	// 音
 	AudioManager* audio = &Application::GetInstance().GetAudioManager();
 	audio->Clean();
+	Application::GetInstance().GetEffectManager().Clean();
 }
