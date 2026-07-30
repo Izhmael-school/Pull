@@ -312,7 +312,7 @@ void MainGameScene::StageStartSetup() {
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
 #else
 	std::string stageFile = std::format("src/Data/Stage_{}.json", stageID);
-	//std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_Collision.msgpack", stageID);
+	//std::string stageFile = std::format("res/ExternalFile/Stage/Collision/Stage_{}_ColliTsion.msgpack", stageID);
 #endif
 	generator.GenerateFromUnity(stageFile, CollisionManager::GetInstance());
 	// プレイヤーアクションマップを有効化

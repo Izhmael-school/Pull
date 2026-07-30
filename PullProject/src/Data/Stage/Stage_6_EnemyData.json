@@ -1,0 +1,40 @@
+{
+    "data": [
+        {
+            "frameName": "Enemy_SP0",
+            "enemyType": 3,
+            "wanderingRadius": 0.0,
+            "rotationY": 90.0
+        },
+        {
+            "frameName": "Enemy_SP1",
+            "enemyType": 0,
+            "wanderingRadius": 0.0,
+            "rotationY": 90.0
+        },
+        {
+            "frameName": "Enemy_SP2",
+            "enemyType": 2,
+            "wanderingRadius": 0.0,
+            "rotationY": 90.0
+        },
+        {
+            "frameName": "Enemy_SP3",
+            "enemyType": 0,
+            "wanderingRadius": 0.0,
+            "rotationY": 90.0
+        },
+        {
+            "frameName": "Enemy_SP4",
+            "enemyType": 2,
+            "wanderingRadius": 0.0,
+            "rotationY": 90.0
+        },
+        {
+            "frameName": "Enemy_SP5",
+            "enemyType": 0,
+            "wanderingRadius": 0.0,
+            "rotationY": 90.0
+        }
+    ]
+}

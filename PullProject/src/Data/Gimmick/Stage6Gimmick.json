@@ -1,0 +1,29 @@
+{
+    "Levers": [
+        {
+            "LeverID": 0,
+            "Position": "Lever_SP0",
+            "Rotation": 90.0
+        }
+    ],
+    "Gimmicks": [
+        {
+            "Type": "ExitArea",
+            "LeverID": 0,
+            "Position": "PlayerBP",
+            "Rotation": 0.0
+        },
+        {
+            "Type": "BreakWall",
+            "LeverID": 10000,
+            "Position": "BreakWall_SP1",
+            "Rotation": 90.0
+        },
+        {
+            "Type": "BreakWall",
+            "LeverID": 0,
+            "Position": "BreakWall_SP0",
+            "Rotation": 90.0
+        }
+    ]
+}

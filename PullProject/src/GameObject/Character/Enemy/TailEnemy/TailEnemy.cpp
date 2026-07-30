@@ -4,6 +4,8 @@
 #include "Component/Collider/Collider.h"
 #include "Manager/GameObjectManager.h"
 #include "Manager/ColliderObjectManager.h"
+#include "Manager/Stage/StageManager.h"
+#include "Manager/Stage/GimmickManager.h"
 #include "GameObject/Missile/Missile.h"
 
 TailEnemy::TailEnemy(int _modelHandle, VECTOR _pos)
@@ -37,6 +39,9 @@ void TailEnemy::Start() {
 	type = Tail;
 	tag = Tag::TailEnemy;
 	addScore = 5000;
+
+	vision.rayAngle = 270;
+	vision.rayLenght = 1500;
 }
 
 void TailEnemy::Update() {
@@ -108,7 +113,7 @@ void TailEnemy::AttackAction() {
 
 	int currentAnimIndex = pAnimator->GetCurrentAnimation();
 	if (pAnimator->GetAnimation(currentAnimIndex)->name == "BigShot")
-		GetTransform()->LookAtY(point.position);
+		GetTransform()->GraduallyLookAtY(point.position);
 
 	if (isAttacking)
 		ChangeNextState(Attack);
@@ -157,6 +162,10 @@ void TailEnemy::Dead() {
 	auto col = pTailCollider->GetCollider();
 	if (col) {
 		col->SetEnable(false);
+	}
+
+	if (StageManager::GetInstance().GetStageID() == 6) {
+		GimmickManager::GetInstance().ActivateLever(10000);
 	}
 }
 

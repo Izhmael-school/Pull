@@ -166,8 +166,6 @@ void EnemyBase::Setup() {
 	spawnPoint = GetTransform()->GetLocalPosition();
 	wanderingGoalPos = VGet(static_cast<float>(INT_MAX), 0, 0);
 
-	GetTransform()->SetRotation(VScale(VRight, 0.0f));
-
 	if (pAnimator) {
 		// 攻撃終了時処理を持たせる
 		SetAnimEvent("Attack", pAnimator->GetTotalTime("Attack"), [this]() {EndAttack();});
@@ -253,6 +251,9 @@ void EnemyBase::Move(VECTOR targetPos) {
 }
 
 void EnemyBase::WanderingAction() {
+	// 範囲が0なら帰る
+	if (wanderingRadius == 0.0f) return;
+
 	// ゴールを設定する
 	if (wanderingGoalPos.x == static_cast<float>(INT_MAX)) {
 		int x = static_cast<int>(spawnPoint.x);

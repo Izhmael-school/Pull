@@ -38,6 +38,7 @@ void StageSelectScene::Start() {
 	selectInfoArray.push_back({ "Stage3 o",[]() {StageManager::GetInstance().SetStageID(3);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage4 o",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage5 o",[]() {StageManager::GetInstance().SetStageID(5);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
+	selectInfoArray.push_back({ "Stage6 o",[]() {StageManager::GetInstance().SetStageID(6);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "DebugSelect o",[]() {SceneManager::GetInstance().ChangeScene(SceneType::DebugSceneSelect);} });
 	selectInfoArray.push_back({ "Return to Title",[]() {SceneManager::GetInstance().ChangeScene(SceneType::Title);} });
 #endif
@@ -109,25 +110,26 @@ void StageSelectScene::Update() {
 	CollisionManager::GetInstance().Update();
 	ColliderObjectManager::GetInstance().Update();
 	//InputSystemManager::GetInstance().GetInputState(ActionMap::PlayerAction);
-	/*int size = static_cast<int>(selectInfoArray.size());
+	int size = static_cast<int>(selectInfoArray.size());
 
-	if (action.buttonDown[static_cast<int>(StageSelectAction::SelectMove_UP)]) {
-		currentScene = std::max(currentScene - 1, 0);
-	}
-	if (action.buttonDown[static_cast<int>(StageSelectAction::SelectMove_DOWN)]) {
-		currentScene = std::min(currentScene + 1, size - 1);
-	}
-	if (action.buttonDown[static_cast<int>(StageSelectAction::Click)]) {
-		selectInfoArray[currentScene].SceneChangeFunc();
-	}*/
-
-	//if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_UP))
+	//if (action.buttonDown[static_cast<int>(StageSelectAction::SelectMove_UP)]) {
 	//	currentScene = std::max(currentScene - 1, 0);
-	//if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_DOWN))
+	//}
+	//if (action.buttonDown[static_cast<int>(StageSelectAction::SelectMove_DOWN)]) {
 	//	currentScene = std::min(currentScene + 1, size - 1);
-	//if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_RETURN))
+	//}
+	//if (action.buttonDown[static_cast<int>(StageSelectAction::Click)]) {
 	//	selectInfoArray[currentScene].SceneChangeFunc();
+	//}
 
+#if _DEBUG 
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_UP))
+		currentScene = std::max(currentScene - 1, 0);
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_DOWN))
+		currentScene = std::min(currentScene + 1, size - 1);
+	if (InputManager::GetInstance().IsKeyDown(KEY_INPUT_RETURN))
+		selectInfoArray[currentScene].SceneChangeFunc();
+#endif
 }
 
 void StageSelectScene::Render() {
