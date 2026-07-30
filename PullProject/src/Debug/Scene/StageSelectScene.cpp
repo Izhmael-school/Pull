@@ -39,6 +39,7 @@ void StageSelectScene::Start() {
 	selectInfoArray.push_back({ "Stage4 o",[]() {StageManager::GetInstance().SetStageID(4);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage5 o",[]() {StageManager::GetInstance().SetStageID(5);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "Stage6 o",[]() {StageManager::GetInstance().SetStageID(6);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
+	selectInfoArray.push_back({ "Stage7 o",[]() {StageManager::GetInstance().SetStageID(7);SceneManager::GetInstance().ChangeScene(SceneType::Game);} });
 	selectInfoArray.push_back({ "DebugSelect o",[]() {SceneManager::GetInstance().ChangeScene(SceneType::DebugSceneSelect);} });
 	selectInfoArray.push_back({ "Return to Title",[]() {SceneManager::GetInstance().ChangeScene(SceneType::Title);} });
 #endif

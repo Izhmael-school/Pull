@@ -163,8 +163,8 @@ void TailEnemy::Dead() {
 	if (col) {
 		col->SetEnable(false);
 	}
-
-	if (StageManager::GetInstance().GetStageID() == 6) {
+	int stageID = StageManager::GetInstance().GetStageID();
+	if (stageID == 6 || stageID == 7) {
 		GimmickManager::GetInstance().ActivateLever(10000);
 	}
 }
