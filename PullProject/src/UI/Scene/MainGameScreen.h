@@ -75,8 +75,6 @@ public:
 
 		UITextStyle defaultStyle;
 		defaultStyle.fontSize = 50;
-		auto coinIcon = CreateUIObject<UIImage>(LoadGraph("res/Sprite/Game/CoinIcon.png"), Vector2(50, 50));
-		coinCount = CreateUIObject<UIText>("", defaultStyle, Vector2(100, 50));
 		scoreCount = CreateUIObject<UIText>("", defaultStyle, Vector2(1600, 50));
 
 	}

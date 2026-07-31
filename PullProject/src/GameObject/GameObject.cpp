@@ -100,9 +100,6 @@ void GameObject::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 
 	if (_pSelf == pGroundingCollider.get() &&
 		_pOther->GetLayer() == ColliderLayer::Ground) {
-		if (tag == Enemy) {
-			printfDx("a");
-		}
 		groundCount++;
 		hitGroundingFrag = true;
 	}
