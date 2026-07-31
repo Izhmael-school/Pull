@@ -35,10 +35,11 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, ARM_LENGTH_MAX(1500.0f)
 	, CARRY_POSITION(0.0f, 150.0f, -50.0f)
 	, CATCH_COLOR_CHANGE_RATIO(0.9f)
+	, HANDS_COLLIDER_RADIUS(35.0f)
 {}
 
 void PlayerHands::Start() {
-	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 40), VScale(VUp, 30), 35, VZero);
+	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 40), VScale(VUp, 30), HANDS_COLLIDER_RADIUS, VZero);
 	pCollider->SetResolve(false);
 	pCollider->SetLayer(ColliderLayer::PlayerArm);
 }
@@ -219,7 +220,7 @@ void PlayerHands::OnTriggerExit(Collider* _pSelf, Collider* _pOther) {
  *	手の移動処理
  */
 void PlayerHands::HandsMove() {
-	VECTOR dist = VSub(pOwner->GetPosition(), pTransform->GetPosition());
+	VECTOR dist = VSub(GetPosition(), pOwner->GetPosition());
 	// 手とプレイヤーの距離の2乗
 	float distSq = VDot(dist, dist);
 
@@ -227,10 +228,23 @@ void PlayerHands::HandsMove() {
 	if (handsState == HandsState::ArmsExtending) {
 		// ウデ伸ばしの距離制限
 		if (distSq < ARM_LENGTH_MAX * ARM_LENGTH_MAX) {
-			// 移動
-			pTransform->AddPosition(VForward, -extendSpeed);
-			// ウデ伸ばし中は当たり判定の押し出しあり
-			pCollider->SetResolve(true);
+			// プレイヤーから手までのレイ
+			RayCastSetting ray;
+			ray.origin = pOwner->GetPosition();
+			ray.direction = VScale(pOwner->GetTransform()->GetForward(), -1);
+			ray.maxDistance = ARM_LENGTH_MAX;
+			ray.ignoreLayers.push_back(ColliderLayer::Player);
+			ray.ignoreLayers.push_back(ColliderLayer::PlayerArm);
+			RayHit hit;
+			RayCast::Cast(ray, hit);
+
+			// 壁にぶつかったらその位置で止まる
+			if (!hit.hit || hit.distance >= sqrt(distSq) + HANDS_COLLIDER_RADIUS) {
+				// 移動
+				pTransform->AddPosition(VForward, -extendSpeed);
+				// ウデ伸ばし中は当たり判定の押し出しあり
+				pCollider->SetResolve(true);
+			}
 		}
 	}
 	// ウデ戻し中か敵掴み中なら戻ってくる

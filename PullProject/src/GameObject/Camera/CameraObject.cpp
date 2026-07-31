@@ -12,6 +12,7 @@
 #include "../../Pad/PadBase.h"
 #include "../../Definition/Enum/PlayerActionEnum.h"
 #include "../Character/Enemy/EnemyBase.h"
+#include "../../Component/Ray/RayCastSetting.h"
 #include <DxLib.h>
 #include <ImGui/imgui.h>
 
@@ -263,6 +264,20 @@ void CameraObject::PlayerUpdate() {
 		if (!player->IsJump() || player->GetHitGroundingFrag())
 			chasePlayerPosY = player->GetPosition().y;
 	}
+
+	// 壁の手前にカメラが来るようにレイキャストを使用
+	RayCastSetting ray;
+	ray.origin = target;
+	ray.direction = VNorm(VSub(GetPosition(), target));
+	ray.maxDistance = PLAYER_DISTANCE;
+	ray.targetLayers.push_back(ColliderLayer::Wall);
+	ray.ignoreLayers.push_back(ColliderLayer::Player);
+	ray.ignoreLayers.push_back(ColliderLayer::PlayerArm);
+	RayHit hit;
+	RayCast::Cast(ray, hit);
+
+	if (hit.hit)
+		pTransform->SetPosition(hit.point);
 }
 
 void CameraObject::PullUpdate() {
