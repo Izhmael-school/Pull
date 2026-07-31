@@ -68,7 +68,6 @@ void StageSelectScene::Setup() {
 	 PlayerManager& playerM = PlayerManager::GetInstance();
 	 playerM.CreatePlayer(playerPos);
 	 PlayerCharacter* player = playerM.GetPlayer().get();
-	 player->GetTransform()->AddPosition(VUp, 1000);
 
 	 InputSystemManager::GetInstance().SetActionMapIsActive(ActionMap::PlayerAction, true);
 	 // ギミックの更新を一度だけ呼ぶ

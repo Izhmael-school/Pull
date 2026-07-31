@@ -188,6 +188,16 @@ void StageCollisionGenerator::GenerateFromUnity(
 			trigger->SetStageNo(5);
 			owner = trigger;
 		}
+		else if (b.type == "stage6") {
+			auto* trigger = new StageTransitionTrigger();
+			trigger->SetStageNo(6);
+			owner = trigger;
+		}
+		else if (b.type == "stage7") {
+			auto* trigger = new StageTransitionTrigger();
+			trigger->SetStageNo(7);
+			owner = trigger;
+		}
 		else {
 			owner = new GameObject(-1, VZero, Tag::Ground);
 		}

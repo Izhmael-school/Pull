@@ -114,7 +114,7 @@ void EnemyManager::SpawnStageFramePoint(int _stageID, StageManager& _stageManage
 	std::string filePath = std::format("src/Data/Stage/Stage_{}_EnemyData.json", _stageID);
 	auto data = MyJson::LoadJsonFile(filePath);
 #else
-	std::string filePath = std::format(RELEASE_STAGE_ENEMY_DATA_FILEPATH, _stageID);
+	std::string filePath = std::format("res/ExternalFile/Stage/Enemy/Stage_{}_EnemyData.msgpack", _stageID);
 	auto data = MyJson::LoadBinary(filePath);
 #endif
 	// データが無ければ帰る

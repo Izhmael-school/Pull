@@ -813,7 +813,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 
 	VECTOR world = tr->GetPosition();
 	VECTOR local = tr->GetLocalPosition();
-
+#if DEBUG
 	ImGui::Begin("TransformDebug");
 
 	ImGui::Text(
@@ -831,7 +831,7 @@ void CollisionManager::ResolveCapsuleAABB(Collider* capCol, Collider* boxCol) {
 	);
 
 	ImGui::End();
-
+#endif 
 
 	if (cap->GetLayer() == ColliderLayer::PlayerArm) {
 		cap->GetGameObject()
