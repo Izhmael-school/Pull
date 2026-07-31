@@ -64,9 +64,8 @@ void CollisionManager::Register(Collider* _pCol) {
 	auto itr = std::find(pColliderArray.begin(), pColliderArray.end(), _pCol);
 
 	// 二重登録防止
-	if (itr != pColliderArray.end()) return;
-
-	pColliderArray.push_back(_pCol);
+	if (itr == pColliderArray.end())
+		pColliderArray.push_back(_pCol);
 }
 // 登録済みか確認して登録
 void CollisionManager::CheckRegister(Collider* _pCol) {

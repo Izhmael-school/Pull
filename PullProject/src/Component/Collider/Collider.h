@@ -34,6 +34,8 @@ enum class ColliderLayer {
 	Stage3,
 	Stage4,
 	Stage5,
+	Stage6,
+	Stage7,
 	GroundCheck,
 	Coin
 };

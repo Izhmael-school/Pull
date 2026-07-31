@@ -1,6 +1,7 @@
 #include "ColliderObject.h"
 #include "Component/Collider/Collider.h"
 #include "Manager/TimeManager.h"
+#include "Manager/CollisionManager.h"
 
 ColliderObject::ColliderObject(VECTOR _pos, float _radius, Tag _tag, float _lifeTime, std::function<void(Collider* _pOther)> _enterEvent, std::function<void(Collider* _pOther)> _stayEvent, std::function<void(Collider* _pOther)> _exitEvent)
 	:GameObject(-1, _pos, _tag)
@@ -49,6 +50,8 @@ void ColliderObject::Start(){
 
 	// 押出しない
 	pCollider->SetResolve(false);
+
+	CollisionManager::GetInstance().Register(pCollider.get());
 
 	// 0秒以下なら消えない
 	isDisable = lifeTime <= 0.0f ? false : true;
