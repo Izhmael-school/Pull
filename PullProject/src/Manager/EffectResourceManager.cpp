@@ -9,8 +9,7 @@ bool EffectResourceManager::LoadEffect(const std::string& _name, const std::stri
 	if (!resources.empty())
 		if (resources.contains(_name)) {
 #if _DEBUG
-			std::string fail = MyString::MergeString("Effect Loaded:", _name);
-			assert(false && fail.c_str());
+			assert(false && "Effect Loaded");
 #endif
 			return false;
 		}

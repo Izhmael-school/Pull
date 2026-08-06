@@ -131,6 +131,10 @@ void TailEnemy::ThrownAction(VECTOR _dir) {
 	ChangeCaughtState(CaughtState::Throw);
 }
 
+Collider* TailEnemy::GetTailCollider() const {
+	return pTailCollider->GetCollider();
+}
+
 void TailEnemy::CatchStart() {
 	CaughtObject::CatchStart();
 	ChangeNextState(OutofControl);

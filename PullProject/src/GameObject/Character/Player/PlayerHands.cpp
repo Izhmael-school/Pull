@@ -5,6 +5,7 @@
 
 #include "PlayerHands.h"
 #include "../Enemy/EnemyBase.h"
+#include "../Enemy/TailEnemy/TailEnemy.h"
 #include "../../../Definition/Const/VECTORConst.h"
 #include "../../../Definition/CommonModule/MyMath.h"
 #include "../../../Manager/CameraManager.h"
@@ -118,9 +119,20 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 	auto enemy = dynamic_cast<EnemyBase*>(other);
 	// 当たったのが敵の場合(通常状態以外はNG)
 	if (enemy && enemy->GetCurrentCaughtState() == 0) {
+
 		auto enemyLayer = enemy->GetCollider()->GetLayer();
+
+		/*
+		 * @author Sekino
+		 */
+		auto tail = dynamic_cast<class TailEnemy*>(enemy);
+		// 尻尾の敵であるなら別のコライダーのレイヤーを見る
+		if(tail)
+			enemyLayer = tail->GetTailCollider()->GetLayer();
+
+
 		// 尻尾の場合はレバーと同じように処理
-		if (_pOther->GetLayer() == ColliderLayer::Tail) {
+		if (enemyLayer == ColliderLayer::Tail) {
 			// ステート変更
 			catchState = CatchState::LeverCatch;
 			handsState = HandsState::Catch;
@@ -312,14 +324,20 @@ void PlayerHands::CatchUpdate() {
 
 	// 掴んだのが敵の場合
 	auto enemy = dynamic_cast<EnemyBase*>(catchObject);
+
+	/*
+	 * @author Sekino
+	 */
+	auto tail = dynamic_cast<class TailEnemy*>(enemy);
+
 	if (enemy) {
 		// 尻尾の場合はレバーと同じように処理
-		if (pCatchCollider->GetLayer() == ColliderLayer::Tail) {
+		if (tail) {
 			// 引っこ抜き
 			bool pull = pOwner->Pull();
 			// 敵を倒す
 			if (pull) {
-				enemy->ThrownAction(GetTransform()->GetForward());
+				tail->ThrownAction(GetTransform()->GetForward());
 				catchState = CatchState::None;
 				handsState = HandsState::ArmsReturning;
 			}

@@ -40,6 +40,8 @@ public:
 
 	void ThrownAction(VECTOR _dir) override;
 
+	Collider* GetTailCollider() const;
+
 	/*
 	 * @brief 捕まった時
 	 */
