@@ -62,6 +62,9 @@ void StageSelectScene::Setup() {
 	 stageManager.LoadStage(113);
 	 stageManager.TransitionStage(113);
 
+	 AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
+	 pAudioManager->Play("Stage113", 100.0f, true);
+
 	 // プレイヤーの生成位置の取得
 	 VECTOR playerPos = StageManager::GetInstance().GetPlayerSpawnPosition();
 	 // プレイヤー生成

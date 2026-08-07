@@ -322,7 +322,7 @@ void MainGameScene::StageStartSetup() {
 
 	// BGMを再生
 	AudioManager* pAudioManager = &Application::GetInstance().GetAudioManager();
-	pAudioManager->Play("Stage1BGM", 100.0f, true);
+	pAudioManager->Play(std::format("Stage{}", stageID), 100.0f, true);
 
 	// メインゲーム用UIの準備
 	m_UIManager.PushScreen(std::make_unique<MainGameScreen>());

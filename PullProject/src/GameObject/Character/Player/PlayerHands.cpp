@@ -17,9 +17,9 @@
 #include "Application.h"
 #include <ImGui/imgui.h>
 
-/*
- * author Sekino
- */
+ /*
+  * author Sekino
+  */
 #include "GameObject/Missile/Missile.h"
 #include "GameObject/Pumpkin/Pumpkin.h"
 
@@ -36,8 +36,8 @@ PlayerHands::PlayerHands(std::shared_ptr<PlayerCharacter> _owner, int _modelHand
 	, ARM_LENGTH_MAX(1500.0f)
 	, CARRY_POSITION(0.0f, 150.0f, -50.0f)
 	, CATCH_COLOR_CHANGE_RATIO(0.9f)
-	, HANDS_COLLIDER_RADIUS(35.0f)
-{}
+	, HANDS_COLLIDER_RADIUS(35.0f) {
+}
 
 void PlayerHands::Start() {
 	pCollider = std::make_unique<CapsuleCollider>(this, VScale(VUp, 40), VScale(VUp, 30), HANDS_COLLIDER_RADIUS, VZero);
@@ -57,7 +57,7 @@ void PlayerHands::Update() {
 	if (handsState == HandsState::Catch) {
 		// 掴み更新処理
 		CatchUpdate();
-		
+
 		// 掴み解除(なにかを持ち上げている場合はNG)
 		if (action.buttonDown[static_cast<int>(PlayerAction::CatchCancel)] &&
 			catchState != CatchState::EnemyCatch) {
@@ -71,7 +71,7 @@ void PlayerHands::Update() {
 	else if (pOwner->GetHitGroundingFrag()) {
 		// ウデ伸ばし(ウデ戻し中&&投げアニメーション中じゃなければ)
 		if (action.button[static_cast<int>(PlayerAction::ArmExtend)] &&
-			handsState != HandsState::ArmsReturning && 
+			handsState != HandsState::ArmsReturning &&
 			!pOwner->IsThrowAnimation()) {
 			handsState = HandsState::ArmsExtending;
 			pAnimator->Play("Stance", 0.5f);
@@ -127,9 +127,11 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 		 */
 		auto tail = dynamic_cast<class TailEnemy*>(enemy);
 		// 尻尾の敵であるなら別のコライダーのレイヤーを見る
-		if(tail)
-			enemyLayer = tail->GetTailCollider()->GetLayer();
-
+		if (tail)
+			if (tail->GetTailCollider() == _pOther)
+				enemyLayer = tail->GetTailCollider()->GetLayer();
+			else
+				return;
 
 		// 尻尾の場合はレバーと同じように処理
 		if (enemyLayer == ColliderLayer::Tail) {
@@ -261,11 +263,11 @@ void PlayerHands::HandsMove() {
 	}
 	// ウデ戻し中か敵掴み中なら戻ってくる
 	else if (handsState == HandsState::ArmsReturning ||
-		catchState == CatchState::EnemyCatch){
+		catchState == CatchState::EnemyCatch) {
 		// 戻ってきたとみなす
 		if (distSq < RETURN_THRESHOLD * RETURN_THRESHOLD) {
 			pTransform->SetPosition(VZero);
-			
+
 			// 敵を掴んでいる場合は待機状態に移行しない
 			if (catchState != CatchState::EnemyCatch)
 				handsState = HandsState::Idle;

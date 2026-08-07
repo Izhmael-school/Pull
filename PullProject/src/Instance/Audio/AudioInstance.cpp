@@ -8,6 +8,7 @@ AudioInstance::AudioInstance(AudioResourcePtr _audioResource, float _volume, boo
 	, distance(_distance)
 	, isLoop(_isLoop)
 	, is3D(_audioResource->Is3D()) {
+
 }
 
 AudioInstance::~AudioInstance() {
@@ -40,6 +41,10 @@ bool AudioInstance::Play(VECTOR _pos) {
 
 	// ループ設定
 	int playType = isLoop ? DX_PLAYTYPE_LOOP : DX_PLAYTYPE_BACK;
+
+	// 音量の設定
+	ChangeVolumeSoundMem(static_cast<int>(volume), playHandle);
+
 	// 再生
 	PlaySoundMem(playHandle, playType);
 
