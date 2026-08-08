@@ -59,8 +59,8 @@ public:
 		// イベントカメラ時UIテキスト
 		// テキストスタイルを生成
 		UITextStyle eventStyle;
-		eventStyle.fontName = "Kaisotai-Next-UP-B";
-		eventStyle.fontSize = 250;
+		eventStyle.fontName = "Kaisotai Next UP B";
+		eventStyle.fontSize = 220;
 		eventStyle.fontThickness = 5;
 		eventStyle.normalColor = white;
 		eventStyle.outLineColor = black;
@@ -69,7 +69,7 @@ public:
 		eventText = CreateUIObject<UIText>(
 			"ゴールをめざせ",
 			eventStyle,
-			Vector2(220, 140)
+			Vector2(190, 140)
 		);
 		eventText->SetVisible(false);
 

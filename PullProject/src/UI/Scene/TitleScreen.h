@@ -40,7 +40,7 @@ public:
         
         // テキストを生成
         UITextStyle style;
-        style.fontName = "Kaisotai-Next-UP-B";
+        style.fontName = "Kaisotai Next UP B";
         style.fontSize = 150;
         style.fontThickness = 5;
         style.normalColor = white;
