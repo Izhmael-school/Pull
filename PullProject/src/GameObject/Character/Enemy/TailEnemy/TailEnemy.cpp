@@ -96,6 +96,7 @@ void TailEnemy::Setup() {
 		col->SetEnable(true);
 		auto sphere = dynamic_cast<SphereCollider*>(col);
 		sphere->SetRadius(tailRadius);
+		CollisionManager::GetInstance().CheckRegister(sphere);
 	}
 }
 
