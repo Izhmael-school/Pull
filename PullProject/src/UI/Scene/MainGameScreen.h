@@ -17,12 +17,15 @@ class MainGameScreen :public UIScreen {
 	UIImage* leverUI = nullptr;
 	UIImage* misileUI = nullptr;
 	UIImage* operationUI = nullptr;
+	UIImage* leverJumpUI = nullptr;
 	UIText* coinCount;
 	UIText* scoreCount;
-	UIText* eventText = nullptr;        
+	UIText* eventText = nullptr;
+
 
 	bool isLeverVisible = false;
 	bool isMisileVisible = false;
+	bool isLeverJumpVisible = false;
 public:
 
 	void Init() override {
@@ -56,6 +59,14 @@ public:
 		);
 		operationUI->SetVisible(false);
 
+		// レバージャンプUI表示
+		leverJumpUI = CreateUIObject<UIImage>(
+			LoadGraph("res/UI/Lever_JumpUI.png"),
+			Vector2(0, 0)
+		);
+		// 最初は非表示
+		leverJumpUI->SetVisible(false);
+
 		// イベントカメラ時UIテキスト
 		// テキストスタイルを生成
 		UITextStyle eventStyle;
@@ -86,6 +97,7 @@ public:
 	 */
 	void SetLeverUIVisible(bool visible) {
 		isLeverVisible = visible;
+		isLeverJumpVisible = visible;
 		leverUI->SetVisible(visible);
 
 		UpdateOperationUI();
@@ -96,6 +108,7 @@ public:
 	 */
 	void SetMisileUIVisible(bool visible) {
 		isMisileVisible = visible;
+		isLeverJumpVisible = visible;
 		misileUI->SetVisible(visible);
 
 		UpdateOperationUI();
@@ -104,6 +117,19 @@ public:
 	void UpdateOperationUI() {
 		// レバー・ミサイルのどちらも表示していないときだけ操作UIを表示
 		operationUI->SetVisible(!(isLeverVisible || isMisileVisible));
+	}
+
+	/*
+	 *	ジャンプレバーを掴んだ時
+	 */
+	void SetLeverJumpUI(bool visible) {
+		// ほかのUIを非表示にする
+		isMisileVisible = visible;
+		isLeverVisible = visible;
+		leverJumpUI->SetVisible(visible);
+
+		// UI表示
+		UpdateOperationUI();
 	}
 
 	/*
