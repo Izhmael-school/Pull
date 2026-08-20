@@ -103,6 +103,13 @@ public:
 	 *	@return bool
 	 */
 	inline bool IsLeverCatch() { return catchState == CatchState::LeverCatch; }
+
+	/*
+	 *  柱を掴んでいるか否か
+	 *  @return bools
+	 *  @author oorui
+	 */
+	inline bool IsPillerCatch() { return catchState == CatchState::PillerCatch; }
 	/*
 	 *	ウデ伸ばし中か否か
 	 *	@return bool

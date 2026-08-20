@@ -231,6 +231,7 @@ void MainGameScene::Render() {
 
 		screen->SetLeverUIVisible(playerHand->IsLeverCatch());
 		screen->SetMisileUIVisible(playerHand->IsEnemyCatch());
+		screen->SetLeverJumpUIVisible(playerHand->IsPillerCatch());
 	}
 	// UI表示
 	m_UIManager.Draw();

@@ -97,7 +97,6 @@ public:
 	 */
 	void SetLeverUIVisible(bool visible) {
 		isLeverVisible = visible;
-		isLeverJumpVisible = visible;
 		leverUI->SetVisible(visible);
 
 		UpdateOperationUI();
@@ -108,28 +107,25 @@ public:
 	 */
 	void SetMisileUIVisible(bool visible) {
 		isMisileVisible = visible;
-		isLeverJumpVisible = visible;
 		misileUI->SetVisible(visible);
 
 		UpdateOperationUI();
 	}
 
-	void UpdateOperationUI() {
-		// レバー・ミサイルのどちらも表示していないときだけ操作UIを表示
-		operationUI->SetVisible(!(isLeverVisible || isMisileVisible));
-	}
-
 	/*
 	 *	ジャンプレバーを掴んだ時
 	 */
-	void SetLeverJumpUI(bool visible) {
-		// ほかのUIを非表示にする
-		isMisileVisible = visible;
-		isLeverVisible = visible;
+	void SetLeverJumpUIVisible(bool visible) {
+		isLeverJumpVisible = visible;
 		leverJumpUI->SetVisible(visible);
 
 		// UI表示
 		UpdateOperationUI();
+	}
+
+	void UpdateOperationUI() {
+		// レバー・ミサイルのどちらも表示していないときだけ操作UIを表示
+		operationUI->SetVisible(!(isLeverVisible || isMisileVisible || isLeverJumpVisible));
 	}
 
 	/*
