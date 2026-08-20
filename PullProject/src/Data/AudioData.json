@@ -1,0 +1,122 @@
+[
+  {
+    "name": "test",
+    "path": "BGM/test.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage1BGM",
+    "path": "BGM/iwashiro_hajimari_no_michi.mp3",
+    "is3D": false
+  },
+  {
+    "name": "BreakWall_BreakSE",
+    "path": "SE/se_syun.mp3",
+    "is3D": false
+  },
+  {
+    "name": "PullOutFloor_EndSe",
+    "path": "SE/se_wall_2.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Taunt",
+    "path": "SE/Taunt.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Tail_Down",
+    "path": "SE/Tail_Down.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Tail_Jump",
+    "path": "SE/Tail_Jump.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Enemy_ThrowHit",
+    "path": "SE/Enemy_ThrowHit.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Explosion",
+    "path": "SE/Explosion.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Missile_Shoot",
+    "path": "SE/Missile_Shoot.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Tackle",
+    "path": "SE/Tackle.mp3",
+    "is3D": true
+  },
+  {
+    "name": "GetCoin",
+    "path": "SE/GetCoin.mp3",
+    "is3D": true
+  },
+  {
+    "name": "PlayerJump",
+    "path": "SE/PlayerJump.mp3",
+    "is3D": true
+  },
+  {
+    "name": "PlayerCatch",
+    "path": "SE/PlayerCatch.mp3",
+    "is3D": true
+  },
+  {
+    "name": "PlayerShot",
+    "path": "SE/PlayerShot.mp3",
+    "is3D": true
+  },
+  {
+    "name": "PlayerDead",
+    "path": "SE/PlayerDead.mp3",
+    "is3D": true
+  },
+  {
+    "name": "Stage1",
+    "path": "BGM/Stage1.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage2",
+    "path": "BGM/Stage2.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage3",
+    "path": "BGM/Stage3.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage4",
+    "path": "BGM/Stage4.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage5",
+    "path": "BGM/Stage5.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage6",
+    "path": "BGM/Stage6.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage7",
+    "path": "BGM/Stage7.mp3",
+    "is3D": false
+  },
+  {
+    "name": "Stage113",
+    "path": "BGM/Stage113.mp3",
+    "is3D": false
+  }
+]

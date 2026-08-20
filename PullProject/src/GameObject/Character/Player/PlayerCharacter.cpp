@@ -537,6 +537,30 @@ bool PlayerCharacter::GetVisionObject(VECTOR& targetObject) {
 			lockOnPos = object->GetPosition();
 		}
 	}
+	// 尻尾用ロックオン
+	auto hitColliders = pLockOnVision->GetHitColliders();
+	for (auto collider : hitColliders) {
+		if (!collider)
+			continue;
+		if (collider->GetLayer() != ColliderLayer::Tail)
+			continue;
+
+		auto enemy = dynamic_cast<EnemyBase*>(collider->GetGameObject());
+		if (enemy) {
+			// 敵がつかまったり投げられていたら無視
+			if (enemy->GetCurrentCaughtState() != 0)
+				continue;
+		}
+		
+		auto sphere = dynamic_cast<SphereCollider*>(collider);
+		VECTOR dir = VSub(sphere->GetWorldCenter(), GetPosition());
+		float newLength = VDot(dir, dir);
+		if (length > newLength) {
+			length = newLength;
+			lockOnPos = sphere->GetWorldCenter();
+		}
+	}
+
 	if (lockOnPos.x != 0.0f ||
 		lockOnPos.y != 0.0f ||
 		lockOnPos.z != 0.0f) {
