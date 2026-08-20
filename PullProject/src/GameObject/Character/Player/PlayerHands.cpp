@@ -88,11 +88,6 @@ void PlayerHands::Update() {
 	// 手の移動
 	HandsMove();
 
-	// 掴み移動
-	if (catchState == CatchState::PillerCatch) {
-		CatchMoving();
-	}
-
 #if _DEBUG
 	ImGui::Begin("HandsState&CatchState");
 	ImGui::Text("%d", handsState);
@@ -209,6 +204,7 @@ void PlayerHands::OnTriggerEnter(Collider* _pSelf, Collider* _pOther) {
 
 	// 当たったのがフックの場合
 	if (other->GetTag() == Hook) {
+		catchState = CatchState::PillerCatch;
 		handsState = HandsState::Catch;
 		// 反応
 		CatchReaction();
@@ -416,7 +412,7 @@ void PlayerHands::CatchUpdate() {
 	// 掴んだのがフックの場合
 	if (catchObject->GetTag() == Hook) {
 		//掴んでいる間は微量のシェイク
-		if (catchState != CatchState::PillerCatch) {
+		if (catchState == CatchState::PillerCatch) {
 			CameraManager::GetInstance().CameraShake(1, 1);
 			StartJoypadVibration(DX_INPUT_PAD1, 5, 10, -1);
 
@@ -430,9 +426,13 @@ void PlayerHands::CatchUpdate() {
 		}
 		// ジャンプで進む
 		if (action.buttonDown[static_cast<int>(PlayerAction::Jump)]) {
-			catchState = CatchState::PillerCatch;
+			catchState = CatchState::None;
 			pOwner->CatchMovingJamp();
 			pOwner->CatchReset();
+		}
+		// 掴み移動
+		if (catchState != CatchState::PillerCatch) {
+			CatchMoving();
 		}
 	}
 }
