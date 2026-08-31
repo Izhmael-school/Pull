@@ -10,7 +10,7 @@
 #include "Manager/CollisionManager.h"
 #include "Manager/InputSystemManager.h"
 #include "Manager/FadeManager.h"
-
+#include "ImGui/imgui.h"
 
 Application::Application()
 	:audioManager(audioResourceManager)
@@ -21,6 +21,12 @@ Application::Application()
 int Application::Init() {
 	// ImGuiの初期化
 	imgui.Init();
+
+#if !_DEBUG
+	ImGuiIO& io = ImGui::GetIO();
+	if (&io)
+		io.IniFilename = NULL;
+#endif
 
 	// 乱数調節
 	std::random_device rd;
@@ -37,6 +43,13 @@ int Application::Init() {
 
 int Application::DxLibInit() {
 #pragma region // DxLibの初期化処理　触るべからず
+	// ログファイルを残さない
+#if _DEBUG
+	SetOutApplicationLogValidFlag(TRUE);
+#else
+	SetOutApplicationLogValidFlag(FALSE);
+#endif
+
 	// タイトルの変更
 	SetWindowText("ExHand");
 	// XInput対応ゲームパッド設定
@@ -47,13 +60,6 @@ int Application::DxLibInit() {
 	SetFullSceneAntiAliasingMode(4, 2);
 	// ゲームアイコン
 	SetWindowIconID(101);
-
-	// ログファイルを残さない
-#if _DEBUG
-	SetOutApplicationLogValidFlag(TRUE);
-#else
-	SetOutApplicationLogValidFlag(FALSE);
-#endif
 
 	// 起動時のウィンドウのモードの設定
 #if _DEBUG
